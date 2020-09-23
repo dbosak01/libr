@@ -16,6 +16,9 @@ and render as an R data frame.}
 default value is NULL, meaning all recognized data files will be input.
 Multiple filters can be passed as a vector of file extensions. 
 Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat".}
+
+\item{...}{Follow-on parameters to the data import functions.  Which
+parameters exist depend on which types of files are being imported.}
 }
 \value{
 The library object.
@@ -40,25 +43,27 @@ saveRDS(lynx, file.path(tmp, "lynx.rds"))
 saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
 
 # Create format catalog
-lib <- libname(tmp)
+data <- libname(tmp)
 
 # Print library summary 
-print(lib)
+print(data)
 }
 \seealso{
 Other lib: 
 \code{\link{as.lib.list}()},
 \code{\link{as.lib}()},
 \code{\link{is.lib}()},
-\code{\link{lib.append}()},
-\code{\link{lib.copy}()},
-\code{\link{lib.create}()},
-\code{\link{lib.delete}()},
-\code{\link{lib.info}()},
-\code{\link{lib.path}()},
-\code{\link{lib.remove}()},
-\code{\link{lib.size}()},
-\code{\link{lib.write}()},
+\code{\link{lib_append}()},
+\code{\link{lib_copy}()},
+\code{\link{lib_create}()},
+\code{\link{lib_delete}()},
+\code{\link{lib_info}()},
+\code{\link{lib_load}()},
+\code{\link{lib_path}()},
+\code{\link{lib_remove}()},
+\code{\link{lib_size}()},
+\code{\link{lib_unload}()},
+\code{\link{lib_write}()},
 \code{\link{print.lib}()}
 }
 \concept{lib}

@@ -6,6 +6,11 @@
 \usage{
 \method{as.lib}{list}(x, path)
 }
+\arguments{
+\item{x}{The list to convert}
+
+\item{path}{The path to associate with the library.}
+}
 \description{
 Convert a List of Data Frames to a Data Library
 }
@@ -13,15 +18,17 @@ Convert a List of Data Frames to a Data Library
 Other lib: 
 \code{\link{as.lib}()},
 \code{\link{is.lib}()},
-\code{\link{lib.append}()},
-\code{\link{lib.copy}()},
-\code{\link{lib.create}()},
-\code{\link{lib.delete}()},
-\code{\link{lib.info}()},
-\code{\link{lib.path}()},
-\code{\link{lib.remove}()},
-\code{\link{lib.size}()},
-\code{\link{lib.write}()},
+\code{\link{lib_append}()},
+\code{\link{lib_copy}()},
+\code{\link{lib_create}()},
+\code{\link{lib_delete}()},
+\code{\link{lib_info}()},
+\code{\link{lib_load}()},
+\code{\link{lib_path}()},
+\code{\link{lib_remove}()},
+\code{\link{lib_size}()},
+\code{\link{lib_unload}()},
+\code{\link{lib_write}()},
 \code{\link{libname}()},
 \code{\link{print.lib}()}
 }

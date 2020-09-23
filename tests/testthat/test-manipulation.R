@@ -1,0 +1,48 @@
+context("libname Tests")
+
+base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+
+base_path <- "./data"
+
+
+test_that("lib_load() and lib_unload() functions works as expected.", {
+  
+  
+  expect_error(libname(file.path(base_path, "forker")))
+  
+  
+  lb <- libname(base_path, filter = "csv")
+  
+  # Should not get an error here
+  lib_unload(lb)
+  
+  lib_load(lb)
+  
+  expect_equal(nrow(lb.demo_studya), 10)
+  expect_equal(nrow(lb.demo_studyb), 2)
+  
+  lib_unload(lb) 
+  
+  expect_equal("lb.demo_studya" %in% ls(), FALSE)
+  expect_equal("lb.demo_studyb" %in% ls(), FALSE)
+  
+})
+
+test_that("lib_create()  works as expected.", {
+  
+  fp <- file.path(base_path, "data4/data5")
+  
+  expect_error(suppressWarnings(lib_create(fp)))
+  
+  
+  fp <- file.path(base_path, "data3")
+  
+  l <- lib_create(fp)
+  
+  expect_equal(dir.exists(fp), TRUE)
+  
+  if (dir.exists(fp))
+    unlink(fp, force = TRUE, recursive = TRUE)
+
+
+})

@@ -74,8 +74,8 @@ test_that("libname() function works as expected with sas7bdat", {
 test_that("libname() function works as expected with multiple data formats", {
   
   
-  
-  lib <- libname(base_path)
+  lib = suppressWarnings(libname(base_path))
+  #lib = libname(base_path)
   
   expect_equal(class(lib)[[1]], "lib")
   expect_equal(length(lib), 2) 
