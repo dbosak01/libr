@@ -1,0 +1,24 @@
+Package: libr
+Type: Package
+Title: Create Data Libraries and Dictionaries
+Version: 0.0.9000
+Author: David J. Bosak
+Maintainer: David Bosak <dbosak01@gmail.com>
+Description: Contains a set of funtions to create data libraries
+    and data dictionaries in a manner inspired by SAS®.
+    The libname() function will load a directory of data into 
+    a library object in one step.  And the dictionary() function
+    will generate data dictionaries for individual
+    data frames/tibbles or an entire library.
+License: CC0
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/dbosak01/libr
+BugReports: https://github.com/dbosak01/libr/issues
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
+Imports: tibble
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
