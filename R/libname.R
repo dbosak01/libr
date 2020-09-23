@@ -1,346 +1,152 @@
 
-# Formatting Catalog Definition -------------------------------------------
+# Libname Definition -------------------------------------------
 
 
-#' @title Create a format catalog
-#' @description A format catalog is a collection of formats.  This format
-#' collection allows you to manage and store formats as a unit.  The 
-#' \code{fcat} function defines the format catalog.
-#' @details A format catalog is an S3 object of class "fcat".  The purpose of 
-#' the catalog is to combine related formats, and allow you to manipulate all
-#' of them as a single object.  The format catalog can be saved to/from a file 
-#' using the \code{\link{write.fcat}} and \code{\link{read.fcat}} functions. 
-#' A format catalog can also 
-#' be converted to/from a data frame using the \code{\link{as.fcat.data.frame}}
-#' and \code{\link{as.data.frame.fcat}} functions.  Formats are accessed in the
-#' catalog using list syntax. 
-#' 
-#' A format catalog can be used to assign formats to a data frame
-#' or tibble using the \code{formats} function. See the \code{\link{formats}}
-#' function for additional details.
-#' 
-#' A format catalog may contain any type of format except a formatting list.
-#' Allowed formats include a formatting string, a named vector lookup, a 
-#' user-defined format, and a vectorized formatting function.  A formatting 
-#' list can be converted to a format catalog and saved independently.  See the 
-#' 
-#' @param ... A set of formats. Pass the formats as a name/value pair.  Multiple
-#' name/value pairs may be separated by a comma.
-#' @return The format catalog object.
-#' @seealso \code{\link{formats}} function for assigning formats to a data 
-#' frame, and the \code{\link{fdata}} and \code{\link{fapply}} functions for
-#' applying formats.
-#' @family fcat
+#' @title Create a data library
+#' @description A data library is a collection of data frames  A data 
+#' library allows you to manage and store data frames as a unit.  The 
+#' \code{libname} function defines the library.
+#' @details A data library is an S3 object of class "lib".  The purpose of 
+#' the library is to combine related data frames, and allow you to manipulate all
+#' of them as a single object.  
+#' @param directory_path A directory path in which the data resides.  The incoming 
+#' data can be in any file format: rds, csv, sas7bdat, etc.  The 
+#' \code{libname} function will read any type of data into the library, 
+#' and render as an R data frame.  
+#' @param filter One or more file extensions to filter the incoming data.  The
+#' default value is NULL, meaning all recognized data files will be input.
+#' Multiple filters can be passed as a vector of file extensions. 
+#' Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat". 
+#' @return The library object.
+#' @family lib
 #' @examples 
-#' # Create format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
+#' # Create temp directory
+#' tmp <- tempdir()
 #' 
-#' # Use formats in the catalog
-#' fapply(2, c1$num_fmt)
-#' fapply(c("A", "B", "C", "B"), c1$label_fmt)
-#' fapply(Sys.Date(), c1$date_fmt)
+#' # Save some data to temp directory
+#' saveRDS(trees, file.path(tmp, "trees.rds"))
+#' saveRDS(lynx, file.path(tmp, "lynx.rds"))
+#' saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
+#' 
+#' # Create format catalog
+#' lib <- libname(tmp)
+#' 
+#' # Print library summary 
+#' print(lib)
+#' @import readxl
+#' @import haven
 #' @export
-fcat <- function(...) {
+libname <- function(directory_path, filter = NULL, ...) {
   
-  # Create new structure of class "fcat"
-  f <- structure(list(...), class = c("fcat", "list"))
+  # Create new structure of class "lib"
+  l <- structure(list(), class = c("lib", "list"))
   
+  attr(l, "path") <- directory_path
+  attr(l, "filter") <- filter
   
-  return(f)
+  lst <- list.files(directory_path)
+  for (fl in lst) {
+    fp <- file.path(directory_path, fl)
+    ext <-  getExtension(fl)
+    nm <- getFileName(fl)
+    #nm <- getUniqueName(nm, names(l))
+    
+    #print(ext)
+    if (length(ext) > 0) { 
+      if (ext == "csv") {
+        
+        dat <- read.csv(fp, ...)
+        
+      } else if (ext == "rds") {
+        
+        dat <- readRDS(fp, ...)
+        
+      } else if (ext == "sas7bdat") {
+        
+        dat <- read_sas(fp, ...)
+        
+      } else if (ext == "xlsx") {
+        
+        dat <- read_xlsx(fp, ...)
+        
+      } else if (ext == "xls") {
+        
+        dat <- read_xls(fp, ...)
+        
+      }  else if (ext == "dat"){
+        
+        dat <- read.Table(fp, ...)
+      }
+      
+      attr(dat, "name") <- nm
+      attr(dat, "extension") <- ext
+      attr(dat, "path") <- directory_path
+      l[[nm]] <- dat
+    }
+
+  }
+  
+  return(l)
   
 }
+
 
 
 
 # Conversion Functions -----------------------------------------------------
 
-#' @title Generic Casting Method for Format Catalogs
+#' @title Generic Casting Method for Data Libraries
 #' @description A generic method for casting objects to
-#' a format catalog.  Individual objects will inherit from this function.
+#' a data library.  Individual objects will inherit from this function.
 #' @param x The object to cast.
-#' @return A formatting object, created using the information in the 
+#' @return A library object, created using the information in the 
 #' input object.
-#' @seealso For class-specific methods, see \code{\link{as.fcat.data.frame}},
-#' \code{\link{as.fcat.list}}, and \code{\link{as.fcat.fmt_lst}}.
-#' @family fcat
+#' @seealso For class-specific methods, see 
+#' \code{\link{as.lib.list}}.
+#' @family lib
 #' @export
-as.fcat <- function (x) {
-  UseMethod("as.fcat", x)
+as.lib <- function (x) {
+  UseMethod("as.lib", x)
 }
 
-#' @title Convert a data frame to a format catalog
-#' @description This function takes a data frame as input
-#' and converts it to a format catalog based on the information contained
-#' in the data frame. The data frame should have 5 columns: "Name", "Type",
-#' "Expression", "Label" and "Order".  
-#' @details 
-#' The \code{as.fcat.data.frame} converts a data frame to a format catalog. A
-#' corresponding conversion for class "tbl_df" converts a tibble.
-#' 
-#' To understand the format of the data frame, create a format and use
-#' the \code{as.data.frame} method to convert the format to a data frame.
-#' Then observe the columns and organization of the data.
-#' @section Input Data Frame Specifications:
-#' The input data frame should contain the following columns:
-#' \itemize{
-#' \item \strong{Name}: The name of the format
-#' \item \strong{Type}: The type of format.  See the type codes below.
-#' \item \strong{Expression}: The formatting expression. The expression will 
-#' hold different types of values depending on the format type.
-#' \item \strong{Label}: The label for user-defined, "U" type formats.
-#' \item \strong{Order}: The order for user-defined, "U" type formats. 
-#' }
-#' Any additional columns will be ignored.  Column names are case-insensitive.
-#' 
-#' Valid values for the "Type" column are as follows:
-#' \itemize{
-#' \item \strong{U}: User Defined List created with the \code{value} function.
-#' \item \strong{S}: A formatting string of formatting codes.
-#' \item \strong{F}: A vectorized function.
-#' \item \strong{V}: A named vector lookup.}
-#' 
-#' The "Label" and "Order" columns are used only for a type "U", user-defined
-#' format created with the \code{\link{value}} function.
-#' @param x The data frame to convert.
-#' @return A format catalog based on the information contained in the 
-#' input data frame.
-#' @examples 
-#' # Create a format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d-%b-%Y")
-#'            
-#' # Convert catalog to data frame to view the structure
-#' df <- as.data.frame(c1)
-#' print(df)
-#' 
-#' #       Name Type Expression   Label Order
-#' # 1   num_fmt    S       %.1f            NA
-#' # 2 label_fmt    U   x == "A" Label A    NA
-#' # 3 label_fmt    U   x == "B" Label B    NA
-#' # 4 label_fmt    U       TRUE   Other    NA
-#' # 5  date_fmt    S   %d-%b-%Y            NA
-#' 
-#' # Convert data frame back to a format catalog
-#' c2 <- as.fcat(df)
-#' 
-#' # Use re-converted catalog
-#' fapply(123.456, c2$num_fmt)
-#' fapply(c("A", "B", "C", "B"), c2$label_fmt)
-#' fapply(Sys.Date(), c2$date_fmt)
+#' @title Convert a List of Data Frames to a Data Library
+#' @family lib
 #' @export
-as.fcat.data.frame <- function(x) {
+as.lib.list <- function(x, path) {
   
-  names(x) <- titleCase(names(x))
   
-  s <- split(x, x$Name)
-  ret <- fcat()
-  for (df in s) {
-    
-    nm <- df[1, "Name"]
-    typ <- df[1, "Type"]
-    
-    if (typ == "U") {
-      ret[[nm]] <- as.fmt(df)
-    } else if (typ == "S") {
-      ret[[nm]] <- df[1, "Expression"]
-    } else if (typ == "F") {
-      ret[[nm]] <- eval(str2lang(df[1, "Expression"]))
-    } else if (typ == "V") {
-      ret[[nm]] <- eval(str2lang(df[1, "Expression"]))
-    }
-  }
+  class(x) <- list("lib", class(x))
   
-  return(ret)
+  return(x)
   
 }
 
 
-#' @inherit as.fcat.data.frame
-#' @export
-as.fcat.tbl_df <- function(x) {
-  
-  ret <- as.fcat.data.frame(as.data.frame(x))
-  
-  return(ret)
-}
+# Manipulation Functions --------------------------------------------------
 
 
-#' @title Convert a list to a format catalog
-#' @param x The list to convert.  List must contained named formats.
-#' @return A format catalog based on the formats contained in the input list.
-#' @family fcat
-#' @export
-as.fcat.list <- function(x) {
-  
-  
-  class(x) = c("fmt_lst", class(x))
-  
-  ret <- x
-  
-  
-  return(ret)
-}
-
-#' @title Convert a formatting list to a format catalog
-#' @param x The formatting list to convert.
-#' @family fcat
-#' @export
-as.fcat.fmt_lst <- function(x) {
-  
-  
-  
-  ret <- x$formats
-  
-  class(ret) <- list("fcat", "list")
-  
-  
-  return(ret)
-}
-
-#' @title Convert a format catalog to a data frame
-#' @description This function takes the information stored in a format 
-#' catalog, and coverts it to the data frame.  The data frame format is 
-#' useful for storage, editing, saving to a spreadsheet, etc.  The 
-#' data frame show the name of the formats, their class, and the format 
-#' expression.  For use-defined formats, the data frame populates 
-#' additional columns for the label and order.
-#' @param x The format catalog to convert.
-#' @param row.names Row names of the return data frame.  Default is NULL.
-#' @param optional TRUE or FALSE value indicating whether converting to
-#' syntactic variable names is options.  In the case of formats, the 
-#' resulting data frame will always be returned with syntactic names, and 
-#' this parameter is ignored.
-#' @param ... Any follow-on parameters.
-#' @return A data frame that contains the values stored in the format 
-#' catalog.  
-#' @family fcat
-#' @examples 
-#' # Create a format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
-#'            
-#' # Convert catalog to data frame to view the structure
-#' df <- as.data.frame(c1)
-#' print(df)
-#' 
-#' #       Name Type Expression   Label Order
-#' # 1   num_fmt    S       %.1f            NA
-#' # 2 label_fmt    U   x == "A" Label A    NA
-#' # 3 label_fmt    U   x == "B" Label B    NA
-#' # 4 label_fmt    U       TRUE   Other    NA
-#' # 5  date_fmt    S     %d%b%Y            NA
-#' 
-#' # Convert data frame back to a format catalog
-#' c2 <- as.fcat(df)
-#' @export
-as.data.frame.fcat <- function(x, row.names = NULL, optional = FALSE, ...) {
-  
-  tmp <- list()
-  
-  for (nm in names(x)) {
-    
-    if (any(class(x[[nm]]) == "fmt")) {
-      
-      tmp[[nm]] <- as.data.frame.fmt(x[[nm]], name = nm)
-      
-    } else if (all(class(x[[nm]]) == "character")) {
-      
-      if (length(x[[nm]]) == 1 & is.null(names(x[[nm]]))) {
-        tmp[[nm]] <- data.frame(Name = nm, 
-                                Type = "S",
-                                Expression = x[[nm]],
-                                Label = "", 
-                                Order = NA)
-      } else {
-        tmp[[nm]] <- data.frame(Name = nm, 
-                                Type = "V",
-                                Expression = deparse1(x[[nm]]),
-                                Label = "", 
-                                Order = NA)
-      }
-      
-    } else if (any(class(x[[nm]]) == "function")) {
-      
-      tmp[[nm]] <-  data.frame(Name = nm, 
-                               Type = "F",
-                               Expression = deparse1(x[[nm]]),
-                               Label = "", 
-                               Order = NA)
-      
-      
-    }
-    
-  }
-  
-  
-  ret <- do.call("rbind", tmp)
-  
-  if (!is.null(row.names))
-    rownames(ret) <- row.names
-  else
-    rownames(ret) <- NULL
-  
-  return(ret)
-  
-}
-
-
-# Utility Functions -------------------------------------------------------
-
-
-#' @title Write a format catalog to the file system
-#' @description The \code{write.fcat} function writes the format catalog
-#' to the file system.  By default, the catalog will be written to the 
-#' current working directory, using the variable name as the file name.  These
-#' defaults can be overridden using the appropriate parameters.  The catalog
-#' will be saved with a file extension of ".fcat". 
-#' 
-#' Note that the format catalog is saved as an RDS file.  The ".fcat" file 
-#' extension only serves to distinguish the format catalog from other RDS
-#' files.
+#' @title Write a data library to the file system
+#' @description The \code{lib.write} function writes the data library
+#' to the file system.  By default, the library will be written to the 
+#' directory for which it was defined, and each data frame will be written
+#' in the format from which it was read.  Data frames that were not read
+#' from a file will be saved in RDS format, unless otherwise specified.
 #' @param x The format catalog to write.
 #' @param dir_path The directory path to write the catalog to. Default is the 
 #' current working directory.
 #' @param file_name The name of the file to save the catalog as.  Default is
 #' the name of the variable that contains the catalog.  The ".fcat" file
 #' extension will be added automatically.
+#' @param type The type of data library. Default is NULL, meaning the library
+#' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", and "csv". 
+#' The data files will be saved as the type specified on this parameter, 
+#' no matter from which type of file they were input.
 #' @return The full path of the saved format catalog.
-#' @family fcat
-#' @examples 
-#' # Create format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
-#'            
-#' # Get temp directory
-#' tmp <- tempdir()            
-#'            
-#' # Save catalog to file system
-#' pth <- write.fcat(c1, dir_path = tmp)
-#' 
-#' # Read from file system
-#' c2 <- read.fcat(pth)
-#' 
-#' # Use formats in the catalog
-#' fapply(2, c1$num_fmt)
-#' fapply(c("A", "B", "C", "B"), c1$label_fmt)
-#' fapply(Sys.Date(), c1$date_fmt)
+#' @family lib
 #' @export
-write.fcat <- function(x, dir_path = getwd(), file_name = deparse(substitute(x, 
-                                                                             env = environment()))) {
-  
+lib.write <- function(x, dir_path = getwd(), file_name = deparse(substitute(x, 
+                                                     env = environment())),
+                      type = NULL) {
   pth <- file.path(dir_path, paste0(file_name, ".fcat"))
   
   
@@ -353,69 +159,98 @@ write.fcat <- function(x, dir_path = getwd(), file_name = deparse(substitute(x,
 }
 
 
-#' @title Read a format catalog from the file system
-#' @description The \code{read.fcat} function reads a format catalog
-#' from the file system.  The function accepts a path to the format catalog,
-#' reads the catalog, and returns it.
-#' 
-#' Note that the format catalog is saved as an RDS file.  The ".fcat" file 
-#' extension only serves to distinguish the format catalog from other RDS
-#' files.
-#' @param file_path The path to the format catalog.
-#' @return The format catalog as an R object.
-#' @family fcat
-#' @examples 
-#' # Create format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
-#'            
-#' # Get temp directory
-#' tmp <- tempdir()            
-#'            
-#' # Save catalog to file system
-#' pth <- write.fcat(c1, dir_path = tmp)
-#' 
-#' # Read from file system
-#' c2 <- read.fcat(pth)
-#' 
-#' # Use formats in the catalog
-#' fapply(2, c1$num_fmt)
-#' fapply(c("A", "B", "C", "B"), c1$label_fmt)
-#' fapply(Sys.Date(), c1$date_fmt)
+#' @title Copy a Data Library
+#' @family lib
 #' @export
-read.fcat <- function(file_path) {
-  
-  ret <-  readRDS(file_path)
+lib.copy <- function(x) {
   
   
-  return(ret)
 }
 
-#' @title Print a format catalog
-#' @description A class-specific instance of the \code{print} function for 
-#' format catalogs.  The function prints the format catalog in a tabular manner.  
-#' Use \code{verbose = TRUE} to print the catalog as a list.
-#' @param x The format catalog to print.
-#' @param ... Any follow-on parameters.
-#' @param verbose Whether or not to print the format catalog in verbose style.
-#' By default, the parameter is FALSE, meaning to print in tabular style.
-#' @return The object, invisibly.
-#' @family fcat
-#' @examples 
-#' #' # Create format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
-#'            
-#' # Print the catalog
-#' print(c1)
+#' @title Remove Data from a Data Library
+#' @family lib
 #' @export
-print.fcat <- function(x, ..., verbose = FALSE) {
+lib.remove <- function(x) {
+  
+}
+
+#' @title Create a New Data Library Directory
+#' @family lib
+#' @export
+lib.create <- function(x) {
+  
+  
+}
+
+#' @title Get Information on a Data Library
+#' @family lib
+#' @export
+lib.info <- function(x) {
+  
+}
+
+#' @title Append Data to a Data Library
+#' @family lib
+#' @export
+lib.append <- function(x) {
+  
+  
+}
+
+#' @title Delete a Data Library
+#' @family lib
+#' @export
+lib.delete <- function(x) {
+  
+  
+  
+}
+
+#' @title Get the Path for a Data Library
+#' @family lib
+#' @export
+lib.path <- function(x) {
+  
+}
+
+#' @title Get the Size of a Data Library
+#' @family lib
+#' @export
+lib.size <- function(x) {
+  
+  
+}
+
+
+# Utility Functions -------------------------------------------------------
+
+
+#' @title Print a data library
+#' @description A class-specific instance of the \code{print} function for 
+#' data libraries.  The function prints the library in a summary manner.  
+#' Use \code{verbose = TRUE} to print the catalog as a list.
+#' @param x The library to print.
+#' @param ... Any follow-on parameters.
+#' @param verbose Whether or not to print the library in verbose style.
+#' By default, the parameter is FALSE, meaning to print in summary style.
+#' @return The object, invisibly.
+#' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Save some data to temp directory
+#' saveRDS(iris, file.path(tmp, "iris.rds"))
+#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
+#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
+#' 
+#' # Create format catalog
+#' lib <- libname(tmp)
+#' 
+#' # Print library summary 
+#' print(lib)
+#' @export
+print.lib <- function(x, ..., verbose = FALSE) {
   
   if (verbose == TRUE) {
     
@@ -423,40 +258,80 @@ print.fcat <- function(x, ..., verbose = FALSE) {
     
   } else {
     
-    dat <- as.data.frame(x)
+    #dat <- summary(x)
     
-    print(dat)
+    #print(dat)
     
+    
+    #For now
+    print(unclass(x))
   }
   
   invisible(x)
 }
 
 
-#' @title Class test for a format catalog
-#' @description This function tests whether an object is a format catalog.  The
-#' format catalog has a class of "fcat".  
+#' @title Class test for a data library
+#' @description This function tests whether an object is a data library.  The
+#' data library has a class of "lib".  
 #' @param x The object to test.
 #' @return TRUE or FALSE, depending on whether or not the object is a 
-#' format catalog.
-#' @family fcat
+#' data library.
+#' @family lib
 #' @examples 
 #' # Create format catalog
-#' c1 <- fcat(num_fmt  = "%.1f",
-#'            label_fmt = value(condition(x == "A", "Label A"),
-#'                              condition(x == "B", "Label B"),
-#'                              condition(TRUE, "Other")),
-#'            date_fmt = "%d%b%Y")
+#' lb1 <- libname(tempdir()) 
 #'            
-#' # Test for "fcat" class
-#' is.fcat(c1)  
-#' is.fcat(Sys.Date())          
+#' # Test for "lib" class
+#' is.lib(lb1)  
 #' @export
-is.fcat <- function(x) {
+is.lib <- function(x) {
   
   ret <- FALSE
-  if (any(class(x) == "fcat"))
+  if (any(class(x) == "lib"))
     ret <-  TRUE
   
   return(ret)
 }
+
+#' @noRd
+getExtension <- function(file){ 
+  ex <- strsplit(basename(file), split="\\.")[[1]]
+  return(ex[-1])
+} 
+
+#' @noRd
+getFileName <- function(file){ 
+  ex <- strsplit(basename(file), split="\\.")[[1]]
+  return(ex[1])
+}
+
+
+getUniqueName <- function(nm, nms) {
+  
+  ret <- nm
+  pos <- match(nm, nms)
+  if (!is.na(pos)) {
+    
+    ex <- strsplit(basename(nm), split="\\_")[[1]]
+    print(ex)
+    num <- as.numeric(ex[-1])
+    print(num)
+    if (length(num) == 0 )
+      ret <- paste0(nm, "_1")
+    else if (is.na(num))
+      ret <- paste0(nm, "_1")
+    else {
+      tmp <- sub(paste0("_", num), "", nm)
+      ret <- paste0(tmp, "_", num + 1)
+    }
+    
+  }
+  
+  return(ret)
+}
+
+
+x <- c("text", "text", "text", "text")
+
+

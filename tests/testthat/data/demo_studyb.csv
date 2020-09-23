@@ -1,0 +1,3 @@
+study,inv,patient,visit,screendate,sex,race,dob,treatment
+StudyB,2000,1,0,2020-02-19,M,White,1986-01-11,Active
+StudyB,2000,2,0,2020-02-19,F,African American,1987-07-01,Placebo

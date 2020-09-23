@@ -1,0 +1,11 @@
+study,inv,patient,visit,screendate,sex,race,dob,treatment
+StudyA,1000,1,0,2020-01-03,M,White,1990-01-31,Placebo
+StudyA,1000,2,0,2020-01-02,F,African American,1989-12-09,Placebo
+StudyA,1010,3,0,2020-01-03,M,Asian,1992-02-26,Placebo
+StudyA,1010,4,0,2020-01-03,M,White,1991-07-04,Placebo
+StudyA,1010,5,0,2020-01-02,F,African American,1990-06-30,Active
+StudyA,1000,7,0,2020-01-03,M,White,1990-10-31,Active
+StudyA,1000,7,0,2020-01-03,M,White,1990-10-31,Active
+StudyA,1000,8,0,2020-01-02,F,African American,1988-09-12,Active
+StudyA,1010,9,0,2020-01-03,M,Asian,1993-04-22,Active
+StudyA,1010,10,0,2020-01-03,M,White,1994-09-05,Active
