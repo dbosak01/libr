@@ -17,6 +17,9 @@
 #' default value is NULL, meaning all recognized data files will be input.
 #' Multiple filters can be passed as a vector of file extensions. 
 #' Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat". 
+#' @param read_only Whether the library should be created as read only.
+#' Default is FALSE.  If TRUE, the user will be restricted from
+#' appending, removing, or writing data from the library to the file system.
 #' @param ... Follow-on parameters to the data import functions.  Which
 #' parameters exist depend on which types of files are being imported.
 #' @return The library object.
@@ -39,7 +42,7 @@
 #' @import haven
 #' @import utils
 #' @export
-libname <- function(directory_path, filter = NULL, ...) {
+libname <- function(directory_path, filter = NULL, read_only = FALSE, ...) {
   
   if (!dir.exists(directory_path))
     stop(paste("Directory path does not exist. Use lib_create() to",
@@ -51,6 +54,7 @@ libname <- function(directory_path, filter = NULL, ...) {
   
   attr(l, "path") <- directory_path
   attr(l, "filter") <- filter
+  attr(l, "read_only") <- read_only
   
   if (is.null(filter))
     lst <- list.files(directory_path)
@@ -151,11 +155,13 @@ as.lib.list <- function(x, path) {
 #' the global environment.  The data frames will be loaded with 
 #' <library>.<data frame> syntax.
 #' @param x The data library to load.
+#' @param pos The environment to load data into.  This parameter is used
+#' internally and is normally not modified by the user.
 #' @return The loaded data library. 
 #' @seealso \code{\link{lib_unload}} to unload the library.
 #' @family lib
 #' @export
-lib_load <- function(x) {
+lib_load <- function(x, pos = 1) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -166,7 +172,7 @@ lib_load <- function(x) {
   # For each name in library, assign to global environment
   for (nm in names(x)) {
     n <-  paste0(libname, ".", nm)
-    assign(n, x[[nm]], envir = .GlobalEnv)
+    assign(n, x[[nm]], envir = as.environment(pos))
   }
   
   return(x)
@@ -239,19 +245,35 @@ lib_write <- function(x, dir_path = getwd(), file_name = deparse(substitute(x,
 
 
 #' @title Copy a Data Library
+#' @description The \code{lib_copy} function copies a data library.  The 
+#' function accepts a library and a destination path.  If the destination 
+#' path does not exist, the function will attempt to create it.  Note that
+#' the copy will result in the current data in memory written to the new
+#' destination directory.  
 #' @param x The library to copy.
+#' @param directory_path The path to copy the library to.
 #' @family lib
 #' @export
-lib_copy <- function(x) {
+lib_copy <- function(x, directory_path) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  if (!dir.exists(directory_path))
+    dir.create(directory_path)
+  
+  attr(x, "path") <- directory_path
+  lib_write(x)
+  
+  return(x)
 }
 
 #' @title Remove Data from a Data Library
+#' @description The \code{lib_remove} function removes an item from the 
+#' data library, and deletes the source file for that data.
 #' @param x The data library.
-#' @param nm The name of the item to remove from the data library.
+#' @param nm The name of the item to remove from the data library.  
+#' @return The library with the requested item removed.
 #' @family lib
 #' @export
 lib_remove <- function(x, nm) {
@@ -259,7 +281,15 @@ lib_remove <- function(x, nm) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  
+  pth <- attr(x[[nm]], "path")
+  
+  if (file.exists(pth))
+    file.remove(pth)
+  
   x[[nm]] <- NULL
+  
+  return(x)
 }
 
 #' @title Create a New Data Directory and Library
@@ -284,15 +314,7 @@ lib_create <- function(directory_path) {
   return(ret)
 }
 
-#' @title Get Information on a Data Library
-#' @param x The data library.
-#' @family lib
-#' @export
-lib_info <- function(x) {
-  
-  if (all(class(x) != "lib"))
-    stop("Object must be a data library.")
-}
+
 
 #' @title Append Data to a Data Library
 #' @description The \code{\link{lib_append}} function adds a data frame
@@ -341,7 +363,10 @@ lib_delete <- function(x) {
 }
 
 #' @title Get the Path for a Data Library
+#' @description The \code{lib_path} function returns the current path of the 
+#' the library as a string.
 #' @param x The data library.
+#' @return The path of the data library as a single string.
 #' @family lib
 #' @export
 lib_path <- function(x) {
@@ -355,7 +380,10 @@ lib_path <- function(x) {
 }
 
 #' @title Get the Size of a Data Library
+#' @description The \code{lib_size} function returns the number of bytes used
+#' by the data library, as stored on disc.  
 #' @param x The data library.
+#' @return The size of the data library in bytes as stored on the file system.
 #' @family lib
 #' @export
 lib_size <- function(x) {
@@ -363,10 +391,44 @@ lib_size <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  path <- attr(x, "path")
+  filter <- attr(x, "filter")
+  
+  if (is.null(filter)) 
+    info <- file.info(list.files(path, full.names = TRUE))
+  else 
+    info <- file.info(list.files(path, full.names = TRUE, pattern = filter))
+  
+  if (nrow(info) == 0)
+    ret <- 0
+  else
+    ret <- sum(info[["size"]])
   
   
+  return(ret)
 }
 
+
+#' @title Get Information on a Data Library
+#' @param x The data library.
+#' @family lib
+#' @export
+lib_info <- function(x) {
+  
+  if (all(class(x) != "lib"))
+    stop("Object must be a data library.")
+  
+  path <- attr(x, "path")
+  filter <- attr(x, "filter")
+  
+  if (is.null(filter)) 
+    info <- file.info(list.files(path, full.names = TRUE))
+  else 
+    info <- file.info(list.files(path, full.names = TRUE, pattern = filter))
+  
+  
+  return(info)
+}
 
 # Utility Functions -------------------------------------------------------
 

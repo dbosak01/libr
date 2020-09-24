@@ -46,3 +46,27 @@ test_that("lib_create()  works as expected.", {
 
 
 })
+
+test_that("lib_size() works as expected.", {
+  
+ 
+  l <- libname(base_path, "csv")
+  
+  expect_equal(lib_size(l) > 0, TRUE)
+  expect_equal(lib_size(l), 802)
+  
+  
+})
+
+test_that("lib_info() works as expected.", {
+  
+  
+  l <- libname(base_path, "csv")
+  
+  info <- lib_info(l)
+  
+  expect_equal(nrow(info) > 0, TRUE)
+  expect_equal(info[1, "size"],  626)
+  
+  
+})

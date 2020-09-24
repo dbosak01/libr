@@ -4,10 +4,13 @@
 \alias{lib_load}
 \title{Load a Library into the Global Environment}
 \usage{
-lib_load(x)
+lib_load(x, pos = 1)
 }
 \arguments{
 \item{x}{The data library to load.}
+
+\item{pos}{The environment to load data into.  This parameter is used
+internally and is normally not modified by the user.}
 }
 \value{
 The loaded data library.
