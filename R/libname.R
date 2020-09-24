@@ -55,6 +55,7 @@ libname <- function(directory_path, filter = NULL, read_only = FALSE, ...) {
   attr(l, "path") <- directory_path
   attr(l, "filter") <- filter
   attr(l, "read_only") <- read_only
+  attr(l, "loaded") <- FALSE
   
   if (is.null(filter))
     lst <- list.files(directory_path)
@@ -126,7 +127,7 @@ libname <- function(directory_path, filter = NULL, read_only = FALSE, ...) {
 #' \code{\link{as.lib.list}}.
 #' @family lib
 #' @export
-as.lib <- function (x, path) {
+as.lib <- function(x, path) {
   UseMethod("as.lib", x)
 }
 
@@ -167,13 +168,16 @@ lib_load <- function(x, pos = 1) {
     stop("Object must be a data library.")
   
   # Get library name
-  libname <- deparse1(substitute(x, env = environment())) 
+  libnm <- deparse1(substitute(x, env = environment())) 
   
   # For each name in library, assign to global environment
   for (nm in names(x)) {
-    n <-  paste0(libname, ".", nm)
+    n <-  paste0(libnm, ".", nm)
     assign(n, x[[nm]], envir = as.environment(pos))
+    #assign(n, x[[nm]], envir = .GlobalEnv)
   }
+  
+  attr(x, "loaded") <- TRUE
   
   return(x)
 }
@@ -206,15 +210,21 @@ lib_unload <- function(x) {
   # Remove intersection
   rm(list = ls, envir = .GlobalEnv)
   
+  # Mark as unloaded
+  attr(x, "loaded") <- FALSE
+  
   return(x)
 }
 
 #' @title Write a data library to the file system
-#' @description The \code{lib.write} function writes the data library
+#' @description The \code{lib_write} function writes the data library
 #' to the file system.  By default, the library will be written to the 
 #' directory for which it was defined, and each data frame will be written
 #' in the format from which it was read.  Data frames that were not read
-#' from a file will be saved in RDS format, unless otherwise specified.
+#' from a file will be saved in RDS format, unless otherwise specified.  To
+#' specify a different format, set the \code{type} parameter on 
+#' \code{lib_write}.  Setting this parameter will override any source
+#' file types and save the data in a consistent file format.
 #' @param x The format catalog to write.
 #' @param dir_path The directory path to write the catalog to. Default is the 
 #' current working directory.
@@ -225,22 +235,84 @@ lib_unload <- function(x) {
 #' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
 #' and "dat".
 #' The data files will be saved as the type specified on this parameter, 
-#' no matter from which type of file they were input.
-#' @return The full path of the saved format catalog.
+#' no matter from which type of file they were input.  If the type is
+#' passed as a single string, all data files will be saved as that single type.
+#' The type can also be passed as a named vector of types, with each name 
+#' corresponding to the name of the data frame in the library.
+#' @return The full path of the saved data library.
 #' @family lib
 #' @export
-lib_write <- function(x, dir_path = getwd(), file_name = deparse(substitute(x, 
-                                                     env = environment())),
-                      type = NULL) {
-  pth <- file.path(dir_path, paste0(file_name, ".fcat"))
+lib_write <- function(x, type = NULL) {
   
+  if (all(class(x) != "lib"))
+    stop("Object must be a data library.")
   
-  if (file.exists(pth))
-    file.remove(pth)
+
   
-  saveRDS(x, pth)
+  # Get path
+  pth <- attr(x, "path")
+  
+  for (nm in names(x)) {
+    
+    styp <- attr(x[[nm]], "extension")
+    if (!is.null(type))
+      typ <- type
+    else if (!is.null(styp))
+      typ <- styp
+    else
+      typ <- "rds"
+    
+    if (file.exists(pth))
+      file.remove(pth)
+    
+    saveRDS(x, pth)
+  }
   
   return(pth)
+}
+
+
+#' @title Synchronize Loaded Library
+#' @description The \code{lib_sync} function synchronizes the data
+#' loaded into the global environment with the data frames stored 
+#' in the data library object.  This synchronization is necessary only
+#' for libraries that have been loaded into the global environment.
+#' The function is used internally to the \strong{libr} package, but 
+#' may be useful to package users in some situations. 
+#' @param x The data library to synchronize.
+#' @return The synchronized data library.
+#' @export
+lib_sync <- function(x) {
+  
+  if (all(class(x) != "lib"))
+    stop("Object must be a data library.")
+  
+  if (attr(x, "loaded") == TRUE) {
+  
+    # Get name of library
+    libname <- deparse1(substitute(x, env = environment())) 
+    
+    # Get data frame names
+    ls <-  paste0(libname, ".", names(x))
+    
+    # Intersect names with what is actually in the environment
+    ls <- intersect(ls, ls(envir = .GlobalEnv))
+    
+    for (gnm in ls) {
+      
+      nm <- unlist(strsplit(gnm, ".", fixed = TRUE))
+      
+      x[[nm]] <- get(gnm, envir = .GlobalEnv)
+      
+    }
+    
+  } else {
+    
+    message("NOTE: library is not loaded") 
+    
+  }
+  
+  return(x)
 }
 
 
@@ -538,8 +610,4 @@ getUniqueName <- function(nm, nms) {
   
   return(ret)
 }
-
-
-x <- c("text", "text", "text", "text")
-
 

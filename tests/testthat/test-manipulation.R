@@ -12,10 +12,11 @@ test_that("lib_load() and lib_unload() functions works as expected.", {
   
   
   lb <- libname(base_path, filter = "csv")
+
   
   # Should not get an error here
   lib_unload(lb)
-  
+
   lib_load(lb)
   
   expect_equal(nrow(lb.demo_studya), 10)
@@ -70,3 +71,30 @@ test_that("lib_info() works as expected.", {
   
   
 })
+
+
+# 
+# test_that("lib_sync() function works as expected.", {
+#   
+#   
+#   lb <- libname(base_path, filter = "csv")
+#   
+#   attr(lb, "loaded")
+#   
+#   lb <- lib_load(lb)
+#   
+#   acount <- nrow(lb.demo_studya)
+#   bcount <- nrow(lb.demo_studyb)
+#   
+#   tmp <- lb.demo_studya
+#   lb.demo_studya <- lb.demo_studyb
+#   lb.demo_studyb <- tmp
+#   
+#   lb <- lib_sync(lb)
+#   
+#   expect_equal(lb$demo_studya, bcount)
+#   expect_equal(lb$demo_studyb, acount)
+#   
+#   lib_unload(lb) 
+#   
+# })
