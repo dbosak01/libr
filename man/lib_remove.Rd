@@ -11,8 +11,12 @@ lib_remove(x, nm)
 
 \item{nm}{The name of the item to remove from the data library.}
 }
+\value{
+The library with the requested item removed.
+}
 \description{
-Remove Data from a Data Library
+The \code{lib_remove} function removes an item from the 
+data library, and deletes the source file for that data.
 }
 \seealso{
 Other lib: 

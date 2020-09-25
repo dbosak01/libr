@@ -9,8 +9,12 @@ lib_size(x)
 \arguments{
 \item{x}{The data library.}
 }
+\value{
+The size of the data library in bytes as stored on the file system.
+}
 \description{
-Get the Size of a Data Library
+The \code{lib_size} function returns the number of bytes used
+by the data library, as stored on disc.
 }
 \seealso{
 Other lib: 

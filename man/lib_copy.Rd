@@ -4,13 +4,19 @@
 \alias{lib_copy}
 \title{Copy a Data Library}
 \usage{
-lib_copy(x)
+lib_copy(x, directory_path)
 }
 \arguments{
 \item{x}{The library to copy.}
+
+\item{directory_path}{The path to copy the library to.}
 }
 \description{
-Copy a Data Library
+The \code{lib_copy} function copies a data library.  The 
+function accepts a library and a destination path.  If the destination 
+path does not exist, the function will attempt to create it.  Note that
+the copy will result in the current data in memory written to the new
+destination directory.
 }
 \seealso{
 Other lib: 

@@ -8,53 +8,53 @@ base_path <- "./data"
 test_that("lib_load() and lib_unload() functions works as expected.", {
   
   
-  expect_error(libname(file.path(base_path, "forker")))
+  expect_error(libname(dat, file.path(base_path, "forker")))
   
   
-  lb <- libname(base_path, filter = "csv")
+  libname(dat, base_path, filter = "csv")
 
   
   # Should not get an error here
-  lib_unload(lb)
+  lib_unload(dat)
 
-  lib_load(lb)
+  lib_load(dat)
   
-  expect_equal(nrow(lb.demo_studya), 10)
-  expect_equal(nrow(lb.demo_studyb), 2)
+  expect_equal(nrow(dat.demo_studya), 10)
+  expect_equal(nrow(dat.demo_studyb), 2)
   
-  lib_unload(lb) 
+  lib_unload(dat) 
   
-  expect_equal("lb.demo_studya" %in% ls(), FALSE)
-  expect_equal("lb.demo_studyb" %in% ls(), FALSE)
+  expect_equal("dat.demo_studya" %in% ls(), FALSE)
+  expect_equal("dat.demo_studyb" %in% ls(), FALSE)
   
 })
 
-test_that("lib_create()  works as expected.", {
-  
-  fp <- file.path(base_path, "data4/data5")
-  
-  expect_error(suppressWarnings(lib_create(fp)))
-  
-  
-  fp <- file.path(base_path, "data3")
-  
-  l <- lib_create(fp)
-  
-  expect_equal(dir.exists(fp), TRUE)
-  
-  if (dir.exists(fp))
-    unlink(fp, force = TRUE, recursive = TRUE)
-
-
-})
+# test_that("lib_create()  works as expected.", {
+#   
+#   fp <- file.path(base_path, "data4/data5")
+#   
+#   expect_error(suppressWarnings(lib_create(fp)))
+#   
+#   
+#   fp <- file.path(base_path, "data3")
+#   
+#   l <- lib_create(fp)
+#   
+#   expect_equal(dir.exists(fp), TRUE)
+#   
+#   if (dir.exists(fp))
+#     unlink(fp, force = TRUE, recursive = TRUE)
+# 
+# 
+# })
 
 test_that("lib_size() works as expected.", {
   
  
-  l <- libname(base_path, "csv")
+  libname(dat, base_path, "csv")
   
-  expect_equal(lib_size(l) > 0, TRUE)
-  expect_equal(lib_size(l), 802)
+  expect_equal(lib_size(dat) > 0, TRUE)
+  expect_equal(lib_size(dat), 802)
   
   
 })
@@ -62,9 +62,9 @@ test_that("lib_size() works as expected.", {
 test_that("lib_info() works as expected.", {
   
   
-  l <- libname(base_path, "csv")
+  libname(dat, base_path, "csv")
   
-  info <- lib_info(l)
+  info <- lib_info(dat)
   
   expect_equal(nrow(info) > 0, TRUE)
   expect_equal(info[1, "size"],  626)

@@ -9,8 +9,12 @@ lib_path(x)
 \arguments{
 \item{x}{The data library.}
 }
+\value{
+The path of the data library as a single string.
+}
 \description{
-Get the Path for a Data Library
+The \code{lib_path} function returns the current path of the 
+the library as a string.
 }
 \seealso{
 Other lib: 

@@ -4,38 +4,32 @@
 \alias{lib_write}
 \title{Write a data library to the file system}
 \usage{
-lib_write(
-  x,
-  dir_path = getwd(),
-  file_name = deparse(substitute(x, env = environment())),
-  type = NULL
-)
+lib_write(x, type = NULL)
 }
 \arguments{
 \item{x}{The format catalog to write.}
-
-\item{dir_path}{The directory path to write the catalog to. Default is the 
-current working directory.}
-
-\item{file_name}{The name of the file to save the catalog as.  Default is
-the name of the variable that contains the catalog.  The ".fcat" file
-extension will be added automatically.}
 
 \item{type}{The type of data library. Default is NULL, meaning the library
 is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
 and "dat".
 The data files will be saved as the type specified on this parameter, 
-no matter from which type of file they were input.}
+no matter from which type of file they were input.  If the type is
+passed as a single string, all data files will be saved as that single type.
+The type can also be passed as a named vector of types, with each name 
+corresponding to the name of the data frame in the library.}
 }
 \value{
-The full path of the saved format catalog.
+The full path of the saved data library.
 }
 \description{
-The \code{lib.write} function writes the data library
+The \code{lib_write} function writes the data library
 to the file system.  By default, the library will be written to the 
 directory for which it was defined, and each data frame will be written
 in the format from which it was read.  Data frames that were not read
-from a file will be saved in RDS format, unless otherwise specified.
+from a file will be saved in RDS format, unless otherwise specified.  To
+specify a different format, set the \code{type} parameter on 
+\code{lib_write}.  Setting this parameter will override any source
+file types and save the data in a consistent file format.
 }
 \seealso{
 Other lib: 

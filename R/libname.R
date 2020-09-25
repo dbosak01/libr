@@ -9,6 +9,8 @@
 #' @details A data library is an S3 object of class "lib".  The purpose of 
 #' the library is to combine related data frames, and allow you to manipulate all
 #' of them as a single object.  
+#' @param name The unquoted name of the library to create.  This name will 
+#' be created as a variable in the global environment.
 #' @param directory_path A directory path in which the data resides.  The incoming 
 #' data can be in any file format: rds, csv, sas7bdat, etc.  The 
 #' \code{libname} function will read any type of data into the library, 
@@ -20,6 +22,8 @@
 #' @param read_only Whether the library should be created as read only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing data from the library to the file system.
+#' @param pos The environment to load the library into.  This parameter is
+#' used internally to the package.
 #' @param ... Follow-on parameters to the data import functions.  Which
 #' parameters exist depend on which types of files are being imported.
 #' @return The library object.
@@ -33,16 +37,19 @@
 #' saveRDS(lynx, file.path(tmp, "lynx.rds"))
 #' saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
 #' 
-#' # Create format catalog
-#' data <- libname(tmp)
+#' # Create data library
+#' libname(dat, tmp)
 #' 
 #' # Print library summary 
-#' print(data)
+#' print(dat)
 #' @import readxl
 #' @import haven
 #' @import utils
 #' @export
-libname <- function(directory_path, filter = NULL, read_only = FALSE, ...) {
+libname <- function(name, directory_path, filter = NULL, 
+                    read_only = FALSE, pos = 1, ...) {
+  
+  name_c <- deparse1(substitute(name, env = environment()))
   
   if (!dir.exists(directory_path))
     stop(paste("Directory path does not exist. Use lib_create() to",
@@ -105,7 +112,9 @@ libname <- function(directory_path, filter = NULL, read_only = FALSE, ...) {
     }
 
   }
-
+  
+  #assign(name_c, l, envir = .GlobalEnv)
+  assign(name_c, l, envir = as.environment(pos))
   
   return(l)
   
@@ -226,11 +235,6 @@ lib_unload <- function(x) {
 #' \code{lib_write}.  Setting this parameter will override any source
 #' file types and save the data in a consistent file format.
 #' @param x The format catalog to write.
-#' @param dir_path The directory path to write the catalog to. Default is the 
-#' current working directory.
-#' @param file_name The name of the file to save the catalog as.  Default is
-#' the name of the variable that contains the catalog.  The ".fcat" file
-#' extension will be added automatically.
 #' @param type The type of data library. Default is NULL, meaning the library
 #' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
 #' and "dat".
@@ -525,10 +529,10 @@ lib_info <- function(x) {
 #' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
 #' 
 #' # Create format catalog
-#' lib <- libname(tmp)
+#' libname(dat, tmp)
 #' 
 #' # Print library summary 
-#' print(lib)
+#' print(dat)
 #' @export
 print.lib <- function(x, ..., verbose = FALSE) {
   
@@ -560,10 +564,10 @@ print.lib <- function(x, ..., verbose = FALSE) {
 #' @family lib
 #' @examples 
 #' # Create format catalog
-#' lb1 <- libname(tempdir()) 
+#' libname(dat, tempdir()) 
 #'            
 #' # Test for "lib" class
-#' is.lib(lb1)  
+#' is.lib(dat)  
 #' @export
 is.lib <- function(x) {
   

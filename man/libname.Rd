@@ -4,9 +4,12 @@
 \alias{libname}
 \title{Create a data library}
 \usage{
-libname(directory_path, filter = NULL, ...)
+libname(name, directory_path, filter = NULL, read_only = FALSE, pos = 1, ...)
 }
 \arguments{
+\item{name}{The unquoted name of the library to create.  This name will 
+be created as a variable in the global environment.}
+
 \item{directory_path}{A directory path in which the data resides.  The incoming 
 data can be in any file format: rds, csv, sas7bdat, etc.  The 
 \code{libname} function will read any type of data into the library, 
@@ -16,6 +19,13 @@ and render as an R data frame.}
 default value is NULL, meaning all recognized data files will be input.
 Multiple filters can be passed as a vector of file extensions. 
 Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat".}
+
+\item{read_only}{Whether the library should be created as read only.
+Default is FALSE.  If TRUE, the user will be restricted from
+appending, removing, or writing data from the library to the file system.}
+
+\item{pos}{The environment to load the library into.  This parameter is
+used internally to the package.}
 
 \item{...}{Follow-on parameters to the data import functions.  Which
 parameters exist depend on which types of files are being imported.}
@@ -42,11 +52,11 @@ saveRDS(trees, file.path(tmp, "trees.rds"))
 saveRDS(lynx, file.path(tmp, "lynx.rds"))
 saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
 
-# Create format catalog
-data <- libname(tmp)
+# Create data library
+libname(dat, tmp)
 
 # Print library summary 
-print(data)
+print(dat)
 }
 \seealso{
 Other lib: 

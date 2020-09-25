@@ -32,10 +32,10 @@ saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
 saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
 
 # Create format catalog
-lib <- libname(tmp)
+libname(dat, tmp)
 
 # Print library summary 
-print(lib)
+print(dat)
 }
 \seealso{
 Other lib: 

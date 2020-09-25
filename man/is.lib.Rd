@@ -19,10 +19,10 @@ data library has a class of "lib".
 }
 \examples{
 # Create format catalog
-lb1 <- libname(tempdir()) 
+libname(dat, tempdir()) 
            
 # Test for "lib" class
-is.lib(lb1)  
+is.lib(dat)  
 }
 \seealso{
 Other lib: 
