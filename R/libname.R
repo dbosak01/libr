@@ -59,6 +59,7 @@ libname <- function(name, directory_path, filter = NULL,
   # Create new structure of class "lib"
   l <- structure(list(), class = c("lib", "list"))
   
+  attr(l, "name") <- name_c
   attr(l, "path") <- directory_path
   attr(l, "filter") <- filter
   attr(l, "read_only") <- read_only
@@ -397,14 +398,21 @@ lib_create <- function(directory_path) {
 #' to an existing data library.
 #' @param x The library to append data to.
 #' @param df The data frame to append to the library.
+#' @param name The reference name to use for the data.  By default,
+#' the name will be the variable name.  To assign a name different
+#' from the variable name, assign a quoted name to this parameter.
 #' @family lib
 #' @export
-lib_append <- function(x, df) {
+lib_append <- function(x, df, name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-  nm <- deparse1(substitute(df, env = environment()))
+  if (is.null(name))
+    nm <- deparse1(substitute(df, env = environment()))
+  else 
+    nm <- name
+  
   lbnm  <- deparse1(substitute(x, env = environment()))
   
   if (nm %in% names(x))
@@ -493,17 +501,38 @@ lib_info <- function(x) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
+
   
-  path <- attr(x, "path")
-  filter <- attr(x, "filter")
+  ret <- NULL
+
+  for (nm in names(x)) {
+    
+    itm <- x[[nm]]
+    pth <- attr(itm, "path")
+    # print(pth)
+    info <- file.info(pth)
+    # print(nm)
+    # print(itm)
+    # print(nrow(itm))
+    # print(info)
+    # print(attr(itm, "extension"))
+    # print(info[1, "size"])
+
+    rw <- data.frame(Name = nm, 
+                     Extension = attr(itm, "extension"),
+                     Rows = nrow(itm),
+                     Cols = ncol(itm),
+                     Bytes = info[1, "size"],
+                     LastModified = info[1, "mtime"])
+    
+    if (is.null(ret))
+      ret <- rw
+    else 
+      ret <- rbind(ret, rw)
+    
+  }
   
-  if (is.null(filter)) 
-    info <- file.info(list.files(path, full.names = TRUE))
-  else 
-    info <- file.info(list.files(path, full.names = TRUE, pattern = filter))
-  
-  
-  return(info)
+  return(ret)
 }
 
 # Utility Functions -------------------------------------------------------
@@ -542,17 +571,34 @@ print.lib <- function(x, ..., verbose = FALSE) {
     
   } else {
     
-    #dat <- summary(x)
+    cat(paste0("# library '",  attr(x, "name"), "': ", length(x), " items\n"))
     
-    #print(dat)
+    at <- paste("- attributes:")
+    if (!is.null(attr(x, "filter")))
+      at <- paste(at, attr(x, "filter"))
+    if (attr(x, "read_only"))
+      at <- paste(at, "read_only")
+    if (attr(x, "loaded"))
+      at <- paste(at, "loaded\n")
+    else 
+      at <- paste(at, "not loaded\n")
     
+    cat(at)
+    cat(paste0("- path: ", attr(x, "path"), "\n"))
     
-    #For now
-    print(unclass(x))
+    if (length(x) > 0)
+      cat("- items:\n")
+    
+    dat <- lib_info(x)
+    
+    print(dat)
+
   }
   
   invisible(x)
 }
+
+
 
 
 #' @title Class test for a data library

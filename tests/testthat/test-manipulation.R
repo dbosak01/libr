@@ -67,7 +67,7 @@ test_that("lib_info() works as expected.", {
   info <- lib_info(dat)
   
   expect_equal(nrow(info) > 0, TRUE)
-  expect_equal(info[1, "size"],  626)
+  expect_equal(info[1, "Bytes"],  626)
   
   
 })
@@ -75,26 +75,26 @@ test_that("lib_info() works as expected.", {
 
 # 
 # test_that("lib_sync() function works as expected.", {
-#   
-#   
-#   lb <- libname(base_path, filter = "csv")
-#   
+# 
+# 
+#   lb <- libname(dat, base_path, filter = "csv")
+# 
 #   attr(lb, "loaded")
-#   
+# 
 #   lb <- lib_load(lb)
-#   
+# 
 #   acount <- nrow(lb.demo_studya)
 #   bcount <- nrow(lb.demo_studyb)
-#   
+# 
 #   tmp <- lb.demo_studya
 #   lb.demo_studya <- lb.demo_studyb
 #   lb.demo_studyb <- tmp
-#   
+# 
 #   lb <- lib_sync(lb)
-#   
-#   expect_equal(lb$demo_studya, bcount)
-#   expect_equal(lb$demo_studyb, acount)
-#   
-#   lib_unload(lb) 
-#   
+# 
+#   expect_equal(nrow(lb$demo_studya), bcount)
+#   expect_equal(nrow(lb$demo_studyb), acount)
+# 
+#   lib_unload(lb)
+# 
 # })
