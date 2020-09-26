@@ -73,28 +73,53 @@ test_that("lib_info() works as expected.", {
 })
 
 
+
+test_that("lib_path() works as expected.", {
+  
+  
+  libname(dat, base_path, "csv")
+  
+  pth <- lib_path(dat)
+  
+  expect_equal(pth, base_path)
+  
+  
+})
+
 # 
 # test_that("lib_sync() function works as expected.", {
 # 
 # 
-#   lb <- libname(dat, base_path, filter = "csv")
+#   libname(dat, base_path, filter = "csv")
 # 
-#   attr(lb, "loaded")
+#   ld <- e$libs[["dat"]]$loaded
 # 
-#   lb <- lib_load(lb)
+#   expect_equal(ld, FALSE)
 # 
-#   acount <- nrow(lb.demo_studya)
-#   bcount <- nrow(lb.demo_studyb)
+#   lib_load(dat)
+#   print(dat)
 # 
-#   tmp <- lb.demo_studya
-#   lb.demo_studya <- lb.demo_studyb
-#   lb.demo_studyb <- tmp
+#   ld <- e$libs[["dat"]]$loaded
 # 
-#   lb <- lib_sync(lb)
+#   expect_equal(ld, TRUE)
 # 
-#   expect_equal(nrow(lb$demo_studya), bcount)
-#   expect_equal(nrow(lb$demo_studyb), acount)
+#   acount <- nrow(dat.demo_studya)
+#   bcount <- nrow(dat.demo_studyb)
 # 
-#   lib_unload(lb)
+#   tmp <- dat.demo_studya
+#   dat.demo_studya <- dat.demo_studyb
+#   dat.demo_studyb <- tmp
+# 
+#   dat <- lib_sync(dat)
+#   print(dat)
+# 
+#   expect_equal(nrow(dat$demo_studya), bcount)
+#   expect_equal(nrow(dat$demo_studyb), acount)
+# 
+#   lib_unload(dat)
+# 
+#   ld <- e$libs[["dat"]]$loaded
+# 
+#   expect_equal(ld, FALSE)
 # 
 # })

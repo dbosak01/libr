@@ -1,5 +1,10 @@
+# Globals -----------------------------------------------------------------
 
-# Libname Definition -------------------------------------------
+#' @noRd
+e <- new.env(parent = emptyenv())
+e$libs <- list()
+
+# Libname Definition ------------------------------------------------------
 
 
 #' @title Create a data library
@@ -9,6 +14,14 @@
 #' @details A data library is an S3 object of class "lib".  The purpose of 
 #' the library is to combine related data frames, and allow you to manipulate all
 #' of them as a single object.  
+#' 
+#' The function uses the \code{\link[readr]{readr}}, \code{\link[readxl]{readxl}},
+#' and \code{\link[haven]{haven}} packages to import data.  These package have
+#' sensible defaults, and most of the time your data will import in an
+#' acceptable manner.  In some cases, however, you may want to control how
+#' the data is imported.  For those cases, you can use to the
+#' \code{...} parameter on the \code{libname} function to pass parameters to
+#' the import functions.  
 #' @param name The unquoted name of the library to create.  This name will 
 #' be created as a variable in the global environment.
 #' @param directory_path A directory path in which the data resides.  The incoming 
@@ -22,7 +35,7 @@
 #' @param read_only Whether the library should be created as read only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing data from the library to the file system.
-#' @param pos The environment to load the library into.  This parameter is
+#' @param .pos The environment to load the library into.  This parameter is
 #' used internally to the package.
 #' @param ... Follow-on parameters to the data import functions.  Which
 #' parameters exist depend on which types of files are being imported.
@@ -42,12 +55,13 @@
 #' 
 #' # Print library summary 
 #' print(dat)
+#' @import readr
 #' @import readxl
 #' @import haven
 #' @import utils
 #' @export
 libname <- function(name, directory_path, filter = NULL, 
-                    read_only = FALSE, pos = 1, ...) {
+                    read_only = FALSE, .pos = 1, ...) {
   
   name_c <- deparse1(substitute(name, env = environment()))
   
@@ -79,11 +93,11 @@ libname <- function(name, directory_path, filter = NULL,
     if (length(ext) > 0) { 
       if (ext == "csv") {
         
-        dat <- read.csv(fp, ...)
+        dat <- read_csv(fp, ...)
         
       } else if (ext == "rds") {
         
-        dat <- readRDS(fp, ...)
+        dat <- read_rds(fp, ...)
         
       } else if (ext == "sas7bdat") {
         
@@ -99,7 +113,7 @@ libname <- function(name, directory_path, filter = NULL,
         
       }  else if (ext == "dat"){
         
-        dat <- read.table(fp, ...)
+        dat <- read_table(fp, ...)
       }
       
       if (nm %in% names(l))
@@ -115,7 +129,8 @@ libname <- function(name, directory_path, filter = NULL,
   }
   
   #assign(name_c, l, envir = .GlobalEnv)
-  assign(name_c, l, envir = as.environment(pos))
+  assign(name_c, l, envir = as.environment(.pos))
+  e$libs[[name_c]] <- attributes(l)
   
   return(l)
   
@@ -166,13 +181,13 @@ as.lib.list <- function(x, path) {
 #' the global environment.  The data frames will be loaded with 
 #' <library>.<data frame> syntax.
 #' @param x The data library to load.
-#' @param pos The environment to load data into.  This parameter is used
+#' @param .pos The environment to load data into.  This parameter is used
 #' internally and is normally not modified by the user.
 #' @return The loaded data library. 
 #' @seealso \code{\link{lib_unload}} to unload the library.
 #' @family lib
 #' @export
-lib_load <- function(x, pos = 1) {
+lib_load <- function(x, .pos = 1) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -183,11 +198,13 @@ lib_load <- function(x, pos = 1) {
   # For each name in library, assign to global environment
   for (nm in names(x)) {
     n <-  paste0(libnm, ".", nm)
-    assign(n, x[[nm]], envir = as.environment(pos))
+    assign(n, x[[nm]], envir = as.environment(.pos))
     #assign(n, x[[nm]], envir = .GlobalEnv)
   }
   
   attr(x, "loaded") <- TRUE
+  e$libs[[libnm]] <- attributes(x)
+  print(e$libs[[libnm]])
   
   return(x)
 }
@@ -209,10 +226,10 @@ lib_unload <- function(x) {
     stop("Object must be a data library.")
   
   # Get name of library
-  libname <- deparse1(substitute(x, env = environment())) 
+  libnm <- deparse1(substitute(x, env = environment())) 
   
   # Get data frame names
-  ls <-  paste0(libname, ".", names(x))
+  ls <-  paste0(libnm, ".", names(x))
   
   # Intersect names with what is actually in the environment
   ls <- intersect(ls, ls(envir = .GlobalEnv))
@@ -222,6 +239,7 @@ lib_unload <- function(x) {
   
   # Mark as unloaded
   attr(x, "loaded") <- FALSE
+  e$libs[[libnm]] <- attributes(x)
   
   return(x)
 }
@@ -252,12 +270,23 @@ lib_write <- function(x, type = NULL) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-
+  lbnm <- deparse1(substitute(x, env = environment()))
+  
+  if (e$libs[[lbnm]]$loaded) {
+    
+    nms <- grep(paste0(lbnm, "\\."), ls())
+    print(nms)
+    
+  } else {
+    
+    nms <- names(x)
+  }
+    
   
   # Get path
   pth <- attr(x, "path")
   
-  for (nm in names(x)) {
+  for (nm in nms) {
     
     styp <- attr(x[[nm]], "extension")
     if (!is.null(type))
@@ -292,21 +321,23 @@ lib_sync <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-  if (attr(x, "loaded") == TRUE) {
+  lnm <- deparse1(substitute(x, env = environment()))
+  
+  if (e$libs[[lnm]]$loaded == TRUE) {
   
     # Get name of library
-    libname <- deparse1(substitute(x, env = environment())) 
+    libnm <- deparse1(substitute(x, env = environment())) 
     
     # Get data frame names
-    ls <-  paste0(libname, ".", names(x))
+    ls <-  paste0(libnm, ".", names(x))
     
     # Intersect names with what is actually in the environment
     ls <- intersect(ls, ls(envir = .GlobalEnv))
     
     for (gnm in ls) {
-      
-      nm <- unlist(strsplit(gnm, ".", fixed = TRUE))
-      
+      #print(gnm)
+      nm <- sub(paste0(libnm, "."), "", gnm, fixed = TRUE)
+      #print(nm)
       x[[nm]] <- get(gnm, envir = .GlobalEnv)
       
     }
@@ -429,7 +460,7 @@ lib_append <- function(x, df, name = NULL) {
 #' If other files exist in the library directory, they will not be affected
 #' by the delete operation.  The directory that contains the data will also
 #' not be affected by the delete operation.  To delete the data directory, 
-#' use the \code{\link{unlink}} function.
+#' use the \code{\link[base]{unlink}} function.
 #' @param x The data library to delete.
 #' @family lib
 #' @export
@@ -438,10 +469,16 @@ lib_delete <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  lnm <- deparse1(substitute(x, env = environment()))
+  
+  lib_unload(x)
+  
   for (dat in x) {
     pth <- attr(dat, "path")
     file.remove(pth)
   }
+  
+  e$libs[[lnm]] <- NULL
   
   return(x)
 }
@@ -494,7 +531,12 @@ lib_size <- function(x) {
 
 
 #' @title Get Information on a Data Library
+#' @description The \code{lib_info} function returns a data frame of information
+#' about each item in the data library.  That information includes the item
+#' name, file extension, number of rows, number of columns, size in bytes, 
+#' the last modified date.
 #' @param x The data library.
+#' @return A data frame of information about the library.
 #' @family lib
 #' @export
 lib_info <- function(x) {
@@ -509,14 +551,7 @@ lib_info <- function(x) {
     
     itm <- x[[nm]]
     pth <- attr(itm, "path")
-    # print(pth)
     info <- file.info(pth)
-    # print(nm)
-    # print(itm)
-    # print(nrow(itm))
-    # print(info)
-    # print(attr(itm, "extension"))
-    # print(info[1, "size"])
 
     rw <- data.frame(Name = nm, 
                      Extension = attr(itm, "extension"),
@@ -623,6 +658,7 @@ is.lib <- function(x) {
   
   return(ret)
 }
+
 
 #' @noRd
 getExtension <- function(file){ 

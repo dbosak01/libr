@@ -15,7 +15,7 @@ the file system.  All data files associated with the library will be deleted.
 If other files exist in the library directory, they will not be affected
 by the delete operation.  The directory that contains the data will also
 not be affected by the delete operation.  To delete the data directory, 
-use the \code{\link{unlink}} function.
+use the \code{\link[base]{unlink}} function.
 }
 \seealso{
 Other lib: 

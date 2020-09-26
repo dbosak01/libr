@@ -4,7 +4,7 @@
 \alias{libname}
 \title{Create a data library}
 \usage{
-libname(name, directory_path, filter = NULL, read_only = FALSE, pos = 1, ...)
+libname(name, directory_path, filter = NULL, read_only = FALSE, .pos = 1, ...)
 }
 \arguments{
 \item{name}{The unquoted name of the library to create.  This name will 
@@ -24,7 +24,7 @@ Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat".}
 Default is FALSE.  If TRUE, the user will be restricted from
 appending, removing, or writing data from the library to the file system.}
 
-\item{pos}{The environment to load the library into.  This parameter is
+\item{.pos}{The environment to load the library into.  This parameter is
 used internally to the package.}
 
 \item{...}{Follow-on parameters to the data import functions.  Which
@@ -41,7 +41,15 @@ library allows you to manage and store data frames as a unit.  The
 \details{
 A data library is an S3 object of class "lib".  The purpose of 
 the library is to combine related data frames, and allow you to manipulate all
-of them as a single object.
+of them as a single object.  
+
+The function uses the \code{\link[readr]{readr}}, \code{\link[readxl]{readxl}},
+and \code{\link[haven]{haven}} packages to import data.  These package have
+sensible defaults, and most of the time your data will import in an
+acceptable manner.  In some cases, however, you may want to control how
+the data is imported.  For those cases, you can use to the
+\code{...} parameter on the \code{libname} function to pass parameters to
+the import functions.
 }
 \examples{
 # Create temp directory

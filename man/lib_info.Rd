@@ -9,8 +9,14 @@ lib_info(x)
 \arguments{
 \item{x}{The data library.}
 }
+\value{
+A data frame of information about the library.
+}
 \description{
-Get Information on a Data Library
+The \code{lib_info} function returns a data frame of information
+about each item in the data library.  That information includes the item
+name, file extension, number of rows, number of columns, size in bytes, 
+the last modified date.
 }
 \seealso{
 Other lib: 

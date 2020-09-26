@@ -1,0 +1,14 @@
+#' @title Create Libnames and Data Dictionaries
+#'
+#' @description The \strong{libr} package contains functions to create data
+#' libraries (libnames) and data dictionaries.  The functions were intentionally
+#' written to provide a way of manipulating data that is familiar to users of  
+#' SAS® software.  
+#' 
+#' The package includes two main functions: \code{\link{libname}} and 
+#' \code{\link{dictionary}}.  The package also provides numerous secondary 
+#' functions for manipulating, accessing, and printing these objects.
+#'
+#' @docType package
+#' @name libr
+NULL
