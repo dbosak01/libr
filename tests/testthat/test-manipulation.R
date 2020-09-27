@@ -29,24 +29,6 @@ test_that("lib_load() and lib_unload() functions works as expected.", {
   
 })
 
-# test_that("lib_create()  works as expected.", {
-#   
-#   fp <- file.path(base_path, "data4/data5")
-#   
-#   expect_error(suppressWarnings(lib_create(fp)))
-#   
-#   
-#   fp <- file.path(base_path, "data3")
-#   
-#   l <- lib_create(fp)
-#   
-#   expect_equal(dir.exists(fp), TRUE)
-#   
-#   if (dir.exists(fp))
-#     unlink(fp, force = TRUE, recursive = TRUE)
-# 
-# 
-# })
 
 test_that("lib_size() works as expected.", {
   
@@ -290,7 +272,7 @@ test_that("lib_add() function can add a new items of different types.", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xls"))
   
-  expect_equal(res, TRUE)
+  expect_equal(res, FALSE)
   
   lib_remove(dat, "mtcars")
   
@@ -302,7 +284,7 @@ test_that("lib_add() function can add a new items of different types.", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
   
-  expect_equal(res, TRUE)
+  expect_equal(res, FALSE)
   
   lib_remove(dat, "mtcars")
   
@@ -357,7 +339,7 @@ test_that("lib_add() function can add a new item and save as xslx", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
   
-  expect_equal(res, TRUE)
+  expect_equal(res, FALSE)
   
   lib_delete(dat)
   

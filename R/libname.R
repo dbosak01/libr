@@ -818,7 +818,6 @@ getUniqueName <- function(nm, nms) {
   return(ret)
 }
 
-#' @import xlsx
 #' @noRd
 writeData <- function(x, ext, file_path) {
   
@@ -841,12 +840,23 @@ writeData <- function(x, ext, file_path) {
     
   } else if (ext == "xlsx") {
     
-    write.xlsx2(x, file_path)
+
+    if (isNamespaceLoaded("xlsx"))
+      xlsx::write.xlsx2(x, file_path)
+    else {
+      message(paste("NOTE: Library xlsx required and not installed.", 
+      "To write to Excel, install Java and the xlsx package."))
+    }
     
   } else if (ext == "xls") {
     
-    write.xlsx2(x, file_path)
-    
+    if (isNamespaceLoaded("xlsx"))
+      xlsx::write.xlsx2(x, file_path)
+    else {
+      message(paste("NOTE: Library xlsx required and not installed.", 
+                    "To write to Excel, install Java and the xlsx package."))
+      
+    }
   }  
   
   
