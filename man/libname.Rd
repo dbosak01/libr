@@ -4,21 +4,24 @@
 \alias{libname}
 \title{Create a data library}
 \usage{
-libname(name, directory_path, filter = NULL, read_only = FALSE, ...)
+libname(name, directory_path, type = NULL, read_only = FALSE, ...)
 }
 \arguments{
 \item{name}{The unquoted name of the library to create.  This name will 
 be created as a variable in the global environment.}
 
-\item{directory_path}{A directory path in which the data resides.  The incoming 
+\item{directory_path}{A directory path in which the data resides.  The 
+incoming 
 data can be in any file format: rds, csv, sas7bdat, etc.  The 
 \code{libname} function will read any type of data into the library, 
 and render as an R data frame.}
 
-\item{filter}{One or more file extensions to filter the incoming data.  The
+\item{type}{One or more file extensions to filter the incoming data.  The
 default value is NULL, meaning all recognized data files will be input.
-Multiple filters can be passed as a vector of file extensions. 
-Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat".}
+Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv". 
+When saved with \code{lib_write}, each file will be saved in its original
+file format, unless otherwise specified on type parameter of 
+\code{lib_write}.}
 
 \item{read_only}{Whether the library should be created as read only.
 Default is FALSE.  If TRUE, the user will be restricted from
@@ -80,7 +83,7 @@ lib_unload(dat)
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
-\code{\link{lib_append}()},
+\code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},

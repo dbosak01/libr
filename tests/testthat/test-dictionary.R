@@ -52,14 +52,14 @@ test_that("dictionary() function works as expected with lib.", {
   
   dat <- libname(dat, tempdir())
   
-  dat <- lib_append(dat, crs)
-  dat <- lib_append(dat, iris)
-  dat <- lib_append(dat, beaver1)
+  dat <- lib_add(dat, crs)
+  dat <- lib_add(dat, iris)
+  dat <- lib_add(dat, beaver1)
   
   res <- dictionary(dat)
   
   expect_equal(nrow(res), 22)
   
   
-  
+  lib_delete(dat)
 })

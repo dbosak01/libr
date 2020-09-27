@@ -11,7 +11,7 @@ test_that("lib_load() and lib_unload() functions works as expected.", {
   expect_error(libname(dat, file.path(base_path, "forker")))
   
   
-  libname(dat, base_path, filter = "csv")
+  libname(dat, base_path, type = "csv")
 
   
   # Should not get an error here
@@ -90,7 +90,7 @@ test_that("lib_path() works as expected.", {
 test_that("lib_sync() function works as expected.", {
 
 
-  libname(dat, base_path, filter = "csv")
+  libname(dat, base_path, type = "csv")
 
   ld <- is.loaded.lib("dat")
 
@@ -128,7 +128,7 @@ test_that("lib_sync() function works as expected.", {
 test_that("lib_sync() function can add a new item from workspace.", {
   
   
-  libname(dat, base_path, filter = "csv")
+  libname(dat, base_path, type = "csv")
 
   
   lib_load(dat)
@@ -144,7 +144,7 @@ test_that("lib_sync() function can add a new item from workspace.", {
 test_that("lib_unload() function can add a new item from workspace.", {
   
   
-  libname(dat, base_path, filter = "csv")
+  libname(dat, base_path, type = "csv")
   
   
   lib_load(dat)
@@ -158,52 +158,56 @@ test_that("lib_unload() function can add a new item from workspace.", {
 })
 
 
-test_that("lib_append() function works as expected unloaded.", {
+test_that("lib_add() function works as expected unloaded.", {
   
   alt_path <- paste0(base_path, "2")
   libname(dat, alt_path)
   
-  lib_append(dat, mtcars, iris)
+  lib_add(dat, mtcars, iris)
   
   inf <- lib_info(dat)
   
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
   
-  lib_append(dat, mtcars, iris, .name = c("fork", "bork"))
+  lib_add(dat, mtcars, iris, .name = c("fork", "bork"))
   
   expect_equal(length(dat), 4)
   
+  lib_delete(dat)
+  
 })
 
-test_that("lib_append() function works as expected loaded.", {
+test_that("lib_add() function works as expected loaded.", {
   
   alt_path <- paste0(base_path, "2")
   libname(dat, alt_path)
   
   lib_load(dat)
   
-  lib_append(dat, mtcars, iris)
+  lib_add(dat, mtcars, iris)
   
   inf <- lib_info(dat)
   
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
   
-  lib_append(dat, mtcars, iris, .name = c("fork", "bork"))
+  lib_add(dat, mtcars, iris, .name = c("fork", "bork"))
   
   expect_equal(length(dat), 4)
   
   lib_unload(dat)  
   
+  lib_delete(dat)
+  
 })
 
-test_that("lib_append(), lib_remove() functions work as expected unloaded.", {
+test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
   
   alt_path <- paste0(base_path, "2")
   libname(dat, alt_path)
   
-  lib_append(dat, mtcars, iris)
+  lib_add(dat, mtcars, iris)
   
   expect_equal(length(dat), 2)
   
@@ -211,19 +215,19 @@ test_that("lib_append(), lib_remove() functions work as expected unloaded.", {
   
   expect_equal(length(dat), 1)
   
-  
+  lib_delete(dat)
   
 })
 
 
-test_that("lib_append(), lib_remove() functions work as expected loaded.", {
+test_that("lib_add(), lib_remove() functions work as expected loaded.", {
   
   alt_path <- paste0(base_path, "2")
   libname(dat, alt_path)
   
   lib_load(dat)
   
-  lib_append(dat, mtcars, iris)
+  lib_add(dat, mtcars, iris)
   
   expect_equal(length(dat), 2)
   
@@ -237,35 +241,191 @@ test_that("lib_append(), lib_remove() functions work as expected loaded.", {
   
   lib_unload(dat)
   
+  lib_delete(dat)
 })
   
-# 
-# test_that("lib_write() function can add a new item from workspace.", {
-#   
-#   
-#   libname(dat, base_path, filter = "csv")
-#   
-#   
-#   lib_load(dat)
-#   
-#   dat.demo_studyc <<- mtcars
-#   
-#   lib_write(dat, type = "csv")
-#   
-#   libname(dat2, base_path, filter = "csv")
-#   
-#   expect_equal(length(dat), 3)
-#   
-# })
 
-# test_that("lib_append(), lib_write(), and lib_delete() functions work as expected.", {
+
+test_that("lib_add() function can add a new items of different types.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  # RDS
+  lib_add(dat, mtcars)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.rds"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_remove(dat, "mtcars")
+  
+  # CSV
+  
+  lib_add(dat, mtcars, type = "csv")
+  
+  res <- file.exists(file.path(alt_path, "mtcars.csv"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_remove(dat, "mtcars")
+  
+  
+  
+  # sas7bdat
+  
+  lib_add(dat, mtcars, type = "sas7bdat")
+  
+  res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
+  
+  expect_equal(res, FALSE)
+  
+  lib_remove(dat, "mtcars")
+  
+  
+  
+  # XLS
+  
+  lib_add(dat, mtcars, type = "xls")
+  
+  res <- file.exists(file.path(alt_path, "mtcars.xls"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_remove(dat, "mtcars")
+  
+  
+  
+  # xlsx
+  
+  lib_add(dat, mtcars, type = "xlsx")
+  
+  res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_remove(dat, "mtcars")
+  
+  # Clear out
+  
+  lib_delete(dat)
+})
+
+
+test_that("lib_write() function can add a new item and save as rds.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  lib_add(dat, mtcars)
+  
+  lib_write(dat)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.rds"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_remove(dat, "mtcars")
+  
+  lib_delete(dat)
+  
+})
+
+
+test_that("lib_add() function can add a new item and save as csv", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path, type = "csv")
+  
+  lib_add(dat, mtcars)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.csv"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_delete(dat)
+  
+})
+
+
+test_that("lib_add() function can add a new item and save as xslx", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path, type = "xlsx")
+  
+  lib_add(dat, mtcars)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_delete(dat)
+  
+})
+
+
+test_that("lib_add() function can add a new item and save as rds", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path, type = "rds")
+  
+  lib_add(dat, mtcars)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.rds"))
+  
+  expect_equal(res, TRUE)
+  
+  lib_delete(dat)
+  
+})
+
+
+test_that("lib_add() function can add a new item and save as sas7bdat", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path, type = "sas7bdat")
+  
+  lib_add(dat, mtcars)
+  
+  res <- file.exists(file.path(alt_path, "mtcars.rds"))
+  
+  expect_equal(res, FALSE)
+  
+  lib_delete(dat)
+  
+})
+
+
+test_that("lib_write() function can add a new item from workspace.", {
+
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path, type = "csv")
+
+
+  lib_load(dat)
+
+  dat.demo_studyc <<- mtcars
+
+  lib_write(dat)
+
+  pth <- file.path(lib_path(dat), "demo_studyc.csv")
+  
+  res <- file.exists(pth)
+  
+  expect_equal(res, TRUE)
+  
+  lib_delete(dat)
+
+})
+
+# test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
 #   
 #   alt_path <- paste0(base_path, "2")
 #   libname(dat, alt_path)
 #   
 #   
-#   lib_append(dat, mtcars)
-#   lib_append(dat, iris)
+#   lib_add(dat, mtcars)
+#   lib_add(dat, iris)
 #   
 #   inf <- lib_info(dat)
 #   

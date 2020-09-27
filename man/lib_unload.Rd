@@ -4,7 +4,7 @@
 \alias{lib_unload}
 \title{Unload a Library from the Workspace}
 \usage{
-lib_unload(x, sync = TRUE)
+lib_unload(x, sync = TRUE, .name = NULL)
 }
 \arguments{
 \item{x}{The data library to unload.}
@@ -12,6 +12,9 @@ lib_unload(x, sync = TRUE)
 \item{sync}{Whether to sync the workspace with the library list before
 it is unloaded.  If you want to unload the workspace without saving the 
 workspace data, set this parameter to false.}
+
+\item{.name}{The name of the library to unload, if the name is different
+than the variable name.  Used internally.}
 }
 \value{
 The unloaded data library.
@@ -27,7 +30,7 @@ memory.
 
 Other lib: 
 \code{\link{is.lib}()},
-\code{\link{lib_append}()},
+\code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},

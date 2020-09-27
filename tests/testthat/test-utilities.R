@@ -8,9 +8,8 @@ base_path <- "./data"
 test_that("print() functions works as expected.", {
   
 
-  libname(dat, base_path, filter = "csv")
-  
-  e$libs
+  libname(dat, base_path, type = "csv")
+
   
   # Just run the print functions and make sure there is no errors.
   #print(dat)

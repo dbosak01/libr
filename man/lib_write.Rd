@@ -19,7 +19,7 @@ The type can also be passed as a named vector of types, with each name
 corresponding to the name of the data frame in the library.}
 }
 \value{
-The full path of the saved data library.
+The saved data library.
 }
 \description{
 The \code{lib_write} function writes the data library
@@ -34,7 +34,7 @@ file types and save the data in a consistent file format.
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
-\code{\link{lib_append}()},
+\code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},

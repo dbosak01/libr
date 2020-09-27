@@ -6,7 +6,7 @@ base_path <- "./data"
 
 test_that("libname() function works as expected with csv.", {
   
-  libname(dat, base_path, filter = "csv")
+  libname(dat, base_path, type = "csv")
   
   expect_equal(class(dat)[[1]], "lib")
   expect_equal(length(dat), 2) 
@@ -19,7 +19,7 @@ test_that("libname() function works as expected with csv.", {
 
 test_that("libname() function dats as expected with rds", {
   
-  libname(dat, base_path, filter = "rds")
+  libname(dat, base_path, type = "rds")
   
   
   expect_equal(class(dat)[[1]], "lib")
@@ -34,7 +34,7 @@ test_that("libname() function dats as expected with rds", {
 
 test_that("libname() function works as expected with xls", {
   
-  libname(dat, base_path, filter = "xls")
+  libname(dat, base_path, type = "xls")
   
   
   expect_equal(class(dat)[[1]], "lib")
@@ -47,7 +47,7 @@ test_that("libname() function works as expected with xls", {
 
 test_that("libname() function works as expected with xlsx", {
   
-  libname(dat, base_path, filter = "xlsx")
+  libname(dat, base_path, type = "xlsx")
   
   expect_equal(class(dat)[[1]], "lib")
   expect_equal(length(dat), 2) 
@@ -59,7 +59,7 @@ test_that("libname() function works as expected with xlsx", {
 
 test_that("libname() function works as expected with sas7bdat", {
   
-  libname(dat, base_path, filter = "sas7bdat")
+  libname(dat, base_path, type = "sas7bdat")
   
   expect_equal(class(dat)[[1]], "lib")
   expect_equal(length(dat), 2) 

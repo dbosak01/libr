@@ -19,7 +19,7 @@ the library as a string.
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
-\code{\link{lib_append}()},
+\code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},
