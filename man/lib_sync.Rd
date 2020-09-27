@@ -4,24 +4,22 @@
 \alias{lib_sync}
 \title{Synchronize Loaded Library}
 \usage{
-lib_sync(x, name = NULL, .pos = 1)
+lib_sync(x, name = NULL)
 }
 \arguments{
 \item{x}{The data library to synchronize.}
 
 \item{name}{The name of the library to sync if not the variable
 name of the incoming library. Used internally.}
-
-\item{.pos}{The environment reference, used internally.}
 }
 \value{
 The synchronized data library.
 }
 \description{
 The \code{lib_sync} function synchronizes the data
-loaded into the global environment with the data frames stored 
+loaded into the working environment with the data frames stored 
 in the data library object.  This synchronization is necessary only
-for libraries that have been loaded into the global environment.
+for libraries that have been loaded into the working environment.
 The function is used internally to the \strong{libr} package, but 
 may be useful to package users in some situations.
 }

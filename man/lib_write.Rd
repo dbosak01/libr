@@ -40,6 +40,7 @@ Other lib:
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

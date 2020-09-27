@@ -2,9 +2,9 @@
 % Please edit documentation in R/libname.R
 \name{lib_unload}
 \alias{lib_unload}
-\title{Unload a Library from the Global Environment}
+\title{Unload a Library from the Workspace}
 \usage{
-lib_unload(x, sync = TRUE, .pos = 1)
+lib_unload(x, sync = TRUE)
 }
 \arguments{
 \item{x}{The data library to unload.}
@@ -12,16 +12,14 @@ lib_unload(x, sync = TRUE, .pos = 1)
 \item{sync}{Whether to sync the workspace with the library list before
 it is unloaded.  If you want to unload the workspace without saving the 
 workspace data, set this parameter to false.}
-
-\item{.pos}{The environment to load the library into.  Used internally.}
 }
 \value{
 The unloaded data library.
 }
 \description{
 The \code{lib_unload} function unloads a data library from
-the global environment.  The unload function does not delete the data 
-or the remove the library.  It simply removes the data frames from global 
+the workspace environment.  The unload function does not delete the data 
+or the remove the library.  It simply removes the data frames from working 
 memory.
 }
 \seealso{
@@ -35,6 +33,7 @@ Other lib:
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

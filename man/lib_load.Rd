@@ -4,13 +4,10 @@
 \alias{lib_load}
 \title{Load a Library into the Global Environment}
 \usage{
-lib_load(x, .pos = 1)
+lib_load(x)
 }
 \arguments{
 \item{x}{The data library to load.}
-
-\item{.pos}{The environment to load data into.  This parameter is used
-internally and is normally not modified by the user.}
 }
 \value{
 The loaded data library.
@@ -31,6 +28,7 @@ Other lib:
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},

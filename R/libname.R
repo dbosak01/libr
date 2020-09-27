@@ -2,6 +2,7 @@
 
 #' @noRd
 e <- new.env(parent = emptyenv())
+e$env <- as.environment(1)
 e$libs <- list()
 
 # Libname Definition ------------------------------------------------------
@@ -36,8 +37,6 @@ e$libs <- list()
 #' @param read_only Whether the library should be created as read only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing data from the library to the file system.
-#' @param .pos The environment to load the library into.  This parameter is
-#' used internally to the package.
 #' @param ... Follow-on parameters to the data import functions.  Which
 #' parameters exist depend on which types of files are being imported.
 #' @return The library object.
@@ -75,7 +74,7 @@ e$libs <- list()
 #' @import utils
 #' @export
 libname <- function(name, directory_path, filter = NULL, 
-                    read_only = FALSE, .pos = 1, ...) {
+                    read_only = FALSE, ...) {
   
   name_c <- deparse1(substitute(name, env = environment()))
   
@@ -147,8 +146,7 @@ libname <- function(name, directory_path, filter = NULL,
 
   }
   
-  #assign(name_c, l, envir = .GlobalEnv)
-  assign(name_c, l, envir = as.environment(.pos))
+  assign(name_c, l, envir = as.environment(e$env))
   e$libs[[name_c]] <- attributes(l)
   
   return(l)
@@ -204,13 +202,11 @@ as.lib.list <- function(x, path) {
 #' the global environment.  The data frames will be loaded with 
 #' <library>.<data frame> syntax.
 #' @param x The data library to load.
-#' @param .pos The environment to load data into.  This parameter is used
-#' internally and is normally not modified by the user.
 #' @return The loaded data library. 
 #' @seealso \code{\link{lib_unload}} to unload the library.
 #' @family lib
 #' @export
-lib_load <- function(x, .pos = 1) {
+lib_load <- function(x) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -221,33 +217,31 @@ lib_load <- function(x, .pos = 1) {
   # For each name in library, assign to global environment
   for (nm in names(x)) {
     n <-  paste0(libnm, ".", nm)
-    assign(n, x[[nm]], envir = as.environment(.pos))
-    #assign(n, x[[nm]], envir = .GlobalEnv)
+    assign(n, x[[nm]], envir = as.environment(e$env))
   }
   
   attr(x, "loaded") <- TRUE
-  assign(libnm, x, envir = as.environment(.pos))
+  assign(libnm, x, envir = as.environment(e$env))
   e$libs[[libnm]] <- attributes(x)
   
   return(x)
 }
 
 
-#' @title Unload a Library from the Global Environment
+#' @title Unload a Library from the Workspace
 #' @description The \code{lib_unload} function unloads a data library from
-#' the global environment.  The unload function does not delete the data 
-#' or the remove the library.  It simply removes the data frames from global 
+#' the workspace environment.  The unload function does not delete the data 
+#' or the remove the library.  It simply removes the data frames from working 
 #' memory.
 #' @param x The data library to unload.
 #' @param sync Whether to sync the workspace with the library list before
 #' it is unloaded.  If you want to unload the workspace without saving the 
 #' workspace data, set this parameter to false.
-#' @param .pos The environment to load the library into.  Used internally.
 #' @return The unloaded data library.
 #' @seealso \code{\link{lib_load}} to load the library.
 #' @family lib
 #' @export
-lib_unload <- function(x, sync = TRUE, .pos = 1) {
+lib_unload <- function(x, sync = TRUE) {
 
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -262,14 +256,14 @@ lib_unload <- function(x, sync = TRUE, .pos = 1) {
   ls <-  paste0(libnm, ".", names(x))
   
   # Intersect names with what is actually in the environment
-  ls <- intersect(ls, ls(envir = .GlobalEnv))
+  ls <- intersect(ls, ls(envir = e$env))
   
   # Remove intersection
-  rm(list = ls, envir = .GlobalEnv)
+  rm(list = ls, envir = e$env)
   
   # Mark as unloaded
   attr(x, "loaded") <- FALSE
-  assign(libnm, x, envir = as.environment(.pos))
+  assign(libnm, x, envir = as.environment(e$env))
   e$libs[[libnm]] <- attributes(x)
   
   return(x)
@@ -334,18 +328,17 @@ lib_write <- function(x, type = NULL) {
 
 #' @title Synchronize Loaded Library
 #' @description The \code{lib_sync} function synchronizes the data
-#' loaded into the global environment with the data frames stored 
+#' loaded into the working environment with the data frames stored 
 #' in the data library object.  This synchronization is necessary only
-#' for libraries that have been loaded into the global environment.
+#' for libraries that have been loaded into the working environment.
 #' The function is used internally to the \strong{libr} package, but 
 #' may be useful to package users in some situations. 
 #' @param x The data library to synchronize.
 #' @param name The name of the library to sync if not the variable
 #' name of the incoming library. Used internally.
-#' @param .pos The environment reference, used internally.
 #' @return The synchronized data library.
 #' @export
-lib_sync <- function(x, name = NULL, .pos = 1) {
+lib_sync <- function(x, name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -362,18 +355,18 @@ lib_sync <- function(x, name = NULL, .pos = 1) {
     # Any names added to environment will be added to list.
     # Idea is to always preserve data unless the user specifically 
     # asks to kill it.
-    en <- ls(envir = .GlobalEnv)
+    en <- ls(envir = e$env)
     fen <- grep(paste0("^", libnm, "\\."), en, value = TRUE)
 
     for (gnm in fen) {
       #print(gnm)
       nm <- sub(paste0(libnm, "."), "", gnm, fixed = TRUE)
       #print(nm)
-      x[[nm]] <- get(gnm, envir = .GlobalEnv)
+      x[[nm]] <- get(gnm, envir = e$env)
       
     }
     
-    assign(libnm, x, envir = as.environment(.pos))
+    assign(libnm, x, envir = as.environment(e$env))
     
   } else {
     
@@ -435,7 +428,6 @@ lib_remove <- function(x, name) {
   
   libnm <- deparse1(substitute(x, env = environment()))
   
-  .pos <- 1
   
   for (nm in name) {
     pth <- attr(x[[nm]], "path")
@@ -449,11 +441,11 @@ lib_remove <- function(x, name) {
     
     if (e$libs[[libnm]]$loaded) {
       gnm <- paste0(libnm, ".", nm)
-      rm(list = gnm, envir = as.environment(.pos))
+      rm(list = gnm, envir = as.environment(e$env))
     }
   }
   
-  assign(libnm, x, envir = as.environment(.pos))
+  assign(libnm, x, envir = as.environment(e$env))
   
   return(x)
 }
@@ -492,10 +484,9 @@ lib_create <- function(directory_path) {
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
 #' than one data set is being appended, assign a vector of quoted names.
-#' @param .pos Environment reference, used internally.
 #' @family lib
 #' @export
-lib_append <- function(x, ..., .name = NULL, .pos = 1) {
+lib_append <- function(x, ..., .name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -521,12 +512,12 @@ lib_append <- function(x, ..., .name = NULL, .pos = 1) {
     
     if (e$libs[[lbnm]]$loaded) {
       
-      assign(paste0(lbnm, ".", nm), lst[[i]], envir = as.environment(.pos))
+      assign(paste0(lbnm, ".", nm), lst[[i]], envir = as.environment(e$env))
     }
     i <- i + 1
   }
   
-  assign(lbnm, x, envir = as.environment(.pos))
+  assign(lbnm, x, envir = as.environment(e$env))
   
   return(x)
   
@@ -659,6 +650,33 @@ lib_info <- function(x) {
   }
   
   return(ret)
+}
+
+
+#' @title Set the Environment for the Library Functions
+#' @description The \code{lib_environment} function sets the working environment
+#' for the \strong{libr} package.  By default, the environment is set to the 
+#' current global environment.  If an alternative environment is desired, a 
+#' user may set it with this function. 
+#' @param env The environment to use.
+#' @return The new environment.
+#' @family lib
+#' @export
+lib_environment <- function(env = NULL) {
+  
+  if (is.null(env)) {
+   if (is.null(options()[["libr.env"]])) {
+      e$env = as.environment(1)
+   } else {
+     e$env = options()[["libr.env"]]
+   }
+    
+  } else {
+    e$env = env
+  }
+  
+  
+  return(env)
 }
 
 # Utility Functions -------------------------------------------------------

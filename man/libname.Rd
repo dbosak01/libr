@@ -4,7 +4,7 @@
 \alias{libname}
 \title{Create a data library}
 \usage{
-libname(name, directory_path, filter = NULL, read_only = FALSE, .pos = 1, ...)
+libname(name, directory_path, filter = NULL, read_only = FALSE, ...)
 }
 \arguments{
 \item{name}{The unquoted name of the library to create.  This name will 
@@ -23,9 +23,6 @@ Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv", and "dat".}
 \item{read_only}{Whether the library should be created as read only.
 Default is FALSE.  If TRUE, the user will be restricted from
 appending, removing, or writing data from the library to the file system.}
-
-\item{.pos}{The environment to load the library into.  This parameter is
-used internally to the package.}
 
 \item{...}{Follow-on parameters to the data import functions.  Which
 parameters exist depend on which types of files are being imported.}
@@ -89,6 +86,7 @@ Other lib:
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},
