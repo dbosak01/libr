@@ -19,11 +19,11 @@ BugReports: https://github.com/dbosak01/libr/issues
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    xlsx
 Imports: tibble,
          readr,
          readxl,
-         haven,
-         xlsx
+         haven
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
