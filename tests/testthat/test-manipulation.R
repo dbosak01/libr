@@ -92,13 +92,13 @@ test_that("lib_sync() function works as expected.", {
 
   libname(dat, base_path, filter = "csv")
 
-  ld <- e$libs[["dat"]]$loaded
+  ld <- is.loaded.lib("dat")
 
   expect_equal(ld, FALSE)
 
   lib_load(dat)
 
-  ld <- e$libs[["dat"]]$loaded
+  ld <- is.loaded.lib("dat")
 
   expect_equal(ld, TRUE)
 
@@ -116,7 +116,7 @@ test_that("lib_sync() function works as expected.", {
 
   lib_unload(dat)
 
-  ld <- e$libs[["dat"]]$loaded
+  ld <- is.loaded.lib("dat")
 
   expect_equal(ld, FALSE)
 

@@ -33,8 +33,6 @@ file types and save the data in a consistent file format.
 }
 \seealso{
 Other lib: 
-\code{\link{as.lib.list}()},
-\code{\link{as.lib}()},
 \code{\link{is.lib}()},
 \code{\link{lib_append}()},
 \code{\link{lib_copy}()},

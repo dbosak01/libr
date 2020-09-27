@@ -22,8 +22,6 @@ to an existing data library.
 }
 \seealso{
 Other lib: 
-\code{\link{as.lib.list}()},
-\code{\link{as.lib}()},
 \code{\link{is.lib}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},

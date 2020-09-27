@@ -3,7 +3,7 @@
 #' @noRd
 e <- new.env(parent = emptyenv())
 e$env <- as.environment(1)
-e$libs <- list()
+
 
 # Libname Definition ------------------------------------------------------
 
@@ -146,50 +146,10 @@ libname <- function(name, directory_path, filter = NULL,
 
   }
   
-  assign(name_c, l, envir = as.environment(e$env))
-  e$libs[[name_c]] <- attributes(l)
+  assign(name_c, l, envir = e$env)
+
   
   return(l)
-  
-}
-
-
-
-
-# Conversion Functions -----------------------------------------------------
-
-#' @title Generic Casting Method for Data Libraries
-#' @description A generic method for casting objects to
-#' a data library.  Individual objects will inherit from this function.
-#' @param x The object to cast.
-#' @param path The path for the specified library.
-#' @return A library object, created using the information in the 
-#' input object.
-#' @seealso For class-specific methods, see 
-#' \code{\link{as.lib.list}}.
-#' @family lib
-#' @export
-as.lib <- function(x, path) {
-  UseMethod("as.lib", x)
-}
-
-#' @title Convert a List of Data Frames to a Data Library
-#' @param x The list to convert
-#' @param path The path to associate with the library.
-#' @family lib
-#' @export
-as.lib.list <- function(x, path) {
-  
-  name_c <- deparse1(substitute(x, env = environment()))
-  
-  class(x) <- list("lib", class(x))
-  
-  attr(x, "name") <- name_c
-  attr(x, "path") <- path
-  attr(x, "loaded") <- FALSE
-  e$libs[[name_c]] <- attributes(x)
-  
-  return(x)
   
 }
 
@@ -217,12 +177,11 @@ lib_load <- function(x) {
   # For each name in library, assign to global environment
   for (nm in names(x)) {
     n <-  paste0(libnm, ".", nm)
-    assign(n, x[[nm]], envir = as.environment(e$env))
+    assign(n, x[[nm]], envir = e$env)
   }
   
   attr(x, "loaded") <- TRUE
-  assign(libnm, x, envir = as.environment(e$env))
-  e$libs[[libnm]] <- attributes(x)
+  assign(libnm, x, envir = e$env)
   
   return(x)
 }
@@ -263,8 +222,7 @@ lib_unload <- function(x, sync = TRUE) {
   
   # Mark as unloaded
   attr(x, "loaded") <- FALSE
-  assign(libnm, x, envir = as.environment(e$env))
-  e$libs[[libnm]] <- attributes(x)
+  assign(libnm, x, envir = e$env)
   
   return(x)
 }
@@ -297,7 +255,7 @@ lib_write <- function(x, type = NULL) {
   
   lbnm <- deparse1(substitute(x, env = environment()))
   
-  if (e$libs[[lbnm]]$loaded) {
+  if (is.loaded.lib(lbnm)) {
     x <- lib_sync(x)
   }
     
@@ -348,7 +306,7 @@ lib_sync <- function(x, name = NULL) {
   else 
     libnm <- deparse1(substitute(x, env = environment()))
   
-  if (e$libs[[libnm]]$loaded == TRUE) {
+  if (is.loaded.lib(libnm) == TRUE) {
     
     # Get names from what is actually in the environment.
     # Any names removed from environment will not be removed from list.
@@ -366,7 +324,7 @@ lib_sync <- function(x, name = NULL) {
       
     }
     
-    assign(libnm, x, envir = as.environment(e$env))
+    assign(libnm, x, envir = e$env)
     
   } else {
     
@@ -397,17 +355,16 @@ lib_copy <- function(x, nm, directory_path) {
   if (!dir.exists(directory_path))
     dir.create(directory_path)
   
-  libnm <- deparse1(substitute(x, env = environment))
+  libnm <- deparse1(substitute(x, env = environment()))
   
-  if (e$libs[[libnm]]$loaded) {
+  if (is.loaded.lib(libnm)) {
     
     x <- lib_sync(x) 
   }
   
   attr(x, "path") <- directory_path
   x <- lib_write(x)
-  
-  e$libs[[nm]] <- x
+
   
   return(x)
 }
@@ -439,13 +396,13 @@ lib_remove <- function(x, name) {
     
     x[[nm]] <- NULL
     
-    if (e$libs[[libnm]]$loaded) {
+    if (is.loaded.lib(libnm)) {
       gnm <- paste0(libnm, ".", nm)
-      rm(list = gnm, envir = as.environment(e$env))
+      rm(list = gnm, envir = e$env)
     }
   }
   
-  assign(libnm, x, envir = as.environment(e$env))
+  assign(libnm, x, envir = e$env)
   
   return(x)
 }
@@ -510,14 +467,14 @@ lib_append <- function(x, ..., .name = NULL) {
     
     x[[nm]] <- lst[[i]]
     
-    if (e$libs[[lbnm]]$loaded) {
+    if (is.loaded.lib(lbnm)) {
       
-      assign(paste0(lbnm, ".", nm), lst[[i]], envir = as.environment(e$env))
+      assign(paste0(lbnm, ".", nm), lst[[i]], envir = e$env)
     }
     i <- i + 1
   }
   
-  assign(lbnm, x, envir = as.environment(e$env))
+  assign(lbnm, x, envir = e$env)
   
   return(x)
   
@@ -548,7 +505,6 @@ lib_delete <- function(x) {
     file.remove(pth)
   }
   
-  e$libs[[lnm]] <- NULL
   
   return(x)
 }
@@ -665,7 +621,7 @@ lib_info <- function(x) {
 lib_environment <- function(env = NULL) {
   
   if (is.null(env)) {
-   if (is.null(options()[["libr.env"]])) {
+   if (!is.null(options()[["libr.env"]])) {
       e$env = as.environment(1)
    } else {
      e$env = options()[["libr.env"]]
@@ -674,7 +630,6 @@ lib_environment <- function(env = NULL) {
   } else {
     e$env = env
   }
-  
   
   return(env)
 }
@@ -743,6 +698,15 @@ print.lib <- function(x, ..., verbose = FALSE) {
 }
 
 
+#' @noRd
+is.loaded.lib <- function(name) {
+  
+ lb <- get(name, envir = e$env)
+ 
+ ret <- attr(lb, "loaded")
+  
+ return(ret)
+}
 
 
 #' @title Class test for a data library

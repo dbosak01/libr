@@ -26,8 +26,6 @@ is.lib(dat)
 }
 \seealso{
 Other lib: 
-\code{\link{as.lib.list}()},
-\code{\link{as.lib}()},
 \code{\link{lib_append}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_create}()},
