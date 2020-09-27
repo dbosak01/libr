@@ -4,10 +4,16 @@
 \alias{lib_unload}
 \title{Unload a Library from the Global Environment}
 \usage{
-lib_unload(x)
+lib_unload(x, sync = TRUE, .pos = 1)
 }
 \arguments{
 \item{x}{The data library to unload.}
+
+\item{sync}{Whether to sync the workspace with the library list before
+it is unloaded.  If you want to unload the workspace without saving the 
+workspace data, set this parameter to false.}
+
+\item{.pos}{The environment to load the library into.  Used internally.}
 }
 \value{
 The unloaded data library.

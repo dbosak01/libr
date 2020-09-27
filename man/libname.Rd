@@ -44,7 +44,8 @@ the library is to combine related data frames, and allow you to manipulate all
 of them as a single object.  
 
 The function uses the \code{\link[readr]{readr}}, \code{\link[readxl]{readxl}},
-and \code{\link[haven]{haven}} packages to import data.  These package have
+and \code{\link[haven:read_sas]{haven}} packages to import data.  
+These packages have
 sensible defaults, and most of the time your data will import in an
 acceptable manner.  In some cases, however, you may want to control how
 the data is imported.  For those cases, you can use to the
@@ -56,15 +57,28 @@ the import functions.
 tmp <- tempdir()
 
 # Save some data to temp directory
+# for illustration purposes
 saveRDS(trees, file.path(tmp, "trees.rds"))
-saveRDS(lynx, file.path(tmp, "lynx.rds"))
+saveRDS(rock, file.path(tmp, "rocks.rds"))
 saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
 
 # Create data library
 libname(dat, tmp)
 
-# Print library summary 
-print(dat)
+# Print dictionary for library
+dictionary(dat)
+
+# Load library into workspace 
+lib_load(dat)
+
+# Print summaries for each data frame
+summary(dat.rocks)
+summary(dat.trees)
+summary(dat.beaver1)
+
+#Unload from workspace
+lib_unload(dat)
+
 }
 \seealso{
 Other lib: 

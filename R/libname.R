@@ -16,7 +16,8 @@ e$libs <- list()
 #' of them as a single object.  
 #' 
 #' The function uses the \code{\link[readr]{readr}}, \code{\link[readxl]{readxl}},
-#' and \code{\link[haven]{haven}} packages to import data.  These package have
+#' and \code{\link[haven:read_sas]{haven}} packages to import data.  
+#' These packages have
 #' sensible defaults, and most of the time your data will import in an
 #' acceptable manner.  In some cases, however, you may want to control how
 #' the data is imported.  For those cases, you can use to the
@@ -46,15 +47,28 @@ e$libs <- list()
 #' tmp <- tempdir()
 #' 
 #' # Save some data to temp directory
+#' # for illustration purposes
 #' saveRDS(trees, file.path(tmp, "trees.rds"))
-#' saveRDS(lynx, file.path(tmp, "lynx.rds"))
+#' saveRDS(rock, file.path(tmp, "rocks.rds"))
 #' saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
 #' 
 #' # Create data library
 #' libname(dat, tmp)
 #' 
-#' # Print library summary 
-#' print(dat)
+#' # Print dictionary for library
+#' dictionary(dat)
+#' 
+#' # Load library into workspace 
+#' lib_load(dat)
+#' 
+#' # Print summaries for each data frame
+#' summary(dat.rocks)
+#' summary(dat.trees)
+#' summary(dat.beaver1)
+#' 
+#' #Unload from workspace
+#' lib_unload(dat)
+#' 
 #' @import readr
 #' @import readxl
 #' @import haven
@@ -68,8 +82,7 @@ libname <- function(name, directory_path, filter = NULL,
   if (!dir.exists(directory_path))
     stop(paste("Directory path does not exist. Use lib_create() to",
                "create a new data directory."))
-  
-  
+
   # Create new structure of class "lib"
   l <- structure(list(), class = c("lib", "list"))
   
@@ -91,6 +104,9 @@ libname <- function(name, directory_path, filter = NULL,
     #nm <- getUniqueName(nm, names(l))
     
     if (length(ext) > 0) { 
+      
+      dat <- NULL
+      
       if (ext == "csv") {
         
         dat <- read_csv(fp, ...)
@@ -116,14 +132,17 @@ libname <- function(name, directory_path, filter = NULL,
         dat <- read_table(fp, ...)
       }
       
-      if (nm %in% names(l))
-        warning(paste("The name", nm, "already exists in the library.",
-                      "Data will be replaced."))
+      if (any(class(dat) == "data.frame")) {
       
-      attr(dat, "name") <- nm
-      attr(dat, "extension") <- ext
-      attr(dat, "path") <- fp
-      l[[nm]] <- dat
+        if (nm %in% names(l))
+          warning(paste("The name", nm, "already exists in the library.",
+                        "Data will be replaced."))
+        
+        attr(dat, "name") <- nm
+        attr(dat, "extension") <- ext
+        attr(dat, "path") <- fp
+        l[[nm]] <- dat
+      }
     }
 
   }
@@ -163,10 +182,14 @@ as.lib <- function(x, path) {
 #' @export
 as.lib.list <- function(x, path) {
   
+  name_c <- deparse1(substitute(x, env = environment()))
   
   class(x) <- list("lib", class(x))
   
+  attr(x, "name") <- name_c
   attr(x, "path") <- path
+  attr(x, "loaded") <- FALSE
+  e$libs[[name_c]] <- attributes(x)
   
   return(x)
   
@@ -203,8 +226,8 @@ lib_load <- function(x, .pos = 1) {
   }
   
   attr(x, "loaded") <- TRUE
+  assign(libnm, x, envir = as.environment(.pos))
   e$libs[[libnm]] <- attributes(x)
-  print(e$libs[[libnm]])
   
   return(x)
 }
@@ -216,17 +239,24 @@ lib_load <- function(x, .pos = 1) {
 #' or the remove the library.  It simply removes the data frames from global 
 #' memory.
 #' @param x The data library to unload.
+#' @param sync Whether to sync the workspace with the library list before
+#' it is unloaded.  If you want to unload the workspace without saving the 
+#' workspace data, set this parameter to false.
+#' @param .pos The environment to load the library into.  Used internally.
 #' @return The unloaded data library.
 #' @seealso \code{\link{lib_load}} to load the library.
 #' @family lib
 #' @export
-lib_unload <- function(x) {
+lib_unload <- function(x, sync = TRUE, .pos = 1) {
 
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
   # Get name of library
   libnm <- deparse1(substitute(x, env = environment())) 
+  
+  if (sync)
+    x <- lib_sync(x, libnm)
   
   # Get data frame names
   ls <-  paste0(libnm, ".", names(x))
@@ -239,6 +269,7 @@ lib_unload <- function(x) {
   
   # Mark as unloaded
   attr(x, "loaded") <- FALSE
+  assign(libnm, x, envir = as.environment(.pos))
   e$libs[[libnm]] <- attributes(x)
   
   return(x)
@@ -273,15 +304,10 @@ lib_write <- function(x, type = NULL) {
   lbnm <- deparse1(substitute(x, env = environment()))
   
   if (e$libs[[lbnm]]$loaded) {
-    
-    nms <- grep(paste0(lbnm, "\\."), ls())
-    print(nms)
-    
-  } else {
-    
-    nms <- names(x)
+    x <- lib_sync(x)
   }
     
+  nms <- names(x)
   
   # Get path
   pth <- attr(x, "path")
@@ -314,33 +340,40 @@ lib_write <- function(x, type = NULL) {
 #' The function is used internally to the \strong{libr} package, but 
 #' may be useful to package users in some situations. 
 #' @param x The data library to synchronize.
+#' @param name The name of the library to sync if not the variable
+#' name of the incoming library. Used internally.
+#' @param .pos The environment reference, used internally.
 #' @return The synchronized data library.
 #' @export
-lib_sync <- function(x) {
+lib_sync <- function(x, name = NULL, .pos = 1) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-  lnm <- deparse1(substitute(x, env = environment()))
+  if (!is.null(name))
+    libnm <- name
+  else 
+    libnm <- deparse1(substitute(x, env = environment()))
   
-  if (e$libs[[lnm]]$loaded == TRUE) {
-  
-    # Get name of library
-    libnm <- deparse1(substitute(x, env = environment())) 
+  if (e$libs[[libnm]]$loaded == TRUE) {
     
-    # Get data frame names
-    ls <-  paste0(libnm, ".", names(x))
-    
-    # Intersect names with what is actually in the environment
-    ls <- intersect(ls, ls(envir = .GlobalEnv))
-    
-    for (gnm in ls) {
+    # Get names from what is actually in the environment.
+    # Any names removed from environment will not be removed from list.
+    # Any names added to environment will be added to list.
+    # Idea is to always preserve data unless the user specifically 
+    # asks to kill it.
+    en <- ls(envir = .GlobalEnv)
+    fen <- grep(paste0("^", libnm, "\\."), en, value = TRUE)
+
+    for (gnm in fen) {
       #print(gnm)
       nm <- sub(paste0(libnm, "."), "", gnm, fixed = TRUE)
       #print(nm)
       x[[nm]] <- get(gnm, envir = .GlobalEnv)
       
     }
+    
+    assign(libnm, x, envir = as.environment(.pos))
     
   } else {
     
@@ -359,10 +392,11 @@ lib_sync <- function(x) {
 #' the copy will result in the current data in memory written to the new
 #' destination directory.  
 #' @param x The library to copy.
+#' @param nm The unquoted variable name to hold the new library.
 #' @param directory_path The path to copy the library to.
 #' @family lib
 #' @export
-lib_copy <- function(x, directory_path) {
+lib_copy <- function(x, nm, directory_path) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -370,8 +404,17 @@ lib_copy <- function(x, directory_path) {
   if (!dir.exists(directory_path))
     dir.create(directory_path)
   
+  libnm <- deparse1(substitute(x, env = environment))
+  
+  if (e$libs[[libnm]]$loaded) {
+    
+    x <- lib_sync(x) 
+  }
+  
   attr(x, "path") <- directory_path
-  lib_write(x)
+  x <- lib_write(x)
+  
+  e$libs[[nm]] <- x
   
   return(x)
 }
@@ -380,25 +423,41 @@ lib_copy <- function(x, directory_path) {
 #' @description The \code{lib_remove} function removes an item from the 
 #' data library, and deletes the source file for that data.
 #' @param x The data library.
-#' @param nm The name of the item to remove from the data library.  
+#' @param name The quoted name of the item to remove from the data library. 
+#' For more than one name, pass a vector of quoted names.
 #' @return The library with the requested item removed.
 #' @family lib
 #' @export
-lib_remove <- function(x, nm) {
+lib_remove <- function(x, name) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  libnm <- deparse1(substitute(x, env = environment()))
   
-  pth <- attr(x[[nm]], "path")
+  .pos <- 1
   
-  if (file.exists(pth))
-    file.remove(pth)
+  for (nm in name) {
+    pth <- attr(x[[nm]], "path")
+    
+    if (!is.null(pth)) {
+      if (file.exists(pth))
+        file.remove(pth)
+    }
+    
+    x[[nm]] <- NULL
+    
+    if (e$libs[[libnm]]$loaded) {
+      gnm <- paste0(libnm, ".", nm)
+      rm(list = gnm, envir = as.environment(.pos))
+    }
+  }
   
-  x[[nm]] <- NULL
+  assign(libnm, x, envir = as.environment(.pos))
   
   return(x)
 }
+
 
 #' @title Create a New Data Directory and Library
 #' @description The \code{\link{lib_create}} function creates a new 
@@ -428,31 +487,51 @@ lib_create <- function(directory_path) {
 #' @description The \code{\link{lib_append}} function adds a data frame
 #' to an existing data library.
 #' @param x The library to append data to.
-#' @param df The data frame to append to the library.
-#' @param name The reference name to use for the data.  By default,
+#' @param ... The data frame(s) to append to the library.
+#' @param .name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
-#' from the variable name, assign a quoted name to this parameter.
+#' from the variable name, assign a quoted name to this parameter.  If more
+#' than one data set is being appended, assign a vector of quoted names.
+#' @param .pos Environment reference, used internally.
 #' @family lib
 #' @export
-lib_append <- function(x, df, name = NULL) {
+lib_append <- function(x, ..., .name = NULL, .pos = 1) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-  if (is.null(name))
-    nm <- deparse1(substitute(df, env = environment()))
-  else 
-    nm <- name
-  
   lbnm  <- deparse1(substitute(x, env = environment()))
   
-  if (nm %in% names(x))
-    warning(paste("The name", nm, "already exists in the library",
-                  lbnm, ". Data will be replaced."))
+  nms <- as.character(substitute(c(...), env = environment()))
+  nms <- nms[2:length(nms)]  
   
-  x[[nm]] <- df
+  lst <- list(...)
+  
+  if (!is.null(.name)) {
+    nms <- .name
+  } 
+    
+  i <- 1
+  for (nm in nms) {
+    if (nm %in% names(x))
+      warning(paste("The name", nm, "already exists in the library",
+                    lbnm, ". Data will be replaced."))
+    
+    x[[nm]] <- lst[[i]]
+    
+    if (e$libs[[lbnm]]$loaded) {
+      
+      assign(paste0(lbnm, ".", nm), lst[[i]], envir = as.environment(.pos))
+    }
+    i <- i + 1
+  }
+  
+  assign(lbnm, x, envir = as.environment(.pos))
+  
+  return(x)
   
 }
+
 
 #' @title Delete a Data Library
 #' @description The \code{lib_delete} function deletes a data library from
@@ -544,21 +623,33 @@ lib_info <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
 
-  
   ret <- NULL
 
   for (nm in names(x)) {
     
     itm <- x[[nm]]
+    
     pth <- attr(itm, "path")
-    info <- file.info(pth)
-
+    if (!is.null(pth)) { 
+      info <- file.info(pth)
+      lm <- info[1, "mtime"]
+    } else {
+      lm <- NA
+    }
+    
+    if (is.null(attr(itm, "extension"))) {
+      ex <- NA 
+    } else {
+      ex <- attr(itm, "extension") 
+    }
+      
+    
     rw <- data.frame(Name = nm, 
-                     Extension = attr(itm, "extension"),
+                     Extension = ex,
                      Rows = nrow(itm),
                      Cols = ncol(itm),
-                     Bytes = info[1, "size"],
-                     LastModified = info[1, "mtime"])
+                     Size = format(object.size(itm), units = "auto"),
+                     LastModified = lm)
     
     if (is.null(ret))
       ret <- rw
@@ -592,7 +683,7 @@ lib_info <- function(x) {
 #' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
 #' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
 #' 
-#' # Create format catalog
+#' # Create data library
 #' libname(dat, tmp)
 #' 
 #' # Print library summary 
@@ -680,9 +771,9 @@ getUniqueName <- function(nm, nms) {
   if (!is.na(pos)) {
     
     ex <- strsplit(basename(nm), split="\\_")[[1]]
-    print(ex)
+    #print(ex)
     num <- as.numeric(ex[-1])
-    print(num)
+    #print(num)
     if (length(num) == 0 )
       ret <- paste0(nm, "_1")
     else if (is.na(num))

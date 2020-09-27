@@ -67,7 +67,7 @@ test_that("lib_info() works as expected.", {
   info <- lib_info(dat)
   
   expect_equal(nrow(info) > 0, TRUE)
-  expect_equal(info[1, "Bytes"],  626)
+  expect_equal(info[1, "Size"],  "10.7 Kb")
   
   
 })
@@ -86,40 +86,202 @@ test_that("lib_path() works as expected.", {
   
 })
 
+
+test_that("lib_sync() function works as expected.", {
+
+
+  libname(dat, base_path, filter = "csv")
+
+  ld <- e$libs[["dat"]]$loaded
+
+  expect_equal(ld, FALSE)
+
+  lib_load(dat)
+
+  ld <- e$libs[["dat"]]$loaded
+
+  expect_equal(ld, TRUE)
+
+  acount <- nrow(dat.demo_studya)
+  bcount <- nrow(dat.demo_studyb)
+
+  tmp <- dat.demo_studya
+  dat.demo_studya <<- dat.demo_studyb
+  dat.demo_studyb <<- tmp
+
+  dat <- lib_sync(dat)
+
+  expect_equal(nrow(dat$demo_studya), bcount)
+  expect_equal(nrow(dat$demo_studyb), acount)
+
+  lib_unload(dat)
+
+  ld <- e$libs[["dat"]]$loaded
+
+  expect_equal(ld, FALSE)
+
+})
+
+
+
+
+test_that("lib_sync() function can add a new item from workspace.", {
+  
+  
+  libname(dat, base_path, filter = "csv")
+
+  
+  lib_load(dat)
+
+  dat.demo_studyc <<- mtcars
+  
+  lib_sync(dat)
+  
+  expect_equal(length(dat), 3)
+  
+})
+
+test_that("lib_unload() function can add a new item from workspace.", {
+  
+  
+  libname(dat, base_path, filter = "csv")
+  
+  
+  lib_load(dat)
+  
+  dat.demo_studyc <<- mtcars
+  
+  lib_unload(dat)
+  
+  expect_equal(length(dat), 3)
+  
+})
+
+
+test_that("lib_append() function works as expected unloaded.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  lib_append(dat, mtcars, iris)
+  
+  inf <- lib_info(dat)
+  
+  expect_equal(length(dat), 2)
+  expect_equal(nrow(inf), 2)
+  
+  lib_append(dat, mtcars, iris, .name = c("fork", "bork"))
+  
+  expect_equal(length(dat), 4)
+  
+})
+
+test_that("lib_append() function works as expected loaded.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  lib_load(dat)
+  
+  lib_append(dat, mtcars, iris)
+  
+  inf <- lib_info(dat)
+  
+  expect_equal(length(dat), 2)
+  expect_equal(nrow(inf), 2)
+  
+  lib_append(dat, mtcars, iris, .name = c("fork", "bork"))
+  
+  expect_equal(length(dat), 4)
+  
+  lib_unload(dat)  
+  
+})
+
+test_that("lib_append(), lib_remove() functions work as expected unloaded.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  lib_append(dat, mtcars, iris)
+  
+  expect_equal(length(dat), 2)
+  
+  lib_remove(dat, "mtcars")
+  
+  expect_equal(length(dat), 1)
+  
+  
+  
+})
+
+
+test_that("lib_append(), lib_remove() functions work as expected loaded.", {
+  
+  alt_path <- paste0(base_path, "2")
+  libname(dat, alt_path)
+  
+  lib_load(dat)
+  
+  lib_append(dat, mtcars, iris)
+  
+  expect_equal(length(dat), 2)
+  
+  lib_remove(dat, "mtcars")
+  
+  expect_equal(length(dat), 1)
+  
+  lib_remove(dat, "iris")
+  
+  expect_equal(length(dat), 0)
+  
+  lib_unload(dat)
+  
+})
+  
 # 
-# test_that("lib_sync() function works as expected.", {
-# 
-# 
+# test_that("lib_write() function can add a new item from workspace.", {
+#   
+#   
 #   libname(dat, base_path, filter = "csv")
-# 
-#   ld <- e$libs[["dat"]]$loaded
-# 
-#   expect_equal(ld, FALSE)
-# 
+#   
+#   
 #   lib_load(dat)
-#   print(dat)
-# 
-#   ld <- e$libs[["dat"]]$loaded
-# 
-#   expect_equal(ld, TRUE)
-# 
-#   acount <- nrow(dat.demo_studya)
-#   bcount <- nrow(dat.demo_studyb)
-# 
-#   tmp <- dat.demo_studya
-#   dat.demo_studya <- dat.demo_studyb
-#   dat.demo_studyb <- tmp
-# 
-#   dat <- lib_sync(dat)
-#   print(dat)
-# 
-#   expect_equal(nrow(dat$demo_studya), bcount)
-#   expect_equal(nrow(dat$demo_studyb), acount)
-# 
-#   lib_unload(dat)
-# 
-#   ld <- e$libs[["dat"]]$loaded
-# 
-#   expect_equal(ld, FALSE)
-# 
+#   
+#   dat.demo_studyc <<- mtcars
+#   
+#   lib_write(dat, type = "csv")
+#   
+#   libname(dat2, base_path, filter = "csv")
+#   
+#   expect_equal(length(dat), 3)
+#   
 # })
+
+# test_that("lib_append(), lib_write(), and lib_delete() functions work as expected.", {
+#   
+#   alt_path <- paste0(base_path, "2")
+#   libname(dat, alt_path)
+#   
+#   
+#   lib_append(dat, mtcars)
+#   lib_append(dat, iris)
+#   
+#   inf <- lib_info(dat)
+#   
+#   expect_equal(length(inf), 2)
+#   
+#   lib_write(dat)
+#   
+#   lst <- list.files(alt_path)
+#   
+#   expect_equal(length(lst), 2)
+#   
+#   lib_delete(dat)
+#   
+#   lst <- list.files(alt_path)
+#   
+#   expect_equal(length(lst), 0)
+#   
+# })
+

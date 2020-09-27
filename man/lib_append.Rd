@@ -4,16 +4,19 @@
 \alias{lib_append}
 \title{Append Data to a Data Library}
 \usage{
-lib_append(x, df, name = NULL)
+lib_append(x, ..., .name = NULL, .pos = 1)
 }
 \arguments{
 \item{x}{The library to append data to.}
 
-\item{df}{The data frame to append to the library.}
+\item{...}{The data frame(s) to append to the library.}
 
-\item{name}{The reference name to use for the data.  By default,
+\item{.name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different
-from the variable name, assign a quoted name to this parameter.}
+from the variable name, assign a quoted name to this parameter.  If more
+than one data set is being appended, assign a vector of quoted names.}
+
+\item{.pos}{Environment reference, used internally.}
 }
 \description{
 The \code{\link{lib_append}} function adds a data frame

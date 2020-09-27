@@ -4,10 +4,15 @@
 \alias{lib_sync}
 \title{Synchronize Loaded Library}
 \usage{
-lib_sync(x)
+lib_sync(x, name = NULL, .pos = 1)
 }
 \arguments{
 \item{x}{The data library to synchronize.}
+
+\item{name}{The name of the library to sync if not the variable
+name of the incoming library. Used internally.}
+
+\item{.pos}{The environment reference, used internally.}
 }
 \value{
 The synchronized data library.

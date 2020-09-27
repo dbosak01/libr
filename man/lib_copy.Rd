@@ -4,10 +4,12 @@
 \alias{lib_copy}
 \title{Copy a Data Library}
 \usage{
-lib_copy(x, directory_path)
+lib_copy(x, nm, directory_path)
 }
 \arguments{
 \item{x}{The library to copy.}
+
+\item{nm}{The unquoted variable name to hold the new library.}
 
 \item{directory_path}{The path to copy the library to.}
 }

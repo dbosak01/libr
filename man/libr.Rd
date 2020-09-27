@@ -12,5 +12,5 @@ SAS® software.
 
 The package includes two main functions: \code{\link{libname}} and 
 \code{\link{dictionary}}.  The package also provides numerous secondary 
-functions for manipulating, accessing, and printing these objects.
+functions for manipulating, accessing, and printing those objects.
 }

@@ -31,7 +31,7 @@ saveRDS(iris, file.path(tmp, "iris.rds"))
 saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
 saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
 
-# Create format catalog
+# Create data library
 libname(dat, tmp)
 
 # Print library summary 

@@ -4,12 +4,13 @@
 \alias{lib_remove}
 \title{Remove Data from a Data Library}
 \usage{
-lib_remove(x, nm)
+lib_remove(x, name)
 }
 \arguments{
 \item{x}{The data library.}
 
-\item{nm}{The name of the item to remove from the data library.}
+\item{name}{The quoted name of the item to remove from the data library. 
+For more than one name, pass a vector of quoted names.}
 }
 \value{
 The library with the requested item removed.
