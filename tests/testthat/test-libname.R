@@ -84,4 +84,17 @@ test_that("libname() function works as expected with multiple data formats", {
   
 })
 
+test_that("libname() function works as expected with new directory", {
+  
+  fp <- file.path(base_path, "fork")
+  
+  libname(fork, fp)
+  
+  expect_equal(file.exists(fp), TRUE)
+  
+  if (file.exists(fp))
+    unlink(fp, recursive = TRUE)
+  
+})
+
 

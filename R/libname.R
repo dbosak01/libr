@@ -79,11 +79,11 @@ e$env <- as.environment(1)
 libname <- function(name, directory_path, type = NULL, 
                     read_only = FALSE, ...) {
   
+  if (!file.exists(directory_path))
+    dir.create(directory_path)
+  
   name_c <- deparse1(substitute(name, env = environment()))
   
-  if (!dir.exists(directory_path))
-    stop(paste("Directory path does not exist. Use lib_create() to",
-               "create a new data directory."))
 
   # Create new structure of class "lib"
   l <- structure(list(), class = c("lib", "list"))
@@ -349,7 +349,19 @@ lib_remove <- function(x, name) {
 #' from a file will be saved in RDS format, unless otherwise specified.  To
 #' specify a different format, set the \code{type} parameter on 
 #' \code{lib_write}.  Setting this parameter will override any source
-#' file types and save the data in a consistent file format.
+#' file types and save the data in the specified file format.
+#' 
+#' Note that there are some limitations on file formats for writing.  The 
+#' \strong{libr} package cannot currently write to sas7bdat file format.  The 
+#' reason is that there are currently no easy to install and reliable
+#' R packages for writing SAS® files.  
+#' 
+#' Likewise, there are few easily installed
+#' package for writing to Excel.  The \strong{libr} package uses the 'xlsx' 
+#' package for writing to Excel, and this package requires a properly installed
+#' and compatible version of Java.  If the 'xlsx' package is installed,
+#' \strong{libr} will attempt to use it.  If the package is not installed, 
+#' the \code{lib_write} function will give a message, and not write the file.
 #' @param x The format catalog to write.
 #' @param type The type of data library. Default is NULL, meaning the library
 #' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
