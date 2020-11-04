@@ -7,8 +7,8 @@ base_path <- "./data"
 
 test_that("lib_load() and lib_unload() functions works as expected.", {
   
-  
-  expect_error(libname(dat, file.path(base_path, "forker")))
+  # Should be able to create new directory if desired
+  #libname(dat, file.path(base_path, "forker"))
   
   
   libname(dat, base_path, type = "csv")
@@ -260,14 +260,13 @@ test_that("lib_add() function can add a new items of different types.", {
   
   res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
   
-  expect_equal(res, FALSE)
+  expect_equal(res, TRUE)
   
   lib_remove(dat, "mtcars")
   
   
-  
+
   # XLS
-  
   lib_add(dat, mtcars, type = "xls")
   
   res <- file.exists(file.path(alt_path, "mtcars.xls"))
@@ -284,7 +283,7 @@ test_that("lib_add() function can add a new items of different types.", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
   
-  expect_equal(res, FALSE)
+  expect_equal(res, TRUE)
   
   lib_remove(dat, "mtcars")
   
@@ -339,7 +338,7 @@ test_that("lib_add() function can add a new item and save as xslx", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
   
-  expect_equal(res, FALSE)
+  expect_equal(res, TRUE)
   
   lib_delete(dat)
   
@@ -369,9 +368,9 @@ test_that("lib_add() function can add a new item and save as sas7bdat", {
   
   lib_add(dat, mtcars)
   
-  res <- file.exists(file.path(alt_path, "mtcars.rds"))
+  res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
   
-  expect_equal(res, FALSE)
+  expect_equal(res, TRUE)
   
   lib_delete(dat)
   

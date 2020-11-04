@@ -10,5 +10,7 @@
 <!-- badges: end -->
   
   The **libr** package brings the concept of data libraries and data 
-dictionaries to R, in a manner similar to SAS® software.
+dictionaries to R.  Using the **libr** package, an entire directory of
+data can be read and loaded into the global environment in two function
+calls.
 

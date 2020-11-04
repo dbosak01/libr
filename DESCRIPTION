@@ -24,6 +24,7 @@ Suggests:
 Imports: tibble,
          readr,
          readxl,
-         haven
+         haven,
+         openxlsx
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

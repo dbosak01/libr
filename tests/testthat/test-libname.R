@@ -17,7 +17,7 @@ test_that("libname() function works as expected with csv.", {
 })
   
 
-test_that("libname() function dats as expected with rds", {
+test_that("libname() function works as expected with rds", {
   
   libname(dat, base_path, type = "rds")
   

@@ -847,19 +847,12 @@ writeData <- function(x, ext, file_path) {
     
   } else if (ext == "sas7bdat") {
     
-    #write_sas(x, file_path)
-    message(paste("NOTE: unable to write to sas7bdat:", basename(file_path)))
+    write_sas(x, file_path)
     
   } else if (ext == "xlsx") {
     
+    openxlsx::write.xlsx(x, file_path)
 
-    if (isNamespaceLoaded("xlsx"))
-      xlsx::write.xlsx2(x, file_path)
-    else {
-      message(paste("NOTE: Library xlsx required and not installed.", 
-      "To write to Excel, install Java and the xlsx package."))
-    }
-    
   } else if (ext == "xls") {
     
     if (isNamespaceLoaded("xlsx"))
