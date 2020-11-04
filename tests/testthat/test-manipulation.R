@@ -271,7 +271,7 @@ test_that("lib_add() function can add a new items of different types.", {
   
   res <- file.exists(file.path(alt_path, "mtcars.xls"))
   
-  expect_equal(res, FALSE)
+  expect_equal(res, TRUE)
   
   lib_remove(dat, "mtcars")
   

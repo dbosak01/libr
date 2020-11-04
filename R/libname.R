@@ -854,14 +854,10 @@ writeData <- function(x, ext, file_path) {
     openxlsx::write.xlsx(x, file_path)
 
   } else if (ext == "xls") {
-    
-    if (isNamespaceLoaded("xlsx"))
-      xlsx::write.xlsx2(x, file_path)
-    else {
-      message(paste("NOTE: Library xlsx required and not installed.", 
-                    "To write to Excel, install Java and the xlsx package."))
+
+    message(paste("NOTE: Libr cannot write xls files. Writing xlsx instead."))
       
-    }
+    openxlsx::write.xlsx(x, file_path)
   }  
   
   

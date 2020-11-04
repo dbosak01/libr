@@ -19,8 +19,7 @@ BugReports: https://github.com/dbosak01/libr/issues
 Suggests: 
     testthat,
     knitr,
-    rmarkdown,
-    xlsx
+    rmarkdown
 Imports: tibble,
          readr,
          readxl,
