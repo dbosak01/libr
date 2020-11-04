@@ -13,6 +13,9 @@ lib_copy(x, nm, directory_path)
 
 \item{directory_path}{The path to copy the library to.}
 }
+\value{
+The new copy of the library.
+}
 \description{
 The \code{lib_copy} function copies a data library.  The 
 function accepts a library and a destination path.  If the destination 

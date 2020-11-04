@@ -748,6 +748,7 @@ lib_environment <- function(env = NULL) {
 #' 
 #' # Print library summary 
 #' print(dat)
+#' @import crayon
 #' @export
 print.lib <- function(x, ..., verbose = FALSE) {
   
@@ -757,7 +758,10 @@ print.lib <- function(x, ..., verbose = FALSE) {
     
   } else {
     
-    cat(paste0("# library '",  attr(x, "name"), "': ", length(x), " items\n"))
+    grey60 <- make_style(grey60 = "#999999")
+    
+    cat(grey60(paste0("# library '",  attr(x, "name"), "': ", length(x), 
+                      " items\n")))
     
     at <- paste("- attributes:")
     if (!is.null(attr(x, "type")))
