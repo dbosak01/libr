@@ -479,6 +479,7 @@ lib_sync <- function(x, name = NULL) {
 #' @param x The library to copy.
 #' @param nm The unquoted variable name to hold the new library.
 #' @param directory_path The path to copy the library to.
+#' @return The new copy of the library.
 #' @family lib
 #' @export
 lib_copy <- function(x, nm, directory_path) {
@@ -490,17 +491,44 @@ lib_copy <- function(x, nm, directory_path) {
     dir.create(directory_path)
   
   libnm <- deparse1(substitute(x, env = environment()))
-  
-  if (is.loaded.lib(libnm)) {
-    
-    x <- lib_sync(x) 
-  }
-  
-  attr(x, "path") <- directory_path
-  x <- lib_write(x)
 
   
-  return(x)
+  if (attr(x, "loaded") == TRUE) {
+    
+    x <- lib_sync(x, name = libnm) 
+  }
+  
+  newlib <- deparse1(substitute(nm, env = environment()))
+  
+  cpy <- x
+  
+  attr(cpy, "name") <- newlib
+  attr(cpy, "path") <- directory_path
+  attr(cpy, "loaded") <- FALSE
+
+  nms <- names(cpy)
+
+  # Write out data
+  for (nm in nms) {
+    
+    styp <- attr(cpy[[nm]], "extension")
+    if (!is.null(attr(cpy, "type")))
+      ext <- attr(cpy, "type")
+    else if (!is.null(styp) & !is.na(styp))
+      ext <- styp
+    else
+      ext <- "rds"
+    
+    attr(cpy[[nm]], "extension") <- ext
+    
+    fp <- file.path(directory_path, paste0(nm, ".", ext))
+    
+    writeData(cpy[[nm]], ext, fp)  
+  }
+  
+  assign(newlib, cpy, envir = e$env)
+  
+  return(cpy)
 }
 
 
@@ -560,9 +588,8 @@ lib_delete <- function(x) {
     x[[nm]] <- NULL
   }
   
-  assign(lnm, x, envir = e$env)
+  rm(list = lnm, envir = e$env)
   
-  return(x)
 }
 
 #' @title Get the Path for a Data Library

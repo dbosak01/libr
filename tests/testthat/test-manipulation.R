@@ -399,6 +399,22 @@ test_that("lib_write() function can add a new item from workspace.", {
 
 })
 
+
+test_that("lib_copy() works as expected.", {
+  
+  alt_path <- paste0(base_path, "2")
+  
+  libname(dat, base_path, "csv")
+  
+  lib_copy(dat, dat2, alt_path)
+  
+  expect_equal(file.exists(file.path(alt_path, "demo_studyb.csv")), TRUE)
+  
+  lib_delete(dat2)
+  
+  
+})
+
 # test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
 #   
 #   alt_path <- paste0(base_path, "2")

@@ -5,7 +5,7 @@ Version: 0.0.9004
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries
-    and data dictionaries in a manner similar to SAS® software.
+    and data dictionaries.
     The libname() function will load a directory of data into 
     a library object in one step.  And the dictionary() function
     will generate data dictionaries for individual
