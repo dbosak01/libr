@@ -10,14 +10,116 @@
 <!-- badges: end -->
   
   The **libr** package brings the concept of data libraries and data 
-dictionaries to R.  Using the **libr** package, an entire directory of
-data can be read and loaded into a library in one step.  With one additional
-step, those same data file can be loaded into the global environment
-for each access.  
+dictionaries to R.  A data library is an object used to define and manage
+an entire directory of data files.  A data dictionary is a data frame full
+of information about a data library, data frame, or tibble.  
 
-## How to use
-### Primary Functions
-There are four main **libr** functions:
+The functions contained in the **libr** package are as follows:
+
+* `libname()`: Creates a data library
+* `dictionary()`: Creates a data dictionary
+* `lib_load()`: Loads a library into the workspace
+* `lib_unload()`: Unloads a library from the workspace
+* `lib_sync()`: Synchronizes the workspace with the library list
+* `lib_write()`: Writes library data to the file system
+* `lib_add()`: Adds data to a library
+* `lib_remove()`: Removes data from a library
+* `lib_copy()`: Copies a data library
+* `lib_delete()`: Deletes a data library
+* `lib_info()`: Returns a data frame of information about the library
+* `lib_path()`: Returns the path of a data library
+* `lib_size()`: Returns the size of the data library in bytes
+
+Note that the **libr** package is intended to be used with small and 
+medium-sized data sets.  It is not recommended for big data, as big data
+requires very careful control over which data is or is not loaded into memory.
+
+## Example
+The following example will illustrate some basic functionality of the 
+**libr** package:
+```
+# Create temp directory
+tmp <- tempdir()
+
+# Save some data to temp directory
+# for illustration purposes
+saveRDS(trees, file.path(tmp, "trees.rds"))
+saveRDS(rock, file.path(tmp, "rocks.rds"))
+
+# Create library
+libname(dat, tmp)
+
+# Examine library
+dat
+# library 'dat': 2 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#    Name Extension Rows Cols   Size        LastModified
+# 1 rocks       rds   48    4 3.1 Kb 2020-11-05 23:25:34
+# 2 trees       rds   31    3 2.4 Kb 2020-11-05 23:25:34
+
+# Examine data dictionary for library
+dictionary(dat)
+# A tibble: 7 x 9
+#   Name  Column Class   Label Description Format Width  Rows   NAs
+#   <chr> <chr>  <chr>   <lgl> <lgl>       <lgl>  <lgl> <int> <int>
+# 1 rocks area   integer NA    NA          NA     NA       48     0
+# 2 rocks peri   numeric NA    NA          NA     NA       48     0
+# 3 rocks shape  numeric NA    NA          NA     NA       48     0
+# 4 rocks perm   numeric NA    NA          NA     NA       48     0
+# 5 trees Girth  numeric NA    NA          NA     NA       31     0
+# 6 trees Height numeric NA    NA          NA     NA       31     0
+# 7 trees Volume numeric NA    NA          NA     NA       31     0
+
+# Load library
+lib_load(dat)
+
+# Examine workspace
+ls()
+# [1] "dat" "dat.rocks" "dat.trees" "tmp"
+
+# Use data from the library
+summary(dat.rocks)
+
+# Add data to the library
+dat.trees_subset <- subset(dat.trees, Girth > 11)
+
+# Add more data to the library
+dat.cars <- mtcars
+
+# Unload the library from memory
+lib_unload(dat)
+
+# Examine workspace again
+ls()
+# [1] "dat" "tmp"
+
+# Write the library to disk
+lib_write(dat)
+
+# Examine the library again
+dat
+# library 'dat': 4 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#           Name Extension Rows Cols   Size        LastModified
+# 1        rocks       rds   48    4 3.1 Kb 2020-11-05 23:37:45
+# 2        trees       rds   31    3 2.4 Kb 2020-11-05 23:37:45
+# 3         cars       rds   32   11 7.3 Kb 2020-11-05 23:37:45
+# 4 trees_subset       rds   23    3 1.8 Kb 2020-11-05 23:37:45
+
+# Clean up
+lib_delete(dat)
+
+# Examine workspace again
+ls()
+# [1] "tmp"
+```
+
+## How to Use a Data Library
+There are four main **libr** functions for creating and using a data library:
 
 * `libname()`
 * `lib_load()`
@@ -30,17 +132,20 @@ has existing data files, those data files will be automatically loaded
 into the library.  Once in the library, the data can be accessed using list
 syntax.
 
-If you prefer to access the data from the global environment, simply call
+If you prefer to access the data via the workspace, simply call
 the `lib_load()` function on the library.  This function will load the 
 library data into global memory, where it can be accessed using a two-level
 (<library>.<dataset>) name.  
 
 When you are done with the data, call the `lib_unload()` function to remove
 the data from global memory and put it back in the library list.  To write
-any modified data to disk, call the `lib_write()` function.  
+any added or modified data to disk, call the `lib_write()` function.  
 
-The example below will create a library, add data to it, and write that data
-to disk:
+The **libr** package also contains a number of functions for manipulating
+data libraries.  There are function to add and remove data from a library,
+as well as copy or delete an entire library.
+
+The example below illustrates some of the additional functions:
 
 ```
 

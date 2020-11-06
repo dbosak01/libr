@@ -869,6 +869,23 @@ lib_path <- function(x) {
 #' @param x The data library.
 #' @return The size of the data library in bytes as stored on the file system.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add some data to library
+#' lib_add(dat, mtcars)
+#' lib_add(dat, iris)
+#' 
+#' # Check size of library
+#' lib_size(dat)
+#' # [1] 9757
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_size <- function(x) {
   

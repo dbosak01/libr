@@ -16,6 +16,24 @@ The size of the data library in bytes as stored on the file system.
 The \code{lib_size} function returns the number of bytes used
 by the data library, as stored on disc.
 }
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Add some data to library
+lib_add(dat, mtcars)
+lib_add(dat, iris)
+
+# Check size of library
+lib_size(dat)
+# [1] 9757
+
+# Clean up
+lib_delete(dat)
+}
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},

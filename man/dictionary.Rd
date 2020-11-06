@@ -11,5 +11,6 @@ dictionary(x)
 }
 \description{
 A function to create a data dictionary for a data frame,
-a tibble, or a data library.
+a tibble, or a data library.  The function will generate a tibble of 
+information about the data.  The tibble will contain the following columns:
 }
