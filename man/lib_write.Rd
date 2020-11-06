@@ -2,7 +2,7 @@
 % Please edit documentation in R/libname.R
 \name{lib_write}
 \alias{lib_write}
-\title{Write a data library to the file system}
+\title{Write a Data Library to the File System}
 \usage{
 lib_write(x, type = NULL)
 }
@@ -29,28 +29,53 @@ in the format from which it was read.  Data frames that were not read
 from a file will be saved in RDS format, unless otherwise specified.  To
 specify a different format, set the \code{type} parameter on 
 \code{lib_write}.  Setting this parameter will override any source
-file types and save the data in the specified file format.
+file types and save the data in the indicated file format.
 
-Note that there are some limitations on file formats for writing.  The 
-\strong{libr} package cannot currently write to sas7bdat file format.  The 
-reason is that there are currently no easy to install and reliable
-R packages for writing SAS® files.  
+The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
+and a plain text file format.  Data read in xls file format will be saved 
+as an xlsx.
+}
+\examples{
+# Create temp directory
+tmp <- tempdir()
 
-Likewise, there are few easily installed
-package for writing to Excel.  The \strong{libr} package uses the 'xlsx' 
-package for writing to Excel, and this package requires a properly installed
-and compatible version of Java.  If the 'xlsx' package is installed,
-\strong{libr} will attempt to use it.  If the package is not installed, 
-the \code{lib_write} function will give a message, and not write the file.
+# Create library
+libname(dat, tmp)
+
+# Load the empty library 
+lib_load(dat)
+
+# Add data to the library
+dat.mtcars <- mtcars
+dat.beaver1 <- beaver1
+dat.iris <- iris
+
+# Unload the library
+lib_unload(dat)
+
+# Write the library to the file system
+lib_write(dat)
+
+# Examine the library
+dat
+# library 'dat': 3 items
+#- attributes: not loaded
+#- path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#- items:
+#     Name Extension Rows Cols   Size        LastModified
+#1 beaver1       rds  114    4 4.8 Kb 2020-11-05 20:47:16
+#2    iris       rds  150    5 7.3 Kb 2020-11-05 20:47:16
+#3  mtcars       rds   32   11 7.3 Kb 2020-11-05 20:47:16
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

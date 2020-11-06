@@ -16,14 +16,26 @@ The path of the data library as a single string.
 The \code{lib_path} function returns the current path of the 
 the library as a string.
 }
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Examine library path
+lib_path(dat)
+# [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpCSJ6Gc"
+
+# Clean up
+lib_delete(dat)
+}
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_remove}()},

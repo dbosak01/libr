@@ -20,6 +20,48 @@ The \code{lib_sync} function synchronizes the data
 loaded into the working environment with the data frames stored 
 in the data library object.  This synchronization is necessary only
 for libraries that have been loaded into the working environment.
-The function is used internally to the \strong{libr} package, but 
-may be useful to package users in some situations.
+The function
+copies data frames from the working environment to the library
+list, overwriting any data in the list. The function is useful when 
+you want to update the library list, but 
+not unload the data from working memory.
+}
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Examine empty library
+dat
+# library 'dat': 0 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# NULL
+
+# Load the library 
+lib_load(dat)
+
+# Add data to the workspace
+dat.mtcars <- mtcars
+dat.beaver1 <- beaver1
+dat.iris <- iris
+
+# Sync the library
+lib_sync(dat)
+
+# Examine the library again
+dat
+# library 'dat': 3 items
+# - attributes: loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#      Name Extension Rows Cols   Size LastModified
+# 1 beaver1        NA  114    4 4.6 Kb         <NA>
+# 2    iris        NA  150    5 7.1 Kb         <NA>
+# 3  mtcars        NA   32   11   7 Kb         <NA>
+
+# Clean up
+lib_delete(dat)
 }

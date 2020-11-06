@@ -20,7 +20,7 @@ and render as an R data frame.}
 default value is NULL, meaning all recognized data files will be input.
 Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv". 
 When saved with \code{lib_write}, each file will be saved in its original
-file format, unless otherwise specified on type parameter of 
+file format, unless otherwise specified on the \code{type} parameter of 
 \code{lib_write}.}
 
 \item{read_only}{Whether the library should be created as read only.
@@ -79,15 +79,15 @@ summary(dat.beaver1)
 #Unload from workspace
 lib_unload(dat)
 
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

@@ -4,16 +4,16 @@
 \alias{lib_unload}
 \title{Unload a Library from the Workspace}
 \usage{
-lib_unload(x, sync = TRUE, .name = NULL)
+lib_unload(x, sync = TRUE, name = NULL)
 }
 \arguments{
 \item{x}{The data library to unload.}
 
 \item{sync}{Whether to sync the workspace with the library list before
 it is unloaded.  If you want to unload the workspace without saving the 
-workspace data, set this parameter to false.}
+workspace data, set this parameter to FALSE.}
 
-\item{.name}{The name of the library to unload, if the name is different
+\item{name}{The name of the library to unload, if the name is different
 than the variable name.  Used internally.}
 }
 \value{
@@ -23,7 +23,42 @@ The unloaded data library.
 The \code{lib_unload} function unloads a data library from
 the workspace environment.  The unload function does not delete the data 
 or the remove the library.  It simply removes the data frames from working 
-memory.
+memory.  By defautl, the \code{unload} function will also synchronize the 
+data in working memory with the data stored in the library list, which can
+become out of sync if you change the data in working memory.
+}
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Save some data to temp directory for illustration purposes
+saveRDS(iris, file.path(tmp, "iris.rds"))
+saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
+saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
+
+# Create library
+libname(dat, tmp)
+
+# Load library into workspace
+lib_load(dat)
+
+# Examine workspace
+ls()
+# [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"
+
+# Use some data
+summary(dat.PlantGrowth)
+summary(dat.ToothGrowth)
+
+# Unload library
+lib_unload(dat)
+
+# Examine workspace again
+ls()
+# [1] "dat" "tmp"
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 \code{\link{lib_load}} to load the library.
@@ -32,9 +67,7 @@ Other lib:
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

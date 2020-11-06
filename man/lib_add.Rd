@@ -4,7 +4,7 @@
 \alias{lib_add}
 \title{Add Data to a Data Library}
 \usage{
-lib_add(x, ..., type = NULL, .name = NULL)
+lib_add(x, ..., type = NULL, name = NULL)
 }
 \arguments{
 \item{x}{The library to add data to.}
@@ -15,22 +15,50 @@ lib_add(x, ..., type = NULL, .name = NULL)
 the function will assign the type associated with the library.  If no
 type is associated with the library, the type will be assigned "rds".}
 
-\item{.name}{The reference name to use for the data.  By default,
+\item{name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different
 from the variable name, assign a quoted name to this parameter.  If more
 than one data set is being appended, assign a vector of quoted names.}
 }
 \description{
 The \code{\link{lib_add}} function adds a data frame
-to an existing data library.
+to an existing data library.  The function will both add the data
+to the library list, and immediately write the data to the library
+directory location.  The data will be written in the file format
+associated with the library.  If no file format is associated with 
+the library, it will be written as an RDS file.
+}
+\examples{
+#' # Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Add data to the library
+lib_add(dat, mtcars)
+lib_add(dat, beaver1)
+lib_add(dat, iris)
+
+# Examine the library
+dat
+# library 'dat': 3 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#      Name Extension Rows Cols   Size        LastModified
+# 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
+# 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04
+# 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

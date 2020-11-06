@@ -17,13 +17,46 @@ by the delete operation.  The directory that contains the data will also
 not be affected by the delete operation.  To delete the data directory, 
 use the \code{\link[base]{unlink}} function or other packaged functions.
 }
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Add data to library
+lib_add(dat, mtcars)
+lib_add(dat, iris)
+
+# Load library
+lib_load(dat)
+
+# Examine workspace
+ls()
+# [1] "dat" "dat.iris" "dat.mtcars" "tmp"
+
+# Examine library
+dat
+# library 'dat': 2 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 21:18:17
+# 2   iris       rds  150    5 7.5 Kb 2020-11-05 21:18:17
+
+# Delete library
+lib_delete(dat)
+
+#' # Examine workspace again
+ls()
+# [1] "tmp"
+}
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

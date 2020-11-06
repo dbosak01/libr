@@ -20,7 +20,7 @@ The object, invisibly.
 \description{
 A class-specific instance of the \code{print} function for 
 data libraries.  The function prints the library in a summary manner.  
-Use \code{verbose = TRUE} to print the catalog as a list.
+Use \code{verbose = TRUE} to print the library as a list.
 }
 \examples{
 # Create temp directory
@@ -36,15 +36,24 @@ libname(dat, tmp)
 
 # Print library summary 
 print(dat)
+# library 'dat': 3 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#          Name Extension Rows Cols   Size        LastModified
+# 1        iris       rds  150    5 7.8 Kb 2020-11-05 22:26:59
+# 2 PlantGrowth       rds   30    2 2.5 Kb 2020-11-05 22:26:59
+# 3 ToothGrowth       rds   60    3 3.4 Kb 2020-11-05 22:26:59
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

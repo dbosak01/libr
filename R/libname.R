@@ -35,7 +35,7 @@ e$env <- as.environment(1)
 #' default value is NULL, meaning all recognized data files will be input.
 #' Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv". 
 #' When saved with \code{lib_write}, each file will be saved in its original
-#' file format, unless otherwise specified on type parameter of 
+#' file format, unless otherwise specified on the \code{type} parameter of 
 #' \code{lib_write}.
 #' @param read_only Whether the library should be created as read only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
@@ -71,6 +71,8 @@ e$env <- as.environment(1)
 #' #Unload from workspace
 #' lib_unload(dat)
 #' 
+#' # Clean up
+#' lib_delete(dat)
 #' @import readr
 #' @import readxl
 #' @import haven
@@ -157,14 +159,47 @@ libname <- function(name, directory_path, type = NULL,
 # Manipulation Functions --------------------------------------------------
 
 
-#' @title Load a Library into the Global Environment
+#' @title Load a Library into the Workspace
 #' @description The \code{lib_load} function loads a data library into
-#' the global environment.  The data frames will be loaded with 
-#' <library>.<data frame> syntax.
+#' an environment. By default this is the global environment.  The data frames 
+#' will be loaded with <library>.<data frame> syntax.  Loading the data frames
+#' into the environment makes them easy to access and use in your program.
 #' @param x The data library to load.
 #' @return The loaded data library. 
 #' @seealso \code{\link{lib_unload}} to unload the library.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Save some data to temp directory for illustration purposes
+#' saveRDS(iris, file.path(tmp, "iris.rds"))
+#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
+#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Load library into workspace
+#' lib_load(dat)
+#' 
+#' # Examine workspace
+#' ls()
+#' # [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"
+#' 
+#' # Use some data
+#' summary(dat.PlantGrowth)
+#' summary(dat.ToothGrowth)
+#' 
+#' # Unload library
+#' lib_unload(dat)
+#' 
+#' # Examine workspace again
+#' ls()
+#' # [1] "dat" "tmp"
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_load <- function(x) {
   
@@ -191,18 +226,52 @@ lib_load <- function(x) {
 #' @description The \code{lib_unload} function unloads a data library from
 #' the workspace environment.  The unload function does not delete the data 
 #' or the remove the library.  It simply removes the data frames from working 
-#' memory.
+#' memory.  By defautl, the \code{unload} function will also synchronize the 
+#' data in working memory with the data stored in the library list, which can
+#' become out of sync if you change the data in working memory.
 #' @param x The data library to unload.
 #' @param sync Whether to sync the workspace with the library list before
 #' it is unloaded.  If you want to unload the workspace without saving the 
-#' workspace data, set this parameter to false.
-#' @param .name The name of the library to unload, if the name is different
+#' workspace data, set this parameter to FALSE.
+#' @param name The name of the library to unload, if the name is different
 #' than the variable name.  Used internally.
 #' @return The unloaded data library.
 #' @seealso \code{\link{lib_load}} to load the library.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Save some data to temp directory for illustration purposes
+#' saveRDS(iris, file.path(tmp, "iris.rds"))
+#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
+#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Load library into workspace
+#' lib_load(dat)
+#' 
+#' # Examine workspace
+#' ls()
+#' # [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"
+#' 
+#' # Use some data
+#' summary(dat.PlantGrowth)
+#' summary(dat.ToothGrowth)
+#' 
+#' # Unload library
+#' lib_unload(dat)
+#' 
+#' # Examine workspace again
+#' ls()
+#' # [1] "dat" "tmp"
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
-lib_unload <- function(x, sync = TRUE, .name = NULL) {
+lib_unload <- function(x, sync = TRUE, name = NULL) {
 
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -210,8 +279,8 @@ lib_unload <- function(x, sync = TRUE, .name = NULL) {
   # Get name of library
   libnm <- deparse1(substitute(x, env = environment())) 
   
-  if (!is.null(.name))
-    libnm <- .name
+  if (!is.null(name))
+    libnm <- name
   
   if (sync)
     x <- lib_sync(x, libnm)
@@ -235,19 +304,48 @@ lib_unload <- function(x, sync = TRUE, .name = NULL) {
 
 #' @title Add Data to a Data Library
 #' @description The \code{\link{lib_add}} function adds a data frame
-#' to an existing data library.
+#' to an existing data library.  The function will both add the data
+#' to the library list, and immediately write the data to the library
+#' directory location.  The data will be written in the file format
+#' associated with the library.  If no file format is associated with 
+#' the library, it will be written as an RDS file.
 #' @param x The library to add data to.
 #' @param ... The data frame(s) to add to the library.
 #' @param type The type of file format to assign to this data. By default,
 #' the function will assign the type associated with the library.  If no
 #' type is associated with the library, the type will be assigned "rds".
-#' @param .name The reference name to use for the data.  By default,
+#' @param name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
 #' than one data set is being appended, assign a vector of quoted names.
 #' @family lib
+#' @examples 
+#' #' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add data to the library
+#' lib_add(dat, mtcars)
+#' lib_add(dat, beaver1)
+#' lib_add(dat, iris)
+#' 
+#' # Examine the library
+#' dat
+#' # library 'dat': 3 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size        LastModified
+#' # 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
+#' # 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04
+#' # 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
-lib_add <- function(x, ..., type = NULL, .name = NULL) {
+lib_add <- function(x, ..., type = NULL, name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -259,8 +357,8 @@ lib_add <- function(x, ..., type = NULL, .name = NULL) {
   
   lst <- list(...)
   
-  if (!is.null(.name)) {
-    nms <- .name
+  if (!is.null(name)) {
+    nms <- name
   } 
   
   if (!is.null(type)) {
@@ -303,12 +401,51 @@ lib_add <- function(x, ..., type = NULL, .name = NULL) {
 
 #' @title Remove Data from a Data Library
 #' @description The \code{lib_remove} function removes an item from the 
-#' data library, and deletes the source file for that data.
+#' data library, and deletes the source file for that data.  If the library
+#' is loaded, it will also remove that item from the workspace.
 #' @param x The data library.
 #' @param name The quoted name of the item to remove from the data library. 
 #' For more than one name, pass a vector of quoted names.
 #' @return The library with the requested item removed.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add data to the library
+#' lib_add(dat, mtcars)
+#' lib_add(dat, beaver1)
+#' lib_add(dat, iris)
+#' 
+#' # Examine the library
+#' dat
+#' 
+#' # library 'dat': 3 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size        LastModified
+#' # 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
+#' # 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04
+#' # 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08
+#' 
+#' # Remove items from the library
+#' lib_remove(dat, c("beaver1", "iris"))
+#' 
+#' # Examine the library again
+#' dat
+#' # library 'dat': 1 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #     Name Extension Rows Cols   Size        LastModified
+#' # 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:40
+#'
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_remove <- function(x, name) {
   
@@ -341,7 +478,7 @@ lib_remove <- function(x, name) {
 }
 
 
-#' @title Write a data library to the file system
+#' @title Write a Data Library to the File System
 #' @description The \code{lib_write} function writes the data library
 #' to the file system.  By default, the library will be written to the 
 #' directory for which it was defined, and each data frame will be written
@@ -349,19 +486,12 @@ lib_remove <- function(x, name) {
 #' from a file will be saved in RDS format, unless otherwise specified.  To
 #' specify a different format, set the \code{type} parameter on 
 #' \code{lib_write}.  Setting this parameter will override any source
-#' file types and save the data in the specified file format.
+#' file types and save the data in the indicated file format.
 #' 
-#' Note that there are some limitations on file formats for writing.  The 
-#' \strong{libr} package cannot currently write to sas7bdat file format.  The 
-#' reason is that there are currently no easy to install and reliable
-#' R packages for writing SAS® files.  
+#' The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
+#' and a plain text file format.  Data read in xls file format will be saved 
+#' as an xlsx.
 #' 
-#' Likewise, there are few easily installed
-#' package for writing to Excel.  The \strong{libr} package uses the 'xlsx' 
-#' package for writing to Excel, and this package requires a properly installed
-#' and compatible version of Java.  If the 'xlsx' package is installed,
-#' \strong{libr} will attempt to use it.  If the package is not installed, 
-#' the \code{lib_write} function will give a message, and not write the file.
 #' @param x The format catalog to write.
 #' @param type The type of data library. Default is NULL, meaning the library
 #' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
@@ -376,6 +506,40 @@ lib_remove <- function(x, name) {
 #' @import haven
 #' @import readr
 #' @import readxl
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Load the empty library 
+#' lib_load(dat)
+#' 
+#' # Add data to the library
+#' dat.mtcars <- mtcars
+#' dat.beaver1 <- beaver1
+#' dat.iris <- iris
+#' 
+#' # Unload the library
+#' lib_unload(dat)
+#' 
+#' # Write the library to the file system
+#' lib_write(dat)
+#' 
+#' # Examine the library
+#' dat
+#' # library 'dat': 3 items
+#' #- attributes: not loaded
+#' #- path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' #- items:
+#' #     Name Extension Rows Cols   Size        LastModified
+#' #1 beaver1       rds  114    4 4.8 Kb 2020-11-05 20:47:16
+#' #2    iris       rds  150    5 7.3 Kb 2020-11-05 20:47:16
+#' #3  mtcars       rds   32   11 7.3 Kb 2020-11-05 20:47:16
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_write <- function(x, type = NULL) {
   
@@ -400,7 +564,7 @@ lib_write <- function(x, type = NULL) {
       ext <- type
     else if (!is.null(attr(x, "type")))
       ext <- attr(x, "type")
-    else if (!is.null(styp) & !is.na(styp))
+    else if (!is.null(styp) && !is.na(styp))
       ext <- styp
     else
       ext <- "rds"
@@ -423,12 +587,53 @@ lib_write <- function(x, type = NULL) {
 #' loaded into the working environment with the data frames stored 
 #' in the data library object.  This synchronization is necessary only
 #' for libraries that have been loaded into the working environment.
-#' The function is used internally to the \strong{libr} package, but 
-#' may be useful to package users in some situations. 
+#' The function
+#' copies data frames from the working environment to the library
+#' list, overwriting any data in the list. The function is useful when 
+#' you want to update the library list, but 
+#' not unload the data from working memory.
 #' @param x The data library to synchronize.
 #' @param name The name of the library to sync if not the variable
 #' name of the incoming library. Used internally.
 #' @return The synchronized data library.
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Examine empty library
+#' dat
+#' # library 'dat': 0 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # NULL
+#' 
+#' # Load the library 
+#' lib_load(dat)
+#' 
+#' # Add data to the workspace
+#' dat.mtcars <- mtcars
+#' dat.beaver1 <- beaver1
+#' dat.iris <- iris
+#' 
+#' # Sync the library
+#' lib_sync(dat)
+#' 
+#' # Examine the library again
+#' dat
+#' # library 'dat': 3 items
+#' # - attributes: loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size LastModified
+#' # 1 beaver1        NA  114    4 4.6 Kb         <NA>
+#' # 2    iris        NA  150    5 7.1 Kb         <NA>
+#' # 3  mtcars        NA   32   11   7 Kb         <NA>
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_sync <- function(x, name = NULL) {
   
@@ -481,6 +686,33 @@ lib_sync <- function(x, name = NULL) {
 #' @param directory_path The path to copy the library to.
 #' @return The new copy of the library.
 #' @family lib
+#' @examples
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat1, tmp)
+#' 
+#' # Add dat to library
+#' lib_add(dat1, mtcars)
+#' lib_add(dat1, iris)
+#' 
+#' # Copy dat1 to dat2
+#' lib_copy(dat1, dat2, file.path(tmp, "copy"))
+#' 
+#' # Examine dat2
+#' dat2
+#' # library 'dat2': 2 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy
+#' # - items:
+#' #     Name Extension Rows Cols   Size        LastModified
+#' # 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 21:14:54
+#' # 2   iris       rds  150    5 7.5 Kb 2020-11-05 21:14:54
+#' 
+#' # Clean up
+#' lib_delete(dat1)
+#' lib_delete(dat2)
 #' @export
 lib_copy <- function(x, nm, directory_path) {
   
@@ -533,31 +765,6 @@ lib_copy <- function(x, nm, directory_path) {
 
 
 
-#' @title Create a New Data Directory and Library
-#' @description The \code{\link{lib_create}} function creates a new 
-#' data directory if it does not exist, and creates a new library
-#' assigned to that directory.
-#' @param directory_path The path of the directory to create.
-#' @return The new data library.
-#' @family lib
-#' @export
-lib_create <- function(directory_path) {
-  
-  
-  if (!file.exists(directory_path))
-    dir.create(directory_path)
-  
-  if (dir.exists(directory_path)) {
-    ret <- libname(directory_path)
-  } else
-    stop("Directory could not be created.")
-  
-  return(ret)
-}
-
-
-
-
 #' @title Delete a Data Library
 #' @description The \code{lib_delete} function deletes a data library from
 #' the file system.  All data files associated with the library will be deleted.
@@ -567,6 +774,40 @@ lib_create <- function(directory_path) {
 #' use the \code{\link[base]{unlink}} function or other packaged functions.
 #' @param x The data library to delete.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add data to library
+#' lib_add(dat, mtcars)
+#' lib_add(dat, iris)
+#' 
+#' # Load library
+#' lib_load(dat)
+#' 
+#' # Examine workspace
+#' ls()
+#' # [1] "dat" "dat.iris" "dat.mtcars" "tmp"
+#' 
+#' # Examine library
+#' dat
+#' # library 'dat': 2 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #     Name Extension Rows Cols   Size        LastModified
+#' # 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 21:18:17
+#' # 2   iris       rds  150    5 7.5 Kb 2020-11-05 21:18:17
+#' 
+#' # Delete library
+#' lib_delete(dat)
+#' 
+#' #' # Examine workspace again
+#' ls()
+#' # [1] "tmp"
 #' @export
 lib_delete <- function(x) {
   
@@ -598,6 +839,19 @@ lib_delete <- function(x) {
 #' @param x The data library.
 #' @return The path of the data library as a single string.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Examine library path
+#' lib_path(dat)
+#' # [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpCSJ6Gc"
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_path <- function(x) {
   
@@ -647,6 +901,31 @@ lib_size <- function(x) {
 #' @param x The data library.
 #' @return A data frame of information about the library.
 #' @family lib
+#' @examples 
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Save some data to temp directory
+#' # for illustration purposes
+#' saveRDS(trees, file.path(tmp, "trees.rds"))
+#' saveRDS(rock, file.path(tmp, "rocks.rds"))
+#' saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
+#' 
+#' # Create data library
+#' libname(dat, tmp)
+#' 
+#' # Get library information
+#' info <- lib_info(dat)
+#' 
+#' # Examine info
+#' info
+#' #      Name Extension Rows Cols   Size        LastModified
+#' # 1 beaver1       rds  114    4 5.3 Kb 2020-11-05 21:27:57
+#' # 2   rocks       rds   48    4 3.1 Kb 2020-11-05 21:27:56
+#' # 3   trees       rds   31    3 2.4 Kb 2020-11-05 21:27:56
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 lib_info <- function(x) {
   
@@ -696,30 +975,66 @@ lib_info <- function(x) {
 }
 
 
-#' @title Set the Environment for the Library Functions
-#' @description The \code{lib_environment} function sets the working environment
-#' for the \strong{libr} package.  By default, the environment is set to the 
-#' current global environment.  If an alternative environment is desired, a 
-#' user may set it with this function. 
-#' @param env The environment to use.
-#' @return The new environment.
-#' @family lib
-#' @export
-lib_environment <- function(env = NULL) {
-  
-  if (is.null(env)) {
-   if (!is.null(options()[["libr.env"]])) {
-      e$env = as.environment(1)
-   } else {
-     e$env = options()[["libr.env"]]
-   }
-    
-  } else {
-    e$env = env
-  }
-  
-  return(env)
-}
+# Setting a new environment causes a lot of trouble, and would take
+# significant changes to make it work properly.  Will eliminate for now
+# and consider for a future version.  That means the global environment is 
+# the only environment available for now.
+
+# @title Set the Environment for the Library Functions
+# @description The \code{lib_env} function sets the working environment
+# for the \strong{libr} package.  By default, the environment is set to the
+# current global environment.  If an alternative environment is desired, a
+# user may set it with this function. You may also set the environment
+# with the option 'libr.env'.
+# @param env The environment to use.
+# @return The new environment.
+# @family lib
+# @examples
+# # Create new environment
+# env1 <- new.env()
+# 
+# # Assign new environment
+# lib_env(env1)
+# 
+# # Create temp directory
+# tmp <- tempdir()
+# 
+# # Create library
+# libname(dat, tmp)
+# 
+# # Add data to library
+# lib_add(dat, mtcars)
+# lib_add_dat, iris)
+# 
+# # Load library
+# lib_load(dat)
+# 
+# # Examine global environment
+# ls()
+# # [1] "env1" "tmp"
+# 
+# # Examine new environment
+# ls(envir = env1)
+# 
+# # Clean up
+# lib_delete(dat)
+# @export
+# lib_env <- function(env = NULL) {
+#   
+#   if (is.null(env)) {
+#    if (is.null(options()[["libr.env"]])) {
+#      if (is.null(e$env))
+#        e$env = as.environment(1)
+#    } else {
+#      e$env = options()[["libr.env"]]
+#    }
+#     
+#   } else {
+#     e$env = env
+#   }
+#   
+#   return(e$env)
+# }
 
 # Utility Functions -------------------------------------------------------
 
@@ -727,7 +1042,7 @@ lib_environment <- function(env = NULL) {
 #' @title Print a data library
 #' @description A class-specific instance of the \code{print} function for 
 #' data libraries.  The function prints the library in a summary manner.  
-#' Use \code{verbose = TRUE} to print the catalog as a list.
+#' Use \code{verbose = TRUE} to print the library as a list.
 #' @param x The library to print.
 #' @param ... Any follow-on parameters.
 #' @param verbose Whether or not to print the library in verbose style.
@@ -748,6 +1063,17 @@ lib_environment <- function(env = NULL) {
 #' 
 #' # Print library summary 
 #' print(dat)
+#' # library 'dat': 3 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #          Name Extension Rows Cols   Size        LastModified
+#' # 1        iris       rds  150    5 7.8 Kb 2020-11-05 22:26:59
+#' # 2 PlantGrowth       rds   30    2 2.5 Kb 2020-11-05 22:26:59
+#' # 3 ToothGrowth       rds   60    3 3.4 Kb 2020-11-05 22:26:59
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @import crayon
 #' @export
 print.lib <- function(x, ..., verbose = FALSE) {
@@ -812,7 +1138,11 @@ is.loaded.lib <- function(name) {
 #' libname(dat, tempdir()) 
 #'            
 #' # Test for "lib" class
-#' is.lib(dat)  
+#' is.lib(dat) 
+#' # [1] TRUE
+#' 
+#' is.lib(list())
+#' # [1] FALSE
 #' @export
 is.lib <- function(x) {
   
@@ -836,7 +1166,7 @@ getFileName <- function(file){
   return(ex[1])
 }
 
-
+#' @noRd
 getUniqueName <- function(nm, nms) {
   
   ret <- nm

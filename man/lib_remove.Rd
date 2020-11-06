@@ -17,16 +17,54 @@ The library with the requested item removed.
 }
 \description{
 The \code{lib_remove} function removes an item from the 
-data library, and deletes the source file for that data.
+data library, and deletes the source file for that data.  If the library
+is loaded, it will also remove that item from the workspace.
+}
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat, tmp)
+
+# Add data to the library
+lib_add(dat, mtcars)
+lib_add(dat, beaver1)
+lib_add(dat, iris)
+
+# Examine the library
+dat
+
+# library 'dat': 3 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#      Name Extension Rows Cols   Size        LastModified
+# 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
+# 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04
+# 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08
+
+# Remove items from the library
+lib_remove(dat, c("beaver1", "iris"))
+
+# Examine the library again
+dat
+# library 'dat': 1 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:40
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

@@ -18,14 +18,38 @@ about each item in the data library.  That information includes the item
 name, file extension, number of rows, number of columns, size in bytes, 
 the last modified date.
 }
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Save some data to temp directory
+# for illustration purposes
+saveRDS(trees, file.path(tmp, "trees.rds"))
+saveRDS(rock, file.path(tmp, "rocks.rds"))
+saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
+
+# Create data library
+libname(dat, tmp)
+
+# Get library information
+info <- lib_info(dat)
+
+# Examine info
+info
+#      Name Extension Rows Cols   Size        LastModified
+# 1 beaver1       rds  114    4 5.3 Kb 2020-11-05 21:27:57
+# 2   rocks       rds   48    4 3.1 Kb 2020-11-05 21:27:56
+# 3   trees       rds   31    3 2.4 Kb 2020-11-05 21:27:56
+
+# Clean up
+lib_delete(dat)
+}
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},

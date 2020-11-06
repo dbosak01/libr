@@ -2,7 +2,7 @@
 % Please edit documentation in R/libname.R
 \name{lib_load}
 \alias{lib_load}
-\title{Load a Library into the Global Environment}
+\title{Load a Library into the Workspace}
 \usage{
 lib_load(x)
 }
@@ -14,8 +14,42 @@ The loaded data library.
 }
 \description{
 The \code{lib_load} function loads a data library into
-the global environment.  The data frames will be loaded with 
-<library>.<data frame> syntax.
+an environment. By default this is the global environment.  The data frames 
+will be loaded with <library>.<data frame> syntax.  Loading the data frames
+into the environment makes them easy to access and use in your program.
+}
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Save some data to temp directory for illustration purposes
+saveRDS(iris, file.path(tmp, "iris.rds"))
+saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
+saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
+
+# Create library
+libname(dat, tmp)
+
+# Load library into workspace
+lib_load(dat)
+
+# Examine workspace
+ls()
+# [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"
+
+# Use some data
+summary(dat.PlantGrowth)
+summary(dat.ToothGrowth)
+
+# Unload library
+lib_unload(dat)
+
+# Examine workspace again
+ls()
+# [1] "dat" "tmp"
+
+# Clean up
+lib_delete(dat)
 }
 \seealso{
 \code{\link{lib_unload}} to unload the library.
@@ -24,9 +58,7 @@ Other lib:
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},

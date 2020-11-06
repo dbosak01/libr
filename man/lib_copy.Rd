@@ -23,13 +23,39 @@ path does not exist, the function will attempt to create it.  Note that
 the copy will result in the current data in memory written to the new
 destination directory.
 }
+\examples{
+# Create temp directory
+tmp <- tempdir()
+
+# Create library
+libname(dat1, tmp)
+
+# Add dat to library
+lib_add(dat1, mtcars)
+lib_add(dat1, iris)
+
+# Copy dat1 to dat2
+lib_copy(dat1, dat2, file.path(tmp, "copy"))
+
+# Examine dat2
+dat2
+# library 'dat2': 2 items
+# - attributes: not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 21:14:54
+# 2   iris       rds  150    5 7.5 Kb 2020-11-05 21:14:54
+
+# Clean up
+lib_delete(dat1)
+lib_delete(dat2)
+}
 \seealso{
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},
-\code{\link{lib_create}()},
 \code{\link{lib_delete}()},
-\code{\link{lib_environment}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

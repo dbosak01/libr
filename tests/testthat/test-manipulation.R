@@ -152,7 +152,7 @@ test_that("lib_add() function works as expected unloaded.", {
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
   
-  lib_add(dat, mtcars, iris, .name = c("fork", "bork"))
+  lib_add(dat, mtcars, iris, name = c("fork", "bork"))
   
   expect_equal(length(dat), 4)
   
@@ -174,7 +174,7 @@ test_that("lib_add() function works as expected loaded.", {
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
   
-  lib_add(dat, mtcars, iris, .name = c("fork", "bork"))
+  lib_add(dat, mtcars, iris, name = c("fork", "bork"))
   
   expect_equal(length(dat), 4)
   
@@ -441,4 +441,36 @@ test_that("lib_copy() works as expected.", {
 #   expect_equal(length(lst), 0)
 #   
 # })
-
+# 
+# test_that("lib_env() works as expected.", {
+#   
+#   env1 <- new.env()
+# 
+#   # Assign new environment
+#   lib_env(env1)
+# 
+#   # Create temp directory
+#   tmp <- tempdir()
+# 
+#   # Create library
+#   libname(dat, tmp)
+# 
+#   # Add data to library
+#   lib_add(dat, mtcars)
+#   lib_add(dat, iris)
+# 
+#   # Load library
+#   lib_load(dat)
+# 
+#   # Examine global environment
+#   ls()
+#   # [1] "env1" "tmp"
+# 
+#   # Examine new environment
+#   ls(envir = env1)
+# 
+#   # Clean up
+#   lib_delete(dat)
+#   
+#   
+# })
