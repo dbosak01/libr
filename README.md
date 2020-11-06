@@ -9,7 +9,7 @@
 
 <!-- badges: end -->
   
-  The **libr** package brings the concept of data libraries and data 
+  The **libr** package brings the concepts of data libraries and data 
 dictionaries to R.  A data library is an object used to define and manage
 an entire directory of data files.  A data dictionary is a data frame full
 of information about a data library, data frame, or tibble.  
@@ -33,6 +33,8 @@ The functions contained in the **libr** package are as follows:
 Note that the **libr** package is intended to be used with small and 
 medium-sized data sets.  It is not recommended for big data, as big data
 requires very careful control over which data is or is not loaded into memory.
+The **libr** package, on the other hand, tends to load all data into memory 
+indiscriminately.
 
 ## Example
 The following example will illustrate some basic functionality of the 
@@ -148,15 +150,27 @@ as well as copy or delete an entire library.
 The example below illustrates some of the additional functions:
 
 ```
+# Create temp directory
+tmp <- tempdir()
+
+# Create libraries
+libname(state1, tmp)
+libname(state2, file.path(tmp, "mod"))
+
+# Add data to library and adjust names
+lib_add(state1, state.name, state.area, state.region, state.abb,
+        name = c("name", "area", "region", "abb"))
+
+# Load library into memory
+lib_load(state1)
 
 
 
+# Clean up
+lib_delete(state1)
+lib_delete(state2)
 ```
 
-### Additional Functions
-There are several functions as part of the **libr** package.
-
-* `dictionary()`
 
 
 

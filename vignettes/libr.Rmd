@@ -1,0 +1,19 @@
+---
+title: "Creates Data Libraries and Dictionaries"
+author: "David J. Bosak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{libr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+# libr <img src="./man/images/books.svg" align="right" height="138" />
+

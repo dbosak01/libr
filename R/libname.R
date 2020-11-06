@@ -352,47 +352,55 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
   
   lbnm  <- deparse1(substitute(x, env = environment()))
   
-  nms <- as.character(substitute(c(...), env = environment()))
-  nms <- nms[2:length(nms)]  
-  
-  lst <- list(...)
-  
-  if (!is.null(name)) {
-    nms <- name
-  } 
-  
-  if (!is.null(type)) {
-    typ <- type
-  } else {
-    if (!is.null(attr(x, "type")))
-      typ <- attr(x, "type")
-    else 
-      typ <- "rds"
-  }
-  
-  i <- 1
-  for (nm in nms) {
-    if (nm %in% names(x))
-      warning(paste("The name", nm, "already exists in the library",
-                    lbnm, ". Data will be replaced."))
+  if (attr(x, "read_only") == FALSE) {
     
-    x[[nm]] <- lst[[i]]
-    attr(x[[nm]], "name") <- nm
-    attr(x[[nm]], "extension") <- typ
+    nms <- as.character(substitute(c(...), env = environment()))
+    nms <- nms[2:length(nms)]  
     
-    if (is.loaded.lib(lbnm)) {
-      
-      assign(paste0(lbnm, ".", nm), x[[nm]], envir = e$env)
+    lst <- list(...)
+    
+    if (!is.null(name)) {
+      nms <- name
+    } 
+    
+    if (!is.null(type)) {
+      typ <- type
+    } else {
+      if (!is.null(attr(x, "type")))
+        typ <- attr(x, "type")
+      else 
+        typ <- "rds"
     }
     
-    pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
+    i <- 1
+    for (nm in nms) {
+      if (nm %in% names(x))
+        warning(paste0("The name '", nm, "' already exists in the library '",
+                      lbnm, "'. Data will be replaced."))
+      
+      x[[nm]] <- lst[[i]]
+      attr(x[[nm]], "name") <- nm
+      attr(x[[nm]], "extension") <- typ
+      
+      if (is.loaded.lib(lbnm)) {
+        
+        assign(paste0(lbnm, ".", nm), x[[nm]], envir = e$env)
+      }
+      
+      pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
+      
+      writeData(x[[nm]], typ, pth)
+      
+      i <- i + 1
+    }
     
-    writeData(x[[nm]], typ, pth)
+    assign(lbnm, x, envir = e$env)
     
-    i <- i + 1
+  } else {
+    
+   stop(paste0("Cannot add to library '", lbnm, "' because it is read-only.")) 
   }
-  
-  assign(lbnm, x, envir = e$env)
+    
   
   return(x)
   
@@ -455,24 +463,30 @@ lib_remove <- function(x, name) {
   libnm <- deparse1(substitute(x, env = environment()))
   libpth <- attr(x, "path")
   
-  for (nm in name) {
-    
-    pth <- file.path(libpth, paste0(nm, ".", attr(x[[nm]], "extension")))
-    
-    if (!is.null(pth)) {
-      if (file.exists(pth))
-        file.remove(pth)
+  if (attr(x, "read_only") == FALSE) {
+    for (nm in name) {
+      
+      pth <- file.path(libpth, paste0(nm, ".", attr(x[[nm]], "extension")))
+      
+      if (!is.null(pth)) {
+        if (file.exists(pth))
+          file.remove(pth)
+      }
+      
+      x[[nm]] <- NULL
+      
+      if (is.loaded.lib(libnm)) {
+        gnm <- paste0(libnm, ".", nm)
+        rm(list = gnm, envir = e$env)
+      }
     }
     
-    x[[nm]] <- NULL
-    
-    if (is.loaded.lib(libnm)) {
-      gnm <- paste0(libnm, ".", nm)
-      rm(list = gnm, envir = e$env)
-    }
-  }
+    assign(libnm, x, envir = e$env)
   
-  assign(libnm, x, envir = e$env)
+  } else {
+    
+    stop(paste0("Cannot remove from library '", libnm, "' because it is read-only.")) 
+  }
   
   return(x)
 }
@@ -816,20 +830,28 @@ lib_delete <- function(x) {
   
   lnm <- deparse1(substitute(x, env = environment()))
   
-  if (is.loaded.lib(lnm))
-    lib_unload(x, TRUE, lnm)
+  if (attr(x, "read_only") == FALSE) {
   
-  lbpth <- attr(x, "path")
-  
-  for (nm in names(x)) {
-    pth <- file.path(lbpth, paste0(nm, ".", attr(x[[nm]], "extension")))
+    if (is.loaded.lib(lnm))
+      lib_unload(x, TRUE, lnm)
     
-    if (file.exists(pth))
-      file.remove(pth)
-    x[[nm]] <- NULL
-  }
+    lbpth <- attr(x, "path")
+    
+    for (nm in names(x)) {
+      pth <- file.path(lbpth, paste0(nm, ".", attr(x[[nm]], "extension")))
+      
+      if (file.exists(pth))
+        file.remove(pth)
+      x[[nm]] <- NULL
+    }
+    
+    rm(list = lnm, envir = e$env)
   
-  rm(list = lnm, envir = e$env)
+  } else {
+    
+   stop(paste0("Cannot delete library '", lnm, "' because it is read-only."))
+    
+  }
   
 }
 
@@ -972,12 +994,22 @@ lib_info <- function(x) {
     } else {
       ex <- attr(itm, "extension") 
     }
-      
+    
+    if (any(class(itm) %in% "data.frame")) {  
+      rws <- nrow(itm)
+      cls <- ncol(itm)
+    } else if (is.vector(itm) | is.atomic(itm) | is.list(itm)) {
+      rws <- length(itm)
+      cls <- 1
+    } else {
+      rws <- 0
+      cls <- 0 
+    }
     
     rw <- data.frame(Name = nm, 
                      Extension = ex,
-                     Rows = nrow(itm),
-                     Cols = ncol(itm),
+                     Rows = rws,
+                     Cols = cls,
                      Size = format(object.size(itm), units = "auto"),
                      LastModified = lm)
     

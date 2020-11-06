@@ -415,6 +415,19 @@ test_that("lib_copy() works as expected.", {
   
 })
 
+test_that("read-only flag works as expected.", {
+
+
+  libname(dat, base_path, "csv", read_only = TRUE)
+  
+  expect_error(lib_add(dat, mtcars))
+  expect_error(lib_remove(dat, "demo_study"))
+  expect_error(lib_delete(dat))
+  
+  
+})
+
+
 # test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
 #   
 #   alt_path <- paste0(base_path, "2")
