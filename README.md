@@ -30,11 +30,6 @@ The functions contained in the **libr** package are as follows:
 * `lib_path()`: Returns the path of a data library
 * `lib_size()`: Returns the size of the data library in bytes
 
-Note that the **libr** package is intended to be used with small and 
-medium-sized data sets.  It is not recommended for big data, as big data
-requires very careful control over which data is or is not loaded into memory.
-The **libr** package, on the other hand, tends to load all data into memory 
-indiscriminately.
 
 ## Example
 The following example will illustrate some basic functionality of the 
@@ -154,24 +149,62 @@ The example below illustrates some of the additional functions:
 tmp <- tempdir()
 
 # Create libraries
-libname(state1, tmp)
-libname(state2, file.path(tmp, "mod"))
+libname(s1, tmp)
 
 # Add data to library and adjust names
-lib_add(state1, state.name, state.area, state.region, state.abb,
+lib_add(s1, state.name, state.area, state.region, state.abb,
         name = c("name", "area", "region", "abb"))
 
-# Load library into memory
-lib_load(state1)
+# Copy library
+lib_copy(s1, s2, file.path(tmp, "orig"))
 
+# Remove data from library 1
+lib_remove(s1, name = c("name", "area", "region", "abb"))
 
+# Load libraries into memory
+lib_load(s1)
+lib_load(s2)
+
+s1.combined <- data.frame(name = s2.name, abb = s2.abb, 
+                              area = s2.area, region = s2.region)
+
+s1.east <- subset(s1.combined, region == "Northeast")
+s1.west <- subset(s1.combined, region == "West")
+s1.north <- subset(s1.combined, region == "North Central")
+s1.south <- subset(s1.combined, region == "South")
+
+# Sync workspace with library list
+lib_sync(s1)
+
+# Save library to disk
+lib_write(s1)
+
+# View path
+lib_path(s1)
+
+# View size
+lib_size(s1)
+
+# View info
+lib_info(s1)
+
+# Display dictionary
+dictionary(s1)
+
+# Unload libraries
+lib_unload(s1)
+lib_unload(s2)
 
 # Clean up
-lib_delete(state1)
-lib_delete(state2)
+lib_delete(s1)
+lib_delete(s2)
 ```
 
-
+Note that the **libr** package is intended to be used with small and 
+medium-sized data sets.  It is not recommended for big data, as big data
+requires very careful control over which data is or is not loaded into memory.
+The **libr** package, on the other hand, tends to load all data into memory 
+indiscriminately.
 
 
 

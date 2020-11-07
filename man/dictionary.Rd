@@ -13,4 +13,16 @@ dictionary(x)
 A function to create a data dictionary for a data frame,
 a tibble, or a data library.  The function will generate a tibble of 
 information about the data.  The tibble will contain the following columns:
+\itemize{
+  \item{\strong{Name:} The name of the data object.}
+  \item{\strong{Column:} The name of the column.}
+  \item{\strong{Class:} The class of the column.}
+  \item{\strong{Label:} The value of the label attribute.}
+  \item{\strong{Description:} A description applied to this column.}
+  \item{\strong{Format:} The value of the format attribute.}
+  \item{\strong{Width:} The max character width of the data in this column.}
+  \item{\strong{Justify:} The justification or alignment attribute value.}
+  \item{\strong{Rows:} The number of data rows.}
+  \item{\strong{NAs:} The number of NA values in this column.}
+}
 }
