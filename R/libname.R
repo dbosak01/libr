@@ -708,7 +708,7 @@ lib_write <- function(x, type = NULL) {
   
   } else {
     
-    stop(paste0("Cannot write to library '", lnm, "' because it is read-only."))
+    stop(paste0("Cannot write to library '", lbnm, "' because it is read-only."))
   }
   
   return(x)
