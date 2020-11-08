@@ -40,3 +40,27 @@ test_that("comp function work as expected.", {
   expect_equal(comp(v1, v2), FALSE)
   
 })
+
+test_that("strong_eq function works as expected.", {
+  
+  v1 <- c(1, 2, 3, 4)
+  v2 <- c(1, 2, 3, 4)
+  expect_equal(all(strong_eq(v1, v2)), TRUE)
+  
+  v1 <- c(1, 2, 2, 4)
+  v2 <- c(1, 2, 3, 4)
+  expect_equal(all(strong_eq(v1, v2)), FALSE)
+  
+  v1 <- c(1, NA, 3, 4)
+  v2 <- c(1, 2, 3, 4)
+  expect_equal(all(strong_eq(v1, v2)), FALSE)
+  
+  v1 <- c(NA, NA, NA, NA)
+  v2 <- c(NA, NA, NA, NA)
+  expect_equal(all(strong_eq(v1, v2)), TRUE)
+  
+  v1 <- c(NA, NA, NA, NA)
+  v2 <- c(NA, NA, 1, NA)
+  expect_equal(all(strong_eq(v1, v2)), FALSE)
+  
+})

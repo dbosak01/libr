@@ -674,35 +674,42 @@ lib_write <- function(x, type = NULL) {
   
   lbnm <- deparse1(substitute(x, env = environment()))
   
-  if (is.loaded.lib(lbnm)) {
-    x <- lib_sync(x, lbnm)
+  if (attr(x, "read_only") != TRUE) { 
+  
+    if (is.loaded.lib(lbnm)) {
+      x <- lib_sync(x, lbnm)
+    }
+      
+    nms <- names(x)
+    
+    # Get path
+    libpth <- attr(x, "path")
+    
+    for (nm in nms) {
+      
+      styp <- attr(x[[nm]], "extension")
+      if (!is.null(type))
+        ext <- type
+      else if (!is.null(attr(x, "type")))
+        ext <- attr(x, "type")
+      else if (!is.null(styp) && !is.na(styp))
+        ext <- styp
+      else
+        ext <- "rds"
+      
+      attr(x[[nm]], "extension") <- ext
+      
+      fp <- file.path(libpth, paste0(nm, ".", ext))
+  
+      writeData(x[[nm]], ext, fp)  
+    }
+    
+    assign(lbnm, x, envir = e$env)
+  
+  } else {
+    
+    stop(paste0("Cannot write to library '", lnm, "' because it is read-only."))
   }
-    
-  nms <- names(x)
-  
-  # Get path
-  libpth <- attr(x, "path")
-  
-  for (nm in nms) {
-    
-    styp <- attr(x[[nm]], "extension")
-    if (!is.null(type))
-      ext <- type
-    else if (!is.null(attr(x, "type")))
-      ext <- attr(x, "type")
-    else if (!is.null(styp) && !is.na(styp))
-      ext <- styp
-    else
-      ext <- "rds"
-    
-    attr(x[[nm]], "extension") <- ext
-    
-    fp <- file.path(libpth, paste0(nm, ".", ext))
-
-    writeData(x[[nm]], ext, fp)  
-  }
-  
-  assign(lbnm, x, envir = e$env)
   
   return(x)
 }

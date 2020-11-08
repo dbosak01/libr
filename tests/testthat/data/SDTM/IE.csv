@@ -1,0 +1,3 @@
+STUDYID,DOMAIN,USUBJID,IESEQ,IETESTCD,IETEST,IECAT,IEORRES,IESTRESC,VISITNUM,VISIT,VISITDY,IEDTC,IEDY
+ABC,IE,ABC-03-090,1,IN01,Subject must be between the ages of 18 and 75 years old inclusive.,INCLUSION,N,N,1,DAY 1,1,2006-12-06,1
+ABC,IE,ABC-06-162,1,EX11,Subject cannot have a history of hypercalcemia or kidney stones.,EXCLUSION,Y,Y,1,DAY 1,1,2006-12-28,1

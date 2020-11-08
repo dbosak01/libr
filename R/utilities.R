@@ -262,8 +262,7 @@ comp <- function(x1, x2) {
    } else {
      
      for (i in seq_along(x1)) {
-     
-       if (any(x1[[i]] != x2[[i]])) {
+       if (any(!strong_eq(x1[[i]], x2[[i]]))) {
          ret <- FALSE
          break
        }
@@ -275,7 +274,7 @@ comp <- function(x1, x2) {
      ret <- FALSE
    } else {
      
-     if (any(x1 != x2)) {
+     if (any(!strong_eq(x1, x2))) {
        ret <- FALSE
      }
    }
@@ -284,3 +283,27 @@ comp <- function(x1, x2) {
  return(ret)
 }
 
+#' @noRd
+strong_eq <- Vectorize(function(x1, x2) {
+  
+  ret <- TRUE
+  if (is.null(x1) & is.null(x2))
+    ret <- TRUE
+  else if (is.null(x1) & !is.null(x2))
+    ret <- FALSE
+  else if (!is.null(x1) & is.null(x2))
+    ret <- FALSE
+  else if (is.na(x1) & is.na(x2))
+    ret <- TRUE
+  else if (is.na(x1) & !is.na(x2))
+    ret <- FALSE
+  else if (!is.na(x1) & is.na(x2))
+    ret <- FALSE
+  else {
+    ret <- x1 == x2
+    
+  }
+  
+  return(ret)
+  
+})

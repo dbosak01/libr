@@ -418,8 +418,10 @@ test_that("read-only flag works as expected.", {
   libname(dat, base_path, "csv", read_only = TRUE)
   
   expect_error(lib_add(dat, mtcars))
-  expect_error(lib_remove(dat, "demo_study"))
+  expect_error(lib_remove(dat, "demo_studya"))
   expect_error(lib_delete(dat))
+  expect_error(lib_write(dat))
+  expect_error(lib_replace(dat, mtcars, "demo_studya"))
   
   
 })
@@ -516,6 +518,14 @@ test_that("lib_write non-changed xlsx data works as expected.", {
   expect_equal(info1[1, 6] == info2[1, 6], FALSE)
   
   lib_delete(dat2)
+  
+})
+
+test_that("lib_write works on SDTM data.", {
+  
+  libname(dat, file.path(base_path, "SDTM"), "csv")
+  
+  lib_write(dat)
   
 })
 
