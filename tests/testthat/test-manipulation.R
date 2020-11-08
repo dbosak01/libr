@@ -12,7 +12,7 @@ test_that("lib_load() and lib_unload() functions works as expected.", {
 
   
   # Should not get an error here
-  lib_unload(dat)
+  suppressWarnings(lib_unload(dat))
 
   lib_load(dat)
   

@@ -793,7 +793,7 @@ lib_sync <- function(x, name = NULL) {
     
   } else {
     
-    message("NOTE: library is not loaded") 
+    warning(paste0("Library '", libnm, "' is not loaded")) 
     
   }
   
