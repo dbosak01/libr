@@ -7,9 +7,6 @@ base_path <- "./data"
 
 test_that("lib_load() and lib_unload() functions works as expected.", {
   
-  # Should be able to create new directory if desired
-  #libname(dat, file.path(base_path, "forker"))
-  
   
   libname(dat, base_path, type = "csv")
 
@@ -427,6 +424,100 @@ test_that("read-only flag works as expected.", {
   
 })
 
+
+test_that("lib_write non-changed csv data works as expected.", {
+  
+  alt_path <- paste0(base_path, "2")
+  
+  libname(dat, base_path, "csv")
+  
+  lib_copy(dat, dat2, alt_path)
+  
+  info1 <- lib_info(dat2)
+  
+  lib_replace(dat2, mtcars, name = "demo_studya")
+  
+  info2 <- lib_info(dat2)
+
+  expect_equal(info1[2, 6] == info2[2, 6], TRUE)
+  expect_equal(info1[1, 6] == info2[1, 6], FALSE)
+  
+
+  lib_delete(dat2)
+  
+})
+
+test_that("lib_write non-changed rds data works as expected.", {
+  
+  alt_path <- paste0(base_path, "2")
+  
+  libname(dat, base_path, "rds")
+  
+  lib_copy(dat, dat2, alt_path)
+  
+  info1 <- lib_info(dat2)
+  
+  lib_replace(dat2, mtcars, name = "demo_studya")
+  
+  lib_write(dat2)
+  
+  info2 <- lib_info(dat2)
+  
+  expect_equal(info1[2, 6] == info2[2, 6], TRUE)
+  expect_equal(info1[1, 6] == info2[1, 6], FALSE)
+  
+  
+  lib_delete(dat2)
+  
+})
+
+
+test_that("lib_write non-changed sas7bdat data works as expected.", {
+  
+  alt_path <- paste0(base_path, "2")
+  
+  libname(dat, base_path, "sas7bdat")
+  
+  lib_copy(dat, dat2, alt_path)
+  
+  info1 <- lib_info(dat2)
+  
+  lib_replace(dat2, mtcars, name = "demo_studya")
+  
+  lib_write(dat2)
+  
+  info2 <- lib_info(dat2)
+  
+  expect_equal(info1[2, 6] == info2[2, 6], TRUE)
+  expect_equal(info1[1, 6] == info2[1, 6], FALSE)
+  
+  
+  lib_delete(dat2)
+  
+})
+
+test_that("lib_write non-changed xlsx data works as expected.", {
+  
+  alt_path <- paste0(base_path, "2")
+  
+  libname(dat, base_path, "xlsx")
+  
+  lib_copy(dat, dat2, alt_path)
+  
+  info1 <- lib_info(dat2)
+  
+  lib_replace(dat2, mtcars, name = "demo_studya")
+  
+  lib_write(dat2)
+  
+  info2 <- lib_info(dat2)
+  
+  expect_equal(info1[2, 6] == info2[2, 6], TRUE)
+  expect_equal(info1[1, 6] == info2[1, 6], FALSE)
+  
+  lib_delete(dat2)
+  
+})
 
 # test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
 #   

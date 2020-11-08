@@ -41,6 +41,26 @@ test_that("dictionary() function works as expected with df.", {
 })
 
 
+
+test_that("dictionary() function works as expected with tibble.", {
+  
+  library(tibble)
+  
+  crs <- tibble(name = rownames(mtcars), mtcars)
+  
+  attr(crs$name, "label") <- "Car Name"
+  attr(crs$name, "description") <- "Derived from rownames"
+  crs$type <- ifelse(crs$mpg > 20, "High", "Low")
+  attr(crs$mpg, "format") <- "%.1f"
+  attr(crs$hp, "justify") <- "left"
+  
+  res <- dictionary(crs)
+  
+  expect_equal(nrow(res), 13)
+  
+})
+
+
 test_that("dictionary() function works as expected with lib.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars)
@@ -49,6 +69,7 @@ test_that("dictionary() function works as expected with lib.", {
   attr(crs$name, "description") <- "Derived from rownames"
   crs$type <- ifelse(crs$mpg > 20, "High", "Low")
   attr(crs$mpg, "format") <- "%.1f"
+  attr(crs$name, "justify") <- "left"
   
   dat <- libname(dat, tempdir())
   

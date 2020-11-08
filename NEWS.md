@@ -11,6 +11,7 @@ A package to create data libraries and data dictionaries:
 ** lib_sync(): Synchronizes the workspace with the library list
 ** lib_write(): Writes library data to the file system
 ** lib_add(): Adds data to a library
+** lib_replace(): Replaces data in a library
 ** lib_remove(): Removes data from a library
 ** lib_copy(): Copies a data library
 ** lib_delete(): Deletes a data library

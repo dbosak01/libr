@@ -407,6 +407,118 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
 }
 
 
+#' @title Replace Data in a Data Library
+#' @description The \code{\link{lib_replace}} function replaces a data frame
+#' in an existing data library.  The function will both replaced the data
+#' in the library list, and immediately write the data to the library
+#' directory location.  The data will be written in the file format
+#' associated with the library.  If no file format is associated with 
+#' the library, it will be written as an RDS file.  
+#' @param x The library to replace data in.
+#' @param ... The data frame(s) to replace.
+#' @param type The type of file format to assign to this data. By default,
+#' the function will assign the type associated with the library.  If no
+#' type is associated with the library, the type will be assigned "rds".
+#' @param name The reference name to use for the data.  By default,
+#' the name will be the variable name.  To assign a name different
+#' from the variable name, assign a quoted name to this parameter.  If more
+#' than one data set is being appended, assign a vector of quoted names.
+#' @family lib
+#' @examples 
+#' #' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add data to the library
+#' lib_add(dat, mtcars)
+#' 
+#' # Examine the library
+#' dat
+#' # library 'dat': 3 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size        LastModified
+#' # 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
+#' 
+#' # Replace data with subsets
+#' lib_replace(dat, mtcars[1:10, 1:5], name = "mtcars")
+#' 
+#' # Examine the library again
+#' dat
+#' # library 'dat': 3 items
+#' # - attributes: not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size        LastModified
+#' # 1  mtcars       rds   10    5 7.5 Kb 2020-11-05 19:33:00
+#' 
+#' # Clean up
+#' lib_delete(dat)
+#' @export
+lib_replace <- function(x, ..., type = NULL, name = NULL) {
+  
+  if (all(class(x) != "lib"))
+    stop("Object must be a data library.")
+  
+  lbnm  <- deparse1(substitute(x, env = environment()))
+  
+  if (attr(x, "read_only") == FALSE) {
+    
+    nms <- as.character(substitute(c(...), env = environment()))
+    nms <- nms[2:length(nms)]  
+    
+    lst <- list(...)
+    
+    if (!is.null(name)) {
+      nms <- name
+    } 
+    
+    if (!is.null(type)) {
+      typ <- type
+    } else {
+      if (!is.null(attr(x, "type")))
+        typ <- attr(x, "type")
+      else 
+        typ <- "rds"
+    }
+    
+    i <- 1
+    for (nm in nms) {
+      if (!nm %in% names(x))
+        warning(paste0("The name '", nm, "' does not exist in the library '",
+                       lbnm, "'. Data will be added."))
+      
+      x[[nm]] <- lst[[i]]
+      attr(x[[nm]], "name") <- nm
+      attr(x[[nm]], "extension") <- typ
+      
+      if (is.loaded.lib(lbnm)) {
+        
+        assign(paste0(lbnm, ".", nm), x[[nm]], envir = e$env)
+      }
+      
+      pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
+      
+      writeData(x[[nm]], typ, pth)
+      
+      i <- i + 1
+    }
+    
+    assign(lbnm, x, envir = e$env)
+    
+  } else {
+    
+    stop(paste0("Cannot replace in library '", lbnm, "' because it is read-only.")) 
+  }
+  
+  
+  return(x)
+  
+}
+
 #' @title Remove Data from a Data Library
 #' @description The \code{lib_remove} function removes an item from the 
 #' data library, and deletes the source file for that data.  If the library
@@ -1084,192 +1196,3 @@ lib_info <- function(x) {
 #   
 #   return(e$env)
 # }
-
-# Utility Functions -------------------------------------------------------
-
-
-#' @title Print a data library
-#' @description A class-specific instance of the \code{print} function for 
-#' data libraries.  The function prints the library in a summary manner.  
-#' Use \code{verbose = TRUE} to print the library as a list.
-#' @param x The library to print.
-#' @param ... Any follow-on parameters.
-#' @param verbose Whether or not to print the library in verbose style.
-#' By default, the parameter is FALSE, meaning to print in summary style.
-#' @return The object, invisibly.
-#' @family lib
-#' @examples 
-#' # Create temp directory
-#' tmp <- tempdir()
-#' 
-#' # Save some data to temp directory
-#' saveRDS(iris, file.path(tmp, "iris.rds"))
-#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
-#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
-#' 
-#' # Create data library
-#' libname(dat, tmp)
-#' 
-#' # Print library summary 
-#' print(dat)
-#' # library 'dat': 3 items
-#' # - attributes: not loaded
-#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
-#' # - items:
-#' #          Name Extension Rows Cols   Size        LastModified
-#' # 1        iris       rds  150    5 7.8 Kb 2020-11-05 22:26:59
-#' # 2 PlantGrowth       rds   30    2 2.5 Kb 2020-11-05 22:26:59
-#' # 3 ToothGrowth       rds   60    3 3.4 Kb 2020-11-05 22:26:59
-#' 
-#' # Clean up
-#' lib_delete(dat)
-#' @import crayon
-#' @export
-print.lib <- function(x, ..., verbose = FALSE) {
-  
-  if (verbose == TRUE) {
-    
-    print(unclass(x))  
-    
-  } else {
-    
-    grey60 <- make_style(grey60 = "#999999")
-    
-    cat(grey60(paste0("# library '",  attr(x, "name"), "': ", length(x), 
-                      " items\n")))
-    
-    at <- paste("- attributes:")
-    if (!is.null(attr(x, "type")))
-      at <- paste(at, attr(x, "type"))
-    if (attr(x, "read_only"))
-      at <- paste(at, "read_only")
-    if (attr(x, "loaded"))
-      at <- paste(at, "loaded\n")
-    else 
-      at <- paste(at, "not loaded\n")
-    
-    cat(at)
-    cat(paste0("- path: ", attr(x, "path"), "\n"))
-    
-    if (length(x) > 0)
-      cat("- items:\n")
-    
-    dat <- lib_info(x)
-    
-    print(dat)
-
-  }
-  
-  invisible(x)
-}
-
-
-#' @noRd
-is.loaded.lib <- function(name) {
-  
- lb <- get(name, envir = e$env)
- 
- ret <- attr(lb, "loaded")
-  
- return(ret)
-}
-
-
-#' @title Class test for a data library
-#' @description This function tests whether an object is a data library.  The
-#' data library has a class of "lib".  
-#' @param x The object to test.
-#' @return TRUE or FALSE, depending on whether or not the object is a 
-#' data library.
-#' @family lib
-#' @examples 
-#' # Create format catalog
-#' libname(dat, tempdir()) 
-#'            
-#' # Test for "lib" class
-#' is.lib(dat) 
-#' # [1] TRUE
-#' 
-#' is.lib(list())
-#' # [1] FALSE
-#' @export
-is.lib <- function(x) {
-  
-  ret <- FALSE
-  if (any(class(x) == "lib"))
-    ret <-  TRUE
-  
-  return(ret)
-}
-
-
-#' @noRd
-getExtension <- function(file){ 
-  ex <- strsplit(basename(file), split="\\.")[[1]]
-  return(ex[-1])
-} 
-
-#' @noRd
-getFileName <- function(file){ 
-  ex <- strsplit(basename(file), split="\\.")[[1]]
-  return(ex[1])
-}
-
-#' @noRd
-getUniqueName <- function(nm, nms) {
-  
-  ret <- nm
-  pos <- match(nm, nms)
-  if (!is.na(pos)) {
-    
-    ex <- strsplit(basename(nm), split="\\_")[[1]]
-    #print(ex)
-    num <- as.numeric(ex[-1])
-    #print(num)
-    if (length(num) == 0 )
-      ret <- paste0(nm, "_1")
-    else if (is.na(num))
-      ret <- paste0(nm, "_1")
-    else {
-      tmp <- sub(paste0("_", num), "", nm)
-      ret <- paste0(tmp, "_", num + 1)
-    }
-    
-  }
-  
-  return(ret)
-}
-
-#' @noRd
-writeData <- function(x, ext, file_path) {
-  
-  if (file.exists(file_path))
-    file.remove(file_path)
-  
-  
-  if (ext == "csv") {
-    
-    write_csv(x, file_path)
-    
-  } else if (ext == "rds") {
-    
-    write_rds(x, file_path)
-    
-  } else if (ext == "sas7bdat") {
-    
-    write_sas(x, file_path)
-    
-  } else if (ext == "xlsx") {
-    
-    openxlsx::write.xlsx(x, file_path)
-
-  } else if (ext == "xls") {
-
-    message(paste("NOTE: Libr cannot write xls files. Writing xlsx instead."))
-      
-    openxlsx::write.xlsx(x, file_path)
-  }  
-  
-  
-}
-

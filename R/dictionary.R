@@ -19,6 +19,34 @@
 #'   \item{\strong{NAs:} The number of NA values in this column.}
 #' }
 #' @import tibble
+#' @examples 
+#' #' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat, tmp)
+#' 
+#' # Add data to the library
+#' lib_add(dat, beaver1)
+#' lib_add(dat, iris)
+#' 
+#' # Examine the dictionary for the library
+#' dictionary(dat)
+#' # A tibble: 9 x 10
+#' # Name    Column       Class   Label Description Format Width Justify  Rows   NAs
+#' # <chr>   <chr>        <chr>   <lgl> <lgl>       <lgl>  <lgl> <lgl>   <int> <int>
+#' # 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0
+#' # 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0
+#' # 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0
+#' # 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0
+#' # 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0
+#' # 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0
+#' # 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0
+#' # 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0
+#' # 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 dictionary <- function(x) {
   

@@ -20,6 +20,7 @@ The functions contained in the \strong{libr} package are as follows:
   list}
   \item{\code{\link{lib_write}}: Writes library data to the file system}
   \item{\code{\link{lib_add}}: Adds data to a library}
+  \item{\code{\link{lib_replace}}: Replaces data in a library}
   \item{\code{\link{lib_remove}}: Removes data from a library}
   \item{\code{\link{lib_copy}}: Copies a data library}
   \item{\code{\link{lib_delete}}: Deletes a data library}

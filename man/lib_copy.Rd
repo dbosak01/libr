@@ -60,6 +60,7 @@ Other lib:
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},
+\code{\link{lib_replace}()},
 \code{\link{lib_size}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
