@@ -98,3 +98,102 @@ test_that("libname() function works as expected with new directory", {
 })
 
 
+test_that("libname() function works as expected within a function.", {
+  
+  libname(dat, tempdir())
+  
+  lib_load(dat)
+  
+  dat.cars <- mtcars
+  dat.iris <- iris
+  
+  lib_unload(dat)
+  
+  expect_equal(length(dat), 2)
+  
+  
+})
+
+test_that("libname() function works as expected within multiple functions.", {
+  
+  libname(dat, base_path, "csv")
+  
+  
+  func1 <- function() {
+    libname(dat, tempdir())
+    
+    lib_add(dat, mtcars)
+    
+    ret <- names(dat)
+  
+    lib_delete(dat)
+    
+    return(ret)
+  }
+  
+  
+  func2 <- function() {
+    
+    alt <- paste0(base_path, "2")
+    libname(dat, alt)
+    
+    lib_add(dat, iris, beaver1)
+    
+    ret <- names(dat)
+
+    
+    lib_delete(dat)
+    
+    return(ret)
+  }
+  
+  res1 <- func1()
+  res2 <- func2()
+  
+  
+  expect_equal(names(dat), c("demo_studya", "demo_studyb")) 
+  expect_equal(res1, c("mtcars")) 
+  expect_equal(res2, c("iris", "beaver1")) 
+})
+
+test_that("libname() function works as expected with nested functions.", {
+  
+  libname(dat, base_path, "csv")
+  
+  
+  func1 <- function() {
+    libname(dat, tempdir())
+    
+    lib_add(dat, mtcars)
+    
+    ret <- names(dat)
+
+    lib_delete(dat)
+    
+    return(ret)
+  }
+  
+  func2 <- function() {
+    
+    alt <- paste0(base_path, "2")
+    libname(dat, alt)
+    
+    lib_add(dat, iris, beaver1)
+    
+    ret <- list()
+    ret[["func2"]] <- names(dat)
+    ret[["func1"]] <- func1()
+    
+    lib_delete(dat)
+    
+    return(ret)
+  }
+  
+  res <- func2()
+
+  expect_equal(names(dat), c("demo_studya", "demo_studyb")) 
+  expect_equal(res[["func1"]], c("mtcars")) 
+  expect_equal(res[["func2"]], c("iris", "beaver1")) 
+})
+
+

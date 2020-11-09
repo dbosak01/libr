@@ -4,7 +4,14 @@
 \alias{libname}
 \title{Create a data library}
 \usage{
-libname(name, directory_path, type = NULL, read_only = FALSE, ...)
+libname(
+  name,
+  directory_path,
+  type = NULL,
+  read_only = FALSE,
+  ...,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{name}{The unquoted name of the library to create.  This name will 

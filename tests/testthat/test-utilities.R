@@ -64,3 +64,5 @@ test_that("strong_eq function works as expected.", {
   expect_equal(all(strong_eq(v1, v2)), FALSE)
   
 })
+
+

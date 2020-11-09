@@ -25,6 +25,7 @@ Imports: tibble,
          readxl,
          haven,
          openxlsx,
-         crayon
+         crayon, 
+         tools
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

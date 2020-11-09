@@ -46,7 +46,7 @@ test_that("lib_info() works as expected.", {
   info <- lib_info(dat)
   
   expect_equal(nrow(info) > 0, TRUE)
-  expect_equal(info[1, "Size"],  "10.7 Kb")
+  expect_equal(info[1, "Size"],  "11.2 Kb")
   
   
 })
@@ -85,8 +85,8 @@ test_that("lib_sync() function works as expected.", {
   bcount <- nrow(dat.demo_studyb)
 
   tmp <- dat.demo_studya
-  dat.demo_studya <<- dat.demo_studyb
-  dat.demo_studyb <<- tmp
+  dat.demo_studya <- dat.demo_studyb
+  dat.demo_studyb <- tmp
 
   dat <- lib_sync(dat)
 
@@ -112,7 +112,7 @@ test_that("lib_sync() function can add a new item from workspace.", {
   
   lib_load(dat)
 
-  dat.demo_studyc <<- mtcars
+  dat.demo_studyc <- mtcars
   
   lib_sync(dat)
   
@@ -128,7 +128,7 @@ test_that("lib_unload() function can add a new item from workspace.", {
   
   lib_load(dat)
   
-  dat.demo_studyc <<- mtcars
+  dat.demo_studyc <- mtcars
   
   lib_unload(dat)
   
@@ -382,7 +382,7 @@ test_that("lib_write() function can add a new item from workspace.", {
 
   lib_load(dat)
 
-  dat.demo_studyc <<- mtcars
+  dat.demo_studyc <- mtcars
 
   lib_write(dat)
 
@@ -528,6 +528,31 @@ test_that("lib_write works on SDTM data.", {
   lib_write(dat)
   
 })
+
+test_that("force option works as expected.", {
+  
+  tmp <- tempdir()
+  
+  libname(dat, tmp)
+  
+  
+  lib_add(dat, mtcars)
+  
+  res <- lib_info(dat)
+  
+  Sys.sleep(2)
+  
+  lib_write(dat, force = TRUE)
+  
+  res2 <- lib_info(dat)
+  
+  expect_equal(res[1, 6] == res2[1, 6],  FALSE)
+  
+  lib_delete(dat)
+  
+})
+
+
 
 # test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
 #   

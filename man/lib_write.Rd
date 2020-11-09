@@ -4,7 +4,7 @@
 \alias{lib_write}
 \title{Write a Data Library to the File System}
 \usage{
-lib_write(x, type = NULL)
+lib_write(x, type = NULL, force = FALSE)
 }
 \arguments{
 \item{x}{The format catalog to write.}
@@ -17,6 +17,9 @@ no matter from which type of file they were input.  If the type is
 passed as a single string, all data files will be saved as that single type.
 The type can also be passed as a named vector of types, with each name 
 corresponding to the name of the data frame in the library.}
+
+\item{force}{Force writing each data file to disk, even if it has not 
+changed.}
 }
 \value{
 The saved data library.
@@ -34,6 +37,13 @@ file types and save the data in the indicated file format.
 The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
 and a plain text file format.  Data read in xls file format will be saved 
 as an xlsx.
+
+By default, the \code{lib_write} function will not write data that has 
+not changed.  Prior to writing a file, \code{lib_write} will compare the 
+data in memory to the data on disk.  If there are differences in the data,
+the function will overwrite the version on disk.  To override the default
+behavior, use the \code{force} option to force \code{lib_write} to write
+every data file to disk.
 }
 \examples{
 # Create temp directory

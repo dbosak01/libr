@@ -77,9 +77,11 @@ e$env <- as.environment(1)
 #' @import readxl
 #' @import haven
 #' @import utils
+#' @import tools
 #' @export
 libname <- function(name, directory_path, type = NULL, 
-                    read_only = FALSE, ...) {
+                    read_only = FALSE, ..., env = parent.frame()) {
+  e$env <- env
   
   if (!file.exists(directory_path))
     dir.create(directory_path)
@@ -142,6 +144,8 @@ libname <- function(name, directory_path, type = NULL,
         attr(dat, "name") <- nm
         attr(dat, "extension") <- ext
         attr(dat, "path") <- fp
+        attr(dat, "checksum") <- md5sum(fp)
+
         l[[nm]] <- dat
       }
     }
@@ -344,6 +348,7 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' 
 #' # Clean up
 #' lib_delete(dat)
+#' @import tools
 #' @export
 lib_add <- function(x, ..., type = NULL, name = NULL) {
   
@@ -390,6 +395,9 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
       writeData(x[[nm]], typ, pth)
+      
+      attr(x[[nm]], "checksum") <- md5sum(pth)
+
       
       i <- i + 1
     }
@@ -503,6 +511,9 @@ lib_replace <- function(x, ..., type = NULL, name = NULL) {
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
       writeData(x[[nm]], typ, pth)
+      
+      attr(x[[nm]], "checksum") <- md5sum(pth)
+
       
       i <- i + 1
     }
@@ -618,6 +629,13 @@ lib_remove <- function(x, name) {
 #' and a plain text file format.  Data read in xls file format will be saved 
 #' as an xlsx.
 #' 
+#' By default, the \code{lib_write} function will not write data that has 
+#' not changed.  Prior to writing a file, \code{lib_write} will compare the 
+#' data in memory to the data on disk.  If there are differences in the data,
+#' the function will overwrite the version on disk.  To override the default
+#' behavior, use the \code{force} option to force \code{lib_write} to write
+#' every data file to disk.
+#' 
 #' @param x The format catalog to write.
 #' @param type The type of data library. Default is NULL, meaning the library
 #' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
@@ -627,6 +645,8 @@ lib_remove <- function(x, name) {
 #' passed as a single string, all data files will be saved as that single type.
 #' The type can also be passed as a named vector of types, with each name 
 #' corresponding to the name of the data frame in the library.
+#' @param force Force writing each data file to disk, even if it has not 
+#' changed.
 #' @return The saved data library.
 #' @family lib
 #' @import haven
@@ -667,7 +687,7 @@ lib_remove <- function(x, name) {
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-lib_write <- function(x, type = NULL) {
+lib_write <- function(x, type = NULL, force = FALSE) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -701,7 +721,9 @@ lib_write <- function(x, type = NULL) {
       
       fp <- file.path(libpth, paste0(nm, ".", ext))
   
-      writeData(x[[nm]], ext, fp)  
+      writeData(x[[nm]], ext, fp, force)  
+      
+      attr(x[[nm]], "checksum") <- md5sum(fp)
     }
     
     assign(lbnm, x, envir = e$env)
@@ -889,6 +911,9 @@ lib_copy <- function(x, nm, directory_path) {
     fp <- file.path(directory_path, paste0(nm, ".", ext))
     
     writeData(cpy[[nm]], ext, fp)  
+    
+    attr(cpy[[nm]], "checksum") <- md5sum(fp)
+
   }
   
   assign(newlib, cpy, envir = e$env)
@@ -964,7 +989,8 @@ lib_delete <- function(x) {
       x[[nm]] <- NULL
     }
     
-    rm(list = lnm, envir = e$env)
+    if (lnm %in% ls(envir = e$env))
+      rm(list = lnm, envir = e$env)
   
   } else {
     

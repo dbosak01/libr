@@ -155,89 +155,67 @@ getUniqueName <- function(nm, nms) {
 }
 
 
-# if (ext == "csv") {
-#   
-#   dat <- read_csv(fp, ...)
-#   
-# } else if (ext == "rds") {
-#   
-#   dat <- read_rds(fp, ...)
-#   
-# } else if (ext == "sas7bdat") {
-#   
-#   dat <- read_sas(fp, ...)
-#   
-# } else if (ext == "xlsx") {
-#   
-#   dat <- read_xlsx(fp, ...)
-#   
-# } else if (ext == "xls") {
-#   
-#   dat <- read_xls(fp, ...)
-#   
-# } 
-
+#' @import tools
 #' @noRd
-writeData <- function(x, ext, file_path) {
+writeData <- function(x, ext, file_path, force = FALSE) {
   
+  # Get checksum on file
+  if (file.exists(file_path))
+    cs1 <- md5sum(file_path)
+  else 
+    cs1 <- "a"
+  
+  # Get checksum on library data
+  cs2 <- attr(x, "checksum")
+  if (is.null(cs2))
+    cs2 <- "b"
+  
+  # Compare checksums
+  cs_comp <- cs1 == cs2
   
   if (ext == "csv") {
-    
-    if (file.exists(file_path)) {
-      dat <- read_csv(file_path)
-      if (!comp(x, dat)) {
+  
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
         file.remove(file_path)
-        write_csv(x, file_path)
-      }
-      
-    } else
       write_csv(x, file_path)
+    }
     
   } else if (ext == "rds") {
     
-    if (file.exists(file_path)) {
-      dat <- read_rds(file_path)
-      if (!comp(x, dat)) {
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
         file.remove(file_path)
-        write_rds(x, file_path)
-      }
-    } else
       write_rds(x, file_path)
-    
+    }
+
   } else if (ext == "sas7bdat") {
     
-    if (file.exists(file_path)) {
-      dat <- read_sas(file_path)
-      if (!comp(x, dat)) {
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
         file.remove(file_path)
-        write_sas(x, file_path)
-      }
-    } else
       write_sas(x, file_path)
+    }
+
     
   } else if (ext == "xlsx") {
-    
-    if (file.exists(file_path)) {
-      dat <- read_xlsx(file_path, )
-      if (!comp(x, dat)) {
+  
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
         file.remove(file_path)
-        openxlsx::write.xlsx(x, file_path)
-      }
-    } else
       openxlsx::write.xlsx(x, file_path)
-    
+    }
+
   } else if (ext == "xls") {
     
     message(paste("NOTE: Libr cannot write xls files. Writing xlsx instead."))
     
-    if (file.exists(file_path)) {
-      dat <- read_xlsx(file_path)
-      if (!comp(x, dat)) {
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
         file.remove(file_path)
-        openxlsx::write.xlsx(x, file_path)
-      }
-    } else
       openxlsx::write.xlsx(x, file_path)
+    }
+
   }  
   
   
@@ -307,3 +285,20 @@ strong_eq <- Vectorize(function(x1, x2) {
   return(ret)
   
 })
+
+get_id <- function(n = 1, seed_no = 1, id_len = 5){
+  set.seed(seed_no)
+  pool <- c(letters, LETTERS, 0:9)
+  
+  ret <- character(n) 
+  for(i in seq(n)){
+    this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
+    while(this_res %in% ret){ 
+      this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
+    }
+    ret[i] <- this_res
+  }
+  return(ret)
+}
+
+get_id()
