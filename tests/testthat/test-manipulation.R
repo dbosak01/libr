@@ -139,7 +139,7 @@ test_that("lib_unload() function can add a new item from workspace.", {
 
 test_that("lib_add() function works as expected unloaded.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   lib_add(dat, mtcars, iris)
@@ -159,7 +159,7 @@ test_that("lib_add() function works as expected unloaded.", {
 
 test_that("lib_add() function works as expected loaded.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   lib_load(dat)
@@ -183,7 +183,7 @@ test_that("lib_add() function works as expected loaded.", {
 
 test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   lib_add(dat, mtcars, iris)
@@ -201,7 +201,7 @@ test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
 
 test_that("lib_add(), lib_remove() functions work as expected loaded.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   lib_load(dat)
@@ -227,7 +227,7 @@ test_that("lib_add(), lib_remove() functions work as expected loaded.", {
 
 test_that("lib_add() function can add a new items of different types.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   # RDS
@@ -292,7 +292,7 @@ test_that("lib_add() function can add a new items of different types.", {
 
 test_that("lib_write() function can add a new item and save as rds.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path)
   
   lib_add(dat, mtcars)
@@ -312,7 +312,7 @@ test_that("lib_write() function can add a new item and save as rds.", {
 
 test_that("lib_add() function can add a new item and save as csv", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path, type = "csv")
   
   lib_add(dat, mtcars)
@@ -328,7 +328,7 @@ test_that("lib_add() function can add a new item and save as csv", {
 
 test_that("lib_add() function can add a new item and save as xslx", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path, type = "xlsx")
   
   lib_add(dat, mtcars)
@@ -344,7 +344,7 @@ test_that("lib_add() function can add a new item and save as xslx", {
 
 test_that("lib_add() function can add a new item and save as rds", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path, type = "rds")
   
   lib_add(dat, mtcars)
@@ -360,7 +360,7 @@ test_that("lib_add() function can add a new item and save as rds", {
 
 test_that("lib_add() function can add a new item and save as sas7bdat", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path, type = "sas7bdat")
   
   lib_add(dat, mtcars)
@@ -376,7 +376,7 @@ test_that("lib_add() function can add a new item and save as sas7bdat", {
 
 test_that("lib_write() function can add a new item from workspace.", {
 
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   libname(dat, alt_path, type = "csv")
 
 
@@ -399,7 +399,7 @@ test_that("lib_write() function can add a new item from workspace.", {
 
 test_that("lib_copy() works as expected.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   
   libname(dat, base_path, "csv")
   
@@ -429,7 +429,7 @@ test_that("read-only flag works as expected.", {
 
 test_that("lib_write non-changed csv data works as expected.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <-tempdir()
   
   libname(dat, base_path, "csv")
   
@@ -451,7 +451,7 @@ test_that("lib_write non-changed csv data works as expected.", {
 
 test_that("lib_write non-changed rds data works as expected.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   
   libname(dat, base_path, "rds")
   
@@ -476,7 +476,7 @@ test_that("lib_write non-changed rds data works as expected.", {
 
 test_that("lib_write non-changed sas7bdat data works as expected.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   
   libname(dat, base_path, "sas7bdat")
   
@@ -500,7 +500,7 @@ test_that("lib_write non-changed sas7bdat data works as expected.", {
 
 test_that("lib_write non-changed xlsx data works as expected.", {
   
-  alt_path <- paste0(base_path, "2")
+  alt_path <- tempdir()
   
   libname(dat, base_path, "xlsx")
   
@@ -553,63 +553,3 @@ test_that("force option works as expected.", {
 })
 
 
-
-# test_that("lib_add(), lib_write(), and lib_delete() functions work as expected.", {
-#   
-#   alt_path <- paste0(base_path, "2")
-#   libname(dat, alt_path)
-#   
-#   
-#   lib_add(dat, mtcars)
-#   lib_add(dat, iris)
-#   
-#   inf <- lib_info(dat)
-#   
-#   expect_equal(length(inf), 2)
-#   
-#   lib_write(dat)
-#   
-#   lst <- list.files(alt_path)
-#   
-#   expect_equal(length(lst), 2)
-#   
-#   lib_delete(dat)
-#   
-#   lst <- list.files(alt_path)
-#   
-#   expect_equal(length(lst), 0)
-#   
-# })
-# 
-# test_that("lib_env() works as expected.", {
-#   
-#   env1 <- new.env()
-# 
-#   # Assign new environment
-#   lib_env(env1)
-# 
-#   # Create temp directory
-#   tmp <- tempdir()
-# 
-#   # Create library
-#   libname(dat, tmp)
-# 
-#   # Add data to library
-#   lib_add(dat, mtcars)
-#   lib_add(dat, iris)
-# 
-#   # Load library
-#   lib_load(dat)
-# 
-#   # Examine global environment
-#   ls()
-#   # [1] "env1" "tmp"
-# 
-#   # Examine new environment
-#   ls(envir = env1)
-# 
-#   # Clean up
-#   lib_delete(dat)
-#   
-#   
-# })

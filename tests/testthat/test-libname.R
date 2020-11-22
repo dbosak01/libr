@@ -86,7 +86,7 @@ test_that("libname() function works as expected with multiple data formats", {
 
 test_that("libname() function works as expected with new directory", {
   
-  fp <- file.path(base_path, "fork")
+  fp <- file.path(tempdir(), "fork")
   
   libname(fork, fp)
   
@@ -134,7 +134,7 @@ test_that("libname() function works as expected within multiple functions.", {
   
   func2 <- function() {
     
-    alt <- paste0(base_path, "2")
+    alt <- file.path(tempdir(), "data2")
     libname(dat, alt)
     
     lib_add(dat, iris, beaver1)
@@ -175,7 +175,7 @@ test_that("libname() function works as expected with nested functions.", {
   
   func2 <- function() {
     
-    alt <- paste0(base_path, "2")
+    alt <- file.path(tempdir(), "data2")
     libname(dat, alt)
     
     lib_add(dat, iris, beaver1)

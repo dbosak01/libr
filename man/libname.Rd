@@ -36,6 +36,9 @@ appending, removing, or writing data from the library to the file system.}
 
 \item{...}{Follow-on parameters to the data import functions.  Which
 parameters exist depend on which types of files are being imported.}
+
+\item{env}{The environment to use for the libname if it is loaded. 
+Default is parent.frame().}
 }
 \value{
 The library object.

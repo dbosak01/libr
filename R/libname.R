@@ -2,7 +2,7 @@
 
 #' @noRd
 e <- new.env(parent = emptyenv())
-e$env <- as.environment(1)
+e$env <- parent.frame()
 
 
 # Libname Definition ------------------------------------------------------
@@ -42,6 +42,8 @@ e$env <- as.environment(1)
 #' appending, removing, or writing data from the library to the file system.
 #' @param ... Follow-on parameters to the data import functions.  Which
 #' parameters exist depend on which types of files are being imported.
+#' @param env The environment to use for the libname if it is loaded. 
+#' Default is parent.frame().
 #' @return The library object.
 #' @family lib
 #' @examples 
