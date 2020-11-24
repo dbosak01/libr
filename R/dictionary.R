@@ -95,13 +95,13 @@ getDictionary <- function(x, dsnm) {
     rw <- data.frame(Name = dsnm,
                      Column = nm,
                      Class = class(x[[nm]]),
-                     Label = ifelse(!is.null(lbl), lbl, NA),
-                     Description = ifelse(!is.null(desc), desc, NA),
+                     Label = ifelse(!is.null(lbl), lbl, as.character(NA)),
+                     Description = ifelse(!is.null(desc), desc, as.character(NA)),
                      Format = ifelse(!is.null(fmt), fmt, NA),
                      Width = ifelse(typeof(x[[nm]]) == "character", 
                                     max(nchar(x[[nm]])),
                                     NA),
-                     Justify = ifelse(!is.null(jst), jst, NA),
+                     Justify = ifelse(!is.null(jst), jst, as.character(NA)),
                      Rows = nrow(x),
                      NAs = sum(is.na(x[[nm]])))
                      

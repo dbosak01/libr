@@ -121,6 +121,7 @@ libname <- function(name, directory_path, type = NULL,
       dat <- NULL
       
       if (ext == "csv") {
+        message(paste0("$", nm))
         
         if (is.null(col_specs))
           dat <- read_csv(fp, ...)

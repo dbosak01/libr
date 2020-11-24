@@ -1,4 +1,4 @@
-context("libname Tests")
+context("Dictionary Tests")
 
 base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 

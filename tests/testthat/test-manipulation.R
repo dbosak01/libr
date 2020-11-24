@@ -1,4 +1,4 @@
-context("libname Tests")
+context("Manipulation Tests")
 
 base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
@@ -531,7 +531,7 @@ test_that("lib_write works on SDTM data.", {
   #expect_equal(length(last.warning), 1)
   expect_equal(length(dat), 13)
   
-  
+  dictionary(dat$PE)
 })
 
 test_that("force option works as expected.", {
