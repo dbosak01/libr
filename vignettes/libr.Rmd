@@ -17,8 +17,7 @@ knitr::opts_chunk$set(
 ```
 # libr <img src="../man/images/books.svg" align="right" height="138" />
 
-
-  The **libr** package brings the concepts of data libraries and data 
+The **libr** package brings the concepts of data libraries and data 
 dictionaries to R.  A data library is an object used to define and manage
 an entire directory of data files.  A data dictionary is a data frame full
 of information about a data library, data frame, or tibble.  
@@ -141,15 +140,15 @@ syntax.
 
 If you prefer to access the data via the workspace, simply call
 the `lib_load()` function on the library.  This function will load the 
-library data into global memory, where it can be accessed using a two-level
+library data into the parent frame, where it can be accessed using a two-level
 (<library>.<dataset>) name.  
 
 When you are done with the data, call the `lib_unload()` function to remove
-the data from global memory and put it back in the library list.  To write
+the data from the parent frame and put it back in the library list.  To write
 any added or modified data to disk, call the `lib_write()` function.  
 
 The **libr** package also contains a number of functions for manipulating
-data libraries.  There are function to add and remove data from a library,
+data libraries.  There are functions to add and remove data from a library,
 as well as copy or delete an entire library.
 
 The example below illustrates some of the additional functions:

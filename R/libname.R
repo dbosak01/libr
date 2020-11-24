@@ -44,6 +44,10 @@ e$env <- parent.frame()
 #' parameters exist depend on which types of files are being imported.
 #' @param env The environment to use for the libname if it is loaded. 
 #' Default is parent.frame().
+#' @param col_specs A list of column specifications to be used for import.
+#' The items on the list should be named according to the file names in 
+#' the library directory. This parameter is primarily used to files of type
+#' 'csv' and 'dat'.
 #' @return The library object.
 #' @family lib
 #' @examples 
@@ -82,7 +86,8 @@ e$env <- parent.frame()
 #' @import tools
 #' @export
 libname <- function(name, directory_path, type = NULL, 
-                    read_only = FALSE, ..., env = parent.frame()) {
+                    read_only = FALSE, ..., env = parent.frame(), 
+                    col_specs = NULL) {
   e$env <- env
   
   if (!file.exists(directory_path))
@@ -99,7 +104,7 @@ libname <- function(name, directory_path, type = NULL,
   attr(l, "read_only") <- read_only
   attr(l, "loaded") <- FALSE
   attr(l, "type") <- type
-    
+  attr(l, "col_list") <- col_specs  
   
   if (is.null(type))
     lst <- list.files(directory_path)
@@ -117,7 +122,14 @@ libname <- function(name, directory_path, type = NULL,
       
       if (ext == "csv") {
         
-        dat <- read_csv(fp, ...)
+        if (is.null(col_specs))
+          dat <- read_csv(fp, ...)
+        else {
+          if (is.null(col_specs[[nm]]))
+            dat <- read_csv(fp, ...)
+          else
+            dat <- read_csv(fp, ..., col_types = col_specs[[nm]])
+        }
         
       } else if (ext == "rds") {
         

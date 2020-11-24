@@ -523,9 +523,14 @@ test_that("lib_write non-changed xlsx data works as expected.", {
 
 test_that("lib_write works on SDTM data.", {
   
-  libname(dat, file.path(base_path, "SDTM"), "csv")
+  lst <- list(PE = cols(PESTAT = col_character()))
   
-  lib_write(dat)
+  
+  libname(dat, file.path(base_path, "SDTM"), "csv", col_specs = lst)
+  
+  #expect_equal(length(last.warning), 1)
+  expect_equal(length(dat), 13)
+  
   
 })
 
