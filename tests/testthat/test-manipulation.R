@@ -437,8 +437,10 @@ test_that("lib_write non-changed csv data works as expected.", {
   
   info1 <- lib_info(dat2)
   
-  lib_replace(dat2, mtcars, name = "demo_studya")
   Sys.sleep(2)
+  
+  lib_replace(dat2, mtcars, name = "demo_studya")
+
   
   info2 <- lib_info(dat2)
   
@@ -466,11 +468,10 @@ test_that("lib_write non-changed rds data works as expected.", {
   
   info1 <- lib_info(dat2)
   
+  Sys.sleep(2)
+  
   lib_replace(dat2, mtcars, name = "demo_studya")
   
-  lib_write(dat2)
-  
-  Sys.sleep(2)
   
   info2 <- lib_info(dat2)
   
@@ -499,15 +500,22 @@ test_that("lib_write non-changed sas7bdat data works as expected.", {
   
   info1 <- lib_info(dat2)
   
+  Sys.sleep(2)
+  
   lib_replace(dat2, mtcars, name = "demo_studya")
   
-  lib_write(dat2)
   
   info2 <- lib_info(dat2)
   
-  expect_equal(info1[2, 6] == info2[2, 6], TRUE)
-  expect_equal(info1[1, 6] == info2[1, 6], FALSE)
   
+  d1 <- subset(info1, Name == "demo_studya")
+  d2 <- subset(info2, Name == "demo_studya")
+  
+  d3 <- subset(info1, Name == "demo_studyb")
+  d4 <- subset(info2, Name == "demo_studyb")
+  
+  expect_equal(d1[1, 6] == d2[1, 6], FALSE)
+  expect_equal(d3[1, 6] == d4[1, 6], TRUE)
   
   lib_delete(dat2)
   
@@ -522,6 +530,8 @@ test_that("lib_write non-changed xlsx data works as expected.", {
   lib_copy(dat, dat2, alt_path)
   
   info1 <- lib_info(dat2)
+  
+  Sys.sleep(2)
   
   lib_replace(dat2, mtcars, name = "demo_studya")
   
