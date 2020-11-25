@@ -46,8 +46,8 @@ e$env <- parent.frame()
 #' Default is parent.frame().
 #' @param col_specs A list of column specifications to be used for import.
 #' The items on the list should be named according to the file names in 
-#' the library directory. This parameter is primarily used to files of type
-#' 'csv' and 'dat'.
+#' the library directory. This parameter is available for files of type
+#' 'csv', 'xlsx', and 'xls'.
 #' @return The library object.
 #' @family lib
 #' @examples 
@@ -142,12 +142,30 @@ libname <- function(name, directory_path, type = NULL,
         
       } else if (ext == "xlsx") {
         
-        dat <- read_xlsx(fp, ...)
+        message(paste0("$", nm))
+        
+        if (is.null(col_specs))
+          dat <- read_xlsx(fp, ...)
+        else {
+          if (is.null(col_specs[[nm]]))
+            dat <- read_xlsx(fp, ...)
+          else
+            dat <- read_xlsx(fp, ..., col_types = col_specs[[nm]])
+          
+        }
         
       } else if (ext == "xls") {
         
-        dat <- read_xls(fp, ...)
+        message(paste0("$", nm))
         
+        if (is.null(col_specs))
+          dat <- read_xls(fp, ...)
+        else {
+          if (is.null(col_specs[[nm]]))
+            dat <- read_xls(fp, ...)
+          else
+            dat <- read_xls(fp, ..., col_types = col_specs[[nm]])
+        }
       } 
       
       if (any(class(dat) == "data.frame")) {
