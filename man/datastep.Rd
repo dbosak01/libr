@@ -4,7 +4,15 @@
 \alias{datastep}
 \title{Step through data row by row}
 \usage{
-datastep(data, steps, keep = NULL, drop = NULL, rename = NULL, by = NULL)
+datastep(
+  data,
+  steps,
+  keep = NULL,
+  drop = NULL,
+  rename = NULL,
+  by = NULL,
+  calculate = NULL
+)
 }
 \arguments{
 \item{data}{The data to step through.}
@@ -30,6 +38,13 @@ retain their original names.}
 This parameter will activate the \code{first.} and \code{last.} special
 variables, that indicate the first or last rows in a group.  These 
 special variables are useful for conditional processing on groups.}
+
+\item{calculate}{Steps to set up calculated variables.
+Calculated variables are common performed with summary functions such as
+\code{mean}, \code{median}, \code{min}, \code{max}, etc.  It is more 
+efficient to set up calculated variables with the calculate parameter and then 
+use those variables in the data step, rather than perform the summary
+function inside the data step.}
 }
 \value{
 The processed data frame or tibble.

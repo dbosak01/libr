@@ -27,90 +27,193 @@
 #' This parameter will activate the \code{first.} and \code{last.} special
 #' variables, that indicate the first or last rows in a group.  These 
 #' special variables are useful for conditional processing on groups.
+#' @param calculate Steps to set up calculated variables.  
+#' Calculated variables are common performed with summary functions such as
+#' \code{mean}, \code{median}, \code{min}, \code{max}, etc.  It is more 
+#' efficient to set up calculated variables with the calculate parameter and then 
+#' use those variables in the data step, rather than perform the summary
+#' function inside the data step.
 #' @return The processed data frame or tibble.
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
-                     by = NULL) {
-  
+                     by = NULL, calculate = NULL) {
+
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
+
+  # Put aggregate functions in a variable 
+  agg <- substitute(calculate, env = environment())
+  if (deparse1(agg) != "NULL") {
+   data <- within(data, eval(agg), keepAttrs = TRUE)
+  }
   
   ret <- NULL
   firstval <- NULL
-  
+
   # Step through row by row
-  for (i in seq_len(nrow(data))) {
-    
+  for (n. in seq_len(nrow(data))) {
+
     # Deal with first. and last.
-    # These can be accessed from within the evaluated code, 
+    # These can be accessed from within the evaluated code,
     # which is really cool.
     if (!is.null(by)) {
       if (is.null(firstval)) {
-        firstval <- data[i, by]
+        firstval <- data[n., by]
         first. <- TRUE
       } else {
-        
-        if (dfcomp(firstval, data[i, by]) == FALSE) {
+
+        if (dfcomp(firstval, data[n., by]) == FALSE) {
           first. <- TRUE
-          firstval <- data[i, by]
+          firstval <- data[n., by]
         } else {
           first. <- FALSE
         }
       }
-      
-      if (i == nrow(data)) {
+
+      if (n. == nrow(data)) {
         last. <- TRUE
       } else {
-        if (dfcomp(data[i + 1, by],  data[i, by]) == FALSE) {
+        if (dfcomp(data[n. + 1, by],  data[n., by]) == FALSE) {
           last. <- TRUE
         } else {
           last. <- FALSE
         }
       }
-      
+
     } else {
-      if (i == 1)
+      if (n. == 1)
         first. <- TRUE
       else
         first. <- FALSE
-      
-      if (i == nrow(data))
+
+      if (n. == nrow(data))
         last. <- TRUE
       else
         last. <- FALSE
-      
+
     }
-    
+  
+
     # Evaluate the code for the row
-    r1 <- within(data[i, ], eval(code), keepAttrs = TRUE)
-    
-    # Bind resulting row 
+    r1 <- within(data[n., ], eval(code), keepAttrs = TRUE)
+
+    # Bind resulting row
     if (is.null(ret))
       ret <- r1
     else
       ret <- bind_rows(ret, r1)
   }
-  
+
   # Perform drop operation
   if (!is.null(drop))
     ret <- ret[ , !names(ret) %in% drop]
-  
+
   # Perform keep operation
   if (!is.null(keep)) {
     ret <- ret[ , keep]
   }
-  
+
   # Perform rename operation
   if (!is.null(rename)) {
     nms <- names(ret)
     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
   }
-  
+
   return(ret)
 }
-
+# 
+# datastep <- function(data, steps, keep = NULL,
+#                      drop = NULL, rename = NULL,
+#                      by = NULL) {
+#   
+#   # Put code in a variable for safe-keeping
+#   code <- substitute(steps, env = environment())
+#   
+#   ret <- NULL
+#   firstval <- NULL
+#   
+#   if (is.null(by)) {
+#     data[ , "first."] <- FALSE
+#     data[1, "first."] <- TRUE
+#     data[ , "last."] <- FALSE
+#     data[nrow(data), "last."] <- TRUE
+#   } else {
+#     
+#     # Step through row by row
+#     for (i in seq_len(nrow(data))) {
+#       
+#       # Add first. and last. to data frame automatically
+#       if (!is.null(by)) {
+#         if (is.null(firstval)) {
+#           firstval <- data[i, by]
+#           data[["first."]] <- TRUE
+#         } else {
+#           
+#           if (dfcomp(firstval, data[i, by]) == FALSE) {
+#             data[["first."]] <- TRUE
+#             firstval <- data[i, by]
+#           } else {
+#             data[["first."]] <- FALSE
+#           }
+#         }
+#         
+#         if (i == nrow(data)) {
+#           data[["last."]] <- TRUE
+#         } else {
+#           if (dfcomp(data[i + 1, by],  data[i, by]) == FALSE) {
+#             data[["last."]] <- TRUE
+#           } else {
+#             data[["last."]] <- FALSE
+#           }
+#         }
+#         
+#       } else {
+#         
+#         if (i == 1)
+#           data[["first."]] <- TRUE
+#         else
+#           data[["first."]] <- FALSE
+#         
+#         if (i == nrow(data))
+#           data[["last."]] <- TRUE
+#         else
+#           data[["last."]] <- FALSE
+#         
+#       }
+#     }
+#     
+#   }
+#   
+#   data[["n."]] <- seq.int(nrow(data))
+#   
+#   # Evaluate code 
+#   r1 <- within(data, eval(code), keepAttrs = TRUE)
+#   
+#   # Remove automatic variables
+#   data[["first."]] <- NULL
+#   data[["last."]] <- NULL
+#   data[["n."]] <- NULL
+#   
+#   
+#   # Perform drop operation
+#   if (!is.null(drop))
+#     ret <- ret[ , !names(ret) %in% drop]
+#   
+#   # Perform keep operation
+#   if (!is.null(keep)) {
+#     ret <- ret[ , keep]
+#   }
+#   
+#   # Perform rename operation
+#   if (!is.null(rename)) {
+#     nms <- names(ret)
+#     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
+#   }
+#   
+#   return(ret)
+# }
 
 # Utilities ---------------------------------------------------------------
 

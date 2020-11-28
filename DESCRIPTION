@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Create Data Libraries and Dictionaries
-Version: 0.0.9008
+Version: 0.0.9009
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,
