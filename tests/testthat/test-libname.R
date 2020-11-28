@@ -69,6 +69,53 @@ test_that("libname() function works as expected with sas7bdat", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
+test_that("libname() function works as expected with dbf", {
+  
+  tmp <- tempdir()
+  libname(dat, tmp, "dbf")
+  
+  lib_add(dat, mtcars)
+  
+  libname(dat2, tmp, "dbf")
+  
+  
+  expect_equal(length(dat2), 1) 
+  expect_equal(nrow(dat2[[1]]), 32)
+  expect_equal(ncol(dat2[[1]]), 11)
+
+  lib_delete(dat)
+  lib_delete(dat2)
+})
+
+test_that("libname() function works as expected with xpt", {
+  
+  tmp <- tempdir()
+  libname(dat, tmp, "xpt")
+  
+  lib_add(dat, mtcars)
+  
+  libname(dat2, tmp, "xpt")
+  
+  
+  expect_equal(length(dat2), 1) 
+  expect_equal(nrow(dat2[[1]]), 32)
+  expect_equal(ncol(dat2[[1]]), 11)
+  
+  lib_delete(dat)
+  lib_delete(dat2)
+})
+
+test_that("libname() function works as expected with xpt", {
+  
+  libname(dat, base_path, type = "sas7bdat")
+  
+  expect_equal(class(dat)[[1]], "lib")
+  expect_equal(length(dat), 2) 
+  expect_equal(nrow(dat[[1]]), 10)
+  expect_equal(ncol(dat[[1]]), 9)
+  expect_equal(nrow(dat[[2]]), 2)
+  expect_equal(ncol(dat[[2]]), 9)
+})
 
 test_that("libname() function works as expected with multiple data formats", {
   

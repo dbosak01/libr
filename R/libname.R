@@ -33,7 +33,7 @@ e$env <- parent.frame()
 #' and render as an R data frame.  
 #' @param type One or more file extensions to filter the incoming data.  The
 #' default value is NULL, meaning all recognized data files will be input.
-#' Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv". 
+#' Valid values are "rds", "sas7bdat", "xpt", "xls", "xlsx", "dbf", and "csv". 
 #' When saved with \code{lib_write}, each file will be saved in its original
 #' file format, unless otherwise specified on the \code{type} parameter of 
 #' \code{lib_write}.
@@ -83,7 +83,6 @@ e$env <- parent.frame()
 #' @import readr
 #' @import readxl
 #' @import haven
-#' @import tools
 #' @export
 libname <- function(name, directory_path, type = NULL, 
                     read_only = FALSE, ..., env = parent.frame(), 
@@ -153,6 +152,10 @@ libname <- function(name, directory_path, type = NULL,
       } else if (ext == "sas7bdat") {
         
         dat <- read_sas(fp, ...)
+        
+      } else if (ext == "dbf") {
+        
+        dat <- foreign::read.dbf(fp, ...)
         
       } else if (ext == "xpt") {
         

@@ -197,6 +197,14 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       write_sas(x, file_path)
     }
     
+  } else if (ext == "dbf") {
+    
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
+        file.remove(file_path)
+      foreign::write.dbf(x, file_path)
+    }
+    
   } else if (ext == "xpt") {
     
     if (!cs_comp | force) {
@@ -205,7 +213,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       write_xpt(x, file_path)
     }
     
-  }else if (ext == "xlsx") {
+  } else if (ext == "xlsx") {
   
     if (!cs_comp | force) {
       if (file.exists(file_path))

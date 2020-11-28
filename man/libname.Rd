@@ -26,7 +26,7 @@ and render as an R data frame.}
 
 \item{type}{One or more file extensions to filter the incoming data.  The
 default value is NULL, meaning all recognized data files will be input.
-Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv". 
+Valid values are "rds", "sas7bdat", "xpt", "xls", "xlsx", "dbf", and "csv". 
 When saved with \code{lib_write}, each file will be saved in its original
 file format, unless otherwise specified on the \code{type} parameter of 
 \code{lib_write}.}

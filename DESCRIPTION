@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Create Data Libraries and Dictionaries
-Version: 0.0.9007
+Version: 0.0.9008
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,
@@ -20,9 +20,9 @@ Depends: R (>= 4.0.0)
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    tools
 Imports:     
-    tools,
     readr,
     readxl,
     haven,
