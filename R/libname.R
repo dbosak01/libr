@@ -44,10 +44,11 @@ e$env <- parent.frame()
 #' parameters exist depend on which types of files are being imported.
 #' @param env The environment to use for the libname if it is loaded. 
 #' Default is parent.frame().
-#' @param col_specs A list of column specifications to be used for import.
+#' @param import_specs A collection of import specifications to be used for import.
 #' The items on the list should be named according to the file names in 
 #' the library directory. This parameter is available for files of type
-#' 'csv', 'xlsx', and 'xls'.
+#' 'csv', 'xlsx', and 'xls'.  See the \code{\link{specs}} function for addtional
+#' information.
 #' @return The library object.
 #' @family lib
 #' @examples 
@@ -82,12 +83,11 @@ e$env <- parent.frame()
 #' @import readr
 #' @import readxl
 #' @import haven
-#' @import utils
 #' @import tools
 #' @export
 libname <- function(name, directory_path, type = NULL, 
                     read_only = FALSE, ..., env = parent.frame(), 
-                    col_specs = NULL) {
+                    import_specs = NULL) {
   e$env <- env
   
   if (!file.exists(directory_path))
@@ -104,7 +104,7 @@ libname <- function(name, directory_path, type = NULL,
   attr(l, "read_only") <- read_only
   attr(l, "loaded") <- FALSE
   attr(l, "type") <- type
-  attr(l, "col_list") <- col_specs  
+  attr(l, "import_specs") <- import_specs  
   
   if (is.null(type))
     lst <- list.files(directory_path)
@@ -123,13 +123,27 @@ libname <- function(name, directory_path, type = NULL,
       if (ext == "csv") {
         message(paste0("$", nm))
         
-        if (is.null(col_specs))
+        if (is.null(import_specs))
           dat <- read_csv(fp, ...)
         else {
-          if (is.null(col_specs[[nm]]))
+
+          if (is.null(import_specs$specs[[nm]]))
             dat <- read_csv(fp, ...)
-          else
-            dat <- read_csv(fp, ..., col_types = col_specs[[nm]])
+          else {
+            spcs <- get_colspec_csv(import_specs$specs[[nm]]$col_types)
+           # print(spcs)
+            na <- import_specs$specs[[nm]]$na
+            if (is.null(na))
+              na = c("", "NA")
+            tws <- import_specs$specs[[nm]]$trim_ws
+            if (is.null(tws))
+              tws <- TRUE
+            
+            dat <- read_csv(fp, ..., 
+                            col_types = spcs,
+                            na = na,
+                            trim_ws = tws)
+          }
         }
         
       } else if (ext == "rds") {
@@ -140,17 +154,38 @@ libname <- function(name, directory_path, type = NULL,
         
         dat <- read_sas(fp, ...)
         
+      } else if (ext == "xpt") {
+        
+        dat <- read_xpt(fp, ...)
+        
       } else if (ext == "xlsx") {
         
         message(paste0("$", nm))
         
-        if (is.null(col_specs))
+        if (is.null(import_specs))
           dat <- read_xlsx(fp, ...)
         else {
-          if (is.null(col_specs[[nm]]))
+          if (is.null(import_specs$specs[[nm]]))
             dat <- read_xlsx(fp, ...)
-          else
-            dat <- read_xlsx(fp, ..., col_types = col_specs[[nm]])
+          else {
+            
+            typs <- import_specs$specs[[nm]]$col_types
+            tmp <- read_xlsx(fp, ...,
+                             col_types = c("text"))
+            nms <- names(tmp)
+            spcs <- get_colspec_xlsx(typs, length(nms), nms)
+            na <- import_specs$specs[[nm]]$na
+            if (is.null(na))
+              na = c("", "NA")
+            tws <- import_specs$specs[[nm]]$trim_ws
+            if (is.null(tws))
+              tws <- TRUE
+            
+            dat <- read_xlsx(fp, ..., 
+                             col_types = spcs, 
+                             na = na, 
+                             trim_ws = tws)
+          }
           
         }
         
@@ -158,13 +193,14 @@ libname <- function(name, directory_path, type = NULL,
         
         message(paste0("$", nm))
         
-        if (is.null(col_specs))
+        if (is.null(import_specs))
           dat <- read_xls(fp, ...)
         else {
-          if (is.null(col_specs[[nm]]))
+          if (is.null(import_specs[[nm]]))
             dat <- read_xls(fp, ...)
           else
-            dat <- read_xls(fp, ..., col_types = col_specs[[nm]])
+            dat <- read_xls(fp, ..., 
+                            col_types = import_specs[[nm]]$col_types)
         }
       } 
       
@@ -1188,7 +1224,7 @@ lib_info <- function(x) {
                      Extension = ex,
                      Rows = rws,
                      Cols = cls,
-                     Size = format(object.size(itm), units = "auto"),
+                     Size = format(utils::object.size(itm), units = "auto"),
                      LastModified = lm)
     
     if (is.null(ret))

@@ -546,18 +546,7 @@ test_that("lib_write non-changed xlsx data works as expected.", {
   
 })
 
-test_that("lib_write works on SDTM data.", {
-  
-  lst <- list(PE = cols(PESTAT = col_character()))
-  
-  
-  libname(dat, file.path(base_path, "SDTM"), "csv", col_specs = lst)
-  
-  #expect_equal(length(last.warning), 1)
-  expect_equal(length(dat), 13)
-  
-  dictionary(dat$PE)
-})
+
 
 test_that("force option works as expected.", {
   
@@ -582,4 +571,24 @@ test_that("force option works as expected.", {
   
 })
 
+
+test_that("xpt type works as expected.", {
+  
+  tmp <- tempdir()
+  
+  libname(dat, tmp, "xpt")
+  
+  
+  lib_add(dat, mtcars)
+  
+  expect_equal(file.exists(file.path(tmp, "mtcars.xpt")), TRUE)
+  
+  libname(dat2, tmp, "xpt")
+  
+  expect_equal(nrow(dat2$mtcars),  32)
+  
+  lib_delete(dat)
+  lib_delete(dat2)
+  
+})
 

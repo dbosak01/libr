@@ -196,9 +196,16 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       write_sas(x, file_path)
     }
-
     
-  } else if (ext == "xlsx") {
+  } else if (ext == "xpt") {
+    
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
+        file.remove(file_path)
+      write_xpt(x, file_path)
+    }
+    
+  }else if (ext == "xlsx") {
   
     if (!cs_comp | force) {
       if (file.exists(file_path))
@@ -222,23 +229,110 @@ writeData <- function(x, ext, file_path, force = FALSE) {
 }
 
 #' @noRd
-comp <- function(x1, x2) {
+spec_trans <- c("guess" = "guess",
+                "logical" = "logical",
+                "character" = "text",
+                "numeric" = "numeric", 
+                "integer" = "numeric")
+              
+#' @noRd
+get_colspec_xlsx <- function(type_string, num_cols, col_names) {
   
- ret <- TRUE  
- if (is.null(x1) | is.null(x2)) {
+ ret <- NULL  
+
+   
+ if (length(col_names) != num_cols)
+   stop("Column names and length are not equal")
+ 
+ ret <- rep("guess", num_cols)
+ names(ret) <- col_names
+ 
+ for (nm in col_names) {
+   if (nm %in% names(type_string)) {
+     
+     ct <- type_string[[nm]]
+     
+     if (ct %in% names(spec_trans))
+       ret[[nm]] <- spec_trans[[ct]]
+     else {
+       ret[[nm]] <- "date"
+     }
+   }
+ }
+ 
+  
+ return(ret)
+  
+}
+
+
+#' @import readr                
+#' @noRd
+get_colspec_csv <- function(type_string) {
+  
+
+  ret <- cols()
+  for (nm in names(type_string)) {
+    if (type_string[[nm]] == "logical")
+      ret$cols[[nm]] <- col_logical()
+    else if (type_string[[nm]] == "character")
+      ret$cols[[nm]] <- col_character()
+    else if (type_string[[nm]] == "integer")
+      ret$cols[[nm]] <- col_integer()
+    else if (type_string[[nm]] == "numeric")
+      ret$cols[[nm]] <- col_double()
+    else if (type_string[[nm]] == "guess")
+      ret$cols[[nm]] <- col_guess()
+    else {
+      fp <- trimws(unlist(strsplit(type_string[[nm]], "=", fixed = TRUE)))
+      if (fp[[1]] == "date")
+        ret$cols[[nm]] <- col_date(fp[[2]])
+      else if (fp[[1]] == "time")
+        ret$cols[[nm]] <- col_time(fp[[2]])
+      else if (fp[[1]] == "datetime")
+        ret$cols[[nm]] <- col_datetime(fp[[2]])
+      else 
+        stop(paste0("Column type not valid: ", fp[[1]]))
+      
+    }
+    
+  }
+    
+
+  return(ret)
+  
+}
+
+
+#' @title Check identity of two objects
+#' @description The \code{\%eq\%} function provides a more human-comprehensible
+#' style of equality check.  The function allows comparing of nulls, NA values,
+#' and atomic type values without error. The function also allows comparing
+#' of data frames.  The function will return TRUE if all values in the 
+#' data frames are equal, and ignores differences in attributes.
+#' @param x1 The first object to compare
+#' @param x2 The second object to compare
+#' @return A TRUE or FALSE value depending on whether the objects are equal.
+#' @export
+`%eq%` <- function(x1, x2) {
+
+ ret <- TRUE
+ if (is.null(x1) & is.null(x2))
+   ret <- TRUE
+ else if (is.null(x1) | is.null(x2)) {
    ret <- FALSE
  } else if (all(class(x1) != class(x2))) {
-   ret <- FALSE 
+   ret <- FALSE
  } else if ("data.frame" %in% class(x1)) {
-   
+
    if (nrow(x1) != nrow(x2)) {
      ret <- FALSE
    } else if (ncol(x1) != ncol(x2)) {
      ret <- FALSE
    } else if (all(names(x1) != names(x2))) {
-     ret <- FALSE 
+     ret <- FALSE
    } else {
-     
+
      for (i in seq_along(x1)) {
        if (any(!strong_eq(x1[[i]], x2[[i]]))) {
          ret <- FALSE
@@ -247,23 +341,23 @@ comp <- function(x1, x2) {
      }
    }
  } else {
-  
+
    if (length(x1) != length(x2)) {
      ret <- FALSE
    } else {
-     
+
      if (any(!strong_eq(x1, x2))) {
        ret <- FALSE
      }
    }
  }
-  
+
  return(ret)
 }
 
 #' @noRd
 strong_eq <- Vectorize(function(x1, x2) {
-  
+
   ret <- TRUE
   if (is.null(x1) & is.null(x2))
     ret <- TRUE
@@ -279,26 +373,26 @@ strong_eq <- Vectorize(function(x1, x2) {
     ret <- FALSE
   else {
     ret <- x1 == x2
-    
+
   }
-  
+
   return(ret)
-  
+
 })
 
-get_id <- function(n = 1, seed_no = 1, id_len = 5){
-  set.seed(seed_no)
-  pool <- c(letters, LETTERS, 0:9)
-  
-  ret <- character(n) 
-  for(i in seq(n)){
-    this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
-    while(this_res %in% ret){ 
-      this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
-    }
-    ret[i] <- this_res
-  }
-  return(ret)
-}
-
-get_id()
+# get_id <- function(n = 1, seed_no = 1, id_len = 5){
+#   set.seed(seed_no)
+#   pool <- c(letters, LETTERS, 0:9)
+#   
+#   ret <- character(n) 
+#   for(i in seq(n)){
+#     this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
+#     while(this_res %in% ret){ 
+#       this_res <- paste0(sample(pool, id_len, replace = TRUE), collapse = "")
+#     }
+#     ret[i] <- this_res
+#   }
+#   return(ret)
+# }
+# 
+# get_id()

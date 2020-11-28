@@ -4,12 +4,13 @@ Title: Create Data Libraries and Dictionaries
 Version: 0.0.9007
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
-Description: Contains a set of functions to create data libraries
-    and data dictionaries.
+Description: Contains a set of functions to create data libraries,
+    create data dictionaries, and perform a data step.
     The libname() function will load a directory of data into 
-    a library object in one step.  And the dictionary() function
+    a library object in one step.  The dictionary() function
     will generate data dictionaries for individual
-    data frames/tibbles or an entire library.
+    data frames/tibbles or an entire library.  And the datestep() function
+    will perform row-by-row data processing.
 License: CC0
 Encoding: UTF-8
 LazyData: true
@@ -20,12 +21,15 @@ Suggests:
     testthat,
     knitr,
     rmarkdown
-Imports: tibble,
-         readr,
-         readxl,
-         haven,
-         openxlsx,
-         crayon, 
-         tools
+Imports:     
+    tools,
+    readr,
+    readxl,
+    haven,
+    openxlsx,
+    crayon, 
+    foreign,
+    dplyr,
+    tibble
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

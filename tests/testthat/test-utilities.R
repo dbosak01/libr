@@ -23,22 +23,22 @@ test_that("print() functions works as expected.", {
 
 test_that("comp function work as expected.", {
   
-  expect_equal(comp(mtcars, mtcars), TRUE)
-  expect_equal(comp(mtcars, iris), FALSE)
-  expect_equal(comp(mtcars, mtcars[1:10, ]), FALSE)
-  expect_equal(comp(mtcars, mtcars[, 1:5]), FALSE)  
+  expect_equal(mtcars %eq% mtcars, TRUE)
+  expect_equal(mtcars %eq% iris, FALSE)
+  expect_equal(mtcars %eq% mtcars[1:10, ], FALSE)
+  expect_equal(mtcars %eq% mtcars[, 1:5], FALSE)  
   d1 <- mtcars
   d1[1, 1] <- 2
-  expect_equal(comp(mtcars, d1), FALSE)
+  expect_equal(mtcars  %eq%  d1, FALSE)
   
   v1 <- mtcars[[1]]
   v2 <- mtcars[[1]]
   
-  expect_equal(comp(v1, v2), TRUE)
-  expect_equal(comp(v1, mtcars[[2]]), FALSE)
-  expect_equal(comp(v1, v2[1:5]), FALSE)
+  expect_equal(v1 %eq% v2, TRUE)
+  expect_equal(v1 %eq% mtcars[[2]], FALSE)
+  expect_equal(v1 %eq% v2[1:5], FALSE)
   v2[5] <-2
-  expect_equal(comp(v1, v2), FALSE)
+  expect_equal(v1  %eq% v2, FALSE)
   
 })
 

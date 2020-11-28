@@ -11,7 +11,7 @@ libname(
   read_only = FALSE,
   ...,
   env = parent.frame(),
-  col_specs = NULL
+  import_specs = NULL
 )
 }
 \arguments{
@@ -41,10 +41,11 @@ parameters exist depend on which types of files are being imported.}
 \item{env}{The environment to use for the libname if it is loaded. 
 Default is parent.frame().}
 
-\item{col_specs}{A list of column specifications to be used for import.
+\item{import_specs}{A collection of import specifications to be used for import.
 The items on the list should be named according to the file names in 
-the library directory. This parameter is primarily used to files of type
-'csv' and 'dat'.}
+the library directory. This parameter is available for files of type
+'csv', 'xlsx', and 'xls'.  See the \code{\link{specs}} function for addtional
+information.}
 }
 \value{
 The library object.
