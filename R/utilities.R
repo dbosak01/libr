@@ -179,6 +179,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       write_csv(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
     
   } else if (ext == "rds") {
@@ -187,6 +188,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       write_rds(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
 
   } else if (ext == "sas7bdat") {
@@ -195,6 +197,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       write_sas(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
     
   } else if (ext == "dbf") {
@@ -203,6 +206,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       foreign::write.dbf(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
     
   } else if (ext == "xpt") {
@@ -211,6 +215,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       write_xpt(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
     
   } else if (ext == "xlsx") {
@@ -219,6 +224,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       if (file.exists(file_path))
         file.remove(file_path)
       openxlsx::write.xlsx(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
     }
 
   } else if (ext == "xls") {
@@ -226,14 +232,19 @@ writeData <- function(x, ext, file_path, force = FALSE) {
     message(paste("NOTE: Libr cannot write xls files. Writing xlsx instead."))
     
     if (!cs_comp | force) {
-      if (file.exists(file_path))
-        file.remove(file_path)
-      openxlsx::write.xlsx(x, file_path)
+      fp <- sub(".xls", ".xlsx", file_path, fixed = TRUE)
+      if (file.exists(fp))
+        file.remove(fp)
+      openxlsx::write.xlsx(x, fp)
+      
+      attr(x, "extension") <- "xlsx"
+      attr(x, "path") <- fp
+      attr(x, "checksum") <- md5sum(fp)
     }
 
   }  
   
-  
+  return(x)
 }
 
 #' @noRd

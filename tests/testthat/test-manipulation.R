@@ -266,7 +266,7 @@ test_that("lib_add() function can add a new items of different types.", {
   # XLS
   lib_add(dat, mtcars, type = "xls")
   
-  res <- file.exists(file.path(alt_path, "mtcars.xls"))
+  res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
   
   expect_equal(res, TRUE)
   

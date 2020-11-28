@@ -108,7 +108,7 @@ libname <- function(name, directory_path, type = NULL,
   if (is.null(type))
     lst <- list.files(directory_path)
   else
-    lst <- list.files(directory_path, pattern = type)
+    lst <- list.files(directory_path, pattern = paste0("\\.", type, "$"))
   
   for (fl in lst) {
     fp <- file.path(directory_path, fl)
@@ -199,11 +199,28 @@ libname <- function(name, directory_path, type = NULL,
         if (is.null(import_specs))
           dat <- read_xls(fp, ...)
         else {
-          if (is.null(import_specs[[nm]]))
+          if (is.null(import_specs$specs[[nm]]))
             dat <- read_xls(fp, ...)
-          else
+          else {
+            
+            typs <- import_specs$specs[[nm]]$col_types
+            tmp <- read_xls(fp, ...,
+                             col_types = c("text"))
+            nms <- names(tmp)
+            spcs <- get_colspec_xlsx(typs, length(nms), nms)
+            na <- import_specs$specs[[nm]]$na
+            if (is.null(na))
+              na = c("", "NA")
+            tws <- import_specs$specs[[nm]]$trim_ws
+            if (is.null(tws))
+              tws <- TRUE
+            
             dat <- read_xls(fp, ..., 
-                            col_types = import_specs[[nm]]$col_types)
+                             col_types = spcs, 
+                             na = na, 
+                             trim_ws = tws)
+          }
+          
         }
       } 
       
@@ -466,11 +483,8 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
       
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
-      writeData(x[[nm]], typ, pth)
-      
-      attr(x[[nm]], "checksum") <- md5sum(pth)
-
-      
+      x[[nm]] <- writeData(x[[nm]], typ, pth)
+    
       i <- i + 1
     }
     
@@ -582,10 +596,7 @@ lib_replace <- function(x, ..., type = NULL, name = NULL) {
       
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
-      writeData(x[[nm]], typ, pth)
-      
-      attr(x[[nm]], "checksum") <- md5sum(pth)
-
+      x[[nm]] <- writeData(x[[nm]], typ, pth)
       
       i <- i + 1
     }
@@ -793,9 +804,8 @@ lib_write <- function(x, type = NULL, force = FALSE) {
       
       fp <- file.path(libpth, paste0(nm, ".", ext))
   
-      writeData(x[[nm]], ext, fp, force)  
+      x[[nm]] <- writeData(x[[nm]], ext, fp, force)  
       
-      attr(x[[nm]], "checksum") <- md5sum(fp)
     }
     
     assign(lbnm, x, envir = e$env)
@@ -982,9 +992,8 @@ lib_copy <- function(x, nm, directory_path) {
     
     fp <- file.path(directory_path, paste0(nm, ".", ext))
     
-    writeData(cpy[[nm]], ext, fp)  
+    cpy[[nm]] <- writeData(cpy[[nm]], ext, fp)  
     
-    attr(cpy[[nm]], "checksum") <- md5sum(fp)
 
   }
   

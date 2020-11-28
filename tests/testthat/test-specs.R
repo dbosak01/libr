@@ -144,6 +144,36 @@ test_that("libname works on PE data for xlsx.", {
   
 })
 
+test_that("libname works on PE data for xls.", {
+  
+  lst <- specs(PE = import_spec(PESTAT = "character",
+                                na = "NA"))
+  
+  
+  libname(dat, file.path(base_path, "PE"), "xls", import_specs = lst)
+  
+  
+  expect_equal(length(dat), 1)
+  
+  
+})
+
+test_that("writing xls changes to xlsx.", {
+  
+  tmp <- tempdir()
+  
+  libname(dat, tmp, "xls")
+  
+  lib_add(dat, mtcars)
+  
+  
+  fe <- file.exists(file.path(tmp, "mtcars.xlsx"))
+  expect_equal(fe, TRUE)
+  
+  lib_delete(dat)
+  
+})
+
 test_that("libname works on SDTM data for csv.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
