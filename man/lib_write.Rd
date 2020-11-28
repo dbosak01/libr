@@ -4,19 +4,10 @@
 \alias{lib_write}
 \title{Write a Data Library to the File System}
 \usage{
-lib_write(x, type = NULL, force = FALSE)
+lib_write(x, force = FALSE)
 }
 \arguments{
 \item{x}{The format catalog to write.}
-
-\item{type}{The type of data library. Default is NULL, meaning the library
-is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
-and "dat".
-The data files will be saved as the type specified on this parameter, 
-no matter from which type of file they were input.  If the type is
-passed as a single string, all data files will be saved as that single type.
-The type can also be passed as a named vector of types, with each name 
-corresponding to the name of the data frame in the library.}
 
 \item{force}{Force writing each data file to disk, even if it has not 
 changed.}
@@ -29,10 +20,7 @@ The \code{lib_write} function writes the data library
 to the file system.  By default, the library will be written to the 
 directory for which it was defined, and each data frame will be written
 in the format from which it was read.  Data frames that were not read
-from a file will be saved in RDS format, unless otherwise specified.  To
-specify a different format, set the \code{type} parameter on 
-\code{lib_write}.  Setting this parameter will override any source
-file types and save the data in the indicated file format.
+from a file will be saved in RDS format, unless otherwise specified.  
 
 The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
 and a plain text file format.  Data read in xls file format will be saved 

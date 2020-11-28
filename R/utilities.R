@@ -53,8 +53,8 @@ print.lib <- function(x, ..., verbose = FALSE) {
                       " items\n")))
     
     at <- paste("- attributes:")
-    if (!is.null(attr(x, "type")))
-      at <- paste(at, attr(x, "type"))
+    if (!is.null(attr(x, "engine")))
+      at <- paste(at, attr(x, "engine"))
     if (attr(x, "read_only"))
       at <- paste(at, "read_only")
     if (attr(x, "loaded"))

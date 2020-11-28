@@ -31,11 +31,12 @@ e$env <- parent.frame()
 #' data can be in any file format: rds, csv, sas7bdat, etc.  The 
 #' \code{libname} function will read any type of data into the library, 
 #' and render as an R data frame.  
-#' @param type One or more file extensions to filter the incoming data.  The
-#' default value is NULL, meaning all recognized data files will be input.
-#' Valid values are "rds", "sas7bdat", "xpt", "xls", "xlsx", "dbf", and "csv". 
+#' @param engine The engine to use to create the library.  The engine typically 
+#' corresponds to the file extension of the input files. The
+#' default value is 'rds'.
+#' Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
 #' When saved with \code{lib_write}, each file will be saved in its original
-#' file format, unless otherwise specified on the \code{type} parameter of 
+#' file format, unless otherwise specified on the \code{engine} parameter of 
 #' \code{lib_write}.
 #' @param read_only Whether the library should be created as read only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
@@ -84,9 +85,24 @@ e$env <- parent.frame()
 #' @import readxl
 #' @import haven
 #' @export
-libname <- function(name, directory_path, type = NULL, 
+libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, ..., env = parent.frame(), 
                     import_specs = NULL) {
+  if (is.null(engine))
+    stop("engine parameter cannot be null")
+  
+  if (length(engine) > 1)
+    stop("engine parameter does not accept more than one value.")
+  
+  if (!engine %in% c("rds", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+    stop(paste0("Invalid engine parameter value: ", engine))
+  
+  if (!is.null(import_specs)) {
+    if (!"specs" %in% class(import_specs))
+      stop("import_specs parameter value must be of class 'specs'.")
+    
+  }
+  
   e$env <- env
   
   if (!file.exists(directory_path))
@@ -102,13 +118,11 @@ libname <- function(name, directory_path, type = NULL,
   attr(l, "path") <- directory_path
   attr(l, "read_only") <- read_only
   attr(l, "loaded") <- FALSE
-  attr(l, "type") <- type
+  attr(l, "engine") <- engine
   attr(l, "import_specs") <- import_specs  
   
-  if (is.null(type))
-    lst <- list.files(directory_path)
-  else
-    lst <- list.files(directory_path, pattern = paste0("\\.", type, "$"))
+
+  lst <- list.files(directory_path, pattern = paste0("\\.", engine, "$"))
   
   for (fl in lst) {
     fp <- file.path(directory_path, fl)
@@ -404,9 +418,6 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' the library, it will be written as an RDS file.
 #' @param x The library to add data to.
 #' @param ... The data frame(s) to add to the library.
-#' @param type The type of file format to assign to this data. By default,
-#' the function will assign the type associated with the library.  If no
-#' type is associated with the library, the type will be assigned "rds".
 #' @param name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
@@ -439,7 +450,7 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' lib_delete(dat)
 #' @import tools
 #' @export
-lib_add <- function(x, ..., type = NULL, name = NULL) {
+lib_add <- function(x, ..., name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -457,14 +468,11 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
       nms <- name
     } 
     
-    if (!is.null(type)) {
-      typ <- type
-    } else {
-      if (!is.null(attr(x, "type")))
-        typ <- attr(x, "type")
-      else 
-        typ <- "rds"
-    }
+    if (!is.null(attr(x, "engine")))
+      typ <- attr(x, "engine")
+    else 
+      typ <- "rds"
+    
     
     i <- 1
     for (nm in nms) {
@@ -510,9 +518,6 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
 #' the library, it will be written as an RDS file.  
 #' @param x The library to replace data in.
 #' @param ... The data frame(s) to replace.
-#' @param type The type of file format to assign to this data. By default,
-#' the function will assign the type associated with the library.  If no
-#' type is associated with the library, the type will be assigned "rds".
 #' @param name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
@@ -552,7 +557,7 @@ lib_add <- function(x, ..., type = NULL, name = NULL) {
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-lib_replace <- function(x, ..., type = NULL, name = NULL) {
+lib_replace <- function(x, ...,  name = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -570,14 +575,12 @@ lib_replace <- function(x, ..., type = NULL, name = NULL) {
       nms <- name
     } 
     
-    if (!is.null(type)) {
-      typ <- type
-    } else {
-      if (!is.null(attr(x, "type")))
-        typ <- attr(x, "type")
-      else 
-        typ <- "rds"
-    }
+
+    if (!is.null(attr(x, "engine")))
+      typ <- attr(x, "engine")
+    else 
+      typ <- "rds"
+    
     
     i <- 1
     for (nm in nms) {
@@ -703,10 +706,7 @@ lib_remove <- function(x, name) {
 #' to the file system.  By default, the library will be written to the 
 #' directory for which it was defined, and each data frame will be written
 #' in the format from which it was read.  Data frames that were not read
-#' from a file will be saved in RDS format, unless otherwise specified.  To
-#' specify a different format, set the \code{type} parameter on 
-#' \code{lib_write}.  Setting this parameter will override any source
-#' file types and save the data in the indicated file format.
+#' from a file will be saved in RDS format, unless otherwise specified.  
 #' 
 #' The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
 #' and a plain text file format.  Data read in xls file format will be saved 
@@ -720,14 +720,6 @@ lib_remove <- function(x, name) {
 #' every data file to disk.
 #' 
 #' @param x The format catalog to write.
-#' @param type The type of data library. Default is NULL, meaning the library
-#' is not typed.  Valid values are "rds", "sas7bdat", "xls", "xlsx", "csv",
-#' and "dat".
-#' The data files will be saved as the type specified on this parameter, 
-#' no matter from which type of file they were input.  If the type is
-#' passed as a single string, all data files will be saved as that single type.
-#' The type can also be passed as a named vector of types, with each name 
-#' corresponding to the name of the data frame in the library.
 #' @param force Force writing each data file to disk, even if it has not 
 #' changed.
 #' @return The saved data library.
@@ -770,7 +762,7 @@ lib_remove <- function(x, name) {
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-lib_write <- function(x, type = NULL, force = FALSE) {
+lib_write <- function(x, force = FALSE) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -791,10 +783,8 @@ lib_write <- function(x, type = NULL, force = FALSE) {
     for (nm in nms) {
       
       styp <- attr(x[[nm]], "extension")
-      if (!is.null(type))
-        ext <- type
-      else if (!is.null(attr(x, "type")))
-        ext <- attr(x, "type")
+      if (!is.null(attr(x, "engine")))
+        ext <- attr(x, "engine")
       else if (!is.null(styp) && !is.na(styp))
         ext <- styp
       else
@@ -981,8 +971,8 @@ lib_copy <- function(x, nm, directory_path) {
   for (nm in nms) {
     
     styp <- attr(cpy[[nm]], "extension")
-    if (!is.null(attr(cpy, "type")))
-      ext <- attr(cpy, "type")
+    if (!is.null(attr(cpy, "engine")))
+      ext <- attr(cpy, "engine")
     else if (!is.null(styp) & !is.na(styp))
       ext <- styp
     else
@@ -1141,12 +1131,10 @@ lib_size <- function(x) {
     stop("Object must be a data library.")
   
   path <- attr(x, "path")
-  type <- attr(x, "type")
-  
-  if (is.null(type)) 
-    info <- file.info(list.files(path, full.names = TRUE))
-  else 
-    info <- file.info(list.files(path, full.names = TRUE, pattern = type))
+  type <- attr(x, "engine")
+
+  info <- file.info(list.files(path, full.names = TRUE, 
+                               pattern =  paste0("\\.", type, "$")))
   
   if (nrow(info) == 0)
     ret <- 0
@@ -1249,64 +1237,3 @@ lib_info <- function(x) {
   return(ret)
 }
 
-
-# Setting a new environment causes a lot of trouble, and would take
-# significant changes to make it work properly.  Will eliminate for now
-# and consider for a future version.  That means the global environment is 
-# the only environment available for now.
-
-# @title Set the Environment for the Library Functions
-# @description The \code{lib_env} function sets the working environment
-# for the \strong{libr} package.  By default, the environment is set to the
-# current global environment.  If an alternative environment is desired, a
-# user may set it with this function. You may also set the environment
-# with the option 'libr.env'.
-# @param env The environment to use.
-# @return The new environment.
-# @family lib
-# @examples
-# # Create new environment
-# env1 <- new.env()
-# 
-# # Assign new environment
-# lib_env(env1)
-# 
-# # Create temp directory
-# tmp <- tempdir()
-# 
-# # Create library
-# libname(dat, tmp)
-# 
-# # Add data to library
-# lib_add(dat, mtcars)
-# lib_add_dat, iris)
-# 
-# # Load library
-# lib_load(dat)
-# 
-# # Examine global environment
-# ls()
-# # [1] "env1" "tmp"
-# 
-# # Examine new environment
-# ls(envir = env1)
-# 
-# # Clean up
-# lib_delete(dat)
-# @export
-# lib_env <- function(env = NULL) {
-#   
-#   if (is.null(env)) {
-#    if (is.null(options()[["libr.env"]])) {
-#      if (is.null(e$env))
-#        e$env = as.environment(1)
-#    } else {
-#      e$env = options()[["libr.env"]]
-#    }
-#     
-#   } else {
-#     e$env = env
-#   }
-#   
-#   return(e$env)
-# }

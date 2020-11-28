@@ -4,16 +4,12 @@
 \alias{lib_replace}
 \title{Replace Data in a Data Library}
 \usage{
-lib_replace(x, ..., type = NULL, name = NULL)
+lib_replace(x, ..., name = NULL)
 }
 \arguments{
 \item{x}{The library to replace data in.}
 
 \item{...}{The data frame(s) to replace.}
-
-\item{type}{The type of file format to assign to this data. By default,
-the function will assign the type associated with the library.  If no
-type is associated with the library, the type will be assigned "rds".}
 
 \item{name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different

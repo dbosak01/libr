@@ -4,16 +4,12 @@
 \alias{lib_add}
 \title{Add Data to a Data Library}
 \usage{
-lib_add(x, ..., type = NULL, name = NULL)
+lib_add(x, ..., name = NULL)
 }
 \arguments{
 \item{x}{The library to add data to.}
 
 \item{...}{The data frame(s) to add to the library.}
-
-\item{type}{The type of file format to assign to this data. By default,
-the function will assign the type associated with the library.  If no
-type is associated with the library, the type will be assigned "rds".}
 
 \item{name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different

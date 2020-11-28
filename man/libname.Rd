@@ -7,7 +7,7 @@
 libname(
   name,
   directory_path,
-  type = NULL,
+  engine = "rds",
   read_only = FALSE,
   ...,
   env = parent.frame(),
@@ -24,11 +24,12 @@ data can be in any file format: rds, csv, sas7bdat, etc.  The
 \code{libname} function will read any type of data into the library, 
 and render as an R data frame.}
 
-\item{type}{One or more file extensions to filter the incoming data.  The
-default value is NULL, meaning all recognized data files will be input.
-Valid values are "rds", "sas7bdat", "xpt", "xls", "xlsx", "dbf", and "csv". 
+\item{engine}{The engine to use to create the library.  The engine typically 
+corresponds to the file extension of the input files. The
+default value is 'rds'.
+Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
 When saved with \code{lib_write}, each file will be saved in its original
-file format, unless otherwise specified on the \code{type} parameter of 
+file format, unless otherwise specified on the \code{engine} parameter of 
 \code{lib_write}.}
 
 \item{read_only}{Whether the library should be created as read only.
