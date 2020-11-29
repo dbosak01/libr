@@ -16,11 +16,11 @@ frame full of information about a data library, data frame, or tibble. A
 a data step is a mechanism to perform row-by-row processing of data.
 
 
-# Glossary 
+## Glossary 
 The functions contained in the **libr** package are as follows:
 
+### Data Library Functions
 * `libname()`: Creates a data library
-* `dictionary()`: Creates a data dictionary
 * `lib_load()`: Loads a library into the workspace
 * `lib_unload()`: Unloads a library from the workspace
 * `lib_sync()`: Synchronizes the workspace with the library list
@@ -35,8 +35,11 @@ The functions contained in the **libr** package are as follows:
 * `lib_size()`: Returns the size of the data library in bytes
 * `specs()`: Define import specs for a libname
 * `import_spec()`: Define an import spec for a specific file
+
+### Other Functions
+* `dictionary()`: Creates a data dictionary
 * `datastep()`: Perform row-by-row processing of data
-* `%eq%`: An operator to check equality between objects
+* `%eq%`: An infix operator to check equality between objects
 
 
 # Libnames and Dictionaries
@@ -48,7 +51,7 @@ you to define a library for an entire directory of data files.  The library
 can then be manipulated as a whole using the `lib_*` functions in the **libr**
 package.
 
-## Example
+## Example 1: Basic Library Operations
 The following example will illustrate some basic functionality of the 
 **libr** package regarding the creation of libnames and use of dictionaries:
 ```
@@ -153,12 +156,15 @@ library data into the parent frame, where it can be accessed using a two-level
 
 When you are done with the data, call the `lib_unload()` function to remove
 the data from the parent frame and put it back in the library list.  To write
-any added or modified data to disk, call the `lib_write()` function.  
+any added or modified data to disk, call the `lib_write()` function. The 
+`lib_write()` function will only write data that has changed since the last
+write.
 
 The **libr** package also contains a number of functions for manipulating
 data libraries.  There are functions to add and remove data from a library,
 as well as copy or delete an entire library.
 
+## Example 2: Additional Library Operations
 The example below illustrates some of the additional functions:
 
 ```
@@ -233,8 +239,8 @@ data processing. It is particularly advantageous when wish to perform deeply
 nested conditional logic, as the standard R conditionals do not allow you to 
 write deeply nested logic easily.   
 
+## Example 1: Simple Data Step
 Here is an example of a simple data step:
-## Example 1
 ```
 # Add some columns to mtcars using data step logic
 df <- datastep(mtcars[1:10, 1:3], {
@@ -273,7 +279,7 @@ the above data step could have been performed by sending all columns into
 the data step, and keeping only the desired columns.  Using the `keep` 
 parameter also allows you to order the resulting columns.
 
-## Example 2
+## Example 2: Keeping Data Frame Variables
 ```
 # Keep and order output columns 
 df <- datastep(mtcars[1:10,], 
@@ -312,9 +318,9 @@ defined, the `first.` and `last.` automatic variables become active, which
 allow you to identify the boundaries between groups.  Note that your
 data must be sorted properly before sending it into the data step.
 
-## Example 3
+## Example 3: By Groups
 ```
-# Identify start of end of by-groups
+# Identify start and end of by-groups
 df <- datastep(mtcars[1:10,], 
   keep = c("mpg", "cyl", "gear", "grp"), 
   by = c("gear"), {
@@ -352,7 +358,7 @@ function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
 is an example of such a scenario:
 
-## Example 4
+## Example 4: Calculate Block
 ```
 # Categorize mpg as above or below the mean
 df <- datastep(mtcars, 
@@ -388,7 +394,7 @@ function.  Therefore, within a **dplyr** pipeline, it is not necessary to
 use any `datastep` parameters.  The following example recreates the above 
 data frame from Example 4, but with a **dplyr** pipeline.
 
-## Example 5
+## Example 5: Data Pipeline
 ```
 library(dplyr)
 library(magrittr)
