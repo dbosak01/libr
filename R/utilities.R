@@ -154,7 +154,6 @@ getUniqueName <- function(nm, nms) {
   return(ret)
 }
 
-
 #' @import tools
 #' @noRd
 writeData <- function(x, ext, file_path, force = FALSE) {
@@ -243,6 +242,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
     }
 
   }  
+  
   
   return(x)
 }

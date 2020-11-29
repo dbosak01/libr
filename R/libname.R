@@ -84,6 +84,7 @@ e$env <- parent.frame()
 #' @import readr
 #' @import readxl
 #' @import haven
+#' @import tibble
 #' @export
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, ..., env = parent.frame(), 
@@ -170,6 +171,8 @@ libname <- function(name, directory_path, engine = "rds",
       } else if (ext == "dbf") {
         
         dat <- foreign::read.dbf(fp, ...)
+        if (!is_tibble(dat))
+          dat <- as_tibble(dat)
         
       } else if (ext == "xpt") {
         

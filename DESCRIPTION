@@ -21,15 +21,15 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    tools
+    foreign
 Imports:     
     readr,
     readxl,
     haven,
     openxlsx,
     crayon, 
-    foreign,
     dplyr,
-    tibble
+    tibble,
+    tools
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

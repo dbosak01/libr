@@ -51,6 +51,20 @@ datastep <- function(data, steps, keep = NULL,
   
   ret <- NULL
   firstval <- NULL
+  
+  # Set by if data is a grouped tibble
+  if (is.null(by) && "grouped_df" %in% class(data)) {
+    if (!is.null(attr(data, "groups"))) {
+      grpdf <- attr(data, "groups")
+      nms <- names(grpdf)
+      if (!is.null(nms)) {
+        nms <- nms[nms != ".rows"]
+        if (length(nms) > 0)
+          by <- nms
+      }
+    }
+  }
+
 
   # Step through row by row
   for (n. in seq_len(nrow(data))) {

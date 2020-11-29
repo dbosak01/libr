@@ -160,3 +160,26 @@ test_that("datastep() calculate parameter works as expected.", {
   expect_equal(sum(d1$pind), 5)
   
 })
+
+test_that("datastep() auto-group-by works as expected.", {
+  
+  libname(dat, base_path, "rds")
+  
+  lib_load(dat)
+  
+  
+  d1 <- dat.demo_studya %>% group_by(treatment) %>% 
+    datastep({
+      p1 <- first.
+      p2 <- last.
+      rownum <- n.
+    })
+  
+  d1
+  
+  expect_equal(sum(d1$p1), 2)
+  expect_equal(sum(d1$p2), 2)
+  expect_equal(sum(d1$rownum), 55)
+  
+  lib_unload(dat)
+})
