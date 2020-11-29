@@ -360,6 +360,7 @@ df
 # Merc 280          19.2   6 167.6 1974-06-10    Low     NA
 
 ```
+### Keep, Drop, and Rename 
 
 The data step has parameters to perform basic shaping of the resulting
 data frame.  These parameters are 'keep', 'drop', and 'rename'.  For example,
@@ -399,6 +400,7 @@ df
 # Merc 280          19.2   6 167.6    Low 1974-06-10
 
 ```
+### By Group Processing
 The `datastep()` function also has the capabilities of performing by-group
 processing.  A by-group is accomplished using the `by` parameter, and passing
 a vector of column names that define the group.  Once a by-group is 
@@ -438,6 +440,7 @@ df
 # Merc 280          19.2   6    4   End
 
 ```
+### Using Summary Functions
 There may be times when you want to combine row-by-row with column-by-column
 vector operations.  For example, let's say you want to calculate a mean
 and then perform conditional, row-by-row processing on the mean.  This 
@@ -475,6 +478,7 @@ df[1:10,]
 # Merc 280          19.2   6 20.09062    Low
 
 ```
+### Data Steps with `dplyr`
 Note that the `datastep()` function is pipe-friendly, and can be combined
 with **dplyr** functions in a data pipeline.  Also note that the `datastep()`
 function will recognize any group attributes added by the `group_by()` 
