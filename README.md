@@ -9,11 +9,14 @@
 
 <!-- badges: end -->
   
-The **libr** package brings the concepts of data libraries and data 
-dictionaries to R.  A data library is an object used to define and manage
-an entire directory of data files.  A data dictionary is a data frame full
-of information about a data library, data frame, or tibble.  
+The **libr** package brings the concepts of data libraries, data 
+dictionaries, and data steps to R.  A data library is an object used to define 
+and manage an entire directory of data files.  A data dictionary is a data 
+frame full of information about a data library, data frame, or tibble. A
+a data step is a mechanism to perform row-by-row processing of data.
 
+
+# Glossary 
 The functions contained in the **libr** package are as follows:
 
 * `libname()`: Creates a data library
@@ -30,11 +33,24 @@ The functions contained in the **libr** package are as follows:
 * `lib_info()`: Returns a data frame of information about the library
 * `lib_path()`: Returns the path of a data library
 * `lib_size()`: Returns the size of the data library in bytes
+* `specs()`: Define import specs for a libname
+* `import_spec()`: Define an import spec for a specific file
+* `datastep()`: Perform row-by-row processing of data
+* `%eq%`: An operator to check equality between objects
 
+
+# Libnames and Dictionaries
+
+The main motivation for using the **libr** package is to create and use 
+data libraries and data dictionaries.  These concepts are useful when 
+dealing with sets of related data files.  The `libname()` function allows
+you to define a library for an entire directory of data files.  The library
+can then be manipulated as a whole using the `lib_*` functions in the **libr**
+package.
 
 ## Example
 The following example will illustrate some basic functionality of the 
-**libr** package:
+**libr** package regarding the creation of libnames and use of dictionaries:
 ```
 # Create temp directory
 tmp <- tempdir()
@@ -208,5 +224,201 @@ The **libr** package, on the other hand, tends to load all data into memory
 indiscriminately.
 
 
+# Data Step
+Normally, R processes data column-by-column. The data step allows you 
+to process data row-by-row.  Row-by-row processing of data is useful when you 
+have related columns, and wish to perform conditional logic on those 
+columns. The `datastep()` function allows you to perform this style of 
+data processing. It is particularly advantageous when wish to perform deeply 
+nested conditional logic, as the standard R conditionals do not allow you to 
+write deeply nested logic easily.   
 
+Here is an example of a simple data step:
+## Example 1
+```
+# Add some columns to mtcars using data step logic
+df <- datastep(mtcars[1:10, 1:3], {
+
+    if (mpg >= 20) 
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+      
+    recdt <- as.Date("1974-06-10")
+    
+    if (cyl == 8)
+      is8cyl <- TRUE
+
+  })
+  
+# View results  
+df
+#                    mpg cyl  disp      recdt mpgcat is8cyl
+# Mazda RX4         21.0   6 160.0 1974-06-10   High     NA
+# Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA
+# Datsun 710        22.8   4 108.0 1974-06-10   High     NA
+# Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA
+# Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE
+# Valiant           18.1   6 225.0 1974-06-10    Low     NA
+# Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE
+# Merc 240D         24.4   4 146.7 1974-06-10   High     NA
+# Merc 230          22.8   4 140.8 1974-06-10   High     NA
+# Merc 280          19.2   6 167.6 1974-06-10    Low     NA
+
+```
+
+The data step has parameters to perform basic shaping of the resulting
+data frame.  These parameters are 'keep', 'drop', and 'rename'.  For example,
+the above data step could have been performed by sending all columns into 
+the data step, and keeping only the desired columns.  Using the `keep` 
+parameter also allows you to order the resulting columns.
+
+## Example 2
+```
+# Keep and order output columns 
+df <- datastep(mtcars[1:10,], 
+  keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
+
+    if (mpg >= 20) 
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+      
+    recdt <- as.Date("1974-06-10")
+    
+    if (cyl == 8)
+      is8cyl <- TRUE
+
+  })
+  
+df
+#                    mpg cyl  disp mpgcat      recdt
+# Mazda RX4         21.0   6 160.0   High 1974-06-10
+# Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10
+# Datsun 710        22.8   4 108.0   High 1974-06-10
+# Hornet 4 Drive    21.4   6 258.0   High 1974-06-10
+# Hornet Sportabout 18.7   8 360.0    Low 1974-06-10
+# Valiant           18.1   6 225.0    Low 1974-06-10
+# Duster 360        14.3   8 360.0    Low 1974-06-10
+# Merc 240D         24.4   4 146.7   High 1974-06-10
+# Merc 230          22.8   4 140.8   High 1974-06-10
+# Merc 280          19.2   6 167.6    Low 1974-06-10
+
+```
+The `datastep()` function also has the capabilities of performing by-group
+processing.  A by-group is accomplished using the `by` parameter, and passing
+a vector of column names that define the group.  Once a by-group is 
+defined, the `first.` and `last.` automatic variables become active, which
+allow you to identify the boundaries between groups.  Note that your
+data must be sorted properly before sending it into the data step.
+
+## Example 3
+```
+# Identify start of end of by-groups
+df <- datastep(mtcars[1:10,], 
+  keep = c("mpg", "cyl", "gear", "grp"), 
+  by = c("gear"), {
+
+    if (first. & last.)
+      grp <- "Start - End"
+    else if (first.)
+      grp <- "Start"
+    else if (last.)
+      grp <- "End"
+    else 
+      grp <- "-"
+
+  })
+  
+df
+#                    mpg cyl gear   grp
+# Mazda RX4         21.0   6    4 Start
+# Mazda RX4 Wag     21.0   6    4     -
+# Datsun 710        22.8   4    4   End
+# Hornet 4 Drive    21.4   6    3 Start
+# Hornet Sportabout 18.7   8    3     -
+# Valiant           18.1   6    3     -
+# Duster 360        14.3   8    3   End
+# Merc 240D         24.4   4    4 Start
+# Merc 230          22.8   4    4     -
+# Merc 280          19.2   6    4   End
+
+```
+There may be times when you want to combine row-by-row with column-by-column
+vector operations.  For example, let's say you want to calculate a mean
+and then perform conditional, row-by-row processing on the mean.  This 
+situation can be handled using the `calculate` parameter on the `datastep()`
+function. The function will execute the `calculate` block first, add any
+assigned variables to the data frame, and then execute the data step.  Below 
+is an example of such a scenario:
+
+## Example 4
+```
+# Categorize mpg as above or below the mean
+df <- datastep(mtcars, 
+  keep = c("mpg", "cyl", "mean_mpg", "mpgcat"), 
+  calculate = {mean_mpg = mean(mpg)},
+  {
+
+    if (mpg >= mean_mpg)
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+
+  })
+  
+df[1:10,]
+#                    mpg cyl mean_mpg mpgcat
+# Mazda RX4         21.0   6 20.09062   High
+# Mazda RX4 Wag     21.0   6 20.09062   High
+# Datsun 710        22.8   4 20.09062   High
+# Hornet 4 Drive    21.4   6 20.09062   High
+# Hornet Sportabout 18.7   8 20.09062    Low
+# Valiant           18.1   6 20.09062    Low
+# Duster 360        14.3   8 20.09062    Low
+# Merc 240D         24.4   4 20.09062   High
+# Merc 230          22.8   4 20.09062   High
+# Merc 280          19.2   6 20.09062    Low
+
+```
+Note that the `datastep()` function is pipe-friendly, and can be combined
+with **dplyr** functions in a data pipeline.  Also note that the `datastep()`
+function will recognize any group attributes added by the `group_by()` 
+function.  Therefore, within a **dplyr** pipeline, it is not necessary to 
+use any `datastep` parameters.  The following example recreates the above 
+data frame from Example 4, but with a **dplyr** pipeline.
+
+## Example 5
+```
+library(dplyr)
+library(magrittr)
+
+# Add datastep to dplyr pipeline
+df <- mtcars %>% 
+  select(mpg, cyl, gear) %>% 
+  mutate(mean_mpg = mean(mpg)) %>% 
+  datastep({
+
+    if (mpg >= mean_mpg)
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+
+  }) %>% 
+  filter(row_number() <= 10)
+  
+df
+#     mpg cyl gear mean_mpg mpgcat
+# 1  21.0   6    4 20.09062   High
+# 2  21.0   6    4 20.09062   High
+# 3  22.8   4    4 20.09062   High
+# 4  21.4   6    3 20.09062   High
+# 5  18.7   8    3 20.09062    Low
+# 6  18.1   6    3 20.09062    Low
+# 7  14.3   8    3 20.09062    Low
+# 8  24.4   4    4 20.09062   High
+# 9  22.8   4    4 20.09062   High
+# 10 19.2   6    4 20.09062    Low
+
+```
 

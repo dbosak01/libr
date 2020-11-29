@@ -9,6 +9,20 @@
 #' contains parameters to drop, keep, or rename variables.  It also 
 #' has the ability to perform by-group processing, and identify first
 #' and last rows in the group.
+#' @details 
+#' The \code{datastep} function provides four automatic variables. These 
+#' variables are generated automatically for every data step, and can 
+#' be accessed at any point within the data step. 
+#' \itemize{
+#'   \item{\strong{data}: Represents the input data frame.}
+#'   \item{\strong{n.}: Contains the row number.}
+#'   \item{\strong{first.}: Indicates the beginning of a by-group.}
+#'   \item{\strong{last.}: Indicates the end of a by-group.}
+#' }
+#' These automatic variables will be dropped from the data frame at the end
+#' of the data step.  If you wish to keep the automatic variable values,
+#' assign the automatic variable to a new variable and keep that variable.
+#' 
 #' @param data The data to step through.
 #' @param steps The operations to perform on the data.  This parameter is 
 #' typically specified as a set of R statements contained within 
