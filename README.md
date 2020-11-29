@@ -19,7 +19,7 @@ a data step is a mechanism to perform row-by-row processing of data.
 ## Glossary 
 The functions contained in the **libr** package are as follows:
 
-### Data Library Functions
+### Library Functions
 * `libname()`: Creates a data library
 * `lib_load()`: Loads a library into the workspace
 * `lib_unload()`: Unloads a library from the workspace
@@ -44,16 +44,43 @@ The functions contained in the **libr** package are as follows:
 
 # Libnames and Dictionaries
 
-The main motivation for using the **libr** package is to create and use 
+The main motivation for developing the **libr** package is to create and use 
 data libraries and data dictionaries.  These concepts are useful when 
 dealing with sets of related data files.  The `libname()` function allows
 you to define a library for an entire directory of data files.  The library
 can then be manipulated as a whole using the `lib_*` functions in the **libr**
 package.
 
-## Example 1: Basic Library Operations
+## Basic Library Operations
+There are four main **libr** functions for creating and using a data library:
+
+* `libname()`
+* `lib_load()`
+* `lib_unload()`
+* `lib_write()`
+
+The `libname()` function creates a data library.  The function has parameters
+for the library name and a directory to associate it with.  If the directory
+has existing data files, those data files will be automatically loaded
+into the library.  Once in the library, the data can be accessed using list
+syntax.
+
+If you prefer to access the data via the workspace, simply call
+the `lib_load()` function on the library.  This function will load the 
+library data into the parent frame, where it can be accessed using a two-level
+(<library>.<dataset>) name.  
+
+When you are done with the data, call the `lib_unload()` function to remove
+the data from the parent frame and put it back in the library list.  To write
+any added or modified data to disk, call the `lib_write()` function. The 
+`lib_write()` function will only write data that has changed since the last
+write.
+
 The following example will illustrate some basic functionality of the 
-**libr** package regarding the creation of libnames and use of dictionaries:
+**libr** package regarding the creation of libnames and use of dictionaries.  
+The example first places some sample data in a temp directory for
+illustration purposes.  Then the example creates a libname, loads it
+into memory, adds data to it, and then unloads and writes everything to disk:
 ```
 # Create temp directory
 tmp <- tempdir()
@@ -135,37 +162,16 @@ ls()
 # [1] "tmp"
 ```
 
-## How to Use a Data Library
-There are four main **libr** functions for creating and using a data library:
-
-* `libname()`
-* `lib_load()`
-* `lib_unload()`
-* `lib_write()`
-
-The `libname()` function creates a data library.  The function has parameters
-for the library name and a directory to associate it with.  If the directory
-has existing data files, those data files will be automatically loaded
-into the library.  Once in the library, the data can be accessed using list
-syntax.
-
-If you prefer to access the data via the workspace, simply call
-the `lib_load()` function on the library.  This function will load the 
-library data into the parent frame, where it can be accessed using a two-level
-(<library>.<dataset>) name.  
-
-When you are done with the data, call the `lib_unload()` function to remove
-the data from the parent frame and put it back in the library list.  To write
-any added or modified data to disk, call the `lib_write()` function. The 
-`lib_write()` function will only write data that has changed since the last
-write.
-
+## Manipulating Libraries
 The **libr** package also contains a number of functions for manipulating
 data libraries.  There are functions to add and remove data from a library,
 as well as copy or delete an entire library.
 
-## Example 2: Additional Library Operations
-The example below illustrates some of the additional functions:
+The example below illustrates some of these additional functions.  The example
+first creates a library and adds some data to it.  The example then proceeds
+to copy it to another library and perform some manipulation of the data
+in the libraries.  The example ends by looking at some of the metadata 
+available for libraries:
 
 ```
 # Create temp directory
@@ -222,7 +228,7 @@ lib_unload(s2)
 lib_delete(s1)
 lib_delete(s2)
 ```
-
+## Package Disclaimer
 Note that the **libr** package is intended to be used with small and 
 medium-sized data sets.  It is not recommended for big data, as big data
 requires very careful control over which data is or is not loaded into memory.
@@ -234,12 +240,12 @@ indiscriminately.
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
 have related columns, and wish to perform conditional logic on those 
-columns. The `datastep()` function allows you to perform this style of 
-data processing. It is particularly advantageous when wish to perform deeply 
-nested conditional logic, as the standard R conditionals do not allow you to 
+columns. The `datastep()` function allows you to realize this style of 
+data processing. It is particularly advantageous when you wish to perform deeply 
+nested conditional logic, as the vectorized R conditionals do not allow you to 
 write deeply nested logic easily.   
 
-## Example 1: Simple Data Step
+### Example 1: Simple Data Step
 Here is an example of a simple data step:
 ```
 # Add some columns to mtcars using data step logic
@@ -279,7 +285,7 @@ the above data step could have been performed by sending all columns into
 the data step, and keeping only the desired columns.  Using the `keep` 
 parameter also allows you to order the resulting columns.
 
-## Example 2: Keeping Data Frame Variables
+### Example 2: Keeping Data Frame Variables
 ```
 # Keep and order output columns 
 df <- datastep(mtcars[1:10,], 
@@ -318,7 +324,7 @@ defined, the `first.` and `last.` automatic variables become active, which
 allow you to identify the boundaries between groups.  Note that your
 data must be sorted properly before sending it into the data step.
 
-## Example 3: By Groups
+### Example 3: By Groups
 ```
 # Identify start and end of by-groups
 df <- datastep(mtcars[1:10,], 
@@ -358,7 +364,7 @@ function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
 is an example of such a scenario:
 
-## Example 4: Calculate Block
+### Example 4: Calculate Block
 ```
 # Categorize mpg as above or below the mean
 df <- datastep(mtcars, 
@@ -394,7 +400,7 @@ function.  Therefore, within a **dplyr** pipeline, it is not necessary to
 use any `datastep` parameters.  The following example recreates the above 
 data frame from Example 4, but with a **dplyr** pipeline.
 
-## Example 5: Data Pipeline
+### Example 5: Data Pipeline
 ```
 library(dplyr)
 library(magrittr)
