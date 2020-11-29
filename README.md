@@ -19,7 +19,7 @@ a data step is a mechanism to perform row-by-row processing of data.
 ## Glossary 
 The functions contained in the **libr** package are as follows:
 
-### Library Functions
+#### Library Functions
 * `libname()`: Creates a data library
 * `lib_load()`: Loads a library into the workspace
 * `lib_unload()`: Unloads a library from the workspace
@@ -36,7 +36,7 @@ The functions contained in the **libr** package are as follows:
 * `specs()`: Define import specs for a libname
 * `import_spec()`: Define an import spec for a specific file
 
-### Other Functions
+#### Other Functions
 * `dictionary()`: Creates a data dictionary
 * `datastep()`: Perform row-by-row processing of data
 * `%eq%`: An infix operator to check equality between objects
