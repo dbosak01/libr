@@ -16,7 +16,7 @@ frame full of information about a data library, data frame, or tibble. A
 a data step is a mechanism to perform row-by-row processing of data.
 
 
-## Glossary 
+### Glossary 
 The functions contained in the **libr** package are as follows:
 
 #### Library Functions
@@ -42,7 +42,7 @@ The functions contained in the **libr** package are as follows:
 * `%eq%`: An infix operator to check equality between objects
 
 
-# Libnames and Dictionaries
+## Libnames and Dictionaries
 
 The main motivation for developing the **libr** package is to create and use 
 data libraries and data dictionaries.  These concepts are useful when 
@@ -51,7 +51,7 @@ you to define a library for an entire directory of data files.  The library
 can then be manipulated as a whole using the `lib_*` functions in the **libr**
 package.
 
-## Basic Library Operations
+### Basic Library Operations
 There are four main **libr** functions for creating and using a data library:
 
 * `libname()`
@@ -170,7 +170,7 @@ ls()
 # [1] "tmp"
 ```
 
-## Manipulating Libraries
+### Manipulating Libraries
 The **libr** package also contains a number of functions for manipulating
 data libraries.  There are functions to add and remove data from a library,
 as well as copy or delete an entire library.
@@ -309,7 +309,7 @@ lib_unload(s2)
 lib_delete(s1)
 lib_delete(s2)
 ```
-# Data Step
+## Data Step
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
 have related columns, and wish to perform conditional logic on those 
@@ -511,7 +511,7 @@ df
 # 10 19.2   6    4 20.09062    Low
 
 ```
-# Enhanced Equality Operator
+## Enhanced Equality Operator
 Lastly, the **libr** package contains an enhanced equality operator.  The 
 objective of the `%eq%` operator is to return a TRUE or FALSE value when
 any two objects are compared.  This enhanced equality operator is useful
