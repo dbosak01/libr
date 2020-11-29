@@ -65,7 +65,14 @@ has existing data files, those data files will be automatically loaded
 into the library.  Once in the library, the data can be accessed using list
 syntax.
 
-If you prefer to access the data via the workspace, simply call
+You may create a data library for several different types of files: 'rds', 
+'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.  The type of library is
+defined using the `engine` parameter on the `libname()` function.  The default
+data engine is 'rds'.  For file types such as 'csv' and 'xlsx', 
+you may also control the data type of the columns using the `import_specs`
+parameter.
+
+If you prefer to access the data via the workspace, call
 the `lib_load()` function on the library.  This function will load the 
 library data into the parent frame, where it can be accessed using a two-level
 (&lt;library&gt;.&lt;dataset&gt;) name.  
