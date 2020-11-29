@@ -101,6 +101,9 @@ lib_unload(dat)
 lib_delete(dat)
 }
 \seealso{
+\code{\link{spec}} to define import specifications for a library, 
+and \code{\link{dictionary}} to view the data dictionary.
+
 Other lib: 
 \code{\link{is.lib}()},
 \code{\link{lib_add}()},

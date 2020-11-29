@@ -197,3 +197,54 @@ test_that("libname works on SDTM data for sas7bdat.", {
   expect_equal(length(dat), 13)
 
 })
+
+
+test_that("import_specs works as expected with dates.", {
+  
+  library(readr)
+
+  # Create temp path
+  tmp <- file.path(tempdir(), "mtcars.csv")
+
+  # Create data for illustration purposes
+  df <- data.frame(vehicle = rownames(mtcars), mtcars[c("mpg", "cyl", "disp")])
+
+  # Kill rownames
+  rownames(df) <- NULL
+
+  # Add some columns
+  df <- df[1:10, ] %>%
+    datastep({
+
+      recdt <- "10JUN1974"
+
+      if (mpg >= 20)
+        mpgcat <- "High"
+      else
+        mpgcat <- "Low"
+
+      if (cyl == 8)
+        cyl8 <- TRUE
+
+    })
+
+  df
+
+  # Save to temp directory
+  write_csv(df, tmp)
+
+  # Create import spec
+  spcs <- specs(mtcars = import_spec(vehicle = "character",
+                                     cyl = "integer",
+                                     recdt = "date=%d%b%Y",
+                                     mpgcat = "guess",
+                                     cyl8 = "logical"))
+
+  # Create library
+  libname(dat, tempdir(), "csv", import_specs = spcs)
+
+  # View data types
+  dictionary(dat)
+  
+  
+})

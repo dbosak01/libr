@@ -40,8 +40,8 @@ lib_add(dat, iris)
 # Examine the dictionary for the library
 dictionary(dat)
 # A tibble: 9 x 10
-# Name    Column       Class   Label Description Format Width Justify  Rows   NAs
-# <chr>   <chr>        <chr>   <lgl> <lgl>       <lgl>  <lgl> <lgl>   <int> <int>
+#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs
+#   <chr>   <chr>        <chr>   <lgl> <lgl>       <lgl>  <lgl> <lgl>   <int> <int>
 # 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0
 # 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0
 # 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0
@@ -54,4 +54,7 @@ dictionary(dat)
 
 # Clean up
 lib_delete(dat)
+}
+\seealso{
+\code{\link{libname}} to create a data library.
 }

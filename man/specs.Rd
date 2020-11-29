@@ -25,12 +25,108 @@ Valid values are TRUE, and FALSE.  Default is TRUE.}
 
 \item{...}{Named input specs.  The name should correspond to the file name.}
 }
+\value{
+The import specifications object.
+}
 \description{
 A function to capture a set of import specifications for a 
 directory of data files.  These specs can be used on the 
 \code{\link{libname}} function to correctly assign the data types for 
 file formats that are not strongly typed, such as 'csv' and 'xlsx'. The 
+import procedures will guess at the data types for any columns that
+are not explicitly defined in the import specifications.
+
+Note that the 
 input specification is defined as an object so it can be stored and reused.
 See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
 for additional information on storing specs.
 }
+\examples{
+library(readr)
+
+# Create temp path
+tmp <- file.path(tempdir(), "mtcars.csv")
+
+# Create data for illustration purposes
+df <- data.frame(vehicle = rownames(mtcars), mtcars[c("mpg", "cyl", "disp")])
+
+# Kill rownames
+rownames(df) <- NULL
+
+# Add some columns
+df <- datastep(df[1:10, ], {
+
+        recdt <- "10JUN1974"
+
+        if (mpg >= 20)
+          mpgcat <- "High"
+        else 
+          mpgcat <- "Low"
+      
+        if (cyl == 8)
+          cyl8 <- TRUE
+  })
+  
+df
+#              vehicle  mpg cyl  disp     recdt mpgcat cyl8
+# 1          Mazda RX4 21.0   6 160.0 10JUN1974   High   NA
+# 2      Mazda RX4 Wag 21.0   6 160.0 10JUN1974   High   NA
+# 3         Datsun 710 22.8   4 108.0 10JUN1974   High   NA
+# 4     Hornet 4 Drive 21.4   6 258.0 10JUN1974   High   NA
+# 5  Hornet Sportabout 18.7   8 360.0 10JUN1974    Low TRUE
+# 6            Valiant 18.1   6 225.0 10JUN1974    Low   NA
+# 7         Duster 360 14.3   8 360.0 10JUN1974    Low TRUE
+# 8          Merc 240D 24.4   4 146.7 10JUN1974   High   NA
+# 9           Merc 230 22.8   4 140.8 10JUN1974   High   NA
+# 10          Merc 280 19.2   6 167.6 10JUN1974    Low   NA
+
+# Save to temp directory for this example
+write_csv(df, tmp)
+
+## Start Example ##
+
+# Define import spec
+spcs <- specs(mtcars = import_spec(vehicle = "character",
+                                   cyl = "integer",
+                                   recdt = "date=\%d\%b\%Y",
+                                   mpgcat = "guess",
+                                   cyl8 = "logical"))
+                                   
+# Create library
+libname(dat, tempdir(), "csv", import_specs = spcs)
+# $mtcars
+# library 'dat': 1 items
+# - attributes: csv not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1 mtcars       csv   10    7 9.3 Kb 2020-11-29 09:47:52
+
+# View data types
+dictionary(dat)
+# # A tibble: 7 x 10
+#   Name   Column  Class     Label Description Format Width Justify  Rows   NAs
+#   <chr>  <chr>   <chr>     <chr> <chr>       <lgl>  <int> <chr>   <int> <int>
+# 1 mtcars vehicle character NA    NA          NA        17 NA         10     0
+# 2 mtcars mpg     numeric   NA    NA          NA        NA NA         10     0
+# 3 mtcars cyl     integer   NA    NA          NA        NA NA         10     0
+# 4 mtcars disp    numeric   NA    NA          NA        NA NA         10     0
+# 5 mtcars mpgcat  character NA    NA          NA         4 NA         10     0
+# 6 mtcars recdt   Date      NA    NA          NA        NA NA         10     0
+# 7 mtcars cyl8    logical   NA    NA          NA        NA NA         10     8
+
+# Clean up
+lib_delete(dat)
+}
+\seealso{
+\code{\link{libname}} to create a data library, 
+\code{\link{dictionary}} for generating a data dictionary, and 
+\code{\link{import_spec}} for additional information on defining an 
+import spec.
+
+Other specs: 
+\code{\link{import_spec}()},
+\code{\link{read.specs}()},
+\code{\link{write.specs}()}
+}
+\concept{specs}

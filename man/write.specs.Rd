@@ -2,21 +2,32 @@
 % Please edit documentation in R/specs.R
 \name{write.specs}
 \alias{write.specs}
-\title{Write input specs to the file system}
+\title{Write import specs to the file system}
 \usage{
 write.specs(x, dir_path = getwd(), file_name = NULL)
 }
 \arguments{
 \item{x}{A specifications object of class 'specs'.}
 
-\item{dir_path}{A full or relative path to save the specs.}
+\item{dir_path}{A full or relative path to save the specs. Default is the 
+current working directory.}
 
 \item{file_name}{The file name to save to specs, without a file extension.
 The file extension will be added automatically.  If no file name is 
 supplied, the function will use the variable name as the file name.}
 }
+\value{
+The full file path.
+}
 \description{
-A function to write input specifications to the file system.
+A function to write import specifications to the file system.
 The function accepts a specifications object and a full or relative
 path.  The function returns the full file path.
 }
+\seealso{
+Other specs: 
+\code{\link{import_spec}()},
+\code{\link{read.specs}()},
+\code{\link{specs}()}
+}
+\concept{specs}

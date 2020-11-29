@@ -78,6 +78,7 @@ datastep <- function(data, steps, keep = NULL,
         first. <- TRUE
       } else {
 
+        # Compare current by group to previous row
         if (dfcomp(firstval, data[n., by]) == FALSE) {
           first. <- TRUE
           firstval <- data[n., by]
@@ -86,9 +87,12 @@ datastep <- function(data, steps, keep = NULL,
         }
       }
 
+      # If it's the last row of the data frame, mark last.
       if (n. == nrow(data)) {
         last. <- TRUE
       } else {
+        
+        # Compare by group to next row to determine last.
         if (dfcomp(data[n. + 1, by],  data[n., by]) == FALSE) {
           last. <- TRUE
         } else {
@@ -97,11 +101,17 @@ datastep <- function(data, steps, keep = NULL,
       }
 
     } else {
+      
+      # If no by group is specified, mark the first and last rows
+      # of the entire data frame
+      
+      # If it's the first row
       if (n. == 1)
         first. <- TRUE
       else
         first. <- FALSE
 
+      # If it's the last row
       if (n. == nrow(data))
         last. <- TRUE
       else
@@ -137,102 +147,12 @@ datastep <- function(data, steps, keep = NULL,
 
   return(ret)
 }
-# 
-# datastep <- function(data, steps, keep = NULL,
-#                      drop = NULL, rename = NULL,
-#                      by = NULL) {
-#   
-#   # Put code in a variable for safe-keeping
-#   code <- substitute(steps, env = environment())
-#   
-#   ret <- NULL
-#   firstval <- NULL
-#   
-#   if (is.null(by)) {
-#     data[ , "first."] <- FALSE
-#     data[1, "first."] <- TRUE
-#     data[ , "last."] <- FALSE
-#     data[nrow(data), "last."] <- TRUE
-#   } else {
-#     
-#     # Step through row by row
-#     for (i in seq_len(nrow(data))) {
-#       
-#       # Add first. and last. to data frame automatically
-#       if (!is.null(by)) {
-#         if (is.null(firstval)) {
-#           firstval <- data[i, by]
-#           data[["first."]] <- TRUE
-#         } else {
-#           
-#           if (dfcomp(firstval, data[i, by]) == FALSE) {
-#             data[["first."]] <- TRUE
-#             firstval <- data[i, by]
-#           } else {
-#             data[["first."]] <- FALSE
-#           }
-#         }
-#         
-#         if (i == nrow(data)) {
-#           data[["last."]] <- TRUE
-#         } else {
-#           if (dfcomp(data[i + 1, by],  data[i, by]) == FALSE) {
-#             data[["last."]] <- TRUE
-#           } else {
-#             data[["last."]] <- FALSE
-#           }
-#         }
-#         
-#       } else {
-#         
-#         if (i == 1)
-#           data[["first."]] <- TRUE
-#         else
-#           data[["first."]] <- FALSE
-#         
-#         if (i == nrow(data))
-#           data[["last."]] <- TRUE
-#         else
-#           data[["last."]] <- FALSE
-#         
-#       }
-#     }
-#     
-#   }
-#   
-#   data[["n."]] <- seq.int(nrow(data))
-#   
-#   # Evaluate code 
-#   r1 <- within(data, eval(code), keepAttrs = TRUE)
-#   
-#   # Remove automatic variables
-#   data[["first."]] <- NULL
-#   data[["last."]] <- NULL
-#   data[["n."]] <- NULL
-#   
-#   
-#   # Perform drop operation
-#   if (!is.null(drop))
-#     ret <- ret[ , !names(ret) %in% drop]
-#   
-#   # Perform keep operation
-#   if (!is.null(keep)) {
-#     ret <- ret[ , keep]
-#   }
-#   
-#   # Perform rename operation
-#   if (!is.null(rename)) {
-#     nms <- names(ret)
-#     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
-#   }
-#   
-#   return(ret)
-# }
+
 
 # Utilities ---------------------------------------------------------------
 
 
-
+#' @description A function to compare two by groups, passed as data frames
 #' @noRd
 dfcomp <- function(df1, df2) {
   ret <- FALSE

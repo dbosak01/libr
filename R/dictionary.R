@@ -1,5 +1,8 @@
 
 
+# Dictionary Definition ---------------------------------------------------
+
+
 
 #' @title Create a Data Dictionary
 #' @param x The input library, data frame, or tibble.
@@ -19,6 +22,7 @@
 #'   \item{\strong{NAs:} The number of NA values in this column.}
 #' }
 #' @import tibble
+#' @seealso \code{\link{libname}} to create a data library.
 #' @examples 
 #' #' # Create temp directory
 #' tmp <- tempdir()
@@ -33,8 +37,8 @@
 #' # Examine the dictionary for the library
 #' dictionary(dat)
 #' # A tibble: 9 x 10
-#' # Name    Column       Class   Label Description Format Width Justify  Rows   NAs
-#' # <chr>   <chr>        <chr>   <lgl> <lgl>       <lgl>  <lgl> <lgl>   <int> <int>
+#' #   Name    Column       Class   Label Description Format Width Justify  Rows   NAs
+#' #   <chr>   <chr>        <chr>   <lgl> <lgl>       <lgl>  <lgl> <lgl>   <int> <int>
 #' # 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0
 #' # 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0
 #' # 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0
@@ -79,6 +83,10 @@ dictionary <- function(x) {
   
   return(ret)
 }
+
+
+# Utilities ---------------------------------------------------------------
+
 
 #' @noRd
 getDictionary <- function(x, dsnm) {

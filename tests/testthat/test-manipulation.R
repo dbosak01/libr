@@ -181,6 +181,25 @@ test_that("lib_add() function works as expected loaded.", {
   
 })
 
+
+test_that("lib_remove() work as expected with multiple names.", {
+  
+  alt_path <- tempdir()
+  libname(dat, alt_path)
+  
+  lib_add(dat, mtcars, iris)
+  
+  expect_equal(length(dat), 2)
+  
+  lib_remove(dat, c("mtcars", "iris"))
+  
+  expect_equal(length(dat), 0)
+  
+  lib_delete(dat)
+  
+})
+
+
 test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
   
   alt_path <- tempdir()

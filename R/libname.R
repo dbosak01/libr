@@ -52,6 +52,8 @@ e$env <- parent.frame()
 #' information.
 #' @return The library object.
 #' @family lib
+#' @seealso \code{\link{spec}} to define import specifications for a library, 
+#' and \code{\link{dictionary}} to view the data dictionary.
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()
@@ -104,17 +106,21 @@ libname <- function(name, directory_path, engine = "rds",
     
   }
   
+  # Set the environment to be used 
   e$env <- env
   
+  # If directory doesn't exist, create it
   if (!file.exists(directory_path))
     dir.create(directory_path)
   
+  # Get safe library name 
   name_c <- deparse1(substitute(name, env = environment()))
   
 
   # Create new structure of class "lib"
   l <- structure(list(), class = c("lib", "list"))
   
+  # Set attributes for this library
   attr(l, "name") <- name_c
   attr(l, "path") <- directory_path
   attr(l, "read_only") <- read_only
@@ -123,6 +129,7 @@ libname <- function(name, directory_path, engine = "rds",
   attr(l, "import_specs") <- import_specs  
   
 
+  # Get the file list according to the engine type
   lst <- list.files(directory_path, pattern = paste0("\\.", engine, "$"))
   
   for (fl in lst) {
@@ -247,6 +254,7 @@ libname <- function(name, directory_path, engine = "rds",
           warning(paste("The name", nm, "already exists in the library.",
                         "Data will be replaced."))
         
+        # Set attributes on data frame
         attr(dat, "name") <- nm
         attr(dat, "extension") <- ext
         attr(dat, "path") <- fp
@@ -325,7 +333,10 @@ lib_load <- function(x) {
     assign(n, x[[nm]], envir = e$env)
   }
   
+  # Set loaded attribute
   attr(x, "loaded") <- TRUE
+  
+  # Reassign with current attributes
   assign(libnm, x, envir = e$env)
   
   return(x)
@@ -386,12 +397,19 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  if (!is.null(name)) {
+   if (!"character" %in% class(name))
+     stop("Name must be of class character")
+  }
+  
   # Get name of library
   libnm <- deparse1(substitute(x, env = environment())) 
   
+  # Use override name if requested
   if (!is.null(name))
     libnm <- name
   
+  # Sync if requested
   if (sync)
     x <- lib_sync(x, libnm)
   
@@ -406,6 +424,8 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
   
   # Mark as unloaded
   attr(x, "loaded") <- FALSE
+  
+  # Reassign with updated attributes
   assign(libnm, x, envir = e$env)
   
   return(x)
@@ -462,15 +482,19 @@ lib_add <- function(x, ..., name = NULL) {
   
   if (attr(x, "read_only") == FALSE) {
     
+    # Get safe data names
     nms <- as.character(substitute(c(...), env = environment()))
     nms <- nms[2:length(nms)]  
     
+    # Get straight parameter list
     lst <- list(...)
     
+    # Use override name if requested
     if (!is.null(name)) {
       nms <- name
     } 
     
+    # Get engine type
     if (!is.null(attr(x, "engine")))
       typ <- attr(x, "engine")
     else 
@@ -479,26 +503,35 @@ lib_add <- function(x, ..., name = NULL) {
     
     i <- 1
     for (nm in nms) {
+      
+      # Check for duplicate names
       if (nm %in% names(x))
         warning(paste0("The name '", nm, "' already exists in the library '",
                       lbnm, "'. Data will be replaced."))
       
+      # Assign parameter value
       x[[nm]] <- lst[[i]]
+      
+      # Assign attributes
       attr(x[[nm]], "name") <- nm
       attr(x[[nm]], "extension") <- typ
       
+      # If lib is loaded, add to environment
       if (is.loaded.lib(lbnm)) {
         
         assign(paste0(lbnm, ".", nm), x[[nm]], envir = e$env)
       }
       
+      # Construct path
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
+      # Write df to file system
       x[[nm]] <- writeData(x[[nm]], typ, pth)
     
       i <- i + 1
     }
     
+    # Reassign updated attributes
     assign(lbnm, x, envir = e$env)
     
   } else {
@@ -565,20 +598,24 @@ lib_replace <- function(x, ...,  name = NULL) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Get safe variable name
   lbnm  <- deparse1(substitute(x, env = environment()))
   
   if (attr(x, "read_only") == FALSE) {
     
+    # Get safe parameters
     nms <- as.character(substitute(c(...), env = environment()))
     nms <- nms[2:length(nms)]  
     
+    # Get actual parameters
     lst <- list(...)
     
+    # Use override name if requested
     if (!is.null(name)) {
       nms <- name
     } 
     
-
+    # Get engine type
     if (!is.null(attr(x, "engine")))
       typ <- attr(x, "engine")
     else 
@@ -587,26 +624,35 @@ lib_replace <- function(x, ...,  name = NULL) {
     
     i <- 1
     for (nm in nms) {
+      
+      # Trap duplicate names
       if (!nm %in% names(x))
         warning(paste0("The name '", nm, "' does not exist in the library '",
                        lbnm, "'. Data will be added."))
       
+      # Assign dataset 
       x[[nm]] <- lst[[i]]
+      
+      # Update attributes
       attr(x[[nm]], "name") <- nm
       attr(x[[nm]], "extension") <- typ
       
+      # If lib is loaded, assign data set to environment
       if (is.loaded.lib(lbnm)) {
         
         assign(paste0(lbnm, ".", nm), x[[nm]], envir = e$env)
       }
       
+      # Construct path
       pth <- file.path(attr(x, "path"), paste0(nm, ".", typ))
       
+      # Write data to file system
       x[[nm]] <- writeData(x[[nm]], typ, pth)
       
       i <- i + 1
     }
     
+    # Update variable in environment
     assign(lbnm, x, envir = e$env)
     
   } else {
@@ -672,27 +718,35 @@ lib_remove <- function(x, name) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Get safe names
   libnm <- deparse1(substitute(x, env = environment()))
+  
+  # Get file path
   libpth <- attr(x, "path")
   
   if (attr(x, "read_only") == FALSE) {
     for (nm in name) {
       
+      # Construct file path
       pth <- file.path(libpth, paste0(nm, ".", attr(x[[nm]], "extension")))
       
+      # Remove file
       if (!is.null(pth)) {
         if (file.exists(pth))
           file.remove(pth)
       }
       
+      # Clear out item from list
       x[[nm]] <- NULL
       
+      # Remove variable from environment
       if (is.loaded.lib(libnm)) {
         gnm <- paste0(libnm, ".", nm)
         rm(list = gnm, envir = e$env)
       }
     }
     
+    # Update library
     assign(libnm, x, envir = e$env)
   
   } else {
@@ -770,14 +824,17 @@ lib_write <- function(x, force = FALSE) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Get safe name
   lbnm <- deparse1(substitute(x, env = environment()))
   
   if (attr(x, "read_only") != TRUE) { 
   
+    # Sync with list if needed
     if (is.loaded.lib(lbnm)) {
       x <- lib_sync(x, lbnm)
     }
       
+    # Get data names
     nms <- names(x)
     
     # Get path
@@ -785,6 +842,7 @@ lib_write <- function(x, force = FALSE) {
     
     for (nm in nms) {
       
+      # Figure out the extension
       styp <- attr(x[[nm]], "extension")
       if (!is.null(attr(x, "engine")))
         ext <- attr(x, "engine")
@@ -793,14 +851,18 @@ lib_write <- function(x, force = FALSE) {
       else
         ext <- "rds"
       
+      # Assign extension attribute
       attr(x[[nm]], "extension") <- ext
       
+      # Construct the path
       fp <- file.path(libpth, paste0(nm, ".", ext))
   
+      # Write data to the file system
       x[[nm]] <- writeData(x[[nm]], ext, fp, force)  
       
     }
     
+    # Update the library variable
     assign(lbnm, x, envir = e$env)
   
   } else {
@@ -870,6 +932,7 @@ lib_sync <- function(x, name = NULL) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Use name if requested
   if (!is.null(name))
     libnm <- name
   else 
@@ -882,17 +945,24 @@ lib_sync <- function(x, name = NULL) {
     # Any names added to environment will be added to list.
     # Idea is to always preserve data unless the user specifically 
     # asks to kill it.
+    
+    # Get list of variables from environment
     en <- ls(envir = e$env)
+    
+    # Filter by what belongs to library
     fen <- grep(paste0("^", libnm, "\\."), en, value = TRUE)
 
     for (gnm in fen) {
-      #print(gnm)
+      
+      # Remove lib prefix to get clean name
       nm <- sub(paste0(libnm, "."), "", gnm, fixed = TRUE)
-      #print(nm)
+      
+      # Pull from environment and add to list
       x[[nm]] <- get(gnm, envir = e$env)
       
     }
     
+    # Update lib variable
     assign(libnm, x, envir = e$env)
     
   } else {
@@ -949,30 +1019,37 @@ lib_copy <- function(x, nm, directory_path) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Create target directory if it doesn't exist
   if (!dir.exists(directory_path))
     dir.create(directory_path)
   
+  # Get safe lib name
   libnm <- deparse1(substitute(x, env = environment()))
 
-  
+  # Sync with list if needed
   if (attr(x, "loaded") == TRUE) {
     
     x <- lib_sync(x, name = libnm) 
   }
   
+  # Get safe name of new library
   newlib <- deparse1(substitute(nm, env = environment()))
   
+  # Copy lib
   cpy <- x
   
+  # Set attributes
   attr(cpy, "name") <- newlib
   attr(cpy, "path") <- directory_path
   attr(cpy, "loaded") <- FALSE
 
+  # Get list of dataset names
   nms <- names(cpy)
 
   # Write out data
   for (nm in nms) {
     
+    # Figure out the extension
     styp <- attr(cpy[[nm]], "extension")
     if (!is.null(attr(cpy, "engine")))
       ext <- attr(cpy, "engine")
@@ -981,15 +1058,19 @@ lib_copy <- function(x, nm, directory_path) {
     else
       ext <- "rds"
     
+    # Update attributes
     attr(cpy[[nm]], "extension") <- ext
     
+    # Construct path
     fp <- file.path(directory_path, paste0(nm, ".", ext))
     
+    # Write copied data to file system
     cpy[[nm]] <- writeData(cpy[[nm]], ext, fp)  
     
 
   }
   
+  # Update environment
   assign(newlib, cpy, envir = e$env)
   
   return(cpy)
@@ -1046,15 +1127,19 @@ lib_delete <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Get safe name
   lnm <- deparse1(substitute(x, env = environment()))
   
   if (attr(x, "read_only") == FALSE) {
   
+    # Unload if needed
     if (is.loaded.lib(lnm))
       lib_unload(x, TRUE, lnm)
     
+    # Get path of lib
     lbpth <- attr(x, "path")
     
+    # Remove each file in lib
     for (nm in names(x)) {
       pth <- file.path(lbpth, paste0(nm, ".", attr(x[[nm]], "extension")))
       
@@ -1063,6 +1148,7 @@ lib_delete <- function(x) {
       x[[nm]] <- NULL
     }
     
+    # Remove variables from environment
     if (lnm %in% ls(envir = e$env))
       rm(list = lnm, envir = e$env)
   
@@ -1099,6 +1185,7 @@ lib_path <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Return saved path
   ret <- attr(x, "path")
   
   return(ret)
@@ -1133,12 +1220,14 @@ lib_size <- function(x) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
+  # Get the lib type and path
   path <- attr(x, "path")
   type <- attr(x, "engine")
 
+  # Get info for all files in lib
   info <- file.info(list.files(path, full.names = TRUE, 
                                pattern =  paste0("\\.", type, "$")))
-  
+  # Calculate size
   if (nrow(info) == 0)
     ret <- 0
   else
@@ -1190,15 +1279,18 @@ lib_info <- function(x) {
 
   ret <- NULL
   
+  # Get lib path
   libpth <- attr(x, "path")
 
   for (nm in names(x)) {
     
+    # Put each data set into own variable for convenience
     itm <- x[[nm]]
     
+    # Construct path for each file
     pth <- file.path(libpth, paste0(nm, ".", attr(itm, "extension")))
-    #print(pth)
     
+    # Get file info
     if (!is.null(pth)) { 
       info <- file.info(pth)
       lm <- info[1, "mtime"]
@@ -1206,12 +1298,14 @@ lib_info <- function(x) {
       lm <- NA
     }
     
+    # Get saved extension
     if (is.null(attr(itm, "extension"))) {
       ex <- NA 
     } else {
       ex <- attr(itm, "extension") 
     }
     
+    # Usually the data is a data frame.  Sometimes not.
     if (any(class(itm) %in% "data.frame")) {  
       rws <- nrow(itm)
       cls <- ncol(itm)
@@ -1223,6 +1317,7 @@ lib_info <- function(x) {
       cls <- 0 
     }
     
+    # Construct row of info to present to user
     rw <- data.frame(Name = nm, 
                      Extension = ex,
                      Rows = rws,
@@ -1230,6 +1325,7 @@ lib_info <- function(x) {
                      Size = format(utils::object.size(itm), units = "auto"),
                      LastModified = lm)
     
+    # Bind the info rows for each file
     if (is.null(ret))
       ret <- rw
     else 

@@ -2,20 +2,30 @@
 % Please edit documentation in R/specs.R
 \name{read.specs}
 \alias{read.specs}
-\title{Read input specs from the file system}
+\title{Read import specs from the file system}
 \usage{
-read.specs(file_path)
+read.specs(file_path = getwd())
 }
 \arguments{
-\item{file_path}{The full or relative path to the file system.  This 
-parameter is required. If the file_path does not contain the '.specs' file
+\item{file_path}{The full or relative path to the file system.  Default is
+the current working directory. If the file_path does not contain the 
+'.specs' file
 extension, the function will add it.}
 }
 \value{
 The specifications object.
 }
 \description{
-A function to read input specifications from the file system.
+A function to read import specifications from the file system.
 The function accepts a full or relative path to the spec file, and returns
-the specs as an object.
+the specs as an object.  If the \code{file_path} parameter is passed
+as a directory name, the function will search for a file with a '.specs'
+extension and read it.
 }
+\seealso{
+Other specs: 
+\code{\link{import_spec}()},
+\code{\link{specs}()},
+\code{\link{write.specs}()}
+}
+\concept{specs}

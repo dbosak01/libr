@@ -25,9 +25,22 @@ be converted to NA values. Default is NULL, meaning the value of the
 \item{params}{Any follow-on parameters to the underlying import function.
 Valid values are TRUE, and FALSE.  Default is TRUE.}
 }
+\value{
+The import specification object.
+}
 \description{
-A function to capture the import specifications for a 
+A function to create the import specifications for a 
 particular data file.  This information can be used on the 
 \code{\link{libname}} function to correctly assign the data types for 
 file formats that are not strongly typed, such as 'csv' and 'xlsx'.
 }
+\seealso{
+\code{\link{libname}} to create a data library, and 
+\code{\link{specs}} for an example using import specs.
+
+Other specs: 
+\code{\link{read.specs}()},
+\code{\link{specs}()},
+\code{\link{write.specs}()}
+}
+\concept{specs}

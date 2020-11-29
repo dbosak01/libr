@@ -43,12 +43,15 @@ print.lib <- function(x, ..., verbose = FALSE) {
   
   if (verbose == TRUE) {
     
+    # Print list form
     print(unclass(x))  
     
   } else {
     
+    # Prepare color
     grey60 <- make_style(grey60 = "#999999")
     
+    # Print a nice header
     cat(grey60(paste0("# library '",  attr(x, "name"), "': ", length(x), 
                       " items\n")))
     
@@ -68,6 +71,8 @@ print.lib <- function(x, ..., verbose = FALSE) {
     if (length(x) > 0)
       cat("- items:\n")
     
+    # Reuse the info function
+    # Already has everything we need
     dat <- lib_info(x)
     
     print(dat)
@@ -76,18 +81,6 @@ print.lib <- function(x, ..., verbose = FALSE) {
   
   invisible(x)
 }
-
-
-#' @noRd
-is.loaded.lib <- function(name) {
-  
-  lb <- get(name, envir = e$env)
-  
-  ret <- attr(lb, "loaded")
-  
-  return(ret)
-}
-
 
 #' @title Class test for a data library
 #' @description This function tests whether an object is a data library.  The
@@ -117,18 +110,146 @@ is.lib <- function(x) {
 }
 
 
+#' @title Check equality of two objects
+#' @description The goal of the \code{\%eq\%} operator is to return a TRUE
+#' or FALSE value when any two objects are compared.  The function provides a 
+#' more human-comprehensible style of equality check, that allows comparing 
+#' of NULLs, NA values,
+#' and atomic type values without error. 
+#' 
+#' The function also allows comparing
+#' of data frames.  It will return TRUE if all values in the 
+#' data frames are equal, and ignores differences in attributes.
+#' @param x1 The first object to compare
+#' @param x2 The second object to compare
+#' @return A TRUE or FALSE value depending on whether the objects are equal.
+#' @examples 
+#' # Comparing of NULLs and NA
+#' NULL %eq% NULL        # TRUE
+#' NULL %eq% NA          # FALSE
+#' NA %eq% NA            # TRUE
+#' 1 %eq% NULL           # FALSE
+#' 1 %eq% NA             # FALSE
+#' 
+#' # Comparing of atomic values
+#' 1 %eq% 1              # TRUE
+#' "one" %eq% "one"      # TRUE
+#' 1 %eq% "one"          # FALSE
+#' 1 %eq% Sys.Date()     # FALSE
+#' 
+#' # Comparing of vectors
+#' v1 <- c("A", "B", "C")
+#' v2 <- c("A", "B", "D")
+#' v1 %eq% v1            # TRUE
+#' v1 %eq% v2            # FALSE
+#' 
+#' # Comparing of data frames
+#' mtcars %eq% mtcars    # TRUE
+#' mtcars %eq% iris      # FALSE
+#' iris %eq% iris[1:50,] # FALSE
+#' 
+#' # Mixing it up
+#' mtcars %eq% NULL      # FALSE
+#' v1 %eq% NA            # FALSE
+#' 1 %eq% v1             # FALSE
+#' 
+#' @export
+`%eq%` <- function(x1, x2) {
+  
+  ret <- TRUE
+  if (is.null(x1) & is.null(x2))
+    ret <- TRUE
+  else if (is.null(x1) | is.null(x2)) {
+    ret <- FALSE
+  } else if (all(class(x1) != class(x2))) {
+    ret <- FALSE
+  } else if ("data.frame" %in% class(x1)) {
+    
+    if (nrow(x1) != nrow(x2)) {
+      ret <- FALSE
+    } else if (ncol(x1) != ncol(x2)) {
+      ret <- FALSE
+    } else if (all(names(x1) != names(x2))) {
+      ret <- FALSE
+    } else {
+      
+      for (i in seq_along(x1)) {
+        if (any(!strong_eq(x1[[i]], x2[[i]]))) {
+          ret <- FALSE
+          break
+        }
+      }
+    }
+  } else {
+    
+    if (length(x1) != length(x2)) {
+      ret <- FALSE
+    } else {
+      
+      if (any(!strong_eq(x1, x2))) {
+        ret <- FALSE
+      }
+    }
+  }
+  
+  return(ret)
+}
+
+#' @noRd
+strong_eq <- Vectorize(function(x1, x2) {
+  
+  ret <- TRUE
+  if (is.null(x1) & is.null(x2))
+    ret <- TRUE
+  else if (is.null(x1) & !is.null(x2))
+    ret <- FALSE
+  else if (!is.null(x1) & is.null(x2))
+    ret <- FALSE
+  else if (is.na(x1) & is.na(x2))
+    ret <- TRUE
+  else if (is.na(x1) & !is.na(x2))
+    ret <- FALSE
+  else if (!is.na(x1) & is.na(x2))
+    ret <- FALSE
+  else {
+    ret <- x1 == x2
+    
+  }
+  
+  return(ret)
+  
+})
+
+# Internal Utilities ------------------------------------------------------
+
+
+#' @description Internal function to see if a lib is loaded
+#' @noRd
+is.loaded.lib <- function(name) {
+  
+  lb <- get(name, envir = e$env)
+  
+  ret <- attr(lb, "loaded")
+  
+  return(ret)
+}
+
+#' @description Get the extension of a file
 #' @noRd
 getExtension <- function(file){ 
   ex <- strsplit(basename(file), split="\\.")[[1]]
   return(ex[-1])
 } 
 
+#' @description Get the name of a file without extension
 #' @noRd
 getFileName <- function(file){ 
   ex <- strsplit(basename(file), split="\\.")[[1]]
   return(ex[1])
 }
 
+#' @description Had an idea to add a unique name if user tries to put a 
+#' duplicate name.  Idea never came to fruition.  Keeping code here anyway.
 #' @noRd
 getUniqueName <- function(nm, nms) {
   
@@ -154,6 +275,9 @@ getUniqueName <- function(nm, nms) {
   return(ret)
 }
 
+#' @description Write data to the file system.  This will compare the stored
+#' checksums with the current checksum and only update if the file has
+#' changed.  That way any timestamps on the files are preserved. 
 #' @import tools
 #' @noRd
 writeData <- function(x, ext, file_path, force = FALSE) {
@@ -247,13 +371,16 @@ writeData <- function(x, ext, file_path, force = FALSE) {
   return(x)
 }
 
+#' @description Mapping of column types
 #' @noRd
 spec_trans <- c("guess" = "guess",
                 "logical" = "logical",
                 "character" = "text",
                 "numeric" = "numeric", 
                 "integer" = "numeric")
-              
+
+#' @description This function maps the colspec interface to the colspecs
+#' needed for the excel import function.              
 #' @noRd
 get_colspec_xlsx <- function(type_string, num_cols, col_names) {
   
@@ -284,7 +411,8 @@ get_colspec_xlsx <- function(type_string, num_cols, col_names) {
   
 }
 
-
+#' @description This function maps the colspec interface to the colspecs
+#' needed for the csv import function. 
 #' @import readr                
 #' @noRd
 get_colspec_csv <- function(type_string) {
@@ -322,82 +450,6 @@ get_colspec_csv <- function(type_string) {
   
 }
 
-
-#' @title Check identity of two objects
-#' @description The \code{\%eq\%} function provides a more human-comprehensible
-#' style of equality check.  The function allows comparing of nulls, NA values,
-#' and atomic type values without error. The function also allows comparing
-#' of data frames.  The function will return TRUE if all values in the 
-#' data frames are equal, and ignores differences in attributes.
-#' @param x1 The first object to compare
-#' @param x2 The second object to compare
-#' @return A TRUE or FALSE value depending on whether the objects are equal.
-#' @export
-`%eq%` <- function(x1, x2) {
-
- ret <- TRUE
- if (is.null(x1) & is.null(x2))
-   ret <- TRUE
- else if (is.null(x1) | is.null(x2)) {
-   ret <- FALSE
- } else if (all(class(x1) != class(x2))) {
-   ret <- FALSE
- } else if ("data.frame" %in% class(x1)) {
-
-   if (nrow(x1) != nrow(x2)) {
-     ret <- FALSE
-   } else if (ncol(x1) != ncol(x2)) {
-     ret <- FALSE
-   } else if (all(names(x1) != names(x2))) {
-     ret <- FALSE
-   } else {
-
-     for (i in seq_along(x1)) {
-       if (any(!strong_eq(x1[[i]], x2[[i]]))) {
-         ret <- FALSE
-         break
-       }
-     }
-   }
- } else {
-
-   if (length(x1) != length(x2)) {
-     ret <- FALSE
-   } else {
-
-     if (any(!strong_eq(x1, x2))) {
-       ret <- FALSE
-     }
-   }
- }
-
- return(ret)
-}
-
-#' @noRd
-strong_eq <- Vectorize(function(x1, x2) {
-
-  ret <- TRUE
-  if (is.null(x1) & is.null(x2))
-    ret <- TRUE
-  else if (is.null(x1) & !is.null(x2))
-    ret <- FALSE
-  else if (!is.null(x1) & is.null(x2))
-    ret <- FALSE
-  else if (is.na(x1) & is.na(x2))
-    ret <- TRUE
-  else if (is.na(x1) & !is.na(x2))
-    ret <- FALSE
-  else if (!is.na(x1) & is.na(x2))
-    ret <- FALSE
-  else {
-    ret <- x1 == x2
-
-  }
-
-  return(ret)
-
-})
 
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
 #   set.seed(seed_no)

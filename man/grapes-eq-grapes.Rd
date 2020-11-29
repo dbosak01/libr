@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{\%eq\%}
 \alias{\%eq\%}
-\title{Check identity of two objects}
+\title{Check equality of two objects}
 \usage{
 x1 \%eq\% x2
 }
@@ -15,9 +15,44 @@ x1 \%eq\% x2
 A TRUE or FALSE value depending on whether the objects are equal.
 }
 \description{
-The \code{\%eq\%} function provides a more human-comprehensible
-style of equality check.  The function allows comparing of nulls, NA values,
-and atomic type values without error. The function also allows comparing
-of data frames.  The function will return TRUE if all values in the 
+The goal of the \code{\%eq\%} operator is to return a TRUE
+or FALSE value when any two objects are compared.  The function provides a 
+more human-comprehensible style of equality check, that allows comparing 
+of NULLs, NA values,
+and atomic type values without error. 
+
+The function also allows comparing
+of data frames.  It will return TRUE if all values in the 
 data frames are equal, and ignores differences in attributes.
+}
+\examples{
+# Comparing of NULLs and NA
+NULL \%eq\% NULL        # TRUE
+NULL \%eq\% NA          # FALSE
+NA \%eq\% NA            # TRUE
+1 \%eq\% NULL           # FALSE
+1 \%eq\% NA             # FALSE
+
+# Comparing of atomic values
+1 \%eq\% 1              # TRUE
+"one" \%eq\% "one"      # TRUE
+1 \%eq\% "one"          # FALSE
+1 \%eq\% Sys.Date()     # FALSE
+
+# Comparing of vectors
+v1 <- c("A", "B", "C")
+v2 <- c("A", "B", "D")
+v1 \%eq\% v1            # TRUE
+v1 \%eq\% v2            # FALSE
+
+# Comparing of data frames
+mtcars \%eq\% mtcars    # TRUE
+mtcars \%eq\% iris      # FALSE
+iris \%eq\% iris[1:50,] # FALSE
+
+# Mixing it up
+mtcars \%eq\% NULL      # FALSE
+v1 \%eq\% NA            # FALSE
+1 \%eq\% v1             # FALSE
+
 }
