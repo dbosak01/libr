@@ -77,10 +77,11 @@ any added or modified data to disk, call the `lib_write()` function. The
 write.
 
 The following example will illustrate some basic functionality of the 
-**libr** package regarding the creation of libnames and use of dictionaries.  
+**libr** package regarding the creation of libnames and use of dictionaries.
 The example first places some sample data in a temp directory for
-illustration purposes.  Then the example creates a libname, loads it
-into memory, adds data to it, and then unloads and writes everything to disk:
+illustration purposes.  Then the example creates a libname from the temp
+directory, loads it into memory, adds data to it, and then unloads and 
+writes everything to disk:
 ```
 # Create temp directory
 tmp <- tempdir()
@@ -125,6 +126,13 @@ ls()
 
 # Use data from the library
 summary(dat.rocks)
+#      area            peri            shape              perm        
+# Min.   : 1016   Min.   : 308.6   Min.   :0.09033   Min.   :   6.30  
+# 1st Qu.: 5305   1st Qu.:1414.9   1st Qu.:0.16226   1st Qu.:  76.45  
+# Median : 7487   Median :2536.2   Median :0.19886   Median : 130.50  
+# Mean   : 7188   Mean   :2682.2   Mean   :0.21811   Mean   : 415.45  
+# 3rd Qu.: 8870   3rd Qu.:3989.5   3rd Qu.:0.26267   3rd Qu.: 777.50  
+# Max.   :12212   Max.   :4864.2   Max.   :0.46413   Max.   :1300.00 
 
 # Add data to the library
 dat.trees_subset <- subset(dat.trees, Girth > 11)
@@ -183,12 +191,34 @@ libname(s1, tmp)
 # Add data to library and adjust names
 lib_add(s1, state.name, state.area, state.region, state.abb,
         name = c("name", "area", "region", "abb"))
+# # library 's1': 4 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:00:28
+# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:00:28
+# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28
+# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28
 
 # Copy library
 lib_copy(s1, s2, file.path(tmp, "orig"))
+# # library 's2': 4 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:01:17
+# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:01:17
+# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:01:17
+# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17
 
 # Remove data from library 1
-lib_remove(s1, name = c("name", "area", "region", "abb"))
+# lib_remove(s1, name = c("name", "area", "region", "abb"))
+# # library 's1': 0 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# NULL
 
 # Load libraries into memory
 lib_load(s1)
@@ -204,21 +234,72 @@ s1.south <- subset(s1.combined, region == "South")
 
 # Sync workspace with library list
 lib_sync(s1)
+# # library 's1': 5 items
+# - attributes: rds loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#       Name Extension Rows Cols    Size LastModified
+# 1 combined        NA   50    4 12.7 Kb         <NA>
+# 2     east        NA    9    4  3.2 Kb         <NA>
+# 3    north        NA   12    4  3.5 Kb         <NA>
+# 4    south        NA   16    4    4 Kb         <NA>
+# 5     west        NA   13    4  3.6 Kb         <NA>
 
 # Save library to disk
 lib_write(s1)
+# # library 's1': 5 items
+# - attributes: rds loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#       Name Extension Rows Cols    Size        LastModified
+# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
+# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
+# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
+# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
+# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
 
 # View path
 lib_path(s1)
+# [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpqAMV6L"
 
 # View size
 lib_size(s1)
+# [1] 7175
 
 # View info
 lib_info(s1)
+#       Name Extension Rows Cols    Size        LastModified
+# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
+# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
+# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
+# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
+# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
 
 # Display dictionary
 dictionary(s1)
+# # A tibble: 20 x 10
+#    Name     Column Class     Label Description Format Width Justify  Rows   NAs
+#    <chr>    <chr>  <chr>     <chr> <chr>       <lgl>  <int> <chr>   <int> <int>
+#  1 combined name   character NA    NA          NA        14 NA         50     0
+#  2 combined abb    character NA    NA          NA         2 NA         50     0
+#  3 combined area   numeric   NA    NA          NA        NA NA         50     0
+#  4 combined region factor    NA    NA          NA        NA NA         50     0
+#  5 east     name   character NA    NA          NA        13 NA          9     0
+#  6 east     abb    character NA    NA          NA         2 NA          9     0
+#  7 east     area   numeric   NA    NA          NA        NA NA          9     0
+#  8 east     region factor    NA    NA          NA        NA NA          9     0
+#  9 north    name   character NA    NA          NA        12 NA         12     0
+# 10 north    abb    character NA    NA          NA         2 NA         12     0
+# 11 north    area   numeric   NA    NA          NA        NA NA         12     0
+# 12 north    region factor    NA    NA          NA        NA NA         12     0
+# 13 south    name   character NA    NA          NA        14 NA         16     0
+# 14 south    abb    character NA    NA          NA         2 NA         16     0
+# 15 south    area   numeric   NA    NA          NA        NA NA         16     0
+# 16 south    region factor    NA    NA          NA        NA NA         16     0
+# 17 west     name   character NA    NA          NA        10 NA         13     0
+# 18 west     abb    character NA    NA          NA         2 NA         13     0
+# 19 west     area   numeric   NA    NA          NA        NA NA         13     0
+# 20 west     region factor    NA    NA          NA        NA NA         13     0
 
 # Unload libraries
 lib_unload(s1)
@@ -243,9 +324,10 @@ have related columns, and wish to perform conditional logic on those
 columns. The `datastep()` function allows you to realize this style of 
 data processing. It is particularly advantageous when you wish to perform deeply 
 nested conditional logic, as the vectorized R conditionals do not allow you to 
-write deeply nested logic easily.   
+write deeply nested logic easily.  It is also very useful for by-group
+processing.
 
-### Example 1: Simple Data Step
+#### Example 1: Simple Data Step
 Here is an example of a simple data step:
 ```
 # Add some columns to mtcars using data step logic
@@ -285,7 +367,7 @@ the above data step could have been performed by sending all columns into
 the data step, and keeping only the desired columns.  Using the `keep` 
 parameter also allows you to order the resulting columns.
 
-### Example 2: Keeping Data Frame Variables
+#### Example 2: Keeping Data Step Variables
 ```
 # Keep and order output columns 
 df <- datastep(mtcars[1:10,], 
@@ -324,7 +406,7 @@ defined, the `first.` and `last.` automatic variables become active, which
 allow you to identify the boundaries between groups.  Note that your
 data must be sorted properly before sending it into the data step.
 
-### Example 3: By Groups
+#### Example 3: By Groups
 ```
 # Identify start and end of by-groups
 df <- datastep(mtcars[1:10,], 
@@ -364,7 +446,7 @@ function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
 is an example of such a scenario:
 
-### Example 4: Calculate Block
+#### Example 4: Calculate Block
 ```
 # Categorize mpg as above or below the mean
 df <- datastep(mtcars, 
@@ -400,7 +482,7 @@ function.  Therefore, within a **dplyr** pipeline, it is not necessary to
 use any `datastep` parameters.  The following example recreates the above 
 data frame from Example 4, but with a **dplyr** pipeline.
 
-### Example 5: Data Pipeline
+#### Example 5: Data Pipeline
 ```
 library(dplyr)
 library(magrittr)
