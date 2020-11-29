@@ -68,7 +68,7 @@ syntax.
 If you prefer to access the data via the workspace, simply call
 the `lib_load()` function on the library.  This function will load the 
 library data into the parent frame, where it can be accessed using a two-level
-(<library>.<dataset>) name.  
+(&lt;library&gt;.&lt;dataset&gt;) name.  
 
 When you are done with the data, call the `lib_unload()` function to remove
 the data from the parent frame and put it back in the library list.  To write
