@@ -214,7 +214,7 @@ lib_copy(s1, s2, file.path(tmp, "orig"))
 # 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17
 
 # Remove data from library 1
-# lib_remove(s1, name = c("name", "area", "region", "abb"))
+lib_remove(s1, name = c("name", "area", "region", "abb"))
 # # library 's1': 0 items
 # - attributes: rds not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
@@ -309,14 +309,6 @@ lib_unload(s2)
 lib_delete(s1)
 lib_delete(s2)
 ```
-## Package Disclaimer
-Note that the **libr** package is intended to be used with small and 
-medium-sized data sets.  It is not recommended for big data, as big data
-requires very careful control over which data is or is not loaded into memory.
-The **libr** package, on the other hand, tends to load all data into memory 
-indiscriminately.
-
-
 # Data Step
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
@@ -454,7 +446,7 @@ is an example of such a scenario:
 # Categorize mpg as above or below the mean
 df <- datastep(mtcars, 
   keep = c("mpg", "cyl", "mean_mpg", "mpgcat"), 
-  calculate = {mean_mpg = mean(mpg)},
+  calculate = { mean_mpg = mean(mpg) },
   {
 
     if (mpg >= mean_mpg)
@@ -519,4 +511,61 @@ df
 # 10 19.2   6    4 20.09062    Low
 
 ```
+# Enhanced Equality Operator
+Lastly, the **libr** package contains an enhanced equality operator.  The 
+objective of the `%eq%` operator is to return a TRUE or FALSE value when
+any two objects are compared.  This enhanced equality operator is useful
+for situations when you don't want to check for NULL or NA values, or care
+about the data types of the objects you are comparing.
 
+The `%eq%` operator also compares data frames.  The comparison will include
+all data values, but no attributes.  This functionality is particularly useful
+when comparing tibbles, as tibbles often have many attributes assigned by 
+`dplyr` functions.
+
+It can be advantageous to have a comparison operator that does not give
+errors when encountering a NULL or NA value.  Note that this behavior can also 
+mask problems with your code.  Therefore, use the `%eq%` operator
+with discretion.
+
+Below is an example of several comparisons using the `%eq%` infix operator:
+
+```
+# Comparing of NULLs and NA
+NULL %eq% NULL        # TRUE
+NULL %eq% NA          # FALSE
+NA %eq% NA            # TRUE
+1 %eq% NULL           # FALSE
+1 %eq% NA             # FALSE
+
+# Comparing of atomic values
+1 %eq% 1              # TRUE
+"one" %eq% "one"      # TRUE
+1 %eq% "one"          # FALSE
+1 %eq% Sys.Date()     # FALSE
+
+# Comparing of vectors
+v1 <- c("A", "B", "C")
+v2 <- c("A", "B", "D")
+v1 %eq% v1            # TRUE
+v1 %eq% v2            # FALSE
+
+# Comparing of data frames
+mtcars %eq% mtcars    # TRUE
+mtcars %eq% iris      # FALSE
+iris %eq% iris[1:50,] # FALSE
+
+# Mixing it up 
+mtcars %eq% NULL      # FALSE
+v1 %eq% NA            # FALSE
+1 %eq% v1             # FALSE
+```
+
+
+
+## Package Disclaimer
+Note that the **libr** package is intended to be used with small and 
+medium-sized data sets.  It is not recommended for big data, as big data
+requires very careful control over which data is or is not loaded into memory.
+The **libr** package, on the other hand, tends to load all data into memory 
+indiscriminately.
