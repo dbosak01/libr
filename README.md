@@ -309,11 +309,11 @@ lib_unload(s2)
 lib_delete(s1)
 lib_delete(s2)
 ```
-## Data Step
+## The Datastep Function
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
 have related columns, and wish to perform conditional logic on those 
-columns. The `datastep()` function allows you to realize this style of 
+columns. The `datastz  ep()` function allows you to realize this style of 
 data processing. It is particularly advantageous when you wish to perform deeply 
 nested conditional logic, as the vectorized R conditionals do not allow you to 
 write deeply nested logic easily.  It is also very useful for by-group
@@ -511,7 +511,15 @@ df
 # 10 19.2   6    4 20.09062    Low
 
 ```
-## Enhanced Equality Operator
+
+## Package Disclaimer
+Note that the **libr** package is intended to be used with small and 
+medium-sized data sets.  It is not recommended for big data, as big data
+requires very careful control over which data is or is not loaded into memory.
+The **libr** package, on the other hand, tends to load all data into memory 
+indiscriminately.
+
+## Enhanced Equality Operator `%eq%`
 Lastly, the **libr** package contains an enhanced equality operator.  The 
 objective of the `%eq%` operator is to return a TRUE or FALSE value when
 any two objects are compared.  This enhanced equality operator is useful
@@ -526,7 +534,7 @@ when comparing tibbles, as tibbles often have many attributes assigned by
 It can be advantageous to have a comparison operator that does not give
 errors when encountering a NULL or NA value.  Note that this behavior can also 
 mask problems with your code.  Therefore, use the `%eq%` operator
-with discretion.
+with care.
 
 Below is an example of several comparisons using the `%eq%` infix operator:
 
@@ -563,9 +571,3 @@ v1 %eq% NA            # FALSE
 
 
 
-## Package Disclaimer
-Note that the **libr** package is intended to be used with small and 
-medium-sized data sets.  It is not recommended for big data, as big data
-requires very careful control over which data is or is not loaded into memory.
-The **libr** package, on the other hand, tends to load all data into memory 
-indiscriminately.
