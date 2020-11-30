@@ -9,7 +9,6 @@ libname(
   directory_path,
   engine = "rds",
   read_only = FALSE,
-  ...,
   env = parent.frame(),
   import_specs = NULL
 )
@@ -36,9 +35,6 @@ file format, unless otherwise specified on the \code{engine} parameter of
 Default is FALSE.  If TRUE, the user will be restricted from
 appending, removing, or writing data from the library to the file system.}
 
-\item{...}{Follow-on parameters to the data import functions.  Which
-parameters exist depend on which types of files are being imported.}
-
 \item{env}{The environment to use for the libname if it is loaded. 
 Default is parent.frame().}
 
@@ -52,23 +48,32 @@ information.}
 The library object.
 }
 \description{
-A data library is a collection of data frames  A data 
-library allows you to manage and store data frames as a unit.  The 
-\code{libname} function defines the library.
+A data library is a collection of data frames. The purpose of 
+the library is to combine related data frames, and allow you to manipulate all
+of them as a single object. A data library is an S3 object of class "lib".
 }
 \details{
-A data library is an S3 object of class "lib".  The purpose of 
-the library is to combine related data frames, and allow you to manipulate all
-of them as a single object.  
+A libname is able to import files of several types.  The available types 
+are as follows:  'rds', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+To create a library of a particular type, set the \code{engine} parameter
+to one of the available file types above.
 
-The function uses the \code{\link[readr]{readr}}, \code{\link[readxl]{readxl}},
-and \code{\link[haven:read_sas]{haven}} packages to import data.  
-These packages have
-sensible defaults, and most of the time your data will import in an
-acceptable manner.  In some cases, however, you may want to control how
-the data is imported.  For those cases, you can use to the
-\code{...} parameter on the \code{libname} function to pass parameters to
-the import functions.
+Some file types retain column data types as part of the file format.  Others
+do not.  For instance, 'csv' file format does not contain type 
+information.  Also 'xlsx' and 'xls' file formats.  For these file formats, 
+the corresponding import engines will make a best guess of the column
+data type based on the data in that column.  
+
+In some cases, you may want
+to override the best guess and specify some or all of the column data types 
+directly.  You can provide the column data types specs using
+the \code{import_specs} parameter on the \code{libname} function.  This 
+parameter accepts a \code{\link{specs}} object that contains import
+specifications for one or more of the input data files.  For each data file,
+you may then define an \code{\link{import_spec}} object which specifies
+the data types for the columns.  See the \code{\link{specs}} and 
+\code{\link{import_spec}} object documentation for further information
+and examples of defining an import spec.
 }
 \examples{
 # Create temp directory

@@ -154,11 +154,11 @@ libname <- function(name, directory_path, engine = "rds",
         message(paste0("$", nm))
         
         if (is.null(import_specs))
-          dat <- read_csv(fp, ...)
+          dat <- read_csv(fp)
         else {
 
           if (is.null(import_specs$specs[[nm]]))
-            dat <- read_csv(fp, ...)
+            dat <- read_csv(fp)
           else {
             spcs <- get_colspec_csv(import_specs$specs[[nm]]$col_types)
            # print(spcs)
@@ -169,7 +169,7 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- TRUE
             
-            dat <- read_csv(fp, ..., 
+            dat <- read_csv(fp, 
                             col_types = spcs,
                             na = na,
                             trim_ws = tws)
@@ -178,35 +178,35 @@ libname <- function(name, directory_path, engine = "rds",
         
       } else if (ext == "rds") {
         
-        dat <- read_rds(fp, ...)
+        dat <- read_rds(fp)
         
       } else if (ext == "sas7bdat") {
         
-        dat <- read_sas(fp, ...)
+        dat <- read_sas(fp)
         
       } else if (ext == "dbf") {
         
-        dat <- foreign::read.dbf(fp, ...)
+        dat <- foreign::read.dbf(fp)
         if (!is_tibble(dat))
           dat <- as_tibble(dat)
         
       } else if (ext == "xpt") {
         
-        dat <- read_xpt(fp, ...)
+        dat <- read_xpt(fp)
         
       } else if (ext == "xlsx") {
         
         message(paste0("$", nm))
         
         if (is.null(import_specs))
-          dat <- read_xlsx(fp, ...)
+          dat <- read_xlsx(fp)
         else {
           if (is.null(import_specs$specs[[nm]]))
-            dat <- read_xlsx(fp, ...)
+            dat <- read_xlsx(fp)
           else {
             
             typs <- import_specs$specs[[nm]]$col_types
-            tmp <- read_xlsx(fp, ...,
+            tmp <- read_xlsx(fp,
                              col_types = c("text"))
             nms <- names(tmp)
             spcs <- get_colspec_xlsx(typs, length(nms), nms)
@@ -217,7 +217,7 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- TRUE
             
-            dat <- read_xlsx(fp, ..., 
+            dat <- read_xlsx(fp, 
                              col_types = spcs, 
                              na = na, 
                              trim_ws = tws)
@@ -230,14 +230,14 @@ libname <- function(name, directory_path, engine = "rds",
         message(paste0("$", nm))
         
         if (is.null(import_specs))
-          dat <- read_xls(fp, ...)
+          dat <- read_xls(fp)
         else {
           if (is.null(import_specs$specs[[nm]]))
-            dat <- read_xls(fp, ...)
+            dat <- read_xls(fp)
           else {
             
             typs <- import_specs$specs[[nm]]$col_types
-            tmp <- read_xls(fp, ...,
+            tmp <- read_xls(fp,
                              col_types = c("text"))
             nms <- names(tmp)
             spcs <- get_colspec_xlsx(typs, length(nms), nms)
@@ -248,7 +248,7 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- TRUE
             
-            dat <- read_xls(fp, ..., 
+            dat <- read_xls(fp, 
                              col_types = spcs, 
                              na = na, 
                              trim_ws = tws)
