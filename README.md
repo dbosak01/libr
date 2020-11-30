@@ -519,13 +519,6 @@ df
 
 ```
 
-## Package Disclaimer
-Note that the **libr** package is intended to be used with small and 
-medium-sized data sets.  It is not recommended for big data, as big data
-requires very careful control over which data is or is not loaded into memory.
-The **libr** package, on the other hand, tends to load all data into memory 
-indiscriminately.
-
 ## Enhanced Equality Operator `%eq%`
 Lastly, the **libr** package contains an enhanced equality operator.  The 
 objective of the `%eq%` operator is to return a TRUE or FALSE value when
@@ -576,5 +569,10 @@ v1 %eq% NA            # FALSE
 1 %eq% v1             # FALSE
 ```
 
-
+## Package Disclaimer
+Note that the **libr** package is intended to be used with small and 
+medium-sized data sets.  It is not recommended for big data, as big data
+requires very careful control over which data is or is not loaded into memory.
+The **libr** package, on the other hand, tends to load all data into memory 
+indiscriminately.
 
