@@ -21,14 +21,14 @@
 #' be converted to NA values. Default is NULL, meaning the value of the 
 #' \code{na} parameter will be taken from the \code{\link{specs}} function.
 #' @param trim_ws Whether or not to trim white space from the input data values.
-#' @param params Any follow-on parameters to the underlying import function.
-#' Valid values are TRUE, and FALSE.  Default is TRUE.
+# @param params Any follow-on parameters to the underlying import function.
+# Valid values are TRUE, and FALSE.  Default is TRUE.
 #' @return The import specification object.
 #' @seealso \code{\link{libname}} to create a data library, and 
 #' \code{\link{specs}} for an example using import specs.
 #' @family specs
 #' @export
-import_spec <- function(..., na = NULL, trim_ws = NULL, params = NULL) {
+import_spec <- function(..., na = NULL, trim_ws = NULL) {
   
   # Create new structure of class "import_spec"
   ispec <- structure(list(), class = c("import_spec", "list"))
@@ -36,7 +36,7 @@ import_spec <- function(..., na = NULL, trim_ws = NULL, params = NULL) {
   ispec$col_types = list(...)
   ispec$na = na
   ispec$trim_ws = trim_ws
-  ispec$params = params
+  #ispec$params = params
   
   
   return(ispec)
@@ -56,20 +56,20 @@ import_spec <- function(..., na = NULL, trim_ws = NULL, params = NULL) {
 #' input specification is defined as an object so it can be stored and reused.
 #' See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
 #' for additional information on storing specs.
-#' @param col_types A vector of column data types and optional input format.
-#' Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
-#' 'date', 'datetime', and 'time'.  The date/time data types accept an optional
-#' input format.  To supply the input format, append it after the data type
-#' following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
-#' Default is NULL, meaning no column types are specified, and the function
-#' should make its best guess for each column.
-#' @param na A vector of values to be treated as NA.  For example, the 
-#' vector \code{c('', ' ')} will cause empty strings and single blanks to 
-#' be converted to NA values. Default is that empty strings ('') are considered
-#' NA.
+# @param col_types A vector of column data types and optional input format.
+# Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
+# 'date', 'datetime', and 'time'.  The date/time data types accept an optional
+# input format.  To supply the input format, append it after the data type
+# following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
+# Default is NULL, meaning no column types are specified, and the function
+# should make its best guess for each column.
+# @param na A vector of values to be treated as NA.  For example, the 
+# vector \code{c('', ' ')} will cause empty strings and single blanks to 
+# be converted to NA values. Default is that empty strings ('') are considered
+# NA.
 #' @param ... Named input specs.  The name should correspond to the file name.
-#' @param trim_ws Whether or not to trim white space from the input data values.
-#' Valid values are TRUE, and FALSE.  Default is TRUE.
+# @param trim_ws Whether or not to trim white space from the input data values.
+# Valid values are TRUE, and FALSE.  Default is TRUE.
 #' @return The import specifications object.
 #' @seealso \code{\link{libname}} to create a data library, 
 #' \code{\link{dictionary}} for generating a data dictionary, and 
@@ -153,14 +153,14 @@ import_spec <- function(..., na = NULL, trim_ws = NULL, params = NULL) {
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-specs <- function(col_types = NULL, na = "", trim_ws = TRUE, ...) {
+specs <- function(...) {
   
   # Create new structure of class "specs"
   s <- structure(list(), class = c("specs", "list"))
   
-  s$col_types = col_types
-  s$na = na
-  s$trim_ws = trim_ws
+  # s$col_types = col_types
+  # s$na = na
+  # s$trim_ws = trim_ws
   s$specs = list(...)
   
   

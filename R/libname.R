@@ -119,8 +119,8 @@ libname <- function(name, directory_path, engine = "rds",
   e$env <- env
   
   # If directory doesn't exist, create it
-  if (!file.exists(directory_path))
-    dir.create(directory_path)
+  if (!dir.exists(directory_path))
+    dir.create(directory_path, showWarnings = FALSE)
   
   # Get safe library name 
   name_c <- deparse1(substitute(name, env = environment()))
