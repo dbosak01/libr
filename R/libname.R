@@ -179,11 +179,14 @@ libname <- function(name, directory_path, engine = "rds",
       } else if (ext == "rds") {
         
         dat <- read_rds(fp)
+        if (!is.null(import_specs))
+          dat <- exec_spec(dat, import_specs, nm)
         
       } else if (ext == "sas7bdat") {
         
         dat <- read_sas(fp)
-        dat <- exec_spec(dat, import_specs, nm)
+        if (!is.null(import_specs))
+          dat <- exec_spec(dat, import_specs, nm)
         
       } else if (ext == "dbf") {
         
@@ -191,9 +194,14 @@ libname <- function(name, directory_path, engine = "rds",
         if (!is_tibble(dat))
           dat <- as_tibble(dat)
         
+        if (!is.null(import_specs))
+          dat <- exec_spec(dat, import_specs, nm)
+        
       } else if (ext == "xpt") {
         
         dat <- read_xpt(fp)
+        if (!is.null(import_specs))
+          dat <- exec_spec(dat, import_specs, nm)
         
       } else if (ext == "xlsx") {
         
