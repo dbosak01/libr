@@ -4,7 +4,7 @@
 \alias{import_spec}
 \title{Create an Import Specification}
 \usage{
-import_spec(..., na = NULL, trim_ws = NULL, params = NULL)
+import_spec(..., na = NULL, trim_ws = NULL)
 }
 \arguments{
 \item{...}{Names pairs of column names and column data types.
@@ -21,9 +21,6 @@ be converted to NA values. Default is NULL, meaning the value of the
 \code{na} parameter will be taken from the \code{\link{specs}} function.}
 
 \item{trim_ws}{Whether or not to trim white space from the input data values.}
-
-\item{params}{Any follow-on parameters to the underlying import function.
-Valid values are TRUE, and FALSE.  Default is TRUE.}
 }
 \value{
 The import specification object.

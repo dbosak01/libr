@@ -63,13 +63,13 @@ import_spec <- function(..., na = NULL, trim_ws = NULL) {
 # following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
 # Default is NULL, meaning no column types are specified, and the function
 # should make its best guess for each column.
-# @param na A vector of values to be treated as NA.  For example, the 
-# vector \code{c('', ' ')} will cause empty strings and single blanks to 
-# be converted to NA values. Default is that empty strings ('') are considered
-# NA.
+#' @param na A vector of values to be treated as NA.  For example, the 
+#' vector \code{c('', ' ')} will cause empty strings and single blanks to 
+#' be converted to NA values. Default is that empty strings ('') are considered
+#' NA.
 #' @param ... Named input specs.  The name should correspond to the file name.
-# @param trim_ws Whether or not to trim white space from the input data values.
-# Valid values are TRUE, and FALSE.  Default is TRUE.
+#' @param trim_ws Whether or not to trim white space from the input data values.
+#' Valid values are TRUE, and FALSE.  Default is TRUE.
 #' @return The import specifications object.
 #' @seealso \code{\link{libname}} to create a data library, 
 #' \code{\link{dictionary}} for generating a data dictionary, and 
@@ -153,14 +153,14 @@ import_spec <- function(..., na = NULL, trim_ws = NULL) {
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-specs <- function(...) {
+specs <- function(..., na = c("", "NA"), trim_ws = TRUE) {
   
   # Create new structure of class "specs"
   s <- structure(list(), class = c("specs", "list"))
   
   # s$col_types = col_types
-  # s$na = na
-  # s$trim_ws = trim_ws
+  s$na = na
+  s$trim_ws = trim_ws
   s$specs = list(...)
   
   

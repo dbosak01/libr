@@ -164,10 +164,10 @@ libname <- function(name, directory_path, engine = "rds",
            # print(spcs)
             na <- import_specs$specs[[nm]]$na
             if (is.null(na))
-              na = c("", "NA")
+              na = import_specs$na
             tws <- import_specs$specs[[nm]]$trim_ws
             if (is.null(tws))
-              tws <- TRUE
+              tws <- import_specs$trim_ws
             
             dat <- read_csv(fp, 
                             col_types = spcs,
@@ -183,6 +183,7 @@ libname <- function(name, directory_path, engine = "rds",
       } else if (ext == "sas7bdat") {
         
         dat <- read_sas(fp)
+        dat <- exec_spec(dat, import_specs, nm)
         
       } else if (ext == "dbf") {
         
@@ -212,10 +213,10 @@ libname <- function(name, directory_path, engine = "rds",
             spcs <- get_colspec_xlsx(typs, length(nms), nms)
             na <- import_specs$specs[[nm]]$na
             if (is.null(na))
-              na = c("", "NA")
+              na = import_specs$na
             tws <- import_specs$specs[[nm]]$trim_ws
             if (is.null(tws))
-              tws <- TRUE
+              tws <- import_specs$trim_ws
             
             dat <- read_xlsx(fp, 
                              col_types = spcs, 
@@ -243,10 +244,10 @@ libname <- function(name, directory_path, engine = "rds",
             spcs <- get_colspec_xlsx(typs, length(nms), nms)
             na <- import_specs$specs[[nm]]$na
             if (is.null(na))
-              na = c("", "NA")
+              na = import_specs$na
             tws <- import_specs$specs[[nm]]$trim_ws
             if (is.null(tws))
-              tws <- TRUE
+              tws <- import_specs$trim_ws
             
             dat <- read_xls(fp, 
                              col_types = spcs, 

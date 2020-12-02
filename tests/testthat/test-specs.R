@@ -9,13 +9,11 @@ test_that("import_spec() function works as expected.", {
   
   is <- import_spec(col1 = "character", col2 = "integer",
                    na = c("NA", ""),
-                   trim_ws = FALSE, 
-                   params = list(forker = TRUE))
+                   trim_ws = FALSE)
   
   expect_equal(is$col_types, list(col1 = "character", col2 = "integer"))
   expect_equal(is$na, c("NA", ""))
   expect_equal(is$trim_ws, FALSE)
-  expect_equal(length(is$params), 1)
   
 })
 
@@ -247,4 +245,110 @@ test_that("import_specs works as expected with dates.", {
   dictionary(dat)
   
   
+})
+
+
+test_that("no specs work on CRF data for sas7bdat.", {
+  
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat")
+  
+  expect_equal(class(dat$dm$VISITREP), "character")
+  expect_equal(class(dat$pe$VISITREP), "character")
+  expect_equal(all(dat$dm$VISITREP == "."), TRUE)
+  expect_equal(all(dat$pe$VISITREP == "."), TRUE)
+  
+})
+
+test_that("specs na and trim_ws work on CRF data for sas7bdat.", {
+  
+  lst <- specs(na = c("", "."), trim_ws = TRUE)
+                              
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  
+  # dat$dm  
+  # dat$pe
+  
+  expect_equal(class(dat$dm$VISITREP), "logical")
+  expect_equal(class(dat$dm$VISITREP), "logical")
+  
+})
+
+
+test_that("dm import_spec na and trim_ws work on CRF data for sas7bdat.", {
+  
+  lst <- specs(dm = import_spec(na = c("", "."), trim_ws = TRUE))
+  
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  
+   # dat$dm  
+   # dat$pe
+  
+  expect_equal(class(dat$dm$VISITREP), "logical")
+  expect_equal(class(dat$pe$VISITREP), "character")
+  
+})
+
+
+test_that("dm and pe import_spec col_types work on CRF data for sas7bdat.", {
+  
+  lst <- specs(dm = import_spec(VISITREP = "character", na = c("", ".")),
+               pe = import_spec(VISITREP = "character", na = c("", ".")))
+  
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  
+  # dat$dm  
+  # dat$pe
+   
+  expect_equal(class(dat$dm$VISITREP), "character")
+  expect_equal(class(dat$dm$PAGEREP), "logical")
+  expect_equal(class(dat$pe$VISITREP), "character")
+  expect_equal(class(dat$dm$PAGEREP), "logical")
+  
+})
+
+test_that("dm and pe multiple import_spec col_types work for sas7bdat.", {
+  
+  lst <- specs(na = c("", "."), trim_ws = TRUE,
+               dm = import_spec(VISITREP = "character",
+                                PAGEREP = "character"),
+               pe = import_spec(PAGEREP = "character",
+                                VISITREP = "numeric",
+                                DERMRES = "logical", 
+                                CARES = "integer"))
+  
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  
+  # dat$dm  
+  # dat$pe
+  # View(dat$pe)
+
+  expect_equal(class(dat$dm$VISITREP), "character")
+  expect_equal(class(dat$dm$PAGEREP), "character")
+  expect_equal(class(dat$dm$BIRTHDD), "numeric")
+  expect_equal(class(dat$pe$VISITREP), "numeric")
+  expect_equal(class(dat$pe$PAGEREP), "character")
+  expect_equal(class(dat$pe$CARES), "integer")
+  expect_equal(class(dat$pe$DERMRES), "logical")
+  
+})
+
+test_that("lab import_spec with dates works for sas7bdat.", {
+  
+  lst <- specs(lab = import_spec(na = c("", "."), trim_ws = TRUE,
+                                 DOB = "date=%d-%b-%Y",
+                                 COL_DT = "datetime=%d-%b-%Y %H:%M:%S"))
+  
+  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  
+  # dat$lab  
+  # View(dat$lab)
+  
+  expect_equal(class(dat$lab$DOB), "Date")
+  expect_equal("POSIXct" %in% class(dat$lab$COL_DT), TRUE)
+
 })

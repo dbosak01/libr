@@ -444,12 +444,84 @@ get_colspec_csv <- function(type_string) {
     }
     
   }
-    
-
+  
   return(ret)
   
 }
 
+#' @description Apply import specs to any data frame
+#' @noRd
+exec_spec <- function(x, spcs, nm) {
+
+
+ if (!is.null(spcs)) {  
+   
+   colspcs <- list()
+   naval <- spcs$na
+   tws <- spcs$trim_ws
+   
+   if (!is.null(spcs$specs[[nm]])) {
+     tspec <- spcs$specs[[nm]]
+     if (!is.null(tspec$na))
+       naval <- tspec$na
+     if (!is.null(tspec$trim_ws))
+       tws <- tspec$trim_ws
+     if (!is.null(tspec$col_types))
+       colspcs <- tspec$col_types
+     
+   }
+   
+   for (nm in names(x)) {
+     
+     # Apply trimws if requested on character columns
+     if ("character" %in% class(x[[nm]]))
+       x[[nm]] <- trimws(x[[nm]])
+     
+     # Apply na conversion on requested values
+     if (length(colspcs) == 0 | is.null(colspcs[[nm]]))
+       x[[nm]] <- ifelse(x[[nm]] %in% naval, NA, x[[nm]])
+     
+     if (length(colspcs) > 0) {
+       if (!is.null(colspcs[[nm]])) {
+        
+         if (colspcs[[nm]] != "guess") {
+           if (colspcs[[nm]] == "integer") {
+             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.integer(NA), x[[nm]])
+             x[[nm]] <- as.integer(x[[nm]])
+           } else if (colspcs[[nm]] == "numeric") {
+             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.numeric(NA), x[[nm]])
+             x[[nm]] <- as.numeric(x[[nm]])
+           } else if (colspcs[[nm]] == "character") {
+             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.character(NA), x[[nm]])
+             x[[nm]] <- as.character(x[[nm]])
+           } else if (colspcs[[nm]] == "logical") {
+             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.logical(NA), x[[nm]])
+             x[[nm]] <- as.logical(x[[nm]])
+           } else {
+
+             spl <- trimws(unlist(strsplit(colspcs[[nm]], "=", fixed = TRUE)))
+
+             if (length(spl) > 1) {
+               if (spl[1] == "date") {
+                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.Date(NA), x[[nm]])
+                 x[[nm]] <- as.Date(x[[nm]], spl[2])
+               } else if (spl[1] == "datetime") {
+                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.POSIXct(NA), x[[nm]])
+                 x[[nm]] <- as.POSIXct(x[[nm]], format = spl[2])
+               } else if (spl[1] == "time") { 
+                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.POSIXct(NA), x[[nm]])
+                 x[[nm]] <- as.POSIXct(x[[nm]], format = spl[2])
+               }
+             }
+           }
+         }
+       }
+     }
+   }
+ }
+ 
+ return(x)
+}
 
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
 #   set.seed(seed_no)
