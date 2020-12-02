@@ -253,10 +253,10 @@ test_that("no specs work on CRF data for sas7bdat.", {
   
   libname(dat, file.path(base_path, "CRF"), "sas7bdat")
   
-  expect_equal(class(dat$dm$VISITREP), "character")
-  expect_equal(class(dat$pe$VISITREP), "character")
-  expect_equal(all(dat$dm$VISITREP == "."), TRUE)
-  expect_equal(all(dat$pe$VISITREP == "."), TRUE)
+  expect_equal(class(dat$dm$VISITREP), "logical")
+  expect_equal(class(dat$pe$VISITREP), "logical")
+  expect_equal(all(is.na(dat$dm$VISITREP)), TRUE)
+  expect_equal(all(is.na(dat$pe$VISITREP)), TRUE)
   
 })
 
@@ -339,16 +339,19 @@ test_that("dm and pe multiple import_spec col_types work for sas7bdat.", {
 
 test_that("lab import_spec with dates works for sas7bdat.", {
   
-  lst <- specs(lab = import_spec(na = c("", "."), trim_ws = TRUE,
-                                 DOB = "date=%d-%b-%Y",
-                                 COL_DT = "datetime=%d-%b-%Y %H:%M:%S"))
   
-  libname(dat, file.path(base_path, "CRF"), "sas7bdat", import_specs = lst)
+  libname(dat, base_path, "sas7bdat")
   
-  # dat$lab  
-  # View(dat$lab)
+ # 
+ # labels(dat$demo_studya)  
+ # unclass(dat$demo_studya)
+ # 
+ # library(haven)
+ # nl <- read_sas(file.path(base_path, "demo_studya.sas7bdat"))
+ # labels(nl)
+   
   
-  expect_equal(class(dat$lab$DOB), "Date")
-  expect_equal("POSIXct" %in% class(dat$lab$COL_DT), TRUE)
+  expect_equal(attr(dat$demo_studya$screendate, "label"), "Date of Screening")
+
 
 })

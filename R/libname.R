@@ -187,6 +187,11 @@ libname <- function(name, directory_path, engine = "rds",
         dat <- read_sas(fp)
         if (!is.null(import_specs))
           dat <- exec_spec(dat, import_specs, nm)
+        else {
+          spcs <- specs(na = c("", "."))
+          dat <- exec_spec(dat, spcs, nm)
+          
+        }
         
       } else if (ext == "dbf") {
         
@@ -202,6 +207,11 @@ libname <- function(name, directory_path, engine = "rds",
         dat <- read_xpt(fp)
         if (!is.null(import_specs))
           dat <- exec_spec(dat, import_specs, nm)
+        else {
+          spcs <- specs(na = c("", "."))
+          dat <- exec_spec(dat, import_specs, nm)
+          
+        }
         
       } else if (ext == "xlsx") {
         

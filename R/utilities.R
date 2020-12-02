@@ -453,7 +453,8 @@ get_colspec_csv <- function(type_string) {
 #' @noRd
 exec_spec <- function(x, spcs, nm) {
 
-
+ ret <- x
+ 
  if (!is.null(spcs)) {  
    
    colspcs <- list()
@@ -471,56 +472,62 @@ exec_spec <- function(x, spcs, nm) {
      
    }
    
-   for (nm in names(x)) {
+   for (nm in names(ret)) {
      
      # Apply trimws if requested on character columns
-     if ("character" %in% class(x[[nm]]))
-       x[[nm]] <- trimws(x[[nm]])
+     if ("character" %in% class(ret[[nm]]))
+       ret[[nm]] <- trimws(ret[[nm]])
      
      # Apply na conversion on requested values
      if (length(colspcs) == 0 | is.null(colspcs[[nm]]))
-       x[[nm]] <- ifelse(x[[nm]] %in% naval, NA, x[[nm]])
+       ret[[nm]] <- ifelse(ret[[nm]] %in% naval, NA, ret[[nm]])
      
      if (length(colspcs) > 0) {
        if (!is.null(colspcs[[nm]])) {
         
          if (colspcs[[nm]] != "guess") {
            if (colspcs[[nm]] == "integer") {
-             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.integer(NA), x[[nm]])
-             x[[nm]] <- as.integer(x[[nm]])
+             ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.integer(NA), ret[[nm]])
+             ret[[nm]] <- as.integer(ret[[nm]])
            } else if (colspcs[[nm]] == "numeric") {
-             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.numeric(NA), x[[nm]])
-             x[[nm]] <- as.numeric(x[[nm]])
+             ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.numeric(NA), ret[[nm]])
+             ret[[nm]] <- as.numeric(ret[[nm]])
            } else if (colspcs[[nm]] == "character") {
-             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.character(NA), x[[nm]])
-             x[[nm]] <- as.character(x[[nm]])
+             ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.character(NA), ret[[nm]])
+             ret[[nm]] <- as.character(ret[[nm]])
            } else if (colspcs[[nm]] == "logical") {
-             x[[nm]] <- ifelse(x[[nm]] %in% naval, as.logical(NA), x[[nm]])
-             x[[nm]] <- as.logical(x[[nm]])
+             ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.logical(NA), ret[[nm]])
+             ret[[nm]] <- as.logical(ret[[nm]])
            } else {
 
              spl <- trimws(unlist(strsplit(colspcs[[nm]], "=", fixed = TRUE)))
 
              if (length(spl) > 1) {
                if (spl[1] == "date") {
-                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.Date(NA), x[[nm]])
-                 x[[nm]] <- as.Date(x[[nm]], spl[2])
+                 ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.Date(NA), ret[[nm]])
+                 ret[[nm]] <- as.Date(ret[[nm]], spl[2])
                } else if (spl[1] == "datetime") {
-                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.POSIXct(NA), x[[nm]])
-                 x[[nm]] <- as.POSIXct(x[[nm]], format = spl[2])
+                 ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.POSIXct(NA), ret[[nm]])
+                 ret[[nm]] <- as.POSIXct(ret[[nm]], format = spl[2])
                } else if (spl[1] == "time") { 
-                 x[[nm]] <- ifelse(x[[nm]] %in% naval, as.POSIXct(NA), x[[nm]])
-                 x[[nm]] <- as.POSIXct(x[[nm]], format = spl[2])
+                 ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.POSIXct(NA), ret[[nm]])
+                 ret[[nm]] <- as.POSIXct(ret[[nm]], format = spl[2])
                }
              }
            }
          }
        }
      }
+     
+     for (atnm in names(attributes(x[[nm]]))) {
+       if (atnm != "class")
+        attr(ret[[nm]], atnm) <- attr(x[[nm]], atnm)
+      
+     }
    }
  }
  
- return(x)
+ return(ret)
 }
 
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
