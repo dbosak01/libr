@@ -67,6 +67,10 @@ test_that("write_specs() and read_specs() functions works as expected.", {
   expect_equal(spcs2$specs$AB$col_types[[1]], "character")
   expect_equal(spcs2$specs$AC$col_types[[1]], "numeric")
   
+  spcs3 <- read.specs(tmp)
+  expect_equal(length(spcs3$specs), 2)
+  
+  
   if (fe)
     unlink(pth2)
   

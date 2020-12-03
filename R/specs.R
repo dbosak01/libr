@@ -8,8 +8,13 @@
 #' @description A function to create the import specifications for a 
 #' particular data file.  This information can be used on the 
 #' \code{\link{libname}} function to correctly assign the data types for 
-#' file formats that are not strongly typed, such as 'csv' and 'xlsx'. 
-#' @param ... Names pairs of column names and column data types.
+#' columns on imported data. The import specifications are defined as 
+#' name/value pairs, where the name is the column name and the value is the
+#' data type indicator.  Available data type indicators are 
+#' 'guess', 'logical', 'character', 'integer', 'numeric',
+#' 'date', 'datetime', and 'time'.  See the \code{\link{specs}} function
+#' for an example of using import specs.
+#' @param ... Named pairs of column names and column data types.
 #' Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
 #' 'date', 'datetime', and 'time'.  The date/time data types accept an optional
 #' input format.  To supply the input format, append it after the data type
@@ -48,14 +53,14 @@ import_spec <- function(..., na = NULL, trim_ws = NULL) {
 #' @description A function to capture a set of import specifications for a 
 #' directory of data files.  These specs can be used on the 
 #' \code{\link{libname}} function to correctly assign the data types for 
-#' file formats that are not strongly typed, such as 'csv' and 'xlsx'. The 
+#' imported data files. The 
 #' import procedures will guess at the data types for any columns that
 #' are not explicitly defined in the import specifications.
 #' 
 #' Note that the 
 #' input specification is defined as an object so it can be stored and reused.
 #' See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
-#' for additional information on storing specs.
+#' for additional information on saving specs.
 # @param col_types A vector of column data types and optional input format.
 # Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
 # 'date', 'datetime', and 'time'.  The date/time data types accept an optional
@@ -63,11 +68,15 @@ import_spec <- function(..., na = NULL, trim_ws = NULL) {
 # following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
 # Default is NULL, meaning no column types are specified, and the function
 # should make its best guess for each column.
+#' @param ... Named input specs.  The name should correspond to the file name.
+#' The spec is defined as an import_spec object.  See the 
+#' \code{\link{import_spec}} for additional information on parameters for 
+#' that object.
 #' @param na A vector of values to be treated as NA.  For example, the 
 #' vector \code{c('', ' ')} will cause empty strings and single blanks to 
-#' be converted to NA values. Default is that empty strings ('') are considered
-#' NA.
-#' @param ... Named input specs.  The name should correspond to the file name.
+#' be converted to NA values. Default is that empty strings and NA values
+#' ('', 'NA') are considered NA.  For SAS datasets, the dot (".") is also 
+#' considered NA.
 #' @param trim_ws Whether or not to trim white space from the input data values.
 #' Valid values are TRUE, and FALSE.  Default is TRUE.
 #' @return The import specifications object.
@@ -189,7 +198,6 @@ read.specs <- function(file_path = getwd()) {
   
   pth <- file_path
   
-  file_path <- "data/forker.specs"
   if (grepl(".specs", file_path, fixed = TRUE) == FALSE) {
     pth <- paste0(file_path, ".specs")
     
@@ -204,7 +212,7 @@ read.specs <- function(file_path = getwd()) {
           stop("More than one spec file found.")
         } else {
           
-         pth <- lst[[1]] 
+         pth <- file.path(file_path, lst[[1]])
         }
         
       } else {

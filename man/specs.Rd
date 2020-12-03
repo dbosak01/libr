@@ -7,12 +7,16 @@
 specs(..., na = c("", "NA"), trim_ws = TRUE)
 }
 \arguments{
-\item{...}{Named input specs.  The name should correspond to the file name.}
+\item{...}{Named input specs.  The name should correspond to the file name.
+The spec is defined as an import_spec object.  See the 
+\code{\link{import_spec}} for additional information on parameters for 
+that object.}
 
 \item{na}{A vector of values to be treated as NA.  For example, the 
 vector \code{c('', ' ')} will cause empty strings and single blanks to 
-be converted to NA values. Default is that empty strings ('') are considered
-NA.}
+be converted to NA values. Default is that empty strings and NA values
+('', 'NA') are considered NA.  For SAS datasets, the dot (".") is also 
+considered NA.}
 
 \item{trim_ws}{Whether or not to trim white space from the input data values.
 Valid values are TRUE, and FALSE.  Default is TRUE.}
@@ -24,14 +28,14 @@ The import specifications object.
 A function to capture a set of import specifications for a 
 directory of data files.  These specs can be used on the 
 \code{\link{libname}} function to correctly assign the data types for 
-file formats that are not strongly typed, such as 'csv' and 'xlsx'. The 
+imported data files. The 
 import procedures will guess at the data types for any columns that
 are not explicitly defined in the import specifications.
 
 Note that the 
 input specification is defined as an object so it can be stored and reused.
 See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
-for additional information on storing specs.
+for additional information on saving specs.
 }
 \examples{
 library(readr)

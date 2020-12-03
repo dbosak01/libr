@@ -7,7 +7,7 @@
 import_spec(..., na = NULL, trim_ws = NULL)
 }
 \arguments{
-\item{...}{Names pairs of column names and column data types.
+\item{...}{Named pairs of column names and column data types.
 Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
 'date', 'datetime', and 'time'.  The date/time data types accept an optional
 input format.  To supply the input format, append it after the data type
@@ -29,7 +29,12 @@ The import specification object.
 A function to create the import specifications for a 
 particular data file.  This information can be used on the 
 \code{\link{libname}} function to correctly assign the data types for 
-file formats that are not strongly typed, such as 'csv' and 'xlsx'.
+columns on imported data. The import specifications are defined as 
+name/value pairs, where the name is the column name and the value is the
+data type indicator.  Available data type indicators are 
+'guess', 'logical', 'character', 'integer', 'numeric',
+'date', 'datetime', and 'time'.  See the \code{\link{specs}} function
+for an example of using import specs.
 }
 \seealso{
 \code{\link{libname}} to create a data library, and 
