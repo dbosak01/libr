@@ -41,6 +41,7 @@ for an example of using import specs.
 \code{\link{specs}} for an example using import specs.
 
 Other specs: 
+\code{\link{print.specs}()},
 \code{\link{read.specs}()},
 \code{\link{specs}()},
 \code{\link{write.specs}()}

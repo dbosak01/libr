@@ -261,3 +261,62 @@ write.specs <- function(x, dir_path = getwd(), file_name = NULL) {
   
   return(pth)
 }
+
+#' @title Print import specifications
+#' @description A function to print the import specification collection.
+#' @param x The specifications to print.
+#' @param ... Any follow-on parameters to the print fuction.
+#' @param verbose Whether or not to print the specifications in verbose style.
+#' By default, the parameter is FALSE, meaning to print in summary style.
+#' @return The specification object, invisibly.
+#' @family specs
+#' @import crayon
+#' @export
+print.specs <- function(x, ..., verbose = FALSE) {
+  
+  if (verbose == TRUE) {
+    
+    # Print list form
+    print(unclass(x))  
+    
+  } else {
+    
+    # Prepare color
+    grey60 <- make_style(grey60 = "#999999")
+    
+    # Print a nice header
+    cat(grey60(paste0("# import specs: ", length(x), 
+                      " items\n")))
+    
+    cat(paste("- na:", paste0("\"", x$na, "\"", collapse = ", "), "\n"))
+
+    cat(paste0("- trim_ws: ", as.character(x$trim_ws), "\n"))
+    
+    if (length(x$specs) > 0) {
+      cat("- items:\n")
+      
+      for (nm in names(x$specs)) {
+        
+        cat(grey60(paste0("# import spec: ", nm, "\n")))
+        
+        cat(paste("- na:", paste0("\"", x$specs[[nm]]$na, "\"", collapse = ", "), "\n"))
+        
+        cat(paste0("- trim_ws: ", as.character(x$specs[[nm]]$trim_ws), "\n"))
+        
+        if (length(x$specs[[nm]]$col_types) > 0)
+          cat("- column types:\n")
+        
+        for (colnm in names(x$specs[[nm]]$col_types)) {
+          
+           cat(paste0("  ", colnm, ": ", x$specs[[nm]]$col_types[[colnm]], "\n"))
+          
+        }
+        
+      }
+    }
+    
+    
+  }
+  
+  invisible(x)
+}

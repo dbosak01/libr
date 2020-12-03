@@ -122,6 +122,7 @@ import spec.
 
 Other specs: 
 \code{\link{import_spec}()},
+\code{\link{print.specs}()},
 \code{\link{read.specs}()},
 \code{\link{write.specs}()}
 }

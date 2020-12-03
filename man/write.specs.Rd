@@ -27,6 +27,7 @@ path.  The function returns the full file path.
 \seealso{
 Other specs: 
 \code{\link{import_spec}()},
+\code{\link{print.specs}()},
 \code{\link{read.specs}()},
 \code{\link{specs}()}
 }

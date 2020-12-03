@@ -25,6 +25,7 @@ extension and read it.
 \seealso{
 Other specs: 
 \code{\link{import_spec}()},
+\code{\link{print.specs}()},
 \code{\link{specs}()},
 \code{\link{write.specs}()}
 }

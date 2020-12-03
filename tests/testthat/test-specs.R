@@ -359,3 +359,24 @@ test_that("lab import_spec with dates works for sas7bdat.", {
 
 
 })
+
+test_that("print function works as expected.", {
+  
+  is1 <- import_spec(col1 = "character", col2 = "integer",
+                     na = c("NA", "-"),
+                     trim_ws = FALSE)
+  
+  is2 <- import_spec(col1 = "numeric", col2 = "date:%d%m%Y",
+                     na = c(" ", ""),
+                     trim_ws = TRUE)
+  spcs <- specs(na = c("NA", "-", " ", ""),
+                trim_ws = TRUE, AB = is1, AC = is2)
+  
+  
+  spcs
+  
+  
+  expect_equal(TRUE, TRUE)
+  
+  
+})
