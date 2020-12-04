@@ -265,7 +265,7 @@ write.specs <- function(x, dir_path = getwd(), file_name = NULL) {
 #' @title Print import specifications
 #' @description A function to print the import specification collection.
 #' @param x The specifications to print.
-#' @param ... Any follow-on parameters to the print fuction.
+#' @param ... Any follow-on parameters to the print function.
 #' @param verbose Whether or not to print the specifications in verbose style.
 #' By default, the parameter is FALSE, meaning to print in summary style.
 #' @return The specification object, invisibly.

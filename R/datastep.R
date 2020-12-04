@@ -11,7 +11,7 @@
 #' and last rows in the group.
 #' @details 
 #' The \code{datastep} function provides four automatic variables. These 
-#' variables are generated automatically for every data step, and can 
+#' variables are generated for every data step, and can 
 #' be accessed at any point within the data step. 
 #' \itemize{
 #'   \item{\strong{data}: Represents the input data frame.}
@@ -47,12 +47,20 @@
 #' efficient to set up calculated variables with the calculate parameter and then 
 #' use those variables in the data step, rather than perform the summary
 #' function inside the data step.
+#' @param sort_check Checks to see if the input data is sorted according to
+#' the \code{by} variable parameter.  The sort check will give an error
+#' if the input data is not sorted according to the \code{by} variable.
+#' The check is turned on if the value of 
+#' \code{sort_check} is TRUE, and turned off if FALSE.  The default value
+#' is TRUE.  Turn the sort check off if you want to perform by-group 
+#' processing on unsorted data.
 #' @return The processed data frame or tibble.
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
-                     by = NULL, calculate = NULL) {
+                     by = NULL, calculate = NULL,
+                     sort_check = TRUE) {
 
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
@@ -65,6 +73,7 @@ datastep <- function(data, steps, keep = NULL,
   
   ret <- NULL
   firstval <- NULL
+  firstvals <- NULL
   
   # Set by if data is a grouped tibble
   if (is.null(by) && "grouped_df" %in% class(data)) {
@@ -142,8 +151,28 @@ datastep <- function(data, steps, keep = NULL,
       ret <- r1
     else
       ret <- bind_rows(ret, r1)
+    
+    # Keep track of the groups
+    if (!is.null(by) & first. & sort_check) {
+      if (is.null(firstvals))
+        firstvals <- firstval
+      else
+        firstvals <- bind_rows(firstvals, firstval) 
+    }
   }
 
+  if (sort_check & !is.null(by)) {
+    if (!is.null(firstvals)) {
+      
+      ddat <- distinct(firstvals)
+      if (nrow(ddat) != nrow(firstvals)) {
+        stop(paste("Input data is not sorted according to the 'by' variable",
+                   "parameter.\n  Either sort the input data properly or",
+                   "set the sort_check parameter to FALSE."))
+      }
+    }
+  }
+  
   # Perform drop operation
   if (!is.null(drop))
     ret <- ret[ , !names(ret) %in% drop]

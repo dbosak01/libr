@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{The specifications to print.}
 
-\item{...}{Any follow-on parameters to the print fuction.}
+\item{...}{Any follow-on parameters to the print function.}
 
 \item{verbose}{Whether or not to print the specifications in verbose style.
 By default, the parameter is FALSE, meaning to print in summary style.}

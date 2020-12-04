@@ -183,3 +183,42 @@ test_that("datastep() auto-group-by works as expected.", {
   
   lib_unload(dat)
 })
+
+test_that("datastep() by parameter works as expected.", {
+  
+  libname(dat, base_path, "rds")
+  
+  lib_load(dat)
+  
+  d1 <- datastep(dat.demo_studya, by = c("treatment"), {
+    
+    f1 <- first.
+    l1 <- last.
+    
+  })
+  
+  expect_equal(sum(d1$f1), 2)
+  expect_equal(sum(d1$l1), 2)
+  
+  d2 <- dat.demo_studya[order(dat.demo_studya$dob), ]
+  
+  expect_error(datastep(d2, by = c("treatment"), {
+    
+    f1 <- first.
+    l1 <- last.
+    
+  }))
+  
+  d3 <- datastep(d2, by = c("treatment"), sort_check = FALSE, {
+    
+    f1 <- first.
+    l1 <- last.
+    
+  })
+  
+  expect_equal(sum(d3$f1), 5)
+  expect_equal(sum(d3$l1), 5)
+  
+})
+
+

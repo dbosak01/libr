@@ -11,7 +11,8 @@ datastep(
   drop = NULL,
   rename = NULL,
   by = NULL,
-  calculate = NULL
+  calculate = NULL,
+  sort_check = TRUE
 )
 }
 \arguments{
@@ -45,6 +46,14 @@ Calculated variables are common performed with summary functions such as
 efficient to set up calculated variables with the calculate parameter and then 
 use those variables in the data step, rather than perform the summary
 function inside the data step.}
+
+\item{sort_check}{Checks to see if the input data is sorted according to
+the \code{by} variable parameter.  The sort check will give an error
+if the input data is not sorted according to the \code{by} variable.
+The check is turned on if the value of 
+\code{sort_check} is TRUE, and turned off if FALSE.  The default value
+is TRUE.  Turn the sort check off if you want to perform by-group 
+processing on unsorted data.}
 }
 \value{
 The processed data frame or tibble.
@@ -58,7 +67,7 @@ and last rows in the group.
 }
 \details{
 The \code{datastep} function provides four automatic variables. These 
-variables are generated automatically for every data step, and can 
+variables are generated for every data step, and can 
 be accessed at any point within the data step. 
 \itemize{
   \item{\strong{data}: Represents the input data frame.}
