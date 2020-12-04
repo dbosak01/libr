@@ -222,3 +222,32 @@ test_that("datastep() by parameter works as expected.", {
 })
 
 
+test_that("datastep() by parameter works as expected.", {
+  
+  libname(dat, base_path, "rds")
+  
+  lib_load(dat)
+  
+  d1 <- datastep(dat.demo_studya, retain = list("fork" = 0, bork = ""), {
+    
+    fork <- fork + 1
+    
+    if (first.)
+      bork <- "begin"
+    else if (last.)
+      bork <- "end"
+    else 
+      bork <- paste("middle", n.) 
+    
+  })
+  
+  d1  
+  
+  expect_equal(d1$fork[10], 10)
+  expect_equal(d1$bork[1], "begin")
+  expect_equal(d1$bork[2], "middle 2")
+  expect_equal(d1$bork[10], "end")
+})
+
+
+

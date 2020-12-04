@@ -47,19 +47,33 @@
 #' efficient to set up calculated variables with the calculate parameter and then 
 #' use those variables in the data step, rather than perform the summary
 #' function inside the data step.
+#' @param retain A list of variable names and initial values 
+#' to retain.  Retained variables will begin the data step with the initial
+#' value.  Then for each iteration of the data step, the variable will
+#' be populated with the ending value from the previous step.  The retain
+#' functionality allows you to perform cumulative operations or decisions
+#' based on the value of the previous iteration of the data step.  Initial 
+#' values should be of the expected data type for the column.  For example, 
+#' for a numeric column set the initial value to a zero (0), and for a
+#' character column, set the initial value to an empty string (""), i.e.
+#' \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
+#' value for a variable.  You must supply an initial value for each retained
+#' variable.
 #' @param sort_check Checks to see if the input data is sorted according to
 #' the \code{by} variable parameter.  The sort check will give an error
 #' if the input data is not sorted according to the \code{by} variable.
 #' The check is turned on if the value of 
 #' \code{sort_check} is TRUE, and turned off if FALSE.  The default value
 #' is TRUE.  Turn the sort check off if you want to perform by-group 
-#' processing on unsorted data.
+#' processing on unsorted data, or data that is not sorted according
+#' to the by-group.
 #' @return The processed data frame or tibble.
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
                      by = NULL, calculate = NULL,
+                     retain = NULL,
                      sort_check = TRUE) {
 
   # Put code in a variable for safe-keeping
@@ -142,6 +156,25 @@ datastep <- function(data, steps, keep = NULL,
 
     }
   
+    # Deal with retained variables
+    if (!is.null(retain)) {
+      if (is.null(ret)) {
+        for (nm in names(retain)) {
+          
+          # Populate with initial value
+          data[n., nm] <- retain[[nm]]
+          
+        }
+        
+      } else {
+        for (nm in names(retain)) {
+       
+          # Populate with value from previous row   
+          data[n., nm] <- ret[n. - 1, nm]
+          
+        }
+      }
+    }
 
     # Evaluate the code for the row
     r1 <- within(data[n., ], eval(code), keepAttrs = TRUE)
