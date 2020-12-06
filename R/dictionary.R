@@ -24,7 +24,9 @@
 #' @import tibble
 #' @seealso \code{\link{libname}} to create a data library.  Also 
 #' see the \code{\link[fmtr]{fmtr}} package for functions to set the
-#' format, description, width, and justification attributes on a data frame.
+#' \code{\link[fmtr]{formats}}, \code{\link[fmtr]{descriptions}}, 
+#' \code{\link[fmtr]{widths}}, and \code{\link[fmtr]{justification}} 
+#' on a data frame.
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()
