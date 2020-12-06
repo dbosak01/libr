@@ -83,9 +83,10 @@ data has file extensions that match the file type, and then makes further
 assumptions based on each type of file.  As a result, there are very few 
 import options on the \code{libname} function.  If your data does not
 follow standard conventions, it is recommended that you import your 
-data using a package that gives you more control over the import. 
+data using a package that gives you more control over the import.
+}
+\section{Import Specifications}{
 
-\section Import Specifications:
 In most cases, it is not necessary to specify the data types for incoming
 columns in your data.  Either the file format will preserve the appropriate
 data type information, or the assigned engine will guess correctly.  
@@ -99,8 +100,10 @@ specifications for a particular data set are defined by an
 \code{import_spec} function. See the \code{\link{specs}} and 
 \code{\link{import_spec}} documentation for further information
 and examples of defining an import spec.
+}
 
-\section Data Engines:
+\section{Data Engines}{
+
 The \code{libname} function currently provides seven different engines for 
 seven different types of data files.
 Here is a complete list of available engines and some commentary about each:
@@ -149,6 +152,7 @@ file format for interchange between software systems.  The DBASE file
 format contains type information.}
 }
 }
+
 \examples{
 # Create temp directory
 tmp <- tempdir()

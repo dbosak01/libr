@@ -50,7 +50,7 @@ e$env <- parent.frame()
 #' follow standard conventions, it is recommended that you import your 
 #' data using a package that gives you more control over the import. 
 #' 
-#' \section Import Specifications:
+#' @section Import Specifications:
 #' In most cases, it is not necessary to specify the data types for incoming
 #' columns in your data.  Either the file format will preserve the appropriate
 #' data type information, or the assigned engine will guess correctly.  
@@ -65,7 +65,7 @@ e$env <- parent.frame()
 #' \code{\link{import_spec}} documentation for further information
 #' and examples of defining an import spec.
 #' 
-#' \section Data Engines:
+#' @section Data Engines:
 #' The \code{libname} function currently provides seven different engines for 
 #' seven different types of data files.
 #' Here is a complete list of available engines and some commentary about each:
