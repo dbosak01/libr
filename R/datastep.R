@@ -3,13 +3,26 @@
 # Datastep Definition -----------------------------------------------------
 
 
-#' @title Step through data row by row
+#' @title Step through data row-by-row
 #' @description The \code{datastep} function allows you to perform
 #' row-wise conditional processing on a data frame or tibble. The function
 #' contains parameters to drop, keep, or rename variables.  It also 
 #' has the ability to perform by-group processing, and identify first
-#' and last rows in the group.
+#' and last rows in a group.
 #' @details 
+#' Note that the \code{keep}, \code{drop}, and \code{rename} parameters
+#' are output parameters.  These parameters will be applied after the
+#' data step statements are executed.  Therefore, within the data step, 
+#' refer to variables using the input variable name. New variables may 
+#' be created on the fly, just by assigning a value to the new
+#' variable name.
+#' 
+#' The \code{keep}, \code{drop}, and \code{rename} parameters require 
+#' quoted variable names, as the variables may not yet exist at the 
+#' time they are passed into the function.  Within a data step or 
+#' calculate function, however, 
+#' variable names do not need to be quoted. 
+#' 
 #' The \code{datastep} function provides four automatic variables. These 
 #' variables are generated for every data step, and can 
 #' be accessed at any point within the data step. 
@@ -19,9 +32,25 @@
 #'   \item{\strong{first.}: Indicates the beginning of a by-group.}
 #'   \item{\strong{last.}: Indicates the end of a by-group.}
 #' }
-#' These automatic variables will be dropped from the data frame at the end
+#' Automatic variables will be dropped from the data frame at the end
 #' of the data step.  If you wish to keep the automatic variable values,
 #' assign the automatic variable to a new variable and keep that variable.
+#' 
+#' The \code{calculate} parameter is used to perform vectorized functions
+#' on the data prior to executing the data step.  For example, you 
+#' may want to determine a mean for a variable in the \code{calculate}
+#' block, and then make decisions on that mean in the data step block. 
+#' 
+#' The \code{retain} parameter allows you to access the prior row value.
+#' At the start of the data step, the retained variable is seeded with the 
+#' initial value. For each subsequent step, the variable is seeded with the
+#' value of the prior step/row.  This functionality allows to increment 
+#' values or perform cumulative operations.
+#' 
+#' Note that the data step is pipe-friendly, and can be used within 
+#' a \strong{dplyr} pipeline.  The data step allows you to perform
+#' deeply nested and complex conditionals within the pipeline.  The data
+#' step is also very readable compared to other pipeline conditionals.
 #' 
 #' @param data The data to step through.
 #' @param steps The operations to perform on the data.  This parameter is 
@@ -35,14 +64,14 @@
 #' variable name should be on the left had side of the vector name/value pair,
 #' and the new variable name should be on the right.  The rename operation
 #' is performed after the data step, the keep, and the drop.  Therefore, 
-#' the data steps should use the old variable name.  By default, all variable
+#' the data steps should use the old variable name.  By default, all variables
 #' retain their original names.
 #' @param by A vector of quoted variable names to use for by-group processing.
-#' This parameter will activate the \code{first.} and \code{last.} special
+#' This parameter will activate the \code{first.} and \code{last.} automatic
 #' variables, that indicate the first or last rows in a group.  These 
-#' special variables are useful for conditional processing on groups.
+#' automatic variables are useful for conditional processing on groups.
 #' @param calculate Steps to set up calculated variables.  
-#' Calculated variables are common performed with summary functions such as
+#' Calculated variables are commonly performed with summary functions such as
 #' \code{mean}, \code{median}, \code{min}, \code{max}, etc.  It is more 
 #' efficient to set up calculated variables with the calculate parameter and then 
 #' use those variables in the data step, rather than perform the summary
@@ -67,7 +96,173 @@
 #' is TRUE.  Turn the sort check off if you want to perform by-group 
 #' processing on unsorted data, or data that is not sorted according
 #' to the by-group.
-#' @return The processed data frame or tibble.
+#' @return The processed data frame or tibble.  
+#' @examples 
+#' # Example #1: Simple Data Step
+#' df <- datastep(mtcars[1:10, 1:3], {
+#'   
+#'   if (mpg >= 20) 
+#'     mpgcat <- "High"
+#'   else 
+#'     mpgcat <- "Low"
+#'   
+#'   recdt <- as.Date("1974-06-10")
+#'   
+#'   if (cyl == 8)
+#'     is8cyl <- TRUE
+#'   
+#' })
+#' 
+#' # View results  
+#' df
+#' #                    mpg cyl  disp      recdt mpgcat is8cyl
+#' # Mazda RX4         21.0   6 160.0 1974-06-10   High     NA
+#' # Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA
+#' # Datsun 710        22.8   4 108.0 1974-06-10   High     NA
+#' # Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA
+#' # Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE
+#' # Valiant           18.1   6 225.0 1974-06-10    Low     NA
+#' # Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE
+#' # Merc 240D         24.4   4 146.7 1974-06-10   High     NA
+#' # Merc 230          22.8   4 140.8 1974-06-10   High     NA
+#' # Merc 280          19.2   6 167.6 1974-06-10    Low     NA
+#' 
+#' # Example #2: Keep and order output columns 
+#' df <- datastep(mtcars[1:10,], 
+#'                keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
+#'                  
+#'   if (mpg >= 20) 
+#'     mpgcat <- "High"
+#'   else 
+#'     mpgcat <- "Low"
+#'                  
+#'   recdt <- as.Date("1974-06-10")
+#'                  
+#'   if (cyl == 8)
+#'     is8cyl <- TRUE
+#'                  
+#' })
+#' 
+#' df
+#' #                    mpg cyl  disp mpgcat      recdt
+#' # Mazda RX4         21.0   6 160.0   High 1974-06-10
+#' # Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10
+#' # Datsun 710        22.8   4 108.0   High 1974-06-10
+#' # Hornet 4 Drive    21.4   6 258.0   High 1974-06-10
+#' # Hornet Sportabout 18.7   8 360.0    Low 1974-06-10
+#' # Valiant           18.1   6 225.0    Low 1974-06-10
+#' # Duster 360        14.3   8 360.0    Low 1974-06-10
+#' # Merc 240D         24.4   4 146.7   High 1974-06-10
+#' # Merc 230          22.8   4 140.8   High 1974-06-10
+#' # Merc 280          19.2   6 167.6    Low 1974-06-10
+#'
+#' # Example #3: By-group Processing
+#' df <- datastep(mtcars[1:10,], 
+#'                keep = c("mpg", "cyl", "gear", "grp"), 
+#'                by = c("gear"), sort_check = FALSE, {
+#'                  
+#'   if (first.)
+#'     grp <- "Start"
+#'   else if (last.)
+#'     grp <- "End"
+#'   else 
+#'     grp <- "-"
+#'                  
+#' })
+#' 
+#' df
+#' #                    mpg cyl gear   grp
+#' # Mazda RX4         21.0   6    4 Start
+#' # Mazda RX4 Wag     21.0   6    4     -
+#' # Datsun 710        22.8   4    4   End
+#' # Hornet 4 Drive    21.4   6    3 Start
+#' # Hornet Sportabout 18.7   8    3     -
+#' # Valiant           18.1   6    3     -
+#' # Duster 360        14.3   8    3   End
+#' # Merc 240D         24.4   4    4 Start
+#' # Merc 230          22.8   4    4     -
+#' # Merc 280          19.2   6    4   End 
+#' 
+#' # Example #4: Calculate Block
+#' df <- datastep(mtcars, 
+#'                keep = c("mpg", "cyl", "mean_mpg", "mpgcat"), 
+#'                calculate = { mean_mpg = mean(mpg) }, {
+#'                  
+#'   if (mpg >= mean_mpg)
+#'     mpgcat <- "High"
+#'   else 
+#'     mpgcat <- "Low"
+#'                  
+#' })
+#' 
+#' df[1:10,]
+#' #                    mpg cyl mean_mpg mpgcat
+#' # Mazda RX4         21.0   6 20.09062   High
+#' # Mazda RX4 Wag     21.0   6 20.09062   High
+#' # Datsun 710        22.8   4 20.09062   High
+#' # Hornet 4 Drive    21.4   6 20.09062   High
+#' # Hornet Sportabout 18.7   8 20.09062    Low
+#' # Valiant           18.1   6 20.09062    Low
+#' # Duster 360        14.3   8 20.09062    Low
+#' # Merc 240D         24.4   4 20.09062   High
+#' # Merc 230          22.8   4 20.09062   High
+#' # Merc 280          19.2   6 20.09062    Low
+#'
+#' # Example #5: Data pipeline
+#' library(dplyr)
+#' library(magrittr)
+#' 
+#' # Add datastep to dplyr pipeline
+#' df <- mtcars %>% 
+#'   select(mpg, cyl, gear) %>% 
+#'   mutate(mean_mpg = mean(mpg)) %>% 
+#'   datastep({
+#'     
+#'     if (mpg >= mean_mpg)
+#'       mpgcat <- "High"
+#'     else 
+#'       mpgcat <- "Low"
+#'     
+#'   }) %>% 
+#'   filter(row_number() <= 10)
+#' 
+#' df
+#' #     mpg cyl gear mean_mpg mpgcat
+#' # 1  21.0   6    4 20.09062   High
+#' # 2  21.0   6    4 20.09062   High
+#' # 3  22.8   4    4 20.09062   High
+#' # 4  21.4   6    3 20.09062   High
+#' # 5  18.7   8    3 20.09062    Low
+#' # 6  18.1   6    3 20.09062    Low
+#' # 7  14.3   8    3 20.09062    Low
+#' # 8  24.4   4    4 20.09062   High
+#' # 9  22.8   4    4 20.09062   High
+#' # 10 19.2   6    4 20.09062    Low
+#' 
+#' # Example #6: Drop, Retain and Rename
+#' df <- datastep(mtcars[1:10, ], 
+#'                drop = c("disp", "hp", "drat", "qsec", 
+#'                         "vs", "am", "gear", "carb"), 
+#'                retain = c(cumwt = 0 ),
+#'                rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt", 
+#'                           cumwt = "Cumulative Wgt"), {
+#'                  
+#'   cumwt <- cumwt + wt
+#'                  
+#' })
+#' 
+#' df
+#' #                    MPG Cylinders   Wgt Cumulative Wgt
+#' # Mazda RX4         21.0         6 2.620          2.620
+#' # Mazda RX4 Wag     21.0         6 2.875          5.495
+#' # Datsun 710        22.8         4 2.320          7.815
+#' # Hornet 4 Drive    21.4         6 3.215         11.030
+#' # Hornet Sportabout 18.7         8 3.440         14.470
+#' # Valiant           18.1         6 3.460         17.930
+#' # Duster 360        14.3         8 3.570         21.500
+#' # Merc 240D         24.4         4 3.190         24.690
+#' # Merc 230          22.8         4 3.150         27.840
+#' # Merc 280          19.2         6 3.440         31.280
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
@@ -112,6 +307,8 @@ datastep <- function(data, steps, keep = NULL,
     if (!is.null(by)) {
       if (is.null(firstval)) {
         firstval <- data[n., by]
+        if (length(names(firstval)) == 0)
+          names(firstval) <- by
         first. <- TRUE
       } else {
 
@@ -119,6 +316,8 @@ datastep <- function(data, steps, keep = NULL,
         if (dfcomp(firstval, data[n., by]) == FALSE) {
           first. <- TRUE
           firstval <- data[n., by]
+          if (length(names(firstval)) == 0)
+            names(firstval) <- by
         } else {
           first. <- FALSE
         }
@@ -189,8 +388,9 @@ datastep <- function(data, steps, keep = NULL,
     if (!is.null(by) & first. & sort_check) {
       if (is.null(firstvals))
         firstvals <- firstval
-      else
+      else {
         firstvals <- bind_rows(firstvals, firstval) 
+      }
     }
   }
 

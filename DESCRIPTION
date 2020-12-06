@@ -21,7 +21,8 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    foreign
+    foreign,
+    magrittr
 Imports:     
     readr,
     readxl,

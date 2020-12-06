@@ -412,7 +412,7 @@ data must be sorted properly before sending it into the data step.
 # Identify start and end of by-groups
 df <- datastep(mtcars[1:10,], 
   keep = c("mpg", "cyl", "gear", "grp"), 
-  by = c("gear"), {
+  by = c("gear"), sort_check = FALSE, {
 
     if (first. & last.)
       grp <- "Start - End"
