@@ -9,30 +9,41 @@ e$env <- parent.frame()
 
 
 #' @title Create a data library
-#' @description A data library is a collection of data frames. The purpose of 
-#' the library is to combine related data frames, and allow you to manipulate all
-#' of them as a single object. A data library is an S3 object of class "lib". 
+#' @description A data library is a collection of data objects. The purpose of 
+#' the library is to combine related data sets, and allow you to manipulate all
+#' of them as a single object. With a \code{libname} function, you can 
+#' load an entire directory of data into memory in one step.  The package
+#' contains additional functions to add and remove data from the library, 
+#' copy the library, and write any changed data to the file system.
 #' @details   
 #' A libname is able to import files of several types.  The available types 
 #' are as follows:  'rds', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 #' To create a library of a particular type, set the \code{engine} parameter
-#' to one of the available file types above.
+#' to one of the available file extensions above.
 #' 
-#' Some file types retain column data types as part of the file format.  Others
-#' do not.  For instance, 'csv' file format does not contain type 
-#' information.  Also 'xlsx' and 'xls' file formats.  For these file formats, 
-#' the corresponding import engines will make a best guess of the column
-#' data type based on the data in that column.  
+#' With the \code{libname} function, the import details have been largely 
+#' hidden from you.  The purpose of the function is to make it easy to 
+#' import a set of related data files.  The function assumes that the 
+#' data has file extensions that match the file type, and then makes further
+#' assumptions based on each file type.  As a result, there are very few 
+#' import options on the \code{libname} function.  If these assumptions 
+#' do not apply, it is recommended that you import your data using a 
+#' package that gives you more control over the import.  
 #' 
-#' In some cases, you may want
-#' to override the best guess and specify some or all of the column data types 
-#' directly.  You can provide the column data types specs using
-#' the \code{import_specs} parameter on the \code{libname} function.  This 
-#' parameter accepts a \code{\link{specs}} object that contains import
-#' specifications for one or more of the input data files.  For each data file,
-#' you may then define an \code{\link{import_spec}} object which specifies
-#' the data types for the columns.  See the \code{\link{specs}} and 
-#' \code{\link{import_spec}} object documentation for further information
+#' One area the \strong{libr} package does give you control is the column
+#' data types.
+#' In most cases, it is not necessary to specify the data types for incoming
+#' columns in your data.  Either the file format will preserve the appropriate
+#' data type information, or the engine will guess correctly.  
+#' 
+#' However, in some cases it will be necessary to control the column data types.
+#' For these cases, use the  
+#' \code{import_specs} parameter.  The \code{import_specs} parameter allows you
+#' to specify the data types by data set and column name. All the data type
+#' specifications are contained within a \code{specs} collection, and the 
+#' specifications for a particular data set are defined by an 
+#' \code{import_spec} function. See the \code{\link{specs}} and 
+#' \code{\link{import_spec}} documentation for further information
 #' and examples of defining an import spec.
 #' 
 #' @param name The unquoted name of the library to create.  This name will 

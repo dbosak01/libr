@@ -113,9 +113,8 @@ is.lib <- function(x) {
 #' @title Check equality of two objects
 #' @description The goal of the \code{\%eq\%} operator is to return a TRUE
 #' or FALSE value when any two objects are compared.  The function provides a 
-#' more human-comprehensible style of equality check, that allows comparing 
-#' of NULLs, NA values,
-#' and atomic type values without error. 
+#' simple, reliable equality check that allows comparing 
+#' of NULLs, NA values, and atomic data types without error. 
 #' 
 #' The function also allows comparing
 #' of data frames.  It will return TRUE if all values in the 
