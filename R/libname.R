@@ -48,7 +48,7 @@ e$env <- parent.frame()
 #' assumptions based on each type of file.  As a result, there are very few 
 #' import options on the \code{libname} function.  If your data does not
 #' follow standard conventions, it is recommended that you import your 
-#' data using a package that gives you more control over the import. 
+#' data using a package that gives you more control over import options. 
 #' 
 #' @section Import Specifications:
 #' In most cases, it is not necessary to specify the data types for incoming
@@ -97,11 +97,14 @@ e$env <- parent.frame()
 #' engine can read, but not write xls files.  Any xls files read with the
 #' xls engine will be written as an xlsx file. Like the xlsx engine, the xls
 #' engine can only read the first sheet of a workbook.}
-#' \item{\strong{sas7bdat}: Imports SAS® datasets. SAS® datasets provide better
+#' \item{\strong{sas7bdat}: Handles SAS® datasets. SAS® datasets provide better
 #' type information than either csv or Excel.  In most cases, you will not 
 #' need to define import specifications for SAS® datasets.  The sas7bdat engine
 #' interprets empty strings, single blanks, and a single dot (".") as missing
-#' values.}
+#' values. While the import of SAS® datasets is fairly reliable, sas7bdat files 
+#' exported with the sas7bdat engine sometimes cannot be read by SAS® software.
+#' In these cases, it is recommended to export to another file format, such
+#' as csv or dbf, and then import into SAS®.}
 #' \item{\strong{xpt}: The SAS® transport file engine.  Transport format is 
 #' a platform independent file format.  Similar to SAS® datasets, it 
 #' provides data type information.  In most cases, you will not need to 
@@ -123,7 +126,7 @@ e$env <- parent.frame()
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
 #' Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
-#' @param read_only Whether the library should be created as read only.
+#' @param read_only Whether the library should be created as read-only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing any data from memory to the file system.
 #' @param env The environment to use for the libname. 
