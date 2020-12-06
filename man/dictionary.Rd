@@ -27,7 +27,7 @@ information about the data.  The tibble will contain the following columns:
 }
 }
 \examples{
-#' # Create temp directory
+# Create temp directory
 tmp <- tempdir()
 
 # Create library
@@ -56,5 +56,7 @@ dictionary(dat)
 lib_delete(dat)
 }
 \seealso{
-\code{\link{libname}} to create a data library.
+\code{\link{libname}} to create a data library.  Also 
+see the \code{\link[fmtr]{fmtr}} package for functions to set the
+format, description, width, and justification attributes on a data frame.
 }
