@@ -22,9 +22,11 @@
 #'   \item{\strong{NAs:} The number of NA values in this column.}
 #' }
 #' @import tibble
-#' @seealso \code{\link{libname}} to create a data library.
+#' @seealso \code{\link{libname}} to create a data library.  Also 
+#' see the \code{\link[fmtr]{fmtr}} package for functions to set the
+#' format, description, width, and justification attributes on a data frame.
 #' @examples 
-#' #' # Create temp directory
+#' # Create temp directory
 #' tmp <- tempdir()
 #' 
 #' # Create library

@@ -44,10 +44,10 @@
 #' The \code{retain} parameter allows you to access the prior row value.
 #' At the start of the data step, the retained variable is seeded with the 
 #' initial value. For each subsequent step, the variable is seeded with the
-#' value of the prior step/row.  This functionality allows to increment 
+#' value of the prior step/row.  This functionality allows you to increment 
 #' values or perform cumulative operations.
 #' 
-#' Note that the data step is pipe-friendly, and can be used within 
+#' Note that the data step is pipe-friendly.  It can be used within 
 #' a \strong{dplyr} pipeline.  The data step allows you to perform
 #' deeply nested and complex conditionals within the pipeline.  The data
 #' step is also very readable compared to other pipeline conditionals.
@@ -61,10 +61,10 @@
 #' @param drop A vector of quoted variable names to drop from the output
 #' data set. By default, no variables are dropped.
 #' @param rename A named vector of quoted variables to rename.  The current
-#' variable name should be on the left had side of the vector name/value pair,
+#' variable name should be on the left hand side of the name/value pair,
 #' and the new variable name should be on the right.  The rename operation
 #' is performed after the data step, the keep, and the drop.  Therefore, 
-#' the data steps should use the old variable name.  By default, all variables
+#' the data steps should use the input variable name.  By default, all variables
 #' retain their original names.
 #' @param by A vector of quoted variable names to use for by-group processing.
 #' This parameter will activate the \code{first.} and \code{last.} automatic
@@ -99,35 +99,6 @@
 #' @return The processed data frame or tibble.  
 #' @examples 
 #' # Example #1: Simple Data Step
-#' df <- datastep(mtcars[1:10, 1:3], {
-#'   
-#'   if (mpg >= 20) 
-#'     mpgcat <- "High"
-#'   else 
-#'     mpgcat <- "Low"
-#'   
-#'   recdt <- as.Date("1974-06-10")
-#'   
-#'   if (cyl == 8)
-#'     is8cyl <- TRUE
-#'   
-#' })
-#' 
-#' # View results  
-#' df
-#' #                    mpg cyl  disp      recdt mpgcat is8cyl
-#' # Mazda RX4         21.0   6 160.0 1974-06-10   High     NA
-#' # Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA
-#' # Datsun 710        22.8   4 108.0 1974-06-10   High     NA
-#' # Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA
-#' # Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE
-#' # Valiant           18.1   6 225.0 1974-06-10    Low     NA
-#' # Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE
-#' # Merc 240D         24.4   4 146.7 1974-06-10   High     NA
-#' # Merc 230          22.8   4 140.8 1974-06-10   High     NA
-#' # Merc 280          19.2   6 167.6 1974-06-10    Low     NA
-#' 
-#' # Example #2: Keep and order output columns 
 #' df <- datastep(mtcars[1:10,], 
 #'                keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
 #'                  
@@ -156,7 +127,7 @@
 #' # Merc 230          22.8   4 140.8   High 1974-06-10
 #' # Merc 280          19.2   6 167.6    Low 1974-06-10
 #'
-#' # Example #3: By-group Processing
+#' # Example #2: By-group Processing
 #' df <- datastep(mtcars[1:10,], 
 #'                keep = c("mpg", "cyl", "gear", "grp"), 
 #'                by = c("gear"), sort_check = FALSE, {
@@ -183,7 +154,7 @@
 #' # Merc 230          22.8   4    4     -
 #' # Merc 280          19.2   6    4   End 
 #' 
-#' # Example #4: Calculate Block
+#' # Example #3: Calculate Block
 #' df <- datastep(mtcars, 
 #'                keep = c("mpg", "cyl", "mean_mpg", "mpgcat"), 
 #'                calculate = { mean_mpg = mean(mpg) }, {
@@ -208,7 +179,7 @@
 #' # Merc 230          22.8   4 20.09062   High
 #' # Merc 280          19.2   6 20.09062    Low
 #'
-#' # Example #5: Data pipeline
+#' # Example #4: Data pipeline
 #' library(dplyr)
 #' library(magrittr)
 #' 
@@ -239,11 +210,11 @@
 #' # 9  22.8   4    4 20.09062   High
 #' # 10 19.2   6    4 20.09062    Low
 #' 
-#' # Example #6: Drop, Retain and Rename
+#' # Example #5: Drop, Retain and Rename
 #' df <- datastep(mtcars[1:10, ], 
 #'                drop = c("disp", "hp", "drat", "qsec", 
 #'                         "vs", "am", "gear", "carb"), 
-#'                retain = c(cumwt = 0 ),
+#'                retain = list(cumwt = 0 ),
 #'                rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt", 
 #'                           cumwt = "Cumulative Wgt"), {
 #'                  
