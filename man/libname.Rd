@@ -41,7 +41,9 @@ the library directory. See the \code{\link{specs}} function for additional
 information.}
 }
 \value{
-The library object.
+The library object, with all data files loaded into the library
+list.  Items in the list will be named according the the file name,
+minus the file extension.
 }
 \description{
 A data library is a collection of data sets. The purpose of 
@@ -195,6 +197,8 @@ dictionary(dat)
 lib_load(dat)
 
 # Print summaries for each data frame
+# Note that once loaded into the workspace, 
+# data can be accessed using two-level syntax.
 summary(dat.rocks)
 summary(dat.trees)
 summary(dat.beaver1)

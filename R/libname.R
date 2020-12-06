@@ -133,7 +133,9 @@ e$env <- parent.frame()
 #' The import specs should be named according to the file names in 
 #' the library directory. See the \code{\link{specs}} function for additional
 #' information.
-#' @return The library object.
+#' @return The library object, with all data files loaded into the library
+#' list.  Items in the list will be named according the the file name,
+#' minus the file extension.
 #' @family lib
 #' @seealso \code{\link{specs}} to define import specifications, 
 #' and \code{\link{dictionary}} to view the data dictionary for a library.
@@ -179,6 +181,8 @@ e$env <- parent.frame()
 #' lib_load(dat)
 #' 
 #' # Print summaries for each data frame
+#' # Note that once loaded into the workspace, 
+#' # data can be accessed using two-level syntax.
 #' summary(dat.rocks)
 #' summary(dat.trees)
 #' summary(dat.beaver1)
