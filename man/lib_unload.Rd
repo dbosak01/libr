@@ -23,9 +23,9 @@ The unloaded data library.
 The \code{lib_unload} function unloads a data library from
 the workspace environment.  The unload function does not delete the data 
 or the remove the library.  It simply removes the data frames from working 
-memory.  By defautl, the \code{unload} function will also synchronize the 
-data in working memory with the data stored in the library list, which can
-become out of sync if you change the data in working memory.
+memory.  By default, the \code{lib_unload} function will also synchronize the 
+data in working memory with the data stored in the library list, as these
+two instances can become out of sync if you change the data in working memory.
 }
 \examples{
 # Create temp directory

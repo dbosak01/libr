@@ -37,8 +37,7 @@ e$env <- parent.frame()
 #' by the extension of the file type they handle.  The available engines are 
 #' 'rds', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 #' Once an engine has been assigned to a library, all other read/write 
-#' operations will be performed by that engine, unless you explicitly 
-#' override it.  
+#' operations will be performed by that engine.  
 #' 
 #' The data engines largely hide file import details from you.  
 #' The purpose of the \code{libname} function is to make it easy to 
@@ -120,9 +119,14 @@ e$env <- parent.frame()
 #' @param name The unquoted name of the library to create.  The library name will 
 #' be created as a variable in the environment specified on the \code{env}
 #' parameter.  The default environment is the parent frame.
-#' @param directory_path A directory path in which the data resides.    
+#' @param directory_path A directory path to associate with the library.  If 
+#' the directory contains data files of the type specified on the 
+#' \code{engine} parameter, they will be imported into the library list.  If
+#' the directory does not contains data sets of the appropriate type, 
+#' it will be created as an empty library. If the directory does not exist, 
+#' it will be created by the \code{libname} function.
 #' @param engine The engine to associate with the library.  The specified 
-#' engine will be used to import and export the data.  The engine name 
+#' engine will be used to import and export data.  The engine name 
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
 #' Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
@@ -130,7 +134,12 @@ e$env <- parent.frame()
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing any data from memory to the file system.
 #' @param env The environment to use for the libname. 
-#' Default is parent.frame().
+#' Default is \code{parent.frame()}.  When working inside a function, the 
+#' \code{parent.frame()} will refer to the local function scope.  When
+#'  working outside a function, the \code{parent.frame()} will be the
+#'  global environment. If the \code{env} parameter is set to a custom 
+#'  environment, the custom environment will be used for all subsequent 
+#'  operations with that libname.   
 #' @param import_specs A collection of import specifications, 
 #' defined using the \code{\link{specs}} function.
 #' The import specs should be named according to the file names in 
@@ -410,8 +419,10 @@ libname <- function(name, directory_path, engine = "rds",
 
 #' @title Load a Library into the Workspace
 #' @description The \code{lib_load} function loads a data library into
-#' an environment. By default this is the global environment.  The data frames 
-#' will be loaded with <library>.<data frame> syntax.  Loading the data frames
+#' an environment. The environment used is associated with the library at 
+#' the time it is created with the \code{\link{libname}} function.  
+#' When the \code{lib_load} function is called, the data frames/tibbles 
+#' will be loaded with <library>.<data set> syntax.  Loading the data frames
 #' into the environment makes them easy to access and use in your program.
 #' @param x The data library to load.
 #' @return The loaded data library. 
@@ -478,9 +489,9 @@ lib_load <- function(x) {
 #' @description The \code{lib_unload} function unloads a data library from
 #' the workspace environment.  The unload function does not delete the data 
 #' or the remove the library.  It simply removes the data frames from working 
-#' memory.  By defautl, the \code{unload} function will also synchronize the 
-#' data in working memory with the data stored in the library list, which can
-#' become out of sync if you change the data in working memory.
+#' memory.  By default, the \code{lib_unload} function will also synchronize the 
+#' data in working memory with the data stored in the library list, as these
+#' two instances can become out of sync if you change the data in working memory.
 #' @param x The data library to unload.
 #' @param sync Whether to sync the workspace with the library list before
 #' it is unloaded.  If you want to unload the workspace without saving the 
@@ -565,11 +576,10 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 
 #' @title Add Data to a Data Library
 #' @description The \code{\link{lib_add}} function adds a data frame
-#' to an existing data library.  The function will both add the data
+#' or tibble to an existing data library.  The function will both add the data
 #' to the library list, and immediately write the data to the library
 #' directory location.  The data will be written in the file format
-#' associated with the library.  If no file format is associated with 
-#' the library, it will be written as an RDS file.
+#' associated with the library engine.  
 #' @param x The library to add data to.
 #' @param ... The data frame(s) to add to the library.
 #' @param name The reference name to use for the data.  By default,
@@ -585,12 +595,7 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' libname(dat, tmp)
 #' 
 #' # Add data to the library
-#' lib_add(dat, mtcars)
-#' lib_add(dat, beaver1)
-#' lib_add(dat, iris)
-#' 
-#' # Examine the library
-#' dat
+#' lib_add(dat, mtcars, beaver1, iris)
 #' # library 'dat': 3 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -602,7 +607,6 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' 
 #' # Clean up
 #' lib_delete(dat)
-#' @import tools
 #' @export
 lib_add <- function(x, ..., name = NULL) {
   
@@ -678,11 +682,10 @@ lib_add <- function(x, ..., name = NULL) {
 
 #' @title Replace Data in a Data Library
 #' @description The \code{\link{lib_replace}} function replaces a data frame
-#' in an existing data library.  The function will both replaced the data
+#' in an existing data library.  The function will both replace the data
 #' in the library list, and immediately write the data to the library
 #' directory location.  The data will be written in the file format
-#' associated with the library.  If no file format is associated with 
-#' the library, it will be written as an RDS file.  
+#' associated with the library engine. 
 #' @param x The library to replace data in.
 #' @param ... The data frame(s) to replace.
 #' @param name The reference name to use for the data.  By default,
@@ -699,9 +702,6 @@ lib_add <- function(x, ..., name = NULL) {
 #' 
 #' # Add data to the library
 #' lib_add(dat, mtcars)
-#' 
-#' # Examine the library
-#' dat
 #' # library 'dat': 3 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -709,11 +709,8 @@ lib_add <- function(x, ..., name = NULL) {
 #' #      Name Extension Rows Cols   Size        LastModified
 #' # 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
 #' 
-#' # Replace data with subsets
+#' # Replace data with a subset
 #' lib_replace(dat, mtcars[1:10, 1:5], name = "mtcars")
-#' 
-#' # Examine the library again
-#' dat
 #' # library 'dat': 3 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -799,7 +796,7 @@ lib_replace <- function(x, ...,  name = NULL) {
 #' @title Remove Data from a Data Library
 #' @description The \code{lib_remove} function removes an item from the 
 #' data library, and deletes the source file for that data.  If the library
-#' is loaded, it will also remove that item from the workspace.
+#' is loaded, it will also remove that item from the workspace environment.
 #' @param x The data library.
 #' @param name The quoted name of the item to remove from the data library. 
 #' For more than one name, pass a vector of quoted names.
@@ -813,13 +810,7 @@ lib_replace <- function(x, ...,  name = NULL) {
 #' libname(dat, tmp)
 #' 
 #' # Add data to the library
-#' lib_add(dat, mtcars)
-#' lib_add(dat, beaver1)
-#' lib_add(dat, iris)
-#' 
-#' # Examine the library
-#' dat
-#' 
+#' lib_add(dat, mtcars, beaver1, iris)
 #' # library 'dat': 3 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -831,9 +822,6 @@ lib_replace <- function(x, ...,  name = NULL) {
 #' 
 #' # Remove items from the library
 #' lib_remove(dat, c("beaver1", "iris"))
-#' 
-#' # Examine the library again
-#' dat
 #' # library 'dat': 1 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -891,14 +879,11 @@ lib_remove <- function(x, name) {
 
 #' @title Write a Data Library to the File System
 #' @description The \code{lib_write} function writes the data library
-#' to the file system.  By default, the library will be written to the 
+#' to the file system.  The library will be written to the 
 #' directory for which it was defined, and each data frame will be written
-#' in the format from which it was read.  Data frames that were not read
-#' from a file will be saved in RDS format, unless otherwise specified.  
-#' 
-#' The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
-#' and a plain text file format.  Data read in xls file format will be saved 
-#' as an xlsx.
+#' in the format associated with the library data engine.  See the 
+#' \code{\link{libname}} function for further elaboration on the types
+#' of engines available, and the assumptions/limitations of each.  
 #' 
 #' By default, the \code{lib_write} function will not write data that has 
 #' not changed.  Prior to writing a file, \code{lib_write} will compare the 
@@ -912,15 +897,16 @@ lib_remove <- function(x, name) {
 #' changed.
 #' @return The saved data library.
 #' @family lib
-#' @import haven
-#' @import readr
-#' @import readxl
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()
 #' 
 #' # Create library
 #' libname(dat, tmp)
+#' # # library 'dat': 0 items
+#' # - attributes: rds not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # NULL
 #' 
 #' # Load the empty library 
 #' lib_load(dat)
@@ -935,9 +921,6 @@ lib_remove <- function(x, name) {
 #' 
 #' # Write the library to the file system
 #' lib_write(dat)
-#' 
-#' # Examine the library
-#' dat
 #' # library 'dat': 3 items
 #' #- attributes: not loaded
 #' #- path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -1007,17 +990,24 @@ lib_write <- function(x, force = FALSE) {
 
 #' @title Synchronize Loaded Library
 #' @description The \code{lib_sync} function synchronizes the data
-#' loaded into the working environment with the data frames stored 
-#' in the data library object.  This synchronization is necessary only
+#' loaded into the working environment with the data stored 
+#' in the library list.  Synchronization is necessary only
 #' for libraries that have been loaded into the working environment.
 #' The function
-#' copies data frames from the working environment to the library
+#' copies data from the working environment to the library
 #' list, overwriting any data in the list. The function is useful when 
-#' you want to update the library list, but 
-#' not unload the data from working memory.
+#' you want to update the library list, but are not yet ready to 
+#' unload the data from working memory.  
+#' 
+#' Note that the \code{lib_sync} function does not 
+#' write any data to disk. Also note that the \code{lib_sync} function will
+#' not automatically remove any variables from the library list that 
+#' have been removed from the workspace.  To remove items from the library
+#' list, use the \code{\link{lib_remove}} function.  To write data to 
+#' disk, use the \code{\link{lib_write}} function.
 #' @param x The data library to synchronize.
 #' @param name The name of the library to sync if not the variable
-#' name of the incoming library. Used internally.
+#' name. Used internally.
 #' @return The synchronized data library.
 #' @examples 
 #' # Create temp directory
@@ -1025,9 +1015,6 @@ lib_write <- function(x, force = FALSE) {
 #' 
 #' # Create library
 #' libname(dat, tmp)
-#' 
-#' # Examine empty library
-#' dat
 #' # library 'dat': 0 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -1043,9 +1030,6 @@ lib_write <- function(x, force = FALSE) {
 #' 
 #' # Sync the library
 #' lib_sync(dat)
-#' 
-#' # Examine the library again
-#' dat
 #' # library 'dat': 3 items
 #' # - attributes: loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -1109,13 +1093,17 @@ lib_sync <- function(x, name = NULL) {
 #' @title Copy a Data Library
 #' @description The \code{lib_copy} function copies a data library.  The 
 #' function accepts a library and a destination path.  If the destination 
-#' path does not exist, the function will attempt to create it.  Note that
+#' path does not exist, the function will attempt to create it.  
+#' 
+#' Note that
 #' the copy will result in the current data in memory written to the new
-#' destination directory.  
+#' destination directory.  If the library is loaded into the workspace, 
+#' the workspace version will be considered the most current version, and
+#' that is the version that will be copied.
 #' @param x The library to copy.
 #' @param nm The unquoted variable name to hold the new library.
 #' @param directory_path The path to copy the library to.
-#' @return The new copy of the library.
+#' @return The new library.
 #' @family lib
 #' @examples
 #' # Create temp directory
@@ -1130,9 +1118,6 @@ lib_sync <- function(x, name = NULL) {
 #' 
 #' # Copy dat1 to dat2
 #' lib_copy(dat1, dat2, file.path(tmp, "copy"))
-#' 
-#' # Examine dat2
-#' dat2
 #' # library 'dat2': 2 items
 #' # - attributes: not loaded
 #' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy
@@ -1211,9 +1196,12 @@ lib_copy <- function(x, nm, directory_path) {
 
 #' @title Delete a Data Library
 #' @description The \code{lib_delete} function deletes a data library from
-#' the file system.  All data files associated with the library will be deleted.
+#' the file system and from memory.  All data files associated with the library
+#' and the specified engine will be deleted.
 #' If other files exist in the library directory, they will not be affected
-#' by the delete operation.  The directory that contains the data will also
+#' by the delete operation.  
+#' 
+#' The directory that contains the data will also
 #' not be affected by the delete operation.  To delete the data directory, 
 #' use the \code{\link[base]{unlink}} function or other packaged functions.
 #' @param x The data library to delete.
@@ -1324,7 +1312,7 @@ lib_path <- function(x) {
 
 #' @title Get the Size of a Data Library
 #' @description The \code{lib_size} function returns the number of bytes used
-#' by the data library, as stored on disc.  
+#' by the data library, as stored on disk.  
 #' @param x The data library.
 #' @return The size of the data library in bytes as stored on the file system.
 #' @family lib
@@ -1369,11 +1357,11 @@ lib_size <- function(x) {
 }
 
 
-#' @title Get Information on a Data Library
+#' @title Get Information about a Data Library
 #' @description The \code{lib_info} function returns a data frame of information
 #' about each item in the data library.  That information includes the item
 #' name, file extension, number of rows, number of columns, size in bytes, 
-#' the last modified date.
+#' and the last modified date.
 #' @param x The data library.
 #' @return A data frame of information about the library.
 #' @family lib

@@ -14,8 +14,10 @@ The loaded data library.
 }
 \description{
 The \code{lib_load} function loads a data library into
-an environment. By default this is the global environment.  The data frames 
-will be loaded with <library>.<data frame> syntax.  Loading the data frames
+an environment. The environment used is associated with the library at 
+the time it is created with the \code{\link{libname}} function.  
+When the \code{lib_load} function is called, the data frames/tibbles 
+will be loaded with <library>.<data set> syntax.  Loading the data frames
 into the environment makes them easy to access and use in your program.
 }
 \examples{

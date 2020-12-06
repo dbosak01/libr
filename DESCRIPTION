@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Libnames, Data Dictionaries, and a Data Step for R
-Version: 0.0.9012
+Version: 0.0.9013
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,

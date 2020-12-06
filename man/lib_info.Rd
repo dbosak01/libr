@@ -2,7 +2,7 @@
 % Please edit documentation in R/libname.R
 \name{lib_info}
 \alias{lib_info}
-\title{Get Information on a Data Library}
+\title{Get Information about a Data Library}
 \usage{
 lib_info(x)
 }
@@ -16,7 +16,7 @@ A data frame of information about the library.
 The \code{lib_info} function returns a data frame of information
 about each item in the data library.  That information includes the item
 name, file extension, number of rows, number of columns, size in bytes, 
-the last modified date.
+and the last modified date.
 }
 \examples{
 # Create temp directory

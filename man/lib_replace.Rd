@@ -18,11 +18,10 @@ than one data set is being appended, assign a vector of quoted names.}
 }
 \description{
 The \code{\link{lib_replace}} function replaces a data frame
-in an existing data library.  The function will both replaced the data
+in an existing data library.  The function will both replace the data
 in the library list, and immediately write the data to the library
 directory location.  The data will be written in the file format
-associated with the library.  If no file format is associated with 
-the library, it will be written as an RDS file.
+associated with the library engine.
 }
 \examples{
 #' # Create temp directory
@@ -33,9 +32,6 @@ libname(dat, tmp)
 
 # Add data to the library
 lib_add(dat, mtcars)
-
-# Examine the library
-dat
 # library 'dat': 3 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -43,11 +39,8 @@ dat
 #      Name Extension Rows Cols   Size        LastModified
 # 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00
 
-# Replace data with subsets
+# Replace data with a subset
 lib_replace(dat, mtcars[1:10, 1:5], name = "mtcars")
-
-# Examine the library again
-dat
 # library 'dat': 3 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc

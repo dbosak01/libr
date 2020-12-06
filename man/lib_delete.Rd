@@ -11,9 +11,12 @@ lib_delete(x)
 }
 \description{
 The \code{lib_delete} function deletes a data library from
-the file system.  All data files associated with the library will be deleted.
+the file system and from memory.  All data files associated with the library
+and the specified engine will be deleted.
 If other files exist in the library directory, they will not be affected
-by the delete operation.  The directory that contains the data will also
+by the delete operation.  
+
+The directory that contains the data will also
 not be affected by the delete operation.  To delete the data directory, 
 use the \code{\link[base]{unlink}} function or other packaged functions.
 }

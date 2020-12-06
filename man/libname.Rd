@@ -19,10 +19,15 @@ libname(
 be created as a variable in the environment specified on the \code{env}
 parameter.  The default environment is the parent frame.}
 
-\item{directory_path}{A directory path in which the data resides.}
+\item{directory_path}{A directory path to associate with the library.  If 
+the directory contains data files of the type specified on the 
+\code{engine} parameter, they will be imported into the library list.  If
+the directory does not contains data sets of the appropriate type, 
+it will be created as an empty library. If the directory does not exist, 
+it will be created by the \code{libname} function.}
 
 \item{engine}{The engine to associate with the library.  The specified 
-engine will be used to import and export the data.  The engine name 
+engine will be used to import and export data.  The engine name 
 corresponds to the standard file extension of the data file type. The
 default engine is 'rds'.
 Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'.}
@@ -32,7 +37,12 @@ Default is FALSE.  If TRUE, the user will be restricted from
 appending, removing, or writing any data from memory to the file system.}
 
 \item{env}{The environment to use for the libname. 
-Default is parent.frame().}
+Default is \code{parent.frame()}.  When working inside a function, the 
+\code{parent.frame()} will refer to the local function scope.  When
+ working outside a function, the \code{parent.frame()} will be the
+ global environment. If the \code{env} parameter is set to a custom 
+ environment, the custom environment will be used for all subsequent 
+ operations with that libname.}
 
 \item{import_specs}{A collection of import specifications, 
 defined using the \code{\link{specs}} function.
@@ -74,8 +84,7 @@ files, and another engine for SAS® datasets.  The engines are identified
 by the extension of the file type they handle.  The available engines are 
 'rds', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 Once an engine has been assigned to a library, all other read/write 
-operations will be performed by that engine, unless you explicitly 
-override it.  
+operations will be performed by that engine.  
 
 The data engines largely hide file import details from you.  
 The purpose of the \code{libname} function is to make it easy to 

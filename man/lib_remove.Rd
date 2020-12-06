@@ -18,7 +18,7 @@ The library with the requested item removed.
 \description{
 The \code{lib_remove} function removes an item from the 
 data library, and deletes the source file for that data.  If the library
-is loaded, it will also remove that item from the workspace.
+is loaded, it will also remove that item from the workspace environment.
 }
 \examples{
 # Create temp directory
@@ -28,13 +28,7 @@ tmp <- tempdir()
 libname(dat, tmp)
 
 # Add data to the library
-lib_add(dat, mtcars)
-lib_add(dat, beaver1)
-lib_add(dat, iris)
-
-# Examine the library
-dat
-
+lib_add(dat, mtcars, beaver1, iris)
 # library 'dat': 3 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -46,9 +40,6 @@ dat
 
 # Remove items from the library
 lib_remove(dat, c("beaver1", "iris"))
-
-# Examine the library again
-dat
 # library 'dat': 1 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc

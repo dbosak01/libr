@@ -18,11 +18,10 @@ than one data set is being appended, assign a vector of quoted names.}
 }
 \description{
 The \code{\link{lib_add}} function adds a data frame
-to an existing data library.  The function will both add the data
+or tibble to an existing data library.  The function will both add the data
 to the library list, and immediately write the data to the library
 directory location.  The data will be written in the file format
-associated with the library.  If no file format is associated with 
-the library, it will be written as an RDS file.
+associated with the library engine.
 }
 \examples{
 #' # Create temp directory
@@ -32,12 +31,7 @@ tmp <- tempdir()
 libname(dat, tmp)
 
 # Add data to the library
-lib_add(dat, mtcars)
-lib_add(dat, beaver1)
-lib_add(dat, iris)
-
-# Examine the library
-dat
+lib_add(dat, mtcars, beaver1, iris)
 # library 'dat': 3 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc

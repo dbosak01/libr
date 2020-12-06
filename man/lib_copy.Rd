@@ -14,14 +14,18 @@ lib_copy(x, nm, directory_path)
 \item{directory_path}{The path to copy the library to.}
 }
 \value{
-The new copy of the library.
+The new library.
 }
 \description{
 The \code{lib_copy} function copies a data library.  The 
 function accepts a library and a destination path.  If the destination 
-path does not exist, the function will attempt to create it.  Note that
+path does not exist, the function will attempt to create it.  
+
+Note that
 the copy will result in the current data in memory written to the new
-destination directory.
+destination directory.  If the library is loaded into the workspace, 
+the workspace version will be considered the most current version, and
+that is the version that will be copied.
 }
 \examples{
 # Create temp directory
@@ -36,9 +40,6 @@ lib_add(dat1, iris)
 
 # Copy dat1 to dat2
 lib_copy(dat1, dat2, file.path(tmp, "copy"))
-
-# Examine dat2
-dat2
 # library 'dat2': 2 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy

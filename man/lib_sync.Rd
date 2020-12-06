@@ -10,21 +10,28 @@ lib_sync(x, name = NULL)
 \item{x}{The data library to synchronize.}
 
 \item{name}{The name of the library to sync if not the variable
-name of the incoming library. Used internally.}
+name. Used internally.}
 }
 \value{
 The synchronized data library.
 }
 \description{
 The \code{lib_sync} function synchronizes the data
-loaded into the working environment with the data frames stored 
-in the data library object.  This synchronization is necessary only
+loaded into the working environment with the data stored 
+in the library list.  Synchronization is necessary only
 for libraries that have been loaded into the working environment.
 The function
-copies data frames from the working environment to the library
+copies data from the working environment to the library
 list, overwriting any data in the list. The function is useful when 
-you want to update the library list, but 
-not unload the data from working memory.
+you want to update the library list, but are not yet ready to 
+unload the data from working memory.  
+
+Note that the \code{lib_sync} function does not 
+write any data to disk. Also note that the \code{lib_sync} function will
+not automatically remove any variables from the library list that 
+have been removed from the workspace.  To remove items from the library
+list, use the \code{\link{lib_remove}} function.  To write data to 
+disk, use the \code{\link{lib_write}} function.
 }
 \examples{
 # Create temp directory
@@ -32,9 +39,6 @@ tmp <- tempdir()
 
 # Create library
 libname(dat, tmp)
-
-# Examine empty library
-dat
 # library 'dat': 0 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -50,9 +54,6 @@ dat.iris <- iris
 
 # Sync the library
 lib_sync(dat)
-
-# Examine the library again
-dat
 # library 'dat': 3 items
 # - attributes: loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc

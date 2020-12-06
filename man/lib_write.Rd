@@ -17,14 +17,11 @@ The saved data library.
 }
 \description{
 The \code{lib_write} function writes the data library
-to the file system.  By default, the library will be written to the 
+to the file system.  The library will be written to the 
 directory for which it was defined, and each data frame will be written
-in the format from which it was read.  Data frames that were not read
-from a file will be saved in RDS format, unless otherwise specified.  
-
-The \strong{libr} package can write data files in csv, rds, xlsx, sas7bdat,
-and a plain text file format.  Data read in xls file format will be saved 
-as an xlsx.
+in the format associated with the library data engine.  See the 
+\code{\link{libname}} function for further elaboration on the types
+of engines available, and the assumptions/limitations of each.  
 
 By default, the \code{lib_write} function will not write data that has 
 not changed.  Prior to writing a file, \code{lib_write} will compare the 
@@ -39,6 +36,10 @@ tmp <- tempdir()
 
 # Create library
 libname(dat, tmp)
+# # library 'dat': 0 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# NULL
 
 # Load the empty library 
 lib_load(dat)
@@ -53,9 +54,6 @@ lib_unload(dat)
 
 # Write the library to the file system
 lib_write(dat)
-
-# Examine the library
-dat
 # library 'dat': 3 items
 #- attributes: not loaded
 #- path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc

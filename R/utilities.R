@@ -278,6 +278,9 @@ getUniqueName <- function(nm, nms) {
 #' checksums with the current checksum and only update if the file has
 #' changed.  That way any timestamps on the files are preserved. 
 #' @import tools
+#' @import haven
+#' @import readr
+#' @import openxlsx
 #' @noRd
 writeData <- function(x, ext, file_path, force = FALSE) {
   

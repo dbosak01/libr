@@ -14,7 +14,7 @@ The size of the data library in bytes as stored on the file system.
 }
 \description{
 The \code{lib_size} function returns the number of bytes used
-by the data library, as stored on disc.
+by the data library, as stored on disk.
 }
 \examples{
 # Create temp directory
