@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
-Title: Libnames, Data Dictionaries, and a Data Step for R
-Version: 1.0.0
+Title: Libraries, Data Dictionaries, and a Data Step for R
+Version: 1.0.1
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,
@@ -9,7 +9,7 @@ Description: Contains a set of functions to create data libraries,
     The libname() function will load a directory of data into 
     a library in one line of code.  The dictionary() function
     will generate data dictionaries for individual
-    data frames/tibbles or an entire library.  And the datestep() function
+    data frames or an entire library.  And the datestep() function
     will perform row-by-row data processing.
 License: CC0
 Encoding: UTF-8
