@@ -13,7 +13,7 @@ The **libr** package brings the concepts of data libraries, data
 dictionaries, and data steps to R.  A data library is an object used to define 
 and manage an entire directory of data files.  A data dictionary is a data 
 frame full of information about a data library, data frame, or tibble. A
-a data step is a mechanism to perform row-by-row processing of data.
+data step is a mechanism to perform row-by-row processing of data.
 
 
 ### Glossary 
@@ -33,8 +33,12 @@ The functions contained in the **libr** package are as follows:
 * `lib_info()`: Returns a data frame of information about the library
 * `lib_path()`: Returns the path of a data library
 * `lib_size()`: Returns the size of the data library in bytes
+
+#### Import Specs Functions
 * `specs()`: Define import specs for a libname
 * `import_spec()`: Define an import spec for a specific file
+* `write.specs()`: Writes a specs object to the file system
+* `read.specs()`: Reads a specs file from the file system
 
 #### Other Functions
 * `dictionary()`: Creates a data dictionary
@@ -68,9 +72,10 @@ syntax.
 You may create a data library for several different types of files: 'rds', 
 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.  The type of library is
 defined using the `engine` parameter on the `libname()` function.  The default
-data engine is 'rds'.  For file types such as 'csv' and 'xlsx', 
-you may also control the data type of the columns using the `import_specs`
-parameter.
+data engine is 'rds'.  The data engines will attempt to identify the correct
+data type for each column of data.  You may also control the data type of 
+the columns using the `import_specs` parameter and the `specs()` and 
+`import_spec()` functions.
 
 If you prefer to access the data via the workspace, call
 the `lib_load()` function on the library.  This function will load the 
@@ -208,7 +213,7 @@ lib_add(s1, state.name, state.area, state.region, state.abb,
 # 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28
 # 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28
 
-# Copy library
+# Copy library to backup location
 lib_copy(s1, s2, file.path(tmp, "orig"))
 # # library 's2': 4 items
 # - attributes: rds not loaded
@@ -227,9 +232,8 @@ lib_remove(s1, name = c("name", "area", "region", "abb"))
 # - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
 # NULL
 
-# Load libraries into memory
+# Load library 1 into memory
 lib_load(s1)
-lib_load(s2)
 
 s1.combined <- data.frame(name = s2.name, abb = s2.abb, 
                               area = s2.area, region = s2.region)
@@ -252,7 +256,7 @@ lib_sync(s1)
 # 4    south        NA   16    4    4 Kb         <NA>
 # 5     west        NA   13    4  3.6 Kb         <NA>
 
-# Save library to disk
+# Save library 1 to disk
 lib_write(s1)
 # # library 's1': 5 items
 # - attributes: rds loaded
@@ -308,9 +312,8 @@ dictionary(s1)
 # 19 west     area   numeric   NA    NA          NA        NA NA         13     0
 # 20 west     region factor    NA    NA          NA        NA NA         13     0
 
-# Unload libraries
+# Unload library 1
 lib_unload(s1)
-lib_unload(s2)
 
 # Clean up
 lib_delete(s1)
@@ -320,10 +323,9 @@ lib_delete(s2)
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
 have related columns, and wish to perform conditional logic on those 
-columns. The `datastz  ep()` function allows you to realize this style of 
+columns. The `datastep()` function allows you to realize this style of 
 data processing. It is particularly advantageous when you wish to perform deeply 
-nested conditional logic, as the vectorized R conditionals do not allow you to 
-write deeply nested logic easily.  It is also very useful for by-group
+nested conditional logic. It is also very useful for by-group
 processing.
 
 #### Example 1: Simple Data Step
@@ -404,8 +406,9 @@ The `datastep()` function also has the capabilities of performing by-group
 processing.  A by-group is accomplished using the `by` parameter, and passing
 a vector of column names that define the group.  Once a by-group is 
 defined, the `first.` and `last.` automatic variables become active, which
-allow you to identify the boundaries between groups.  Note that your
-data must be sorted properly before sending it into the data step.
+allow you to identify the boundaries between groups.  Note that, by default,
+your data must be sorted properly before sending it into the data step. To 
+turn the sort check off, set the `sort_check` parameter to FALSE.
 
 #### Example 3: By Groups
 ```
@@ -440,9 +443,10 @@ df
 
 ```
 ### Using Summary Functions
-There may be times when you want to combine row-by-row with column-by-column
-vector operations.  For example, let's say you want to calculate a mean
-and then perform conditional, row-by-row processing on the mean.  This 
+There may be times when you want to combine row-by-row conditional 
+processing with column-by-column vector operations.  For example, 
+let's say you want to calculate a mean and then perform conditional 
+processing on that mean.  This 
 situation can be handled using the `calculate` parameter on the `datastep()`
 function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
@@ -519,6 +523,40 @@ df
 
 ```
 
+#### Example 6: Drop, Retain, and Rename Parameters
+The drop and rename parameters allow you to remove variables from the output
+data and rename them.  The retain parameter allows you to define variables
+that will be seeded with the value from the previous step. The retain
+option is useful for creating cumulative values or for performing 
+conditions based on the value of the previous row.
+
+```
+df <- datastep(mtcars[1:10, ],
+               drop = c("disp", "hp", "drat", "qsec",
+                        "vs", "am", "gear", "carb"),
+               retain = list(cumwt = 0 ),
+               rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt",
+                          cumwt = "Cumulative Wgt"), {
+
+  cumwt <- cumwt + wt
+
+ })
+
+df
+#                    MPG Cylinders   Wgt Cumulative Wgt
+# Mazda RX4         21.0         6 2.620          2.620
+# Mazda RX4 Wag     21.0         6 2.875          5.495
+# Datsun 710        22.8         4 2.320          7.815
+# Hornet 4 Drive    21.4         6 3.215         11.030
+# Hornet Sportabout 18.7         8 3.440         14.470
+# Valiant           18.1         6 3.460         17.930
+# Duster 360        14.3         8 3.570         21.500
+# Merc 240D         24.4         4 3.190         24.690
+# Merc 230          22.8         4 3.150         27.840
+# Merc 280          19.2         6 3.440         31.280
+
+```
+
 ## Enhanced Equality Operator `%eq%`
 Lastly, the **libr** package contains an enhanced equality operator.  The 
 objective of the `%eq%` operator is to return a TRUE or FALSE value when
@@ -531,8 +569,8 @@ all data values, but no attributes.  This functionality is particularly useful
 when comparing tibbles, as tibbles often have many attributes assigned by 
 `dplyr` functions.
 
-It can be advantageous to have a comparison operator that does not give
-errors when encountering a NULL or NA value.  Note that this behavior can also 
+While it can be advantageous to have a comparison operator that does not give
+errors when encountering a NULL or NA value, note that this behavior can also 
 mask problems with your code.  Therefore, use the `%eq%` operator
 with care.
 
