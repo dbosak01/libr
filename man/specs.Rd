@@ -19,10 +19,14 @@ vector \code{c('', ' ')} will cause empty strings and single blanks to
 be converted to NA values. For most file types, 
 empty strings and the string 'NA' \code{('', 'NA')} are considered NA.  
 For SAS® datasets and transport files, a single blank and a single dot 
-\code{c(" ", ".")} are considered NA.}
+\code{c(" ", ".")} are considered NA. The value of the 
+\code{na} parameter on the \code{specs} function can be overridden
+by the \code{na} parameter on the \code{import_spec} function.}
 
 \item{trim_ws}{Whether or not to trim white space from the input data values.
-Valid values are TRUE, and FALSE.  Default is TRUE.}
+Valid values are TRUE, and FALSE.  Default is TRUE.  The value of the 
+\code{trim_ws} parameter on the \code{specs} function can be overridden
+by the \code{trim_ws} parameter on the \code{import_spec} function.}
 }
 \value{
 The import specifications object.
@@ -32,14 +36,18 @@ A function to capture a set of import specifications for a
 directory of data files.  These specs can be used on the 
 \code{\link{libname}} function to correctly assign the data types for 
 imported data files. The 
-import procedures will guess at the data types for any columns that
-are not explicitly defined in the import specifications. 
+import engines will guess at the data types for any columns that
+are not explicitly defined in the import specifications. Import
+specifications are defined with the \code{\link{import_spec}} function.
+The import spec syntax is the same for all data engines.
 
-Note that the \code{na} and \code{trim_ws} parameter will be applied
-to all files in the library.
+Note that the \code{na} and \code{trim_ws} parameters on the \code{specs} 
+function will be applied globally to all files in the library.  
+These global settings can be overridden on the \code{\link{import_spec}} 
+for any particular data file. 
 
-Also note that the input specifications are defined as an object 
-so they can be stored and reused.
+Also note that the \code{specs} collection is defined as an object 
+so it can be stored and reused.
 See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
 for additional information on saving specs.
 }

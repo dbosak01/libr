@@ -1,9 +1,12 @@
 # libr 1.0.0
 
-A package to create data libraries and data dictionaries:
+A package to create data libraries, data dictionaries, and the ability
+to perform a data step:
 
 * libname() function creates a data library
 * dictionary() function creates a data dictionary
+* datastep() function step through data row-by-row
+* %%eq%% allows comparison of any two R objects without error
 
 * Also contains a variety of functions to manipulate data libraries:
 ** lib_load(): Loads a library into the workspace
@@ -18,3 +21,5 @@ A package to create data libraries and data dictionaries:
 ** lib_info(): Returns a data frame of information about the library
 ** lib_path(): Returns the path of a data library
 ** lib_size(): Returns the size of the data library in bytes
+** specs(): Create a collection of import specifications
+** import_spec(): Define an import specification for a file

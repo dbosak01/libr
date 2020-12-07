@@ -11,9 +11,10 @@ import_spec(..., na = NULL, trim_ws = NULL)
 Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
 'date', 'datetime', and 'time'.  The date/time data types accept an optional
 input format.  To supply the input format, append it after the data type
-following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
-Default is NULL, meaning no column types are specified, and the function
-should make its best guess for each column.}
+following an equals sign, e.g.: 'date=\%d\%B\%Y' or 
+'datetime=\%d\%m\%Y \%H:\%M:\%S'. Default is NULL, meaning no column 
+types are specified, and the function should make its best 
+guess for each column.}
 
 \item{na}{A vector of values to be treated as NA.  For example, the 
 vector \code{c('', ' ')} will cause empty strings and single blanks to 
