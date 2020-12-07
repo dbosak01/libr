@@ -9,7 +9,8 @@ lib_add(x, ..., name = NULL)
 \arguments{
 \item{x}{The library to add data to.}
 
-\item{...}{The data frame(s) to add to the library.}
+\item{...}{The data frame(s) to add to the library.  If more than one,
+separate with commas.}
 
 \item{name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different
@@ -20,8 +21,10 @@ than one data set is being appended, assign a vector of quoted names.}
 The \code{\link{lib_add}} function adds a data frame
 or tibble to an existing data library.  The function will both add the data
 to the library list, and immediately write the data to the library
-directory location.  The data will be written in the file format
-associated with the library engine.
+directory location. The data will be written to disk
+in the file format associated with the library engine. 
+If the library is loaded, the function will also 
+add the data to the workspace environment.
 }
 \examples{
 #' # Create temp directory
@@ -29,6 +32,10 @@ tmp <- tempdir()
 
 # Create library
 libname(dat, tmp)
+# # library 'dat': 0 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# NULL
 
 # Add data to the library
 lib_add(dat, mtcars, beaver1, iris)
@@ -55,6 +62,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()},

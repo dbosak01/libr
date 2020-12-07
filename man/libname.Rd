@@ -236,6 +236,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{print.lib}()}

@@ -22,14 +22,11 @@ and the last modified date.
 # Create temp directory
 tmp <- tempdir()
 
-# Save some data to temp directory
-# for illustration purposes
-saveRDS(trees, file.path(tmp, "trees.rds"))
-saveRDS(rock, file.path(tmp, "rocks.rds"))
-saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
-
 # Create data library
 libname(dat, tmp)
+
+# Add data to library
+lib_add(dat, trees, rock, beaver1)
 
 # Get library information
 info <- lib_info(dat)
@@ -55,6 +52,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()},

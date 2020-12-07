@@ -26,13 +26,11 @@ Use \code{verbose = TRUE} to print the library as a list.
 # Create temp directory
 tmp <- tempdir()
 
-# Save some data to temp directory
-saveRDS(iris, file.path(tmp, "iris.rds"))
-saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
-saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
-
 # Create data library
 libname(dat, tmp)
+
+# Add data to library
+lib_add(dat, iris, ToothGrowth, PlantGrowth)
 
 # Print library summary 
 print(dat)
@@ -60,6 +58,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()}

@@ -66,3 +66,21 @@ lib_sync(dat)
 # Clean up
 lib_delete(dat)
 }
+\seealso{
+Other lib: 
+\code{\link{is.lib}()},
+\code{\link{lib_add}()},
+\code{\link{lib_copy}()},
+\code{\link{lib_delete}()},
+\code{\link{lib_info}()},
+\code{\link{lib_load}()},
+\code{\link{lib_path}()},
+\code{\link{lib_remove}()},
+\code{\link{lib_replace}()},
+\code{\link{lib_size}()},
+\code{\link{lib_unload}()},
+\code{\link{lib_write}()},
+\code{\link{libname}()},
+\code{\link{print.lib}()}
+}
+\concept{lib}

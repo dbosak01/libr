@@ -7,7 +7,7 @@
 lib_write(x, force = FALSE)
 }
 \arguments{
-\item{x}{The format catalog to write.}
+\item{x}{The data library to write.}
 
 \item{force}{Force writing each data file to disk, even if it has not 
 changed.}
@@ -51,6 +51,14 @@ dat.iris <- iris
 
 # Unload the library
 lib_unload(dat)
+# library 'dat': 3 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+# - items:
+#      Name Extension Rows Cols   Size LastModified
+# 1 beaver1        NA  114    4 4.6 Kb         <NA>
+# 2    iris        NA  150    5 7.1 Kb         <NA>
+# 3  mtcars        NA   32   11   7 Kb         <NA>
 
 # Write the library to the file system
 lib_write(dat)
@@ -78,6 +86,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{libname}()},
 \code{\link{print.lib}()}

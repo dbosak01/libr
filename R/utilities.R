@@ -16,13 +16,11 @@
 #' # Create temp directory
 #' tmp <- tempdir()
 #' 
-#' # Save some data to temp directory
-#' saveRDS(iris, file.path(tmp, "iris.rds"))
-#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
-#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
-#' 
 #' # Create data library
 #' libname(dat, tmp)
+#' 
+#' # Add data to library
+#' lib_add(dat, iris, ToothGrowth, PlantGrowth)
 #' 
 #' # Print library summary 
 #' print(dat)
@@ -99,6 +97,9 @@ print.lib <- function(x, ..., verbose = FALSE) {
 #' 
 #' is.lib(list())
 #' # [1] FALSE
+#' 
+#' # Clean up
+#' lib_delete(dat)
 #' @export
 is.lib <- function(x) {
   

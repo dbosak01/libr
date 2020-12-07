@@ -35,8 +35,7 @@ tmp <- tempdir()
 libname(dat1, tmp)
 
 # Add dat to library
-lib_add(dat1, mtcars)
-lib_add(dat1, iris)
+lib_add(dat1, mtcars, iris)
 
 # Copy dat1 to dat2
 lib_copy(dat1, dat2, file.path(tmp, "copy"))
@@ -63,6 +62,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()},

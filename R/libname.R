@@ -488,14 +488,14 @@ lib_load <- function(x) {
 #' @title Unload a Library from the Workspace
 #' @description The \code{lib_unload} function unloads a data library from
 #' the workspace environment.  The unload function does not delete the data 
-#' or the remove the library.  It simply removes the data frames from working 
+#' or remove the library.  It simply removes the data frames from working 
 #' memory.  By default, the \code{lib_unload} function will also synchronize the 
 #' data in working memory with the data stored in the library list, as these
 #' two instances can become out of sync if you change the data in working memory.
 #' @param x The data library to unload.
 #' @param sync Whether to sync the workspace with the library list before
-#' it is unloaded.  If you want to unload the workspace without saving the 
-#' workspace data, set this parameter to FALSE.
+#' it is unloaded.  Default is TRUE. If you want to unload the workspace 
+#' without saving the workspace data, set this parameter to FALSE.
 #' @param name The name of the library to unload, if the name is different
 #' than the variable name.  Used internally.
 #' @return The unloaded data library.
@@ -505,13 +505,11 @@ lib_load <- function(x) {
 #' # Create temp directory
 #' tmp <- tempdir()
 #' 
-#' # Save some data to temp directory for illustration purposes
-#' saveRDS(iris, file.path(tmp, "iris.rds"))
-#' saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
-#' saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
-#' 
 #' # Create library
 #' libname(dat, tmp)
+#' 
+#' # Add data to library
+#' lib_add(dat, iris, ToothGrowth, PlantGrowth)
 #' 
 #' # Load library into workspace
 #' lib_load(dat)
@@ -578,10 +576,13 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' @description The \code{\link{lib_add}} function adds a data frame
 #' or tibble to an existing data library.  The function will both add the data
 #' to the library list, and immediately write the data to the library
-#' directory location.  The data will be written in the file format
-#' associated with the library engine.  
+#' directory location. The data will be written to disk
+#' in the file format associated with the library engine. 
+#' If the library is loaded, the function will also 
+#' add the data to the workspace environment.   
 #' @param x The library to add data to.
-#' @param ... The data frame(s) to add to the library.
+#' @param ... The data frame(s) to add to the library.  If more than one,
+#' separate with commas.
 #' @param name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
@@ -593,6 +594,10 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
 #' 
 #' # Create library
 #' libname(dat, tmp)
+#' # # library 'dat': 0 items
+#' # - attributes: rds not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # NULL
 #' 
 #' # Add data to the library
 #' lib_add(dat, mtcars, beaver1, iris)
@@ -682,16 +687,18 @@ lib_add <- function(x, ..., name = NULL) {
 
 #' @title Replace Data in a Data Library
 #' @description The \code{\link{lib_replace}} function replaces a data frame
-#' in an existing data library.  The function will both replace the data
-#' in the library list, and immediately write the data to the library
+#' in an existing data library.  The function will replace the data
+#' in the library list, the data in the workspace (if loaded), 
+#' and immediately write the new data to the library
 #' directory location.  The data will be written in the file format
 #' associated with the library engine. 
 #' @param x The library to replace data in.
-#' @param ... The data frame(s) to replace.
+#' @param ... The data frame(s) to replace.  If you wish to replace more than
+#' one data set, separate with commas.
 #' @param name The reference name to use for the data.  By default,
 #' the name will be the variable name.  To assign a name different
 #' from the variable name, assign a quoted name to this parameter.  If more
-#' than one data set is being appended, assign a vector of quoted names.
+#' than one data set is being replaced, assign a vector of quoted names.
 #' @family lib
 #' @examples 
 #' #' # Create temp directory
@@ -892,7 +899,7 @@ lib_remove <- function(x, name) {
 #' behavior, use the \code{force} option to force \code{lib_write} to write
 #' every data file to disk.
 #' 
-#' @param x The format catalog to write.
+#' @param x The data library to write.
 #' @param force Force writing each data file to disk, even if it has not 
 #' changed.
 #' @return The saved data library.
@@ -918,6 +925,14 @@ lib_remove <- function(x, name) {
 #' 
 #' # Unload the library
 #' lib_unload(dat)
+#' # library 'dat': 3 items
+#' # - attributes: rds not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
+#' # - items:
+#' #      Name Extension Rows Cols   Size LastModified
+#' # 1 beaver1        NA  114    4 4.6 Kb         <NA>
+#' # 2    iris        NA  150    5 7.1 Kb         <NA>
+#' # 3  mtcars        NA   32   11   7 Kb         <NA>
 #' 
 #' # Write the library to the file system
 #' lib_write(dat)
@@ -1009,6 +1024,7 @@ lib_write <- function(x, force = FALSE) {
 #' @param name The name of the library to sync if not the variable
 #' name. Used internally.
 #' @return The synchronized data library.
+#' @family lib
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()
@@ -1099,7 +1115,7 @@ lib_sync <- function(x, name = NULL) {
 #' the copy will result in the current data in memory written to the new
 #' destination directory.  If the library is loaded into the workspace, 
 #' the workspace version will be considered the most current version, and
-#' that is the version that will be copied.
+#' that is the version that will be copied.  
 #' @param x The library to copy.
 #' @param nm The unquoted variable name to hold the new library.
 #' @param directory_path The path to copy the library to.
@@ -1113,8 +1129,7 @@ lib_sync <- function(x, name = NULL) {
 #' libname(dat1, tmp)
 #' 
 #' # Add dat to library
-#' lib_add(dat1, mtcars)
-#' lib_add(dat1, iris)
+#' lib_add(dat1, mtcars, iris)
 #' 
 #' # Copy dat1 to dat2
 #' lib_copy(dat1, dat2, file.path(tmp, "copy"))
@@ -1369,14 +1384,11 @@ lib_size <- function(x) {
 #' # Create temp directory
 #' tmp <- tempdir()
 #' 
-#' # Save some data to temp directory
-#' # for illustration purposes
-#' saveRDS(trees, file.path(tmp, "trees.rds"))
-#' saveRDS(rock, file.path(tmp, "rocks.rds"))
-#' saveRDS(beaver1, file.path(tmp, "beaver1.rds"))
-#' 
 #' # Create data library
 #' libname(dat, tmp)
+#' 
+#' # Add data to library
+#' lib_add(dat, trees, rock, beaver1)
 #' 
 #' # Get library information
 #' info <- lib_info(dat)

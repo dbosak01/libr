@@ -9,17 +9,19 @@ lib_replace(x, ..., name = NULL)
 \arguments{
 \item{x}{The library to replace data in.}
 
-\item{...}{The data frame(s) to replace.}
+\item{...}{The data frame(s) to replace.  If you wish to replace more than
+one data set, separate with commas.}
 
 \item{name}{The reference name to use for the data.  By default,
 the name will be the variable name.  To assign a name different
 from the variable name, assign a quoted name to this parameter.  If more
-than one data set is being appended, assign a vector of quoted names.}
+than one data set is being replaced, assign a vector of quoted names.}
 }
 \description{
 The \code{\link{lib_replace}} function replaces a data frame
-in an existing data library.  The function will both replace the data
-in the library list, and immediately write the data to the library
+in an existing data library.  The function will replace the data
+in the library list, the data in the workspace (if loaded), 
+and immediately write the new data to the library
 directory location.  The data will be written in the file format
 associated with the library engine.
 }
@@ -62,6 +64,7 @@ Other lib:
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_unload}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()},

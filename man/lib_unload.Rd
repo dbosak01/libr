@@ -10,8 +10,8 @@ lib_unload(x, sync = TRUE, name = NULL)
 \item{x}{The data library to unload.}
 
 \item{sync}{Whether to sync the workspace with the library list before
-it is unloaded.  If you want to unload the workspace without saving the 
-workspace data, set this parameter to FALSE.}
+it is unloaded.  Default is TRUE. If you want to unload the workspace 
+without saving the workspace data, set this parameter to FALSE.}
 
 \item{name}{The name of the library to unload, if the name is different
 than the variable name.  Used internally.}
@@ -22,7 +22,7 @@ The unloaded data library.
 \description{
 The \code{lib_unload} function unloads a data library from
 the workspace environment.  The unload function does not delete the data 
-or the remove the library.  It simply removes the data frames from working 
+or remove the library.  It simply removes the data frames from working 
 memory.  By default, the \code{lib_unload} function will also synchronize the 
 data in working memory with the data stored in the library list, as these
 two instances can become out of sync if you change the data in working memory.
@@ -31,13 +31,11 @@ two instances can become out of sync if you change the data in working memory.
 # Create temp directory
 tmp <- tempdir()
 
-# Save some data to temp directory for illustration purposes
-saveRDS(iris, file.path(tmp, "iris.rds"))
-saveRDS(ToothGrowth, file.path(tmp, "ToothGrowth.rds"))
-saveRDS(PlantGrowth, file.path(tmp, "PlantGrowth.rds"))
-
 # Create library
 libname(dat, tmp)
+
+# Add data to library
+lib_add(dat, iris, ToothGrowth, PlantGrowth)
 
 # Load library into workspace
 lib_load(dat)
@@ -74,6 +72,7 @@ Other lib:
 \code{\link{lib_remove}()},
 \code{\link{lib_replace}()},
 \code{\link{lib_size}()},
+\code{\link{lib_sync}()},
 \code{\link{lib_write}()},
 \code{\link{libname}()},
 \code{\link{print.lib}()}
