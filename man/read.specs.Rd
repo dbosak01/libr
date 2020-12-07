@@ -8,9 +8,12 @@ read.specs(file_path = getwd())
 }
 \arguments{
 \item{file_path}{The full or relative path to the file system.  Default is
-the current working directory. If the file_path does not contain the 
-'.specs' file
-extension, the function will add it.}
+the current working directory. If the \code{file_path} is a file name that 
+does not contain the '.specs' file extension, the function will add the
+extension.  If the \code{file_path} contains a directory name, 
+the function will search the directory for a file with an extension 
+of '.specs'.  If more than one file with an extension of '.specs' is founds, 
+the function will generate an error.}
 }
 \value{
 The specifications object.

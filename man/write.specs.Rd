@@ -22,7 +22,9 @@ The full file path.
 \description{
 A function to write import specifications to the file system.
 The function accepts a specifications object and a full or relative
-path.  The function returns the full file path.
+path.  The function returns the full file path.  This function is 
+useful so that you can define import specifications once, and reuse them
+in multiple programs or across multiple teams.
 }
 \seealso{
 Other specs: 

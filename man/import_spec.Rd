@@ -18,9 +18,15 @@ should make its best guess for each column.}
 \item{na}{A vector of values to be treated as NA.  For example, the 
 vector \code{c('', ' ')} will cause empty strings and single blanks to 
 be converted to NA values. Default is NULL, meaning the value of the 
-\code{na} parameter will be taken from the \code{\link{specs}} function.}
+\code{na} parameter will be taken from the \code{\link{specs}} function.
+Any value supplied on the \code{import_spec} function will override the 
+value from the \code{specs} function.}
 
-\item{trim_ws}{Whether or not to trim white space from the input data values.}
+\item{trim_ws}{Whether or not to trim white space from the input data values.
+The default is NULL, meaning the value of the \code{trim_ws} parameter
+will be taken from the \code{\link{specs}} function.  Any value supplied 
+on the \code{import_spec} function will override the value from the 
+\code{specs} function.}
 }
 \value{
 The import specification object.

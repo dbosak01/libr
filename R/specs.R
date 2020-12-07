@@ -3,80 +3,33 @@
 # Spec Definition ---------------------------------------------------------
 
 
-
-#' @title Create an Import Specification
-#' @description A function to create the import specifications for a 
-#' particular data file.  This information can be used on the 
-#' \code{\link{libname}} function to correctly assign the data types for 
-#' columns on imported data. The import specifications are defined as 
-#' name/value pairs, where the name is the column name and the value is the
-#' data type indicator.  Available data type indicators are 
-#' 'guess', 'logical', 'character', 'integer', 'numeric',
-#' 'date', 'datetime', and 'time'.  See the \code{\link{specs}} function
-#' for an example of using import specs.
-#' @param ... Named pairs of column names and column data types.
-#' Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
-#' 'date', 'datetime', and 'time'.  The date/time data types accept an optional
-#' input format.  To supply the input format, append it after the data type
-#' following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
-#' Default is NULL, meaning no column types are specified, and the function
-#' should make its best guess for each column.
-#' @param na A vector of values to be treated as NA.  For example, the 
-#' vector \code{c('', ' ')} will cause empty strings and single blanks to 
-#' be converted to NA values. Default is NULL, meaning the value of the 
-#' \code{na} parameter will be taken from the \code{\link{specs}} function.
-#' @param trim_ws Whether or not to trim white space from the input data values.
-# @param params Any follow-on parameters to the underlying import function.
-# Valid values are TRUE, and FALSE.  Default is TRUE.
-#' @return The import specification object.
-#' @seealso \code{\link{libname}} to create a data library, and 
-#' \code{\link{specs}} for an example using import specs.
-#' @family specs
-#' @export
-import_spec <- function(..., na = NULL, trim_ws = NULL) {
-  
-  # Create new structure of class "import_spec"
-  ispec <- structure(list(), class = c("import_spec", "list"))
-  
-  ispec$col_types = list(...)
-  ispec$na = na
-  ispec$trim_ws = trim_ws
-  #ispec$params = params
-  
-  
-  return(ispec)
-  
-}
-
-
 #' @title Create an Import Spec Collection
+#' @encoding UTF-8
 #' @description A function to capture a set of import specifications for a 
 #' directory of data files.  These specs can be used on the 
 #' \code{\link{libname}} function to correctly assign the data types for 
 #' imported data files. The 
 #' import procedures will guess at the data types for any columns that
-#' are not explicitly defined in the import specifications.
+#' are not explicitly defined in the import specifications. 
 #' 
-#' Note that the 
-#' input specification is defined as an object so it can be stored and reused.
+#' Note that the \code{na} and \code{trim_ws} parameter will be applied
+#' to all files in the library.
+#' 
+#' Also note that the input specifications are defined as an object 
+#' so they can be stored and reused.
 #' See the \code{\link{write.specs}} and \code{\link{read.specs}} functions
 #' for additional information on saving specs.
-# @param col_types A vector of column data types and optional input format.
-# Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
-# 'date', 'datetime', and 'time'.  The date/time data types accept an optional
-# input format.  To supply the input format, append it after the data type
-# following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
-# Default is NULL, meaning no column types are specified, and the function
-# should make its best guess for each column.
-#' @param ... Named input specs.  The name should correspond to the file name.
-#' The spec is defined as an import_spec object.  See the 
-#' \code{\link{import_spec}} for additional information on parameters for 
-#' that object.
+#' @param ... Named input specs.  The name should correspond to the file name,
+#' without the file extension.
+#' The spec is defined as an \code{import_spec} object.  See the 
+#' \code{\link{import_spec}} function for additional information on 
+#' parameters for that object.
 #' @param na A vector of values to be treated as NA.  For example, the 
 #' vector \code{c('', ' ')} will cause empty strings and single blanks to 
-#' be converted to NA values. Default is that empty strings and NA values
-#' ('', 'NA') are considered NA.  For SAS datasets, the dot (".") is also 
-#' considered NA.
+#' be converted to NA values. For most file types, 
+#' empty strings and the string 'NA' \code{('', 'NA')} are considered NA.  
+#' For SAS® datasets and transport files, a single blank and a single dot 
+#' \code{c(" ", ".")} are considered NA.
 #' @param trim_ws Whether or not to trim white space from the input data values.
 #' Valid values are TRUE, and FALSE.  Default is TRUE.
 #' @return The import specifications object.
@@ -177,6 +130,53 @@ specs <- function(..., na = c("", "NA"), trim_ws = TRUE) {
   
 }
 
+#' @title Create an Import Specification
+#' @description A function to create the import specifications for a 
+#' particular data file.  This information can be used on the 
+#' \code{\link{libname}} function to correctly assign the data types for 
+#' columns on imported data. The import specifications are defined as 
+#' name/value pairs, where the name is the column name and the value is the
+#' data type indicator.  Available data type indicators are 
+#' 'guess', 'logical', 'character', 'integer', 'numeric',
+#' 'date', 'datetime', and 'time'.  See the \code{\link{specs}} function
+#' for an example of using import specs.
+#' @param ... Named pairs of column names and column data types.
+#' Available types are: 'guess', 'logical', 'character', 'integer', 'numeric',
+#' 'date', 'datetime', and 'time'.  The date/time data types accept an optional
+#' input format.  To supply the input format, append it after the data type
+#' following an equals sign, e.g.: 'date=%d%B%Y' or 'datetime=%d%m%Y %H:%M:%S'.
+#' Default is NULL, meaning no column types are specified, and the function
+#' should make its best guess for each column.
+#' @param na A vector of values to be treated as NA.  For example, the 
+#' vector \code{c('', ' ')} will cause empty strings and single blanks to 
+#' be converted to NA values. Default is NULL, meaning the value of the 
+#' \code{na} parameter will be taken from the \code{\link{specs}} function.
+#' Any value supplied on the \code{import_spec} function will override the 
+#' value from the \code{specs} function.
+#' @param trim_ws Whether or not to trim white space from the input data values.
+#' The default is NULL, meaning the value of the \code{trim_ws} parameter
+#' will be taken from the \code{\link{specs}} function.  Any value supplied 
+#' on the \code{import_spec} function will override the value from the 
+#' \code{specs} function.
+#' @return The import specification object.
+#' @seealso \code{\link{libname}} to create a data library, and 
+#' \code{\link{specs}} for an example using import specs.
+#' @family specs
+#' @export
+import_spec <- function(..., na = NULL, trim_ws = NULL) {
+  
+  # Create new structure of class "import_spec"
+  ispec <- structure(list(), class = c("import_spec", "list"))
+  
+  ispec$col_types = list(...)
+  ispec$na = na
+  ispec$trim_ws = trim_ws
+  
+  return(ispec)
+  
+}
+
+
 
 # External Utilities ------------------------------------------------------
 
@@ -188,9 +188,12 @@ specs <- function(..., na = c("", "NA"), trim_ws = TRUE) {
 #' as a directory name, the function will search for a file with a '.specs'
 #' extension and read it.
 #' @param file_path The full or relative path to the file system.  Default is
-#' the current working directory. If the file_path does not contain the 
-#' '.specs' file
-#' extension, the function will add it.  
+#' the current working directory. If the \code{file_path} is a file name that 
+#' does not contain the '.specs' file extension, the function will add the
+#' extension.  If the \code{file_path} contains a directory name, 
+#' the function will search the directory for a file with an extension 
+#' of '.specs'.  If more than one file with an extension of '.specs' is founds, 
+#' the function will generate an error.  
 #' @return The specifications object.
 #' @family specs
 #' @export 
@@ -231,7 +234,9 @@ read.specs <- function(file_path = getwd()) {
 #' @title Write import specs to the file system
 #' @description A function to write import specifications to the file system.
 #' The function accepts a specifications object and a full or relative
-#' path.  The function returns the full file path.
+#' path.  The function returns the full file path.  This function is 
+#' useful so that you can define import specifications once, and reuse them
+#' in multiple programs or across multiple teams.
 #' @param x A specifications object of class 'specs'.
 #' @param dir_path A full or relative path to save the specs. Default is the 
 #' current working directory.
