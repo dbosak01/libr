@@ -55,8 +55,8 @@ be populated with the ending value from the previous step.  The retain
 functionality allows you to perform cumulative operations or decisions
 based on the value of the previous iteration of the data step.  Initial 
 values should be of the expected data type for the column.  For example, 
-for a numeric column set the initial value to a zero (0), and for a
-character column, set the initial value to an empty string (""), i.e.
+for a numeric column set the initial value to a zero, and for a
+character column, set the initial value to an empty string, i.e.
 \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
 value for a variable.  You must supply an initial value for each retained
 variable.}
@@ -96,7 +96,7 @@ variable names do not need to be quoted.
 
 The \code{datastep} function provides four automatic variables. These 
 variables are generated for every data step, and can 
-be accessed at any point within the data step. 
+be accessed at any point within the data step: 
 \itemize{
   \item{\strong{data}: Represents the input data frame.}
   \item{\strong{n.}: Contains the row number.}

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 # libr <img src="../man/images/books.svg" align="right" height="138" />
- 
+  
 The **libr** package brings the concepts of data libraries, data 
 dictionaries, and data steps to R.  A data library is an object used to define 
 and manage an entire directory of data files.  A data dictionary is a data 
@@ -113,9 +113,6 @@ saveRDS(rock, file.path(tmp, "rocks.rds"))
 
 # Create library
 libname(dat, tmp)
-
-# Examine library
-dat
 # library 'dat': 2 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -169,9 +166,6 @@ ls()
 
 # Write the library to disk
 lib_write(dat)
-
-# Examine the library again
-dat
 # library 'dat': 4 items
 # - attributes: not loaded
 # - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
@@ -409,6 +403,40 @@ df
 # Merc 280          19.2   6 167.6    Low 1974-06-10
 
 ```
+### The Retain Parameter
+
+The retain parameter allows you to define variables
+that will be seeded with the value from the previous step. The retain
+option is useful for creating cumulative values or for performing 
+conditions based on the value of the previous row.
+
+#### Example 3: Drop, Retain, and Rename Parameters
+```
+df <- datastep(mtcars[1:10, ],
+               drop = c("disp", "hp", "drat", "qsec",
+                        "vs", "am", "gear", "carb"),
+               retain = list(cumwt = 0 ),
+               rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt",
+                          cumwt = "Cumulative Wgt"), {
+
+  cumwt <- cumwt + wt
+
+ })
+
+df
+#                    MPG Cylinders   Wgt Cumulative Wgt
+# Mazda RX4         21.0         6 2.620          2.620
+# Mazda RX4 Wag     21.0         6 2.875          5.495
+# Datsun 710        22.8         4 2.320          7.815
+# Hornet 4 Drive    21.4         6 3.215         11.030
+# Hornet Sportabout 18.7         8 3.440         14.470
+# Valiant           18.1         6 3.460         17.930
+# Duster 360        14.3         8 3.570         21.500
+# Merc 240D         24.4         4 3.190         24.690
+# Merc 230          22.8         4 3.150         27.840
+# Merc 280          19.2         6 3.440         31.280
+
+```
 ### By Group Processing
 The `datastep()` function also has the capabilities of performing by-group
 processing.  A by-group is accomplished using the `by` parameter, and passing
@@ -418,7 +446,7 @@ allow you to identify the boundaries between groups.  Note that, by default,
 your data must be sorted properly before sending it into the data step. To 
 turn the sort check off, set the `sort_check` parameter to FALSE.
 
-#### Example 3: By Groups
+#### Example 4: By Groups
 ```
 # Identify start and end of by-groups
 df <- datastep(mtcars[1:10,], 
@@ -460,7 +488,7 @@ function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
 is an example of such a scenario:
 
-#### Example 4: Calculate Block
+#### Example 5: Calculate Block
 ```
 # Categorize mpg as above or below the mean
 df <- datastep(mtcars, 
@@ -495,9 +523,9 @@ with **dplyr** functions in a data pipeline.  Also note that the `datastep()`
 function will recognize any group attributes added by the `group_by()` 
 function.  Therefore, within a **dplyr** pipeline, it is not necessary to 
 use any `datastep` parameters.  The following example recreates the above 
-data frame from Example 4, but with a **dplyr** pipeline.
+data frame from Example 5, but with a **dplyr** pipeline.
 
-#### Example 5: Data Pipeline
+#### Example 6: Data Pipeline
 ```
 library(dplyr)
 library(magrittr)
@@ -531,39 +559,6 @@ df
 
 ```
 
-#### Example 6: Drop, Retain, and Rename Parameters
-The drop and rename parameters allow you to remove variables from the output
-data and rename them.  The retain parameter allows you to define variables
-that will be seeded with the value from the previous step. The retain
-option is useful for creating cumulative values or for performing 
-conditions based on the value of the previous row.
-
-```
-df <- datastep(mtcars[1:10, ],
-               drop = c("disp", "hp", "drat", "qsec",
-                        "vs", "am", "gear", "carb"),
-               retain = list(cumwt = 0 ),
-               rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt",
-                          cumwt = "Cumulative Wgt"), {
-
-  cumwt <- cumwt + wt
-
- })
-
-df
-#                    MPG Cylinders   Wgt Cumulative Wgt
-# Mazda RX4         21.0         6 2.620          2.620
-# Mazda RX4 Wag     21.0         6 2.875          5.495
-# Datsun 710        22.8         4 2.320          7.815
-# Hornet 4 Drive    21.4         6 3.215         11.030
-# Hornet Sportabout 18.7         8 3.440         14.470
-# Valiant           18.1         6 3.460         17.930
-# Duster 360        14.3         8 3.570         21.500
-# Merc 240D         24.4         4 3.190         24.690
-# Merc 230          22.8         4 3.150         27.840
-# Merc 280          19.2         6 3.440         31.280
-
-```
 
 ## Enhanced Equality Operator `%eq%`
 Lastly, the **libr** package contains an enhanced equality operator.  The 

@@ -60,5 +60,5 @@ lib_delete(dat)
 see the \code{\link[fmtr]{fmtr}} package for functions to set the
 \code{\link[fmtr]{formats}}, \code{\link[fmtr]{descriptions}}, 
 \code{\link[fmtr]{widths}}, and \code{\link[fmtr]{justification}} 
-on a data frame.
+attributes on a data frame.
 }
