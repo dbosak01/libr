@@ -241,6 +241,13 @@ datastep <- function(data, steps, keep = NULL,
                      by = NULL, calculate = NULL,
                      retain = NULL,
                      sort_check = TRUE) {
+  
+  if (!is.null(retain)) {
+    if (!"list" %in% class(retain))
+      stop("retain parameter value must be of class 'list'")
+    
+  }
+    
 
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
@@ -251,9 +258,10 @@ datastep <- function(data, steps, keep = NULL,
    data <- within(data, eval(agg), keepAttrs = TRUE)
   }
   
-  ret <- NULL
+  ret <- list()
   firstval <- NULL
-  firstvals <- NULL
+  firstvals <- list()
+  rowcount <- nrow(data)
   
   # Set by if data is a grouped tibble
   if (is.null(by) && "grouped_df" %in% class(data)) {
@@ -270,23 +278,25 @@ datastep <- function(data, steps, keep = NULL,
 
 
   # Step through row by row
-  for (n. in seq_len(nrow(data))) {
+  for (n. in seq_len(rowcount)) {
 
+    rw <- data[n., ]
+    
     # Deal with first. and last.
     # These can be accessed from within the evaluated code,
     # which is really cool.
     if (!is.null(by)) {
       if (is.null(firstval)) {
-        firstval <- data[n., by]
+        firstval <- rw[1, by]
         if (length(names(firstval)) == 0)
           names(firstval) <- by
         first. <- TRUE
       } else {
 
         # Compare current by group to previous row
-        if (dfcomp(firstval, data[n., by]) == FALSE) {
+        if (dfcomp(firstval, rw[1, by]) == FALSE) {
           first. <- TRUE
-          firstval <- data[n., by]
+          firstval <- rw[1, by]
           if (length(names(firstval)) == 0)
             names(firstval) <- by
         } else {
@@ -295,12 +305,12 @@ datastep <- function(data, steps, keep = NULL,
       }
 
       # If it's the last row of the data frame, mark last.
-      if (n. == nrow(data)) {
+      if (n. == rowcount) {
         last. <- TRUE
       } else {
         
         # Compare by group to next row to determine last.
-        if (dfcomp(data[n. + 1, by],  data[n., by]) == FALSE) {
+        if (dfcomp(data[n. + 1, by],  rw[1, by]) == FALSE) {
           last. <- TRUE
         } else {
           last. <- FALSE
@@ -319,20 +329,21 @@ datastep <- function(data, steps, keep = NULL,
         first. <- FALSE
 
       # If it's the last row
-      if (n. == nrow(data))
+      if (n. == rowcount)
         last. <- TRUE
       else
         last. <- FALSE
 
     }
   
+
     # Deal with retained variables
     if (!is.null(retain)) {
-      if (is.null(ret)) {
+      if (length(ret) == 0) {
         for (nm in names(retain)) {
           
           # Populate with initial value
-          data[n., nm] <- retain[[nm]]
+          rw[[nm]] <- retain[[nm]]
           
         }
         
@@ -340,36 +351,35 @@ datastep <- function(data, steps, keep = NULL,
         for (nm in names(retain)) {
        
           # Populate with value from previous row   
-          data[n., nm] <- ret[n. - 1, nm]
+          #data[n., nm] <- ret[n. - 1, nm]
+          
+          rw[[nm]] <- ret[[n. - 1]][[nm]]
           
         }
       }
     }
 
     # Evaluate the code for the row
-    r1 <- within(data[n., ], eval(code), keepAttrs = TRUE)
+    ret[[n.]]  <- within(rw, eval(code), keepAttrs = TRUE)
 
-    # Bind resulting row
-    if (is.null(ret))
-      ret <- r1
-    else
-      ret <- bind_rows(ret, r1)
+    
     
     # Keep track of the groups
     if (!is.null(by) & first. & sort_check) {
-      if (is.null(firstvals))
-        firstvals <- firstval
-      else {
-        firstvals <- bind_rows(firstvals, firstval) 
-      }
+        firstvals[[length(firstvals) + 1]] <- firstval
     }
   }
+  
+  # Bind all rows
+  ret <- bind_rows(ret, .id = "column_label")
+  ret["column_label"] <- NULL
 
   if (sort_check & !is.null(by)) {
-    if (!is.null(firstvals)) {
-      
-      ddat <- distinct(firstvals)
-      if (nrow(ddat) != nrow(firstvals)) {
+    if (length(firstvals) > 0) {
+      d <- bind_rows(firstvals, .id = "column_label")
+      d["column_label"] <- NULL
+      ddat <- distinct(d)
+      if (nrow(ddat) != nrow(d)) {
         stop(paste("Input data is not sorted according to the 'by' variable",
                    "parameter.\n  Either sort the input data properly or",
                    "set the sort_check parameter to FALSE."))

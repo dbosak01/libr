@@ -249,5 +249,57 @@ test_that("datastep() by parameter works as expected.", {
   expect_equal(d1$bork[10], "end")
 })
 
+test_that("datastep() retain class check works as expected", {
+  
+  
+  expect_error(datastep(mtcars, retain = c(fork = 0), {fork <- fork + 1}))
+  
+})
+
+test_that("datastep() performance is good", {
+  
+  if (FALSE) {
+    
+    libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+    
+    tm <- Sys.time()
+    
+    res <- datastep(dat$lb, retain = list(rnum = 0), 
+                    by = c("USUBJID"),
+                    {
+      if (first.)
+        subjstart <- TRUE
+      else 
+        subjstart <- FALSE
+      
+      rnum <- rnum + 1
+      
+    })
+    
+    tmdiff <- Sys.time() - tm 
+    
+    expect_equal(tmdiff < 20, TRUE)
+  
+  } else 
+    expect_equal(TRUE, TRUE)
+  
+})
 
 
+test_that("Rename works as expected", {
+  
+  df <- datastep(mtcars[1:10, ], 
+    drop = c("disp", "hp", "drat", "qsec", 
+    "vs", "am", "gear", "carb"), 
+    retain = list(cumwt = 0 ),
+    rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt", 
+    cumwt = "Cumulative Wgt"), 
+  {
+    cumwt <- cumwt + wt
+  })
+  
+  df
+  
+  expect_equal("TRUE", "TRUE")
+  
+})
