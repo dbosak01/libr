@@ -277,14 +277,15 @@ datastep <- function(data, steps, keep = NULL,
         if (length(nms) > 0) {
           by <- nms
           
-          # For some reason the grouping kills performance.
-          # Temporarily convert to a data frame.  
-          # Seriously like 20X performance increase.
-          data <- as.data.frame(data)
         }
       }
     }
   }
+  
+  # For some reason the grouped tibble kills performance.
+  # Temporarily convert to a data frame.  
+  # Seriously like 20X performance increase.
+  data <- as.data.frame(data)
   
   # Increases performance
   if (!is.null(by)) {
@@ -329,6 +330,7 @@ datastep <- function(data, steps, keep = NULL,
         # print(bydata)
          # print(n.)
          # print(bydata[n. + 1, ])
+         # print(byrw)
         if (dfcomp(bydata[n. + 1, ],  byrw) == FALSE) {
           last. <- TRUE
         } else {
@@ -444,28 +446,28 @@ datastep <- function(data, steps, keep = NULL,
 #' @description A function to compare two by groups, passed as data frames
 #' @noRd
 dfcomp <- function(df1, df2) {
+  names(df1) <- NULL
+  names(df2) <- NULL
   ret <- FALSE
-  
-  if (all(is.null(df1) && is.null(df2)))
+
+  if (all(is.null(df1)) && all(is.null(df2)))
     ret <- TRUE
-  else if (all(is.na(df1) && is.na(df2)))
+  else if (all(is.na(df1)) && all(is.na(df2)))
     ret <- TRUE
-  else if (all(is.data.frame(df1) && is.data.frame(df2))) {
-    
+  if (all(is.data.frame(df1) && is.data.frame(df2))) {
+
     for (i in seq_along(df1)) {
-      if (all(df1[[i]] != df2[[i]]))
+      if (any(df1[[i]] != df2[[i]]))
         return(FALSE)
     }
     ret <- TRUE
-    
+
   } else if (all(class(df1) == class(df1))) {
-    
+
     ret <- all(df1 == df2)
-    
+
   }
   
   return(ret)
 }
-
-
 

@@ -6,63 +6,63 @@ base_path <- "./data"
 
 
 test_that("lib_load() and lib_unload() functions works as expected.", {
-  
-  
+
+
   libname(dat, base_path, engine = "csv")
 
-  
+
   # Should not get an error here
   suppressWarnings(lib_unload(dat))
 
   lib_load(dat)
-  
+
   expect_equal(nrow(dat.demo_studya), 10)
   expect_equal(nrow(dat.demo_studyb), 2)
-  
-  lib_unload(dat) 
-  
+
+  lib_unload(dat)
+
   expect_equal("dat.demo_studya" %in% ls(), FALSE)
   expect_equal("dat.demo_studyb" %in% ls(), FALSE)
-  
+
 })
 
 
 test_that("lib_size() works as expected.", {
-  
- 
+
+
   libname(dat, base_path, "csv")
-  
+
   expect_equal(lib_size(dat) > 0, TRUE)
   expect_equal(lib_size(dat), 802)
-  
-  
+
+
 })
 
 test_that("lib_info() works as expected.", {
-  
-  
+
+
   libname(dat, base_path, "csv")
-  
+
   info <- lib_info(dat)
-  
+
   expect_equal(nrow(info) > 0, TRUE)
   expect_equal(info[1, "Size"] != "" ,  TRUE)
-  
-  
+
+
 })
 
 
 
 test_that("lib_path() works as expected.", {
-  
-  
+
+
   libname(dat, base_path, "csv")
-  
+
   pth <- lib_path(dat)
-  
+
   expect_equal(pth, base_path)
-  
-  
+
+
 })
 
 
@@ -105,291 +105,291 @@ test_that("lib_sync() function works as expected.", {
 
 
 test_that("lib_sync() function can add a new item from workspace.", {
-  
-  
+
+
   libname(dat, base_path, engine = "csv")
 
-  
+
   lib_load(dat)
 
   dat.demo_studyc <- mtcars
-  
+
   lib_sync(dat)
-  
+
   expect_equal(length(dat), 3)
-  
+
 })
 
 test_that("lib_unload() function can add a new item from workspace.", {
-  
-  
+
+
   libname(dat, base_path, engine = "csv")
-  
-  
+
+
   lib_load(dat)
-  
+
   dat.demo_studyc <- mtcars
-  
+
   lib_unload(dat)
-  
+
   expect_equal(length(dat), 3)
-  
+
 })
 
 
 test_that("lib_add() function works as expected unloaded.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_add(dat, mtcars, iris)
-  
+
   inf <- lib_info(dat)
-  
+
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
-  
+
   lib_add(dat, mtcars, iris, name = c("fork", "bork"))
-  
+
   expect_equal(length(dat), 4)
-  
+
   lib_delete(dat)
-  
+
 })
 
 test_that("lib_add() function works as expected loaded.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_load(dat)
-  
+
   lib_add(dat, mtcars, iris)
-  
+
   inf <- lib_info(dat)
-  
+
   expect_equal(length(dat), 2)
   expect_equal(nrow(inf), 2)
-  
+
   lib_add(dat, mtcars, iris, name = c("fork", "bork"))
-  
+
   expect_equal(length(dat), 4)
-  
-  lib_unload(dat)  
-  
+
+  lib_unload(dat)
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_remove() work as expected with multiple names.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_add(dat, mtcars, iris)
-  
+
   expect_equal(length(dat), 2)
-  
+
   lib_remove(dat, c("mtcars", "iris"))
-  
+
   expect_equal(length(dat), 0)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_add(dat, mtcars, iris)
-  
+
   expect_equal(length(dat), 2)
-  
+
   lib_remove(dat, "mtcars")
-  
+
   expect_equal(length(dat), 1)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add(), lib_remove() functions work as expected loaded.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_load(dat)
-  
+
   lib_add(dat, mtcars, iris)
-  
+
   expect_equal(length(dat), 2)
-  
+
   lib_remove(dat, "mtcars")
-  
+
   expect_equal(length(dat), 1)
-  
+
   lib_remove(dat, "iris")
-  
+
   expect_equal(length(dat), 0)
-  
+
   lib_unload(dat)
-  
+
   lib_delete(dat)
 })
-  
 
-# 
+
+#
 # test_that("lib_add() function can add a new items of different types.", {
-#   
+#
 #   alt_path <- tempdir()
 #   libname(dat, alt_path)
-#   
+#
 #   # RDS
 #   lib_add(dat, mtcars)
-#   
+#
 #   res <- file.exists(file.path(alt_path, "mtcars.rds"))
-#   
+#
 #   expect_equal(res, TRUE)
-#   
+#
 #   lib_remove(dat, "mtcars")
-#   
+#
 #   # CSV
-#   
+#
 #   lib_add(dat, mtcars, type = "csv")
-#   
+#
 #   res <- file.exists(file.path(alt_path, "mtcars.csv"))
-#   
+#
 #   expect_equal(res, TRUE)
-#   
+#
 #   lib_remove(dat, "mtcars")
-#   
-#   
-#   
+#
+#
+#
 #   # sas7bdat
-#   
+#
 #   lib_add(dat, mtcars, type = "sas7bdat")
-#   
+#
 #   res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
-#   
+#
 #   expect_equal(res, TRUE)
-#   
+#
 #   lib_remove(dat, "mtcars")
-#   
-#   
-# 
+#
+#
+#
 #   # XLS
 #   lib_add(dat, mtcars, engine = "xls")
-#   
+#
 #   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
-#   
+#
 #   expect_equal(res, TRUE)
-#   
+#
 #   lib_remove(dat, "mtcars")
-#   
-#   
-#   
+#
+#
+#
 #   # xlsx
-#   
+#
 #   lib_add(dat, mtcars, engine = "xlsx")
-#   
+#
 #   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
-#   
+#
 #   expect_equal(res, TRUE)
-#   
+#
 #   lib_remove(dat, "mtcars")
-#   
+#
 #   # Clear out
-#   
+#
 #   lib_delete(dat)
 # })
 
 
 test_that("lib_write() function can add a new item and save as rds.", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path)
-  
+
   lib_add(dat, mtcars)
-  
+
   lib_write(dat)
-  
+
   res <- file.exists(file.path(alt_path, "mtcars.rds"))
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_remove(dat, "mtcars")
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add() function can add a new item and save as csv", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "csv")
-  
+
   lib_add(dat, mtcars)
-  
+
   res <- file.exists(file.path(alt_path, "mtcars.csv"))
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add() function can add a new item and save as xslx", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "xlsx")
-  
+
   lib_add(dat, mtcars)
-  
+
   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add() function can add a new item and save as rds", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "rds")
-  
+
   lib_add(dat, mtcars)
-  
+
   res <- file.exists(file.path(alt_path, "mtcars.rds"))
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("lib_add() function can add a new item and save as sas7bdat", {
-  
+
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "sas7bdat")
-  
+
   lib_add(dat, mtcars)
-  
+
   res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
@@ -406,208 +406,208 @@ test_that("lib_write() function can add a new item from workspace.", {
   lib_write(dat)
 
   pth <- file.path(lib_path(dat), "demo_studyc.csv")
-  
+
   res <- file.exists(pth)
-  
+
   expect_equal(res, TRUE)
-  
+
   lib_delete(dat)
 
 })
 
 
 test_that("lib_copy() works as expected.", {
-  
+
   alt_path <- tempdir()
-  
+
   libname(dat, base_path, "csv")
-  
+
   lib_copy(dat, dat2, alt_path)
-  
+
   expect_equal(file.exists(file.path(alt_path, "demo_studyb.csv")), TRUE)
-  
+
   lib_delete(dat2)
-  
-  
+
+
 })
 
 test_that("read-only flag works as expected.", {
 
 
   libname(dat, base_path, "csv", read_only = TRUE)
-  
+
   expect_error(lib_add(dat, mtcars))
   expect_error(lib_remove(dat, "demo_studya"))
   expect_error(lib_delete(dat))
   expect_error(lib_write(dat))
   expect_error(lib_replace(dat, mtcars, "demo_studya"))
-  
-  
+
+
 })
 
 
 test_that("lib_write non-changed csv data works as expected.", {
-  
+
   alt_path <- tempdir()
-  
+
   libname(dat, base_path, "csv")
-  
+
   lib_copy(dat, dat2, alt_path)
-  
+
   info1 <- lib_info(dat2)
-  
+
   Sys.sleep(2)
-  
+
   lib_replace(dat2, mtcars, name = "demo_studya")
 
-  
+
   info2 <- lib_info(dat2)
-  
+
   d1 <- subset(info1, Name == "demo_studya")
   d2 <- subset(info2, Name == "demo_studya")
-  
+
   d3 <- subset(info1, Name == "demo_studyb")
   d4 <- subset(info2, Name == "demo_studyb")
 
   expect_equal(d1[1, 6] == d2[1, 6], FALSE)
   expect_equal(d3[1, 6] == d4[1, 6], TRUE)
-  
+
 
   lib_delete(dat2)
-  
+
 })
 
 test_that("lib_write non-changed rds data works as expected.", {
-  
+
   alt_path <- tempdir()
-  
+
   libname(dat, base_path, "rds")
-  
+
   lib_copy(dat, dat2, alt_path)
-  
+
   info1 <- lib_info(dat2)
-  
+
   Sys.sleep(2)
-  
+
   lib_replace(dat2, mtcars, name = "demo_studya")
-  
-  
+
+
   info2 <- lib_info(dat2)
-  
+
   d1 <- subset(info1, Name == "demo_studya")
   d2 <- subset(info2, Name == "demo_studya")
-  
+
   d3 <- subset(info1, Name == "demo_studyb")
   d4 <- subset(info2, Name == "demo_studyb")
-  
+
   expect_equal(d1[1, 6] == d2[1, 6], FALSE)
   expect_equal(d3[1, 6] == d4[1, 6], TRUE)
-  
-  
+
+
   lib_delete(dat2)
-  
+
 })
 
 
 test_that("lib_write non-changed sas7bdat data works as expected.", {
-  
+
   alt_path <- tempdir()
-  
+
   libname(dat, base_path, "sas7bdat")
-  
+
   lib_copy(dat, dat2, alt_path)
-  
+
   info1 <- lib_info(dat2)
-  
+
   Sys.sleep(2)
-  
+
   lib_replace(dat2, mtcars, name = "demo_studya")
-  
-  
+
+
   info2 <- lib_info(dat2)
-  
-  
+
+
   d1 <- subset(info1, Name == "demo_studya")
   d2 <- subset(info2, Name == "demo_studya")
-  
+
   d3 <- subset(info1, Name == "demo_studyb")
   d4 <- subset(info2, Name == "demo_studyb")
-  
+
   expect_equal(d1[1, 6] == d2[1, 6], FALSE)
   expect_equal(d3[1, 6] == d4[1, 6], TRUE)
-  
+
   lib_delete(dat2)
-  
+
 })
 
 test_that("lib_write non-changed xlsx data works as expected.", {
-  
+
   alt_path <- tempdir()
-  
+
   libname(dat, base_path, "xlsx")
-  
+
   lib_copy(dat, dat2, alt_path)
-  
+
   info1 <- lib_info(dat2)
-  
+
   Sys.sleep(2)
-  
+
   lib_replace(dat2, mtcars, name = "demo_studya")
-  
+
   lib_write(dat2)
-  
+
   info2 <- lib_info(dat2)
-  
+
   expect_equal(info1[2, 6] == info2[2, 6], TRUE)
   expect_equal(info1[1, 6] == info2[1, 6], FALSE)
-  
+
   lib_delete(dat2)
-  
+
 })
 
 
 
 test_that("force option works as expected.", {
-  
+
   tmp <- tempdir()
-  
+
   libname(dat, tmp)
-  
-  
+
+
   lib_add(dat, mtcars)
-  
+
   res <- lib_info(dat)
-  
+
   Sys.sleep(2)
-  
+
   lib_write(dat, force = TRUE)
-  
+
   res2 <- lib_info(dat)
-  
+
   expect_equal(res[1, 6] == res2[1, 6],  FALSE)
-  
+
   lib_delete(dat)
-  
+
 })
 
 
 test_that("xpt engine works as expected.", {
-  
+
   tmp <- tempdir()
-  
+
   libname(dat, tmp, "xpt")
-  
-  
+
+
   lib_add(dat, mtcars)
-  
+
   expect_equal(file.exists(file.path(tmp, "mtcars.xpt")), TRUE)
-  
+
   libname(dat2, tmp, "xpt")
-  
+
   expect_equal(nrow(dat2$mtcars),  32)
-  
+
   lib_delete(dat)
   lib_delete(dat2)
-  
+
 })
 
