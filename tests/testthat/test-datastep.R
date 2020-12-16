@@ -4,6 +4,8 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
+DEV <- FALSE
+
 test_that("datastep() function works as expected with mtcars.", {
   
 
@@ -24,6 +26,7 @@ test_that("datastep() function works as expected with mtcars.", {
 
 
 test_that("datastep() function works as expected with demo_studya.", {
+  
   
   libname(dat, base_path, "csv")
   
@@ -163,25 +166,29 @@ test_that("datastep() calculate parameter works as expected.", {
 
 test_that("datastep() auto-group-by works as expected.", {
   
-  libname(dat, base_path, "rds")
+  if (TRUE) {
+    libname(dat, base_path, "rds")
+    
+    lib_load(dat)
+    
+    
+    d1 <- dat.demo_studya %>% group_by(treatment) %>% 
+      datastep({
+        p1 <- first.
+        p2 <- last.
+        rownum <- n.
+      })
+    
+    d1
+    
+    expect_equal(sum(d1$p1), 2)
+    expect_equal(sum(d1$p2), 2)
+    expect_equal(sum(d1$rownum), 55)
+    
+    lib_unload(dat)
   
-  lib_load(dat)
-  
-  
-  d1 <- dat.demo_studya %>% group_by(treatment) %>% 
-    datastep({
-      p1 <- first.
-      p2 <- last.
-      rownum <- n.
-    })
-  
-  d1
-  
-  expect_equal(sum(d1$p1), 2)
-  expect_equal(sum(d1$p2), 2)
-  expect_equal(sum(d1$rownum), 55)
-  
-  lib_unload(dat)
+  } else
+    expect_equal(TRUE, TRUE)
 })
 
 test_that("datastep() by parameter works as expected.", {
@@ -258,7 +265,7 @@ test_that("datastep() retain class check works as expected", {
 
 test_that("datastep() performance is good", {
   
-  if (FALSE) {
+  if (DEV) {
     
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
     
@@ -277,8 +284,9 @@ test_that("datastep() performance is good", {
     })
     
     tmdiff <- Sys.time() - tm 
+    tmdiff
     
-    expect_equal(tmdiff < 20, TRUE)
+    expect_equal(tmdiff < 16, TRUE)
   
   } else 
     expect_equal(TRUE, TRUE)
@@ -303,3 +311,64 @@ test_that("Rename works as expected", {
   expect_equal("TRUE", "TRUE")
   
 })
+
+
+test_that("datastep() with group_by performance is good", {
+  
+  if (DEV) {
+    
+    library(dplyr)
+    
+    scs <- specs(PE = import_spec(PESTAT = "character"))
+    
+    libname(dat, file.path(base_path, "SDTM"), "csv", import_specs = scs)
+    
+    tm <- Sys.time()
+    
+    prep <- dat$DM %>% 
+      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) %>% 
+      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
+      filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"), 
+             !(VISIT == "SCREENING" & VSBLFL != "Y")) %>% 
+      arrange(USUBJID, VSTESTCD, VISITNUM) %>% 
+      #group_by(USUBJID, VSTESTCD) %>% 
+      datastep(by = c("USUBJID", "VSTESTCD"), retain = list(BSTRESN = 0), {
+      #datastep(retain = list(BSTRESN = 0), {
+        
+        # Combine treatment groups
+        # And distingish baseline time points
+        if (ARM == "ARM A") {
+          
+          if (VSBLFL %eq% "Y") {
+            GRP <- "A_BASE"
+          } else {
+            GRP <- "A_TRT"
+          }
+          
+        } else {
+          
+          if (VSBLFL %eq% "Y") {
+            GRP <- "O_BASE"
+          } else {
+            GRP <- "O_TRT"
+          }
+          
+        }
+        
+        # Populate baseline value
+        if (first.)
+          BSTRESN = VSSTRESN
+        
+      }) 
+    
+    tmdiff <- Sys.time() - tm 
+    tmdiff
+    
+    expect_equal(tmdiff < 20, TRUE)
+    
+  } else 
+    expect_equal(TRUE, TRUE)
+  
+})
+
+

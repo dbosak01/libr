@@ -242,13 +242,16 @@ datastep <- function(data, steps, keep = NULL,
                      retain = NULL,
                      sort_check = TRUE) {
   
+  if (!"data.frame" %in% class(data))
+    stop("input data must be inherited from data.frame")
+  
+  
   if (!is.null(retain)) {
     if (!"list" %in% class(retain))
       stop("retain parameter value must be of class 'list'")
     
   }
-    
-
+  
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
 
@@ -262,6 +265,7 @@ datastep <- function(data, steps, keep = NULL,
   firstval <- NULL
   firstvals <- list()
   rowcount <- nrow(data)
+  orig_class <- class(data)
   
   # Set by if data is a grouped tibble
   if (is.null(by) && "grouped_df" %in% class(data)) {
@@ -270,33 +274,45 @@ datastep <- function(data, steps, keep = NULL,
       nms <- names(grpdf)
       if (!is.null(nms)) {
         nms <- nms[nms != ".rows"]
-        if (length(nms) > 0)
+        if (length(nms) > 0) {
           by <- nms
+          
+          # For some reason the grouping kills performance.
+          # Temporarily convert to a data frame.  
+          # Seriously like 20X performance increase.
+          data <- as.data.frame(data)
+        }
       }
     }
   }
-
+  
+  # Increases performance
+  if (!is.null(by)) {
+    bydata <- as.data.frame(data[ , by])
+  }
+  
 
   # Step through row by row
   for (n. in seq_len(rowcount)) {
 
     rw <- data[n., ]
+    byrw <- rw[1, by]
     
     # Deal with first. and last.
     # These can be accessed from within the evaluated code,
     # which is really cool.
     if (!is.null(by)) {
       if (is.null(firstval)) {
-        firstval <- rw[1, by]
+        firstval <- byrw
         if (length(names(firstval)) == 0)
           names(firstval) <- by
         first. <- TRUE
       } else {
 
         # Compare current by group to previous row
-        if (dfcomp(firstval, rw[1, by]) == FALSE) {
+        if (dfcomp(firstval, byrw) == FALSE) {
           first. <- TRUE
-          firstval <- rw[1, by]
+          firstval <- byrw
           if (length(names(firstval)) == 0)
             names(firstval) <- by
         } else {
@@ -310,7 +326,10 @@ datastep <- function(data, steps, keep = NULL,
       } else {
         
         # Compare by group to next row to determine last.
-        if (dfcomp(data[n. + 1, by],  rw[1, by]) == FALSE) {
+        # print(bydata)
+         # print(n.)
+         # print(bydata[n. + 1, ])
+        if (dfcomp(bydata[n. + 1, ],  byrw) == FALSE) {
           last. <- TRUE
         } else {
           last. <- FALSE
@@ -401,6 +420,19 @@ datastep <- function(data, steps, keep = NULL,
     nms <- names(ret)
     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
   }
+  
+  # Convert back to tibble if original was a tibble
+  if ("tbl_df" %in% orig_class & !"tbl_df" %in% class(ret)) {
+    ret <- as_tibble(ret)
+  }
+  
+  # Put back grouping attributes if original data was grouped
+  if (!is.null(by) & "grouped_df" %in% orig_class) {
+    
+    if (all(by %in% names(ret)))
+      ret <- group_by(ret, across({{by}})) 
+    
+  }
 
   return(ret)
 }
@@ -414,21 +446,21 @@ datastep <- function(data, steps, keep = NULL,
 dfcomp <- function(df1, df2) {
   ret <- FALSE
   
-  if (is.null(df1) && is.null(df2))
+  if (all(is.null(df1) && is.null(df2)))
     ret <- TRUE
-  else if (is.na(df1) && is.na(df2))
+  else if (all(is.na(df1) && is.na(df2)))
     ret <- TRUE
-  else if (is.data.frame(df1) && is.data.frame(df2)) {
+  else if (all(is.data.frame(df1) && is.data.frame(df2))) {
     
     for (i in seq_along(df1)) {
-      if (df1[[i]] != df2[[i]])
+      if (all(df1[[i]] != df2[[i]]))
         return(FALSE)
     }
     ret <- TRUE
     
-  } else if (class(df1) == class(df1)) {
+  } else if (all(class(df1) == class(df1))) {
     
-    ret <- df1 == df2
+    ret <- all(df1 == df2)
     
   }
   
