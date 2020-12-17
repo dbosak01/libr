@@ -611,3 +611,41 @@ test_that("xpt engine works as expected.", {
 
 })
 
+
+test_that("lib_load() function works as expected with filter", {
+  
+    
+    libname(dat, file.path( base_path, "SDTM"), 
+            engine = "sas7bdat")
+  
+    lib_load(dat, c("ae", "dm", "lb", "vs"))
+    
+    d <- ls()
+    
+    expect_equal(all(c("dat.ae", "dat.dm", "dat.lb", "dat.vs") %in% d), TRUE)
+    expect_equal(any(c("dat.da", "dat.ds", "dat.ex", "dat.pe") %in% d), FALSE)
+    
+    lib_unload(dat)
+  
+    
+    lib_load(dat, filter = c("*e"))
+    
+    d <- ls()
+    
+    expect_equal(all(c("dat.ae", "dat.ie", "dat.pe") %in% d), TRUE)
+    expect_equal(any(c("dat.da", "dat.ds", "dat.ex", "dat.lb") %in% d), FALSE)
+    
+    lib_unload(dat)
+
+
+    lib_load(dat, filter = c("d*", "ex", "qs"))
+    
+    d <- ls()
+    
+    expect_equal(all(c("dat.da", "dat.dm", "dat.ds", "dat.ds_ihor", 
+                       "dat.ex", "dat.qs") %in% d), TRUE)
+    expect_equal(any(c("dat.ae", "dat.lb", "dat.pe", "dat.ie") %in% d), FALSE)
+
+    lib_unload(dat)
+  
+})

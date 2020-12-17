@@ -115,6 +115,14 @@ e$env <- parent.frame()
 #' file format for interchange between software systems.  The DBASE file 
 #' format contains type information.}
 #' }
+#' @section File Filters:
+#' If you wish to import only a portion of your data files into a library, 
+#' you may accomplish it with a the \code{filter} parameter.  The filter 
+#' parameter allows you to pass a vector of strings corresponding to the 
+#' names of the files you want to import.  The function allows a 
+#' wild-card (\*) for partial matching.  For example, \code{"te\*"} means any
+#' file name that that begins with a "te", and \code{"\*st"} means any file name
+#' that ends with an "st". 
 #' 
 #' @param name The unquoted name of the library to create.  The library name will 
 #' be created as a variable in the environment specified on the \code{env}
@@ -145,6 +153,11 @@ e$env <- parent.frame()
 #' The import specs should be named according to the file names in 
 #' the library directory. See the \code{\link{specs}} function for additional
 #' information.
+#' @param filter One or more quoted strings to use as filters for the incoming 
+#' file names. For more than one filter string, pass them as a vector of
+#' strings. The filter string can be a full or partial file name, without
+#' extension.  If using a partial file name, use a wild-card character (*) 
+#' to identify the missing portion. The match will be case-insensitive.
 #' @return The library object, with all data files loaded into the library
 #' list.  Items in the list will be named according the the file name,
 #' minus the file extension.
@@ -211,7 +224,7 @@ e$env <- parent.frame()
 #' @export
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
-                    import_specs = NULL) {
+                    import_specs = NULL, filter = NULL) {
   if (is.null(engine))
     stop("engine parameter cannot be null")
   
@@ -252,6 +265,9 @@ libname <- function(name, directory_path, engine = "rds",
 
   # Get the file list according to the engine type
   lst <- list.files(directory_path, pattern = paste0("\\.", engine, "$"))
+  
+  if (!is.null(filter))
+    lst <- dofilter(filter, lst, engine)
   
   for (fl in lst) {
     fp <- file.path(directory_path, fl)
@@ -425,6 +441,11 @@ libname <- function(name, directory_path, engine = "rds",
 #' will be loaded with <library>.<data set> syntax.  Loading the data frames
 #' into the environment makes them easy to access and use in your program.
 #' @param x The data library to load.
+#' @param filter One or more quoted strings to use as filters for the  
+#' data names to load into the workspace. For more than one filter string, 
+#' pass them as a vector of strings. The filter string can be a full or 
+#' partial name.  If using a partial name, use a wild-card character (*) 
+#' to identify the missing portion. The match will be case-insensitive.
 #' @return The loaded data library. 
 #' @seealso \code{\link{lib_unload}} to unload the library.
 #' @family lib
@@ -461,7 +482,7 @@ libname <- function(name, directory_path, engine = "rds",
 #' # Clean up
 #' lib_delete(dat)
 #' @export
-lib_load <- function(x) {
+lib_load <- function(x, filter = NULL) {
   
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
@@ -469,8 +490,13 @@ lib_load <- function(x) {
   # Get library name
   libnm <- deparse1(substitute(x, env = environment())) 
   
+  if (is.null(filter))
+    nms <- names(x)
+  else 
+    nms <- dofilter(filter, names(x))
+  
   # For each name in library, assign to global environment
-  for (nm in names(x)) {
+  for (nm in nms) {
     n <-  paste0(libnm, ".", nm)
     assign(n, x[[nm]], envir = e$env)
   }

@@ -67,3 +67,47 @@ test_that("strong_eq function works as expected.", {
 })
 
 
+test_that("dofilter function works as expected for paths", {
+  
+  
+  v1 <- c("c:\\fork.csv", "c:\\four.csv", "c:\\spork.csv")
+  
+  expect_equal(dofilter("fo*", v1, "csv"), c("c:\\fork.csv", "c:\\four.csv"))
+  
+  expect_equal(dofilter("fork", v1, "csv"), c("c:\\fork.csv"))
+  
+  expect_equal(is.null(dofilter("or*", v1, "csv")), TRUE)
+  
+  expect_equal(dofilter("*or*", v1, "csv"), c("c:\\fork.csv","c:\\spork.csv"))
+  
+  expect_equal(dofilter(c("fo*", "sp*"), v1, "csv"), c("c:\\fork.csv", 
+                                                       "c:\\four.csv", 
+                                                       "c:\\spork.csv"))
+  
+  expect_equal(dofilter(c("Fo*", "SP*"), v1, "csv"), c("c:\\fork.csv", 
+                                                       "c:\\four.csv", 
+                                                       "c:\\spork.csv"))
+  
+})
+
+
+test_that("dofilter function works as expected for names", {
+  
+  
+  v2 <- c("fork", "four", "spork")
+  
+  expect_equal(dofilter("fo*", v2),  c("fork", "four"))
+  
+  expect_equal(dofilter("fork", v2),  c("fork"))
+  
+  expect_equal(is.null(dofilter("or*", v2)),  TRUE)
+  
+  expect_equal(dofilter("*or*", v2),  c("fork", "spork"))
+  
+  expect_equal(dofilter(c("fo*", "sp*"), v2),  c("fork", "four", "spork"))
+  
+  expect_equal(dofilter(c("fork", "spork"), v2),  c("fork", "spork"))
+  
+  expect_equal(dofilter(c("FORK", "Sp*"), v2),  c("fork", "spork"))
+  
+})

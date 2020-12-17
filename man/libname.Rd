@@ -11,7 +11,8 @@ libname(
   engine = "rds",
   read_only = FALSE,
   env = parent.frame(),
-  import_specs = NULL
+  import_specs = NULL,
+  filter = NULL
 )
 }
 \arguments{
@@ -49,6 +50,12 @@ defined using the \code{\link{specs}} function.
 The import specs should be named according to the file names in 
 the library directory. See the \code{\link{specs}} function for additional
 information.}
+
+\item{filter}{One or more quoted strings to use as filters for the incoming 
+file names. For more than one filter string, pass them as a vector of
+strings. The filter string can be a full or partial file name, without
+extension.  If using a partial file name, use a wild-card character (*) 
+to identify the missing portion. The match will be case-insensitive.}
 }
 \value{
 The library object, with all data files loaded into the library
@@ -165,6 +172,17 @@ read and write in DBASE format reliably.  Therefore it is a useful
 file format for interchange between software systems.  The DBASE file 
 format contains type information.}
 }
+}
+
+\section{File Filters}{
+
+If you wish to import only a portion of your data files into a library, 
+you may accomplish it with a the \code{filter} parameter.  The filter 
+parameter allows you to pass a vector of strings corresponding to the 
+names of the files you want to import.  The function allows a 
+wild-card (\*) for partial matching.  For example, \code{"te\*"} means any
+file name that that begins with a "te", and \code{"\*st"} means any file name
+that ends with an "st".
 }
 
 \examples{

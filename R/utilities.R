@@ -533,6 +533,41 @@ exec_spec <- function(x, spcs, nm) {
  return(ret)
 }
 
+
+
+dofilter <- function(str, vect, extension = NULL) {
+  
+  # Remove base path and file extension
+  if (is.null(extension))
+    lst <- vect
+  else 
+    lst <- gsub(paste0(".", extension), "", basename(vect))
+  
+  # Generate regular expressions
+  flt <-  paste0("^", gsub("*", ".*", str, fixed = TRUE), "$")
+  
+  # Create return list
+  ret <- c()
+  
+  # Perform filter 
+  for (f in flt) {
+    tmp <- vect[grepl(f, lst, ignore.case = TRUE)]
+    
+    # Add results to return vector
+    if (length(tmp) > 0) {
+      for (t in tmp)
+        ret[length(ret) + 1] <- t
+    }
+  }
+  
+  # Dedupe
+  ret <- unique(ret)
+  
+  return(ret)
+  
+}
+
+
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
 #   set.seed(seed_no)
 #   pool <- c(letters, LETTERS, 0:9)

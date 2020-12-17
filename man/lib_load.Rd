@@ -4,10 +4,16 @@
 \alias{lib_load}
 \title{Load a Library into the Workspace}
 \usage{
-lib_load(x)
+lib_load(x, filter = NULL)
 }
 \arguments{
 \item{x}{The data library to load.}
+
+\item{filter}{One or more quoted strings to use as filters for the
+data names to load into the workspace. For more than one filter string, 
+pass them as a vector of strings. The filter string can be a full or 
+partial name.  If using a partial name, use a wild-card character (*) 
+to identify the missing portion. The match will be case-insensitive.}
 }
 \value{
 The loaded data library.
