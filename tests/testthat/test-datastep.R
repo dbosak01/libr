@@ -4,7 +4,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
-DEV <- TRUE
+DEV <- FALSE
 
 test_that("datastep() function works as expected with mtcars.", {
 
