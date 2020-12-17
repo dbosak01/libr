@@ -275,5 +275,5 @@ test_that("libname() function works as expected with filter", {
   
   d <- lib_info(dat)[["Name"]]
   
-  expect_equal(d, c("da", "dm", "ds", "ds_ihor", "ex", "qs")) 
+  expect_equal(all(d %in% c("da", "dm", "ds", "ds_ihor", "ex", "qs")), TRUE) 
 })
