@@ -551,7 +551,7 @@ dofilter <- function(str, vect, extension = NULL) {
   
   # Perform filter 
   for (f in flt) {
-    tmp <- vect[grepl(f, lst, ignore.case = TRUE)]
+    tmp <- vect[grepl(f, lst, ignore.case = TRUE, useBytes = TRUE)]
     
     # Add results to return vector
     if (length(tmp) > 0) {
