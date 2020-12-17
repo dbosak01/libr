@@ -21,7 +21,7 @@ test_that("print() functions works as expected.", {
 })
 
 
-test_that("comp function work as expected.", {
+test_that("eq function work as expected.", {
   
   expect_equal(mtcars %eq% mtcars, TRUE)
   expect_equal(mtcars %eq% iris, FALSE)
@@ -39,6 +39,10 @@ test_that("comp function work as expected.", {
   expect_equal(v1 %eq% v2[1:5], FALSE)
   v2[5] <-2
   expect_equal(v1  %eq% v2, FALSE)
+  
+  v1 <- c(1, 2, NA, NA)
+  v2 <- c(NA, NA, 1, NA, 3)
+  expect_equal(v1 %eq% v2, FALSE)
   
 })
 
@@ -64,29 +68,30 @@ test_that("strong_eq function works as expected.", {
   v2 <- c(NA, NA, 1, NA)
   expect_equal(all(strong_eq(v1, v2)), FALSE)
   
+  
 })
 
 
 test_that("dofilter function works as expected for paths", {
   
   
-  v1 <- c("c:\\fork.csv", "c:\\four.csv", "c:\\spork.csv")
+  v1 <- c("/temp/fork.csv", "/temp/four.csv", "/temp/spork.csv")
   
-  expect_equal(dofilter("fo*", v1, "csv"), c("c:\\fork.csv", "c:\\four.csv"))
+  expect_equal(dofilter("fo*", v1, "csv"), c("/temp/fork.csv", "/temp/four.csv"))
   
-  expect_equal(dofilter("fork", v1, "csv"), c("c:\\fork.csv"))
+  expect_equal(dofilter("fork", v1, "csv"), c("/temp/fork.csv"))
   
   expect_equal(is.null(dofilter("or*", v1, "csv")), TRUE)
   
-  expect_equal(dofilter("*or*", v1, "csv"), c("c:\\fork.csv","c:\\spork.csv"))
+  expect_equal(dofilter("*or*", v1, "csv"), c("/temp/fork.csv","/temp/spork.csv"))
   
-  expect_equal(dofilter(c("fo*", "sp*"), v1, "csv"), c("c:\\fork.csv", 
-                                                       "c:\\four.csv", 
-                                                       "c:\\spork.csv"))
+  expect_equal(dofilter(c("fo*", "sp*"), v1, "csv"), c("/temp/fork.csv", 
+                                                       "/temp/four.csv", 
+                                                       "/temp/spork.csv"))
   
-  expect_equal(dofilter(c("Fo*", "SP*"), v1, "csv"), c("c:\\fork.csv", 
-                                                       "c:\\four.csv", 
-                                                       "c:\\spork.csv"))
+  expect_equal(dofilter(c("Fo*", "SP*"), v1, "csv"), c("/temp/fork.csv", 
+                                                       "/temp/four.csv", 
+                                                       "/temp/spork.csv"))
   
 })
 
