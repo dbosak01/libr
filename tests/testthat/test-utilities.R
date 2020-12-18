@@ -116,3 +116,19 @@ test_that("dofilter function works as expected for names", {
   expect_equal(dofilter(c("FORK", "Sp*"), v2),  c("fork", "spork"))
   
 })
+
+test_that("copy_attributes function works as expected.", {
+  
+  d1 <- mtcars
+  d2 <- mtcars
+  
+  attr(d1$mpg, "label") <- "Here1"
+  attr(d1$disp, "label") <- "Here2"
+
+  d3 <- copy_attributes(d1, d2)
+
+  expect_equal(attr(d3$mpg, "label"), "Here1")
+  expect_equal(attr(d3$disp, "label"), "Here2")
+  
+})
+

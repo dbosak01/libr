@@ -282,6 +282,8 @@ datastep <- function(data, steps, keep = NULL,
     }
   }
   
+  data_attributes <- data[1, ]
+  
   # For some reason the grouped tibble kills performance.
   # Temporarily convert to a data frame.  
   # Seriously like 20X performance increase.
@@ -435,6 +437,9 @@ datastep <- function(data, steps, keep = NULL,
       ret <- group_by(ret, across({{by}})) 
     
   }
+  
+  # Restore attributes from original data 
+  ret <- copy_attributes(data_attributes, ret)
 
   return(ret)
 }
@@ -466,6 +471,28 @@ dfcomp <- function(df1, df2) {
 
     ret <- all(df1 == df2)
 
+  }
+  
+  return(ret)
+}
+
+
+#' @noRd
+copy_attributes <- function(df1, df2) {
+  
+  ret <- df2
+  
+  for (nm in names(df2)) {
+    
+    attributes(ret[[nm]]) <- attributes(df1[[nm]])
+    
+    # col <- df1[[nm]]
+    # for (at in names(attributes(col))) {
+    #   
+    #   attr(ret[[nm]], at) <- attr(col, at)
+    #   
+    # }
+    
   }
   
   return(ret)

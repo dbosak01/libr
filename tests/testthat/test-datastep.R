@@ -374,3 +374,54 @@ test_that("datastep() with group_by performance is good", {
 })
 
 
+
+test_that("datastep() attributes on data are maintained.", {
+  
+  library(dplyr)
+
+  
+  libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+  
+  prep <- dat$dm %>% 
+    left_join(dat$vs, by = c("USUBJID" = "USUBJID")) %>% 
+    select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
+    filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"), 
+           !(VISIT == "SCREENING" & VSBLFL != "Y")) %>% 
+    arrange(USUBJID, VSTESTCD, VISITNUM) %>% 
+    group_by(USUBJID, VSTESTCD) %>%
+
+    datastep(retain = list(BSTRESN = 0), {
+      
+      # Combine treatment groups
+      # And distingish baseline time points
+      if (ARM == "ARM A") {
+        
+        if (VSBLFL %eq% "Y") {
+          GRP <- "A_BASE"
+        } else {
+          GRP <- "A_TRT"
+        }
+        
+      } else {
+        
+        if (VSBLFL %eq% "Y") {
+          GRP <- "O_BASE"
+        } else {
+          GRP <- "O_TRT"
+        }
+        
+      }
+      
+      # Populate baseline value
+      if (first.)
+        BSTRESN = VSSTRESN
+      
+    })
+  
+  
+  expect_equal(attr(prep$USUBJID, "label"), "Unique Subject Identifier")
+    
+  
+})
+
+
