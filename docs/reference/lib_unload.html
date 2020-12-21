@@ -8,6 +8,13 @@
 
 <title>Unload a Library from the Workspace — lib_unload • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -46,6 +53,7 @@ or remove the library.  It simply removes the data frames from working
 memory.  By default, the lib_unload function will also synchronize the 
 data in working memory with the data stored in the library list, as these
 two instances can become out of sync if you change the data in working memory." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -209,28 +217,28 @@ than the variable name.  Used internally.</p></td>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add data to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span>, <span class='va'>ToothGrowth</span>, <span class='va'>PlantGrowth</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-20 22:52:31
-#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-20 22:52:31
-#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-20 22:52:31</div><div class='input'>
+#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-21 11:01:42
+#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-21 11:01:42
+#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-21 11:01:42</div><div class='input'>
 <span class='co'># Load library into workspace</span>
 <span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-20 22:52:31
-#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-20 22:52:31
-#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-20 22:52:31</div><div class='input'>
+#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-21 11:01:42
+#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-21 11:01:42
+#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-21 11:01:42</div><div class='input'>
 <span class='co'># Examine workspace</span>
 <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "dat"             "dat.iris"        "dat.PlantGrowth" "dat.ToothGrowth"
@@ -256,12 +264,12 @@ than the variable name.  Used internally.</p></td>
 <span class='fu'>lib_unload</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-20 22:52:31
-#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-20 22:52:31
-#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-20 22:52:31</div><div class='input'>
+#&gt; 1        iris       rds  150    5 8.1 Kb 2020-12-21 11:01:42
+#&gt; 2 ToothGrowth       rds   60    3 3.6 Kb 2020-12-21 11:01:42
+#&gt; 3 PlantGrowth       rds   30    2 2.7 Kb 2020-12-21 11:01:42</div><div class='input'>
 <span class='co'># Examine workspace again</span>
 <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "dat" "tmp"</div><div class='input'><span class='co'># [1] "dat" "tmp"</span>

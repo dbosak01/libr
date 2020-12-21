@@ -8,6 +8,13 @@
 
 <title>Get the Size of a Data Library — lib_size • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -42,6 +49,7 @@
 <meta property="og:title" content="Get the Size of a Data Library — lib_size" />
 <meta property="og:description" content="The lib_size function returns the number of bytes used
 by the data library, as stored on disk." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -189,23 +197,23 @@ by the data library, as stored on disk.</p>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add some data to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 1 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;     Name Extension Rows Cols Size        LastModified
-#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-20 22:52:30</div><div class='input'><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
+#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-21 11:01:41</div><div class='input'><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 2 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:30
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:30</div><div class='input'>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-21 11:01:41
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-21 11:01:41</div><div class='input'>
 <span class='co'># Check size of library</span>
 <span class='fu'>lib_size</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 9757</div><div class='input'><span class='co'># [1] 9757</span>

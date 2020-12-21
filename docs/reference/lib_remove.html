@@ -8,6 +8,13 @@
 
 <title>Remove Data from a Data Library — lib_remove • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -43,6 +50,7 @@
 <meta property="og:description" content="The lib_remove function removes an item from the 
 data library, and deletes the source file for that data.  If the library
 is loaded, it will also remove that item from the workspace environment." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -196,18 +204,18 @@ For more than one name, pass a vector of quoted names.</p></td>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add data to the library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span>, <span class='va'>beaver1</span>, <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1  mtcars       rds   32   11   8 Kb 2020-12-20 22:52:30
-#&gt; 2 beaver1       rds  114    4 5.6 Kb 2020-12-20 22:52:30
-#&gt; 3    iris       rds  150    5 8.1 Kb 2020-12-20 22:52:30</div><div class='input'><span class='co'># library 'dat': 3 items</span>
+#&gt; 1  mtcars       rds   32   11   8 Kb 2020-12-21 11:01:41
+#&gt; 2 beaver1       rds  114    4 5.6 Kb 2020-12-21 11:01:41
+#&gt; 3    iris       rds  150    5 8.1 Kb 2020-12-21 11:01:41</div><div class='input'><span class='co'># library 'dat': 3 items</span>
 <span class='co'># - attributes: not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
 <span class='co'># - items:</span>
@@ -220,10 +228,10 @@ For more than one name, pass a vector of quoted names.</p></td>
 <span class='fu'>lib_remove</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"beaver1"</span>, <span class='st'>"iris"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 1 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;     Name Extension Rows Cols Size        LastModified
-#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-20 22:52:30</div><div class='input'><span class='co'># library 'dat': 1 items</span>
+#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-21 11:01:41</div><div class='input'><span class='co'># library 'dat': 1 items</span>
 <span class='co'># - attributes: not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
 <span class='co'># - items:</span>

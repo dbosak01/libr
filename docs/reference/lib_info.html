@@ -8,6 +8,13 @@
 
 <title>Get Information about a Data Library — lib_info • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -44,6 +51,7 @@
 about each item in the data library.  That information includes the item
 name, file extension, number of rows, number of columns, size in bytes, 
 and the last modified date." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -193,27 +201,27 @@ and the last modified date.</p>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add data to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>trees</span>, <span class='va'>rock</span>, <span class='va'>beaver1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1   trees       rds   31    3 2.7 Kb 2020-12-20 22:52:29
-#&gt; 2    rock       rds   48    4 3.3 Kb 2020-12-20 22:52:29
-#&gt; 3 beaver1       rds  114    4 5.6 Kb 2020-12-20 22:52:29</div><div class='input'>
+#&gt; 1   trees       rds   31    3 2.7 Kb 2020-12-21 11:01:40
+#&gt; 2    rock       rds   48    4 3.3 Kb 2020-12-21 11:01:40
+#&gt; 3 beaver1       rds  114    4 5.6 Kb 2020-12-21 11:01:40</div><div class='input'>
 <span class='co'># Get library information</span>
 <span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>lib_info</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 
 <span class='co'># Examine info</span>
 <span class='va'>info</span>
 </div><div class='output co'>#&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1   trees       rds   31    3 2.7 Kb 2020-12-20 22:52:29
-#&gt; 2    rock       rds   48    4 3.3 Kb 2020-12-20 22:52:29
-#&gt; 3 beaver1       rds  114    4 5.6 Kb 2020-12-20 22:52:29</div><div class='input'><span class='co'>#      Name Extension Rows Cols   Size        LastModified</span>
+#&gt; 1   trees       rds   31    3 2.7 Kb 2020-12-21 11:01:40
+#&gt; 2    rock       rds   48    4 3.3 Kb 2020-12-21 11:01:40
+#&gt; 3 beaver1       rds  114    4 5.6 Kb 2020-12-21 11:01:40</div><div class='input'><span class='co'>#      Name Extension Rows Cols   Size        LastModified</span>
 <span class='co'># 1 beaver1       rds  114    4 5.3 Kb 2020-11-05 21:27:57</span>
 <span class='co'># 2   rocks       rds   48    4 3.1 Kb 2020-11-05 21:27:56</span>
 <span class='co'># 3   trees       rds   31    3 2.4 Kb 2020-11-05 21:27:56</span>

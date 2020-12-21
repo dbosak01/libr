@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Libraries, Data Dictionaries, and a Data Step for R • libr</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -19,6 +25,7 @@
     will generate data dictionaries for individual
     data frames or an entire library.  And the datestep() function
     will perform row-by-row data processing.">
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -112,31 +119,15 @@
 <h3 class="hasAnchor">
 <a href="#introduction-" class="anchor"></a>Introduction <img src="./man/images/libr1.png" align="right" height="138">
 </h3>
-<p>Here is the introduction for libr.</p>
+<p>Here is the introduction for libr. More coming soon.</p>
 </div>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
-<p>The easiest way to install the <strong>sassy</strong> system is to run the following command from your R console:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"sassy"</span>)</span></code></pre></div>
+<p>The easiest way to install the <strong>libr</strong> package is to run the following command from your R console:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"libr"</span>)</span></code></pre></div>
 <p>Then put the following line at the top of your script:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(sassy)</span></code></pre></div>
-<p>That’s it!</p>
-<p>The above commands will install and load a set of packages that will allow you to think about programming in R very much the same way you thought about programming in SAS®.</p>
-<p>It is not <em>identical</em> to SAS®. R is, after all, a very different language. R is functional, vector-based, and runs entirely in memory. As a result, the syntax of <strong>sassy</strong> functions will be different than their corresponding SAS® functions.</p>
-<p>The <strong>sassy</strong> functions will, however, have a similar feel. Overall, you will find programming with the <strong>sassy</strong> system much more comfortable than programming in <strong>Base R</strong> or <strong>tidyverse</strong> alone.</p>
-</div>
-<div id="getting-help" class="section level3">
-<h3 class="hasAnchor">
-<a href="#getting-help" class="anchor"></a>Getting Help</h3>
-<p>If you need help with the <strong>sassy</strong> family of packages, the best place to turn to is the <a href="http://www.r-sassy.org">r-sassy</a> web site.<br>
-This web site offers many examples, and full documentation on every function.</p>
-<p>If you need additional help, please turn to <a href="https://stackoverflow.com">stackoverflow.com</a>. The stackoverflow community will be very willing to answer your questions.</p>
-</div>
-<div id="next-steps" class="section level3">
-<h3 class="hasAnchor">
-<a href="#next-steps" class="anchor"></a>Next Steps</h3>
-<p>Next, you should read the <a href="http://sassy.r-sassy.org/articles/sassy.html">Get started</a> page, and look at some examples. From these pages, you will be able to link into each of the packages included in the <strong>sassy</strong> system, and explore them in depth.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(libr)</span></code></pre></div>
 </div>
 </div>
   </div>

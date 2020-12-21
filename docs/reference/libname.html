@@ -8,6 +8,13 @@
 
 <title>Create a data library — libname • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -47,6 +54,7 @@ the libname function. The libname function allows you to
 load an entire directory of data into memory in one step.  The libr
 package contains additional functions to add and remove data from the library, 
 copy the library, and write any changed data to the file system." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -378,12 +386,12 @@ and <code><a href='dictionary.html'>dictionary</a></code> to view the data dicti
 <span class='fu'>libname</span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-20 22:52:29
-#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-20 22:52:29
-#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-20 22:52:29</div><div class='input'><span class='co'># # library 'dat': 3 items</span>
+#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-21 11:01:40
+#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-21 11:01:40
+#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-21 11:01:40</div><div class='input'><span class='co'># # library 'dat': 3 items</span>
 <span class='co'># - attributes: rds not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpklJcfl</span>
 <span class='co'># - items:</span>
@@ -426,12 +434,12 @@ and <code><a href='dictionary.html'>dictionary</a></code> to view the data dicti
 <span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-20 22:52:29
-#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-20 22:52:29
-#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-20 22:52:29</div><div class='input'>
+#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-21 11:01:40
+#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-21 11:01:40
+#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-21 11:01:40</div><div class='input'>
 <span class='co'># Print summaries for each data frame</span>
 <span class='co'># Note that once loaded into the workspace, </span>
 <span class='co'># data can be accessed using two-level syntax.</span>
@@ -461,12 +469,12 @@ and <code><a href='dictionary.html'>dictionary</a></code> to view the data dicti
 <span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;      Name Extension Rows Cols   Size        LastModified
-#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-20 22:52:29
-#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-20 22:52:29
-#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-20 22:52:29</div><div class='input'>
+#&gt; 1 beaver1       rds  114    4 5.9 Kb 2020-12-21 11:01:40
+#&gt; 2   rocks       rds   48    4 3.6 Kb 2020-12-21 11:01:40
+#&gt; 3   trees       rds   31    3 2.9 Kb 2020-12-21 11:01:40</div><div class='input'>
 <span class='co'># Clean up</span>
 <span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div></span></pre>

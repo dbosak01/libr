@@ -8,6 +8,13 @@
 
 <title>Copy a Data Library — lib_copy • libr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -48,6 +55,7 @@ the copy will result in the current data in memory written to the new
 destination directory.  If the library is loaded into the workspace, 
 the workspace version will be considered the most current version, and
 that is the version that will be copied." />
+<meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
 
@@ -209,26 +217,26 @@ that is the version that will be copied.</p>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat1': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add dat to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat1': 2 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:29
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:29</div><div class='input'>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-21 11:01:40
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-21 11:01:40</div><div class='input'>
 <span class='co'># Copy dat1 to dat2</span>
 <span class='fu'>lib_copy</span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>dat2</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"copy"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat2': 2 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8/copy
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpkREutg/copy
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:29
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:29</div><div class='input'><span class='co'># library 'dat2': 2 items</span>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-21 11:01:40
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-21 11:01:40</div><div class='input'><span class='co'># library 'dat2': 2 items</span>
 <span class='co'># - attributes: not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy</span>
 <span class='co'># - items:</span>
