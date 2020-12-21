@@ -11,7 +11,9 @@
   
 ### Introduction <img src="./man/images/libr1.png" align="right" height="138" />
 
-Here is the introduction for libr.  More coming soon.
+Currently in the middle of revising 
+the documentation.  Best source is 
+[here](https://libr.r-sassy.org/articles/libr.html)
 
 ### Installation
 
