@@ -1,0 +1,154 @@
+---
+title: "Library Manipulation"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Library Manipulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Manipulating Data Libraries
+The **libr** package also contains a number of functions for manipulating
+data libraries.  There are functions to add and remove data from a library,
+as well as copy or delete an entire library.
+
+The example below illustrates some of these additional functions.  The example
+first creates a library and adds some data to it.  The example then proceeds
+to copy it to another library and perform some manipulation of the data
+in the libraries.  The example ends by looking at some of the metadata 
+available for libraries:
+
+```{r eval=FALSE, echo=TRUE}
+# Create temp directory
+tmp <- tempdir()
+
+# Create libraries
+libname(s1, tmp)
+
+# Add data to library and adjust names
+lib_add(s1, state.name, state.area, state.region, state.abb,
+        name = c("name", "area", "region", "abb"))
+# # library 's1': 4 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:00:28
+# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:00:28
+# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28
+# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28
+
+# Copy library to backup location
+lib_copy(s1, s2, file.path(tmp, "orig"))
+# # library 's2': 4 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig
+# - items:
+#     Name Extension Rows Cols   Size        LastModified
+# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:01:17
+# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:01:17
+# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:01:17
+# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17
+
+# Remove data from library 1
+lib_remove(s1, name = c("name", "area", "region", "abb"))
+# # library 's1': 0 items
+# - attributes: rds not loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# NULL
+
+# Load library 1 into memory
+lib_load(s1)
+
+s1.combined <- data.frame(name = s2.name, abb = s2.abb, 
+                              area = s2.area, region = s2.region)
+
+s1.east <- subset(s1.combined, region == "Northeast")
+s1.west <- subset(s1.combined, region == "West")
+s1.north <- subset(s1.combined, region == "North Central")
+s1.south <- subset(s1.combined, region == "South")
+
+# Sync workspace with library list
+lib_sync(s1)
+# # library 's1': 5 items
+# - attributes: rds loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#       Name Extension Rows Cols    Size LastModified
+# 1 combined        NA   50    4 12.7 Kb         <NA>
+# 2     east        NA    9    4  3.2 Kb         <NA>
+# 3    north        NA   12    4  3.5 Kb         <NA>
+# 4    south        NA   16    4    4 Kb         <NA>
+# 5     west        NA   13    4  3.6 Kb         <NA>
+
+# Save library 1 to disk
+lib_write(s1)
+# # library 's1': 5 items
+# - attributes: rds loaded
+# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
+# - items:
+#       Name Extension Rows Cols    Size        LastModified
+# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
+# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
+# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
+# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
+# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
+
+# View path
+lib_path(s1)
+# [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpqAMV6L"
+
+# View size
+lib_size(s1)
+# [1] 7175
+
+# View info
+lib_info(s1)
+#       Name Extension Rows Cols    Size        LastModified
+# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
+# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
+# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
+# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
+# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
+
+# Display dictionary
+dictionary(s1)
+# # A tibble: 20 x 10
+#    Name     Column Class     Label Description Format Width Justify  Rows   NAs
+#    <chr>    <chr>  <chr>     <chr> <chr>       <lgl>  <int> <chr>   <int> <int>
+#  1 combined name   character NA    NA          NA        14 NA         50     0
+#  2 combined abb    character NA    NA          NA         2 NA         50     0
+#  3 combined area   numeric   NA    NA          NA        NA NA         50     0
+#  4 combined region factor    NA    NA          NA        NA NA         50     0
+#  5 east     name   character NA    NA          NA        13 NA          9     0
+#  6 east     abb    character NA    NA          NA         2 NA          9     0
+#  7 east     area   numeric   NA    NA          NA        NA NA          9     0
+#  8 east     region factor    NA    NA          NA        NA NA          9     0
+#  9 north    name   character NA    NA          NA        12 NA         12     0
+# 10 north    abb    character NA    NA          NA         2 NA         12     0
+# 11 north    area   numeric   NA    NA          NA        NA NA         12     0
+# 12 north    region factor    NA    NA          NA        NA NA         12     0
+# 13 south    name   character NA    NA          NA        14 NA         16     0
+# 14 south    abb    character NA    NA          NA         2 NA         16     0
+# 15 south    area   numeric   NA    NA          NA        NA NA         16     0
+# 16 south    region factor    NA    NA          NA        NA NA         16     0
+# 17 west     name   character NA    NA          NA        10 NA         13     0
+# 18 west     abb    character NA    NA          NA         2 NA         13     0
+# 19 west     area   numeric   NA    NA          NA        NA NA         13     0
+# 20 west     region factor    NA    NA          NA        NA NA         13     0
+
+# Unload library 1
+lib_unload(s1)
+
+# Clean up
+lib_delete(s1)
+lib_delete(s2)
+```

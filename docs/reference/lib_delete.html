@@ -97,6 +97,30 @@ use the unlink function or other packaged functions." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/libr-basics.html">Basic Library Operations</a>
+    </li>
+    <li>
+      <a href="../articles/libr-manipulation.html">Library Manipulation</a>
+    </li>
+    <li>
+      <a href="../articles/libr-datastep.html">Data Step Examples</a>
+    </li>
+    <li>
+      <a href="../articles/libr-eq.html">Enhanced Equality</a>
+    </li>
+    <li>
+      <a href="../articles/libr-disclaimer.html">Disclaimer</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -174,32 +198,32 @@ use the <code><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></code> fun
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 0 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\Rtmpk3QTxS
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
 #&gt; NULL</div><div class='input'>
 <span class='co'># Add data to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 1 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\Rtmpk3QTxS
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
 #&gt; - items:
 #&gt;     Name Extension Rows Cols Size        LastModified
-#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-18 14:39:56</div><div class='input'><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
+#&gt; 1 mtcars       rds   32   11 8 Kb 2020-12-20 22:52:29</div><div class='input'><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 2 items
 #&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\Rtmpk3QTxS
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-18 14:39:56
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-18 14:39:56</div><div class='input'>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:29
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:29</div><div class='input'>
 <span class='co'># Load library</span>
 <span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 2 items
 #&gt; </span><span>- attributes: rds loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\Rtmpk3QTxS
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-18 14:39:56
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-18 14:39:56</div><div class='input'>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:29
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:29</div><div class='input'>
 <span class='co'># Examine workspace</span>
 <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "dat"        "dat.iris"   "dat.mtcars" "tmp"       </div><div class='input'><span class='co'># [1] "dat" "dat.iris" "dat.mtcars" "tmp"</span>
@@ -208,11 +232,11 @@ use the <code><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></code> fun
 <span class='va'>dat</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 2 items
 #&gt; </span><span>- attributes: rds loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\Rtmpk3QTxS
+#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpA1Jvr8
 #&gt; - items:
 #&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-18 14:39:56
-#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-18 14:39:56</div><div class='input'><span class='co'># library 'dat': 2 items</span>
+#&gt; 1 mtcars       rds   32   11   8 Kb 2020-12-20 22:52:29
+#&gt; 2   iris       rds  150    5 8.1 Kb 2020-12-20 22:52:29</div><div class='input'><span class='co'># library 'dat': 2 items</span>
 <span class='co'># - attributes: not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
 <span class='co'># - items:</span>

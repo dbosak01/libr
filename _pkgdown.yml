@@ -1,0 +1,16 @@
+url: https://libr.r-sassy.org
+
+articles:
+- title: Examples
+  navbar: ~
+  contents:
+  - libr-basics
+  - libr-manipulation
+  - libr-datastep
+  - libr-eq
+  - libr-disclaimer
+
+navbar:
+  structure:
+    left:  [home, intro, reference, articles, news]
+    right: [github]

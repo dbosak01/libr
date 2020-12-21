@@ -2,6 +2,14 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  libr-basics: libr-basics.html
+  libr-datastep: libr-datastep.html
+  libr-disclaimer: libr-disclaimer.html
+  libr-eq: libr-eq.html
+  libr-manipulation: libr-manipulation.html
   libr: libr.html
-last_built: 2020-12-18T19:39Z
+last_built: 2020-12-21T03:52Z
+urls:
+  reference: https://libr.r-sassy.org/reference
+  article: https://libr.r-sassy.org/articles
 

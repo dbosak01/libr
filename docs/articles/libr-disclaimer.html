@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>libr • libr</title>
+<title>Disclaimer • libr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="libr">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Disclaimer">
 <meta property="og:description" content="libr">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -94,83 +94,24 @@
 
       
 
-      </header><script src="libr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="libr-disclaimer_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>libr</h1>
+      <h1 data-toc-skip>Disclaimer</h1>
             
             <h4 class="date">2020-12-20</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/master/vignettes/libr.Rmd"><code>vignettes/libr.Rmd</code></a></small>
-      <div class="hidden name"><code>libr.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/master/vignettes/libr-disclaimer.Rmd"><code>vignettes/libr-disclaimer.Rmd</code></a></small>
+      <div class="hidden name"><code>libr-disclaimer.Rmd</code></div>
 
     </div>
 
     
     
-<p>The <strong>libr</strong> package brings the concepts of data libraries, data dictionaries, and data steps to R. A data library is an object used to define and manage an entire directory of data files. A data dictionary is a data frame full of information about a data library, data frame, or tibble. A data step is a mechanism to perform row-by-row processing of data.</p>
-<div id="glossary" class="section level3">
+<div id="package-disclaimer" class="section level3">
 <h3 class="hasAnchor">
-<a href="#glossary" class="anchor"></a>Glossary</h3>
-<p>The functions contained in the <strong>libr</strong> package are as follows:</p>
-<div id="library-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#library-functions" class="anchor"></a>Library Functions</h4>
-<ul>
-<li>
-<code><a href="../reference/libname.html">libname()</a></code>: Creates a data library</li>
-<li>
-<code><a href="../reference/lib_load.html">lib_load()</a></code>: Loads a library into the workspace</li>
-<li>
-<code><a href="../reference/lib_unload.html">lib_unload()</a></code>: Unloads a library from the workspace</li>
-<li>
-<code><a href="../reference/lib_sync.html">lib_sync()</a></code>: Synchronizes the workspace with the library list</li>
-<li>
-<code><a href="../reference/lib_write.html">lib_write()</a></code>: Writes library data to the file system</li>
-<li>
-<code><a href="../reference/lib_add.html">lib_add()</a></code>: Adds data to a library</li>
-<li>
-<code><a href="../reference/lib_replace.html">lib_replace()</a></code>: Replaces data in a library</li>
-<li>
-<code><a href="../reference/lib_remove.html">lib_remove()</a></code>: Removes data from a library</li>
-<li>
-<code><a href="../reference/lib_copy.html">lib_copy()</a></code>: Copies a data library</li>
-<li>
-<code><a href="../reference/lib_delete.html">lib_delete()</a></code>: Deletes a data library</li>
-<li>
-<code><a href="../reference/lib_info.html">lib_info()</a></code>: Returns a data frame of information about the library</li>
-<li>
-<code><a href="../reference/lib_path.html">lib_path()</a></code>: Returns the path of a data library</li>
-<li>
-<code><a href="../reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in bytes</li>
-</ul>
-</div>
-<div id="import-specs-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#import-specs-functions" class="anchor"></a>Import Specs Functions</h4>
-<ul>
-<li>
-<code><a href="../reference/specs.html">specs()</a></code>: Define import specs for a libname</li>
-<li>
-<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import spec for a specific file</li>
-<li>
-<code><a href="../reference/write.specs.html">write.specs()</a></code>: Writes a specs object to the file system</li>
-<li>
-<code><a href="../reference/read.specs.html">read.specs()</a></code>: Reads a specs file from the file system</li>
-</ul>
-</div>
-<div id="other-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#other-functions" class="anchor"></a>Other Functions</h4>
-<ul>
-<li>
-<code><a href="../reference/dictionary.html">dictionary()</a></code>: Creates a data dictionary</li>
-<li>
-<code><a href="../reference/datastep.html">datastep()</a></code>: Perform row-by-row processing of data</li>
-<li>
-<code><a href="../reference/%eq%.html">%eq%</a></code>: An infix operator to check equality between objects</li>
-</ul>
-</div>
+<a href="#package-disclaimer" class="anchor"></a>Package Disclaimer</h3>
+<p>Note that the <strong>libr</strong> package is intended to be used with small and medium-sized data sets. It is not recommended for big data, as big data requires very careful control over which data is or is not loaded into memory. The <strong>libr</strong> package, on the other hand, tends to load all data into memory indiscriminately.</p>
 </div>
   </div>
 

@@ -55,6 +55,30 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/libr-basics.html">Basic Library Operations</a>
+    </li>
+    <li>
+      <a href="articles/libr-manipulation.html">Library Manipulation</a>
+    </li>
+    <li>
+      <a href="articles/libr-datastep.html">Data Step Examples</a>
+    </li>
+    <li>
+      <a href="articles/libr-eq.html">Enhanced Equality</a>
+    </li>
+    <li>
+      <a href="articles/libr-disclaimer.html">Disclaimer</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
@@ -78,571 +102,41 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="libr-" class="section level1">
+<div id="libr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#libr-" class="anchor"></a>libr <img src="./man/images/books.svg" align="right" height="138">
-</h1></div>
+<a href="#libr" class="anchor"></a>libr</h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p>The <strong>libr</strong> package brings the concepts of data libraries, data dictionaries, and data steps to R. A data library is an object used to define and manage an entire directory of data files. A data dictionary is a data frame full of information about a data library, data frame, or tibble. A data step is a mechanism to perform row-by-row processing of data.</p>
-<div id="glossary" class="section level3">
+<div id="introduction-" class="section level3">
 <h3 class="hasAnchor">
-<a href="#glossary" class="anchor"></a>Glossary</h3>
-<p>The functions contained in the <strong>libr</strong> package are as follows:</p>
-<div id="library-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#library-functions" class="anchor"></a>Library Functions</h4>
-<ul>
-<li>
-<code><a href="reference/libname.html">libname()</a></code>: Creates a data library</li>
-<li>
-<code><a href="reference/lib_load.html">lib_load()</a></code>: Loads a library into the workspace</li>
-<li>
-<code><a href="reference/lib_unload.html">lib_unload()</a></code>: Unloads a library from the workspace</li>
-<li>
-<code><a href="reference/lib_sync.html">lib_sync()</a></code>: Synchronizes the workspace with the library list</li>
-<li>
-<code><a href="reference/lib_write.html">lib_write()</a></code>: Writes library data to the file system</li>
-<li>
-<code><a href="reference/lib_add.html">lib_add()</a></code>: Adds data to a library</li>
-<li>
-<code><a href="reference/lib_replace.html">lib_replace()</a></code>: Replaces data in a library</li>
-<li>
-<code><a href="reference/lib_remove.html">lib_remove()</a></code>: Removes data from a library</li>
-<li>
-<code><a href="reference/lib_copy.html">lib_copy()</a></code>: Copies a data library</li>
-<li>
-<code><a href="reference/lib_delete.html">lib_delete()</a></code>: Deletes a data library</li>
-<li>
-<code><a href="reference/lib_info.html">lib_info()</a></code>: Returns a data frame of information about the library</li>
-<li>
-<code><a href="reference/lib_path.html">lib_path()</a></code>: Returns the path of a data library</li>
-<li>
-<code><a href="reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in bytes</li>
-</ul>
-</div>
-<div id="import-specs-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#import-specs-functions" class="anchor"></a>Import Specs Functions</h4>
-<ul>
-<li>
-<code><a href="reference/specs.html">specs()</a></code>: Define import specs for a libname</li>
-<li>
-<code><a href="reference/import_spec.html">import_spec()</a></code>: Define an import spec for a specific file</li>
-<li>
-<code><a href="reference/write.specs.html">write.specs()</a></code>: Writes a specs object to the file system</li>
-<li>
-<code><a href="reference/read.specs.html">read.specs()</a></code>: Reads a specs file from the file system</li>
-</ul>
-</div>
-<div id="other-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#other-functions" class="anchor"></a>Other Functions</h4>
-<ul>
-<li>
-<code><a href="reference/dictionary.html">dictionary()</a></code>: Creates a data dictionary</li>
-<li>
-<code><a href="reference/datastep.html">datastep()</a></code>: Perform row-by-row processing of data</li>
-<li>
-<code><a href="reference/%eq%.html">%eq%</a></code>: An infix operator to check equality between objects</li>
-</ul>
-</div>
-</div>
-<div id="libnames-and-dictionaries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#libnames-and-dictionaries" class="anchor"></a>Libnames and Dictionaries</h2>
-<p>The main motivation for developing the <strong>libr</strong> package is to create and use data libraries and data dictionaries. These concepts are useful when dealing with sets of related data files. The <code><a href="reference/libname.html">libname()</a></code> function allows you to define a library for an entire directory of data files. The library can then be manipulated as a whole using the <code>lib_*</code> functions in the <strong>libr</strong> package.</p>
-<div id="basic-library-operations" class="section level3">
-<h3 class="hasAnchor">
-<a href="#basic-library-operations" class="anchor"></a>Basic Library Operations</h3>
-<p>There are four main <strong>libr</strong> functions for creating and using a data library:</p>
-<ul>
-<li><code><a href="reference/libname.html">libname()</a></code></li>
-<li><code><a href="reference/lib_load.html">lib_load()</a></code></li>
-<li><code><a href="reference/lib_unload.html">lib_unload()</a></code></li>
-<li><code><a href="reference/lib_write.html">lib_write()</a></code></li>
-</ul>
-<p>The <code><a href="reference/libname.html">libname()</a></code> function creates a data library. The function has parameters for the library name and a directory to associate it with. If the directory has existing data files, those data files will be automatically loaded into the library. Once in the library, the data can be accessed using list syntax.</p>
-<p>You may create a data library for several different types of files: ‘rds’, ‘csv’, ‘xlsx’, ‘xls’, ‘sas7bdat’, ‘xpt’, and ‘dbf’. The type of library is defined using the <code>engine</code> parameter on the <code><a href="reference/libname.html">libname()</a></code> function. The default data engine is ‘rds’. The data engines will attempt to identify the correct data type for each column of data. You may also control the data type of the columns using the <code>import_specs</code> parameter and the <code><a href="reference/specs.html">specs()</a></code> and <code><a href="reference/import_spec.html">import_spec()</a></code> functions.</p>
-<p>If you prefer to access the data via the workspace, call the <code><a href="reference/lib_load.html">lib_load()</a></code> function on the library. This function will load the library data into the parent frame, where it can be accessed using a two-level (&lt;library&gt;.&lt;dataset&gt;) name.</p>
-<p>When you are done with the data, call the <code><a href="reference/lib_unload.html">lib_unload()</a></code> function to remove the data from the parent frame and put it back in the library list. To write any added or modified data to disk, call the <code><a href="reference/lib_write.html">lib_write()</a></code> function. The <code><a href="reference/lib_write.html">lib_write()</a></code> function will only write data that has changed since the last write.</p>
-<p>The following example will illustrate some basic functionality of the <strong>libr</strong> package regarding the creation of libnames and use of dictionaries. The example first places some sample data in a temp directory for illustration purposes. Then the example creates a libname from the temp directory, loads it into memory, adds data to it, and then unloads and writes everything to disk:</p>
-<pre><code># Create temp directory
-tmp &lt;- tempdir()
-
-# Save some data to temp directory
-# for illustration purposes
-saveRDS(trees, file.path(tmp, "trees.rds"))
-saveRDS(rock, file.path(tmp, "rocks.rds"))
-
-# Create library
-libname(dat, tmp)
-# library 'dat': 2 items
-# - attributes: not loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
-# - items:
-#    Name Extension Rows Cols   Size        LastModified
-# 1 rocks       rds   48    4 3.1 Kb 2020-11-05 23:25:34
-# 2 trees       rds   31    3 2.4 Kb 2020-11-05 23:25:34
-
-# Examine data dictionary for library
-dictionary(dat)
-# A tibble: 7 x 9
-#   Name  Column Class   Label Description Format Width  Rows   NAs
-#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;int&gt; &lt;int&gt;
-# 1 rocks area   integer NA    NA          NA     NA       48     0
-# 2 rocks peri   numeric NA    NA          NA     NA       48     0
-# 3 rocks shape  numeric NA    NA          NA     NA       48     0
-# 4 rocks perm   numeric NA    NA          NA     NA       48     0
-# 5 trees Girth  numeric NA    NA          NA     NA       31     0
-# 6 trees Height numeric NA    NA          NA     NA       31     0
-# 7 trees Volume numeric NA    NA          NA     NA       31     0
-
-# Load library
-lib_load(dat)
-
-# Examine workspace
-ls()
-# [1] "dat" "dat.rocks" "dat.trees" "tmp"
-
-# Use data from the library
-summary(dat.rocks)
-#      area            peri            shape              perm        
-# Min.   : 1016   Min.   : 308.6   Min.   :0.09033   Min.   :   6.30  
-# 1st Qu.: 5305   1st Qu.:1414.9   1st Qu.:0.16226   1st Qu.:  76.45  
-# Median : 7487   Median :2536.2   Median :0.19886   Median : 130.50  
-# Mean   : 7188   Mean   :2682.2   Mean   :0.21811   Mean   : 415.45  
-# 3rd Qu.: 8870   3rd Qu.:3989.5   3rd Qu.:0.26267   3rd Qu.: 777.50  
-# Max.   :12212   Max.   :4864.2   Max.   :0.46413   Max.   :1300.00 
-
-# Add data to the library
-dat.trees_subset &lt;- subset(dat.trees, Girth &gt; 11)
-
-# Add more data to the library
-dat.cars &lt;- mtcars
-
-# Unload the library from memory
-lib_unload(dat)
-
-# Examine workspace again
-ls()
-# [1] "dat" "tmp"
-
-# Write the library to disk
-lib_write(dat)
-# library 'dat': 4 items
-# - attributes: not loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc
-# - items:
-#           Name Extension Rows Cols   Size        LastModified
-# 1        rocks       rds   48    4 3.1 Kb 2020-11-05 23:37:45
-# 2        trees       rds   31    3 2.4 Kb 2020-11-05 23:37:45
-# 3         cars       rds   32   11 7.3 Kb 2020-11-05 23:37:45
-# 4 trees_subset       rds   23    3 1.8 Kb 2020-11-05 23:37:45
-
-# Clean up
-lib_delete(dat)
-
-# Examine workspace again
-ls()
-# [1] "tmp"</code></pre>
-</div>
-<div id="manipulating-libraries" class="section level3">
-<h3 class="hasAnchor">
-<a href="#manipulating-libraries" class="anchor"></a>Manipulating Libraries</h3>
-<p>The <strong>libr</strong> package also contains a number of functions for manipulating data libraries. There are functions to add and remove data from a library, as well as copy or delete an entire library.</p>
-<p>The example below illustrates some of these additional functions. The example first creates a library and adds some data to it. The example then proceeds to copy it to another library and perform some manipulation of the data in the libraries. The example ends by looking at some of the metadata available for libraries:</p>
-<pre><code># Create temp directory
-tmp &lt;- tempdir()
-
-# Create libraries
-libname(s1, tmp)
-
-# Add data to library and adjust names
-lib_add(s1, state.name, state.area, state.region, state.abb,
-        name = c("name", "area", "region", "abb"))
-# # library 's1': 4 items
-# - attributes: rds not loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
-# - items:
-#     Name Extension Rows Cols   Size        LastModified
-# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:00:28
-# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:00:28
-# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28
-# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28
-
-# Copy library to backup location
-lib_copy(s1, s2, file.path(tmp, "orig"))
-# # library 's2': 4 items
-# - attributes: rds not loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig
-# - items:
-#     Name Extension Rows Cols   Size        LastModified
-# 1   name       rds   50    1 4.4 Kb 2020-11-29 17:01:17
-# 2   area       rds   50    1 1.4 Kb 2020-11-29 17:01:17
-# 3 region       rds   50    1 1.9 Kb 2020-11-29 17:01:17
-# 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17
-
-# Remove data from library 1
-lib_remove(s1, name = c("name", "area", "region", "abb"))
-# # library 's1': 0 items
-# - attributes: rds not loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
-# NULL
-
-# Load library 1 into memory
-lib_load(s1)
-
-s1.combined &lt;- data.frame(name = s2.name, abb = s2.abb, 
-                              area = s2.area, region = s2.region)
-
-s1.east &lt;- subset(s1.combined, region == "Northeast")
-s1.west &lt;- subset(s1.combined, region == "West")
-s1.north &lt;- subset(s1.combined, region == "North Central")
-s1.south &lt;- subset(s1.combined, region == "South")
-
-# Sync workspace with library list
-lib_sync(s1)
-# # library 's1': 5 items
-# - attributes: rds loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
-# - items:
-#       Name Extension Rows Cols    Size LastModified
-# 1 combined        NA   50    4 12.7 Kb         &lt;NA&gt;
-# 2     east        NA    9    4  3.2 Kb         &lt;NA&gt;
-# 3    north        NA   12    4  3.5 Kb         &lt;NA&gt;
-# 4    south        NA   16    4    4 Kb         &lt;NA&gt;
-# 5     west        NA   13    4  3.6 Kb         &lt;NA&gt;
-
-# Save library 1 to disk
-lib_write(s1)
-# # library 's1': 5 items
-# - attributes: rds loaded
-# - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L
-# - items:
-#       Name Extension Rows Cols    Size        LastModified
-# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
-# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
-# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
-# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
-# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
-
-# View path
-lib_path(s1)
-# [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpqAMV6L"
-
-# View size
-lib_size(s1)
-# [1] 7175
-
-# View info
-lib_info(s1)
-#       Name Extension Rows Cols    Size        LastModified
-# 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40
-# 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40
-# 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40
-# 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40
-# 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40
-
-# Display dictionary
-dictionary(s1)
-# # A tibble: 20 x 10
-#    Name     Column Class     Label Description Format Width Justify  Rows   NAs
-#    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;
-#  1 combined name   character NA    NA          NA        14 NA         50     0
-#  2 combined abb    character NA    NA          NA         2 NA         50     0
-#  3 combined area   numeric   NA    NA          NA        NA NA         50     0
-#  4 combined region factor    NA    NA          NA        NA NA         50     0
-#  5 east     name   character NA    NA          NA        13 NA          9     0
-#  6 east     abb    character NA    NA          NA         2 NA          9     0
-#  7 east     area   numeric   NA    NA          NA        NA NA          9     0
-#  8 east     region factor    NA    NA          NA        NA NA          9     0
-#  9 north    name   character NA    NA          NA        12 NA         12     0
-# 10 north    abb    character NA    NA          NA         2 NA         12     0
-# 11 north    area   numeric   NA    NA          NA        NA NA         12     0
-# 12 north    region factor    NA    NA          NA        NA NA         12     0
-# 13 south    name   character NA    NA          NA        14 NA         16     0
-# 14 south    abb    character NA    NA          NA         2 NA         16     0
-# 15 south    area   numeric   NA    NA          NA        NA NA         16     0
-# 16 south    region factor    NA    NA          NA        NA NA         16     0
-# 17 west     name   character NA    NA          NA        10 NA         13     0
-# 18 west     abb    character NA    NA          NA         2 NA         13     0
-# 19 west     area   numeric   NA    NA          NA        NA NA         13     0
-# 20 west     region factor    NA    NA          NA        NA NA         13     0
-
-# Unload library 1
-lib_unload(s1)
-
-# Clean up
-lib_delete(s1)
-lib_delete(s2)</code></pre>
-</div>
-</div>
-<div id="the-datastep-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-datastep-function" class="anchor"></a>The Datastep Function</h2>
-<p>Normally, R processes data column-by-column. The data step allows you to process data row-by-row. Row-by-row processing of data is useful when you have related columns, and wish to perform conditional logic on those columns. The <code><a href="reference/datastep.html">datastep()</a></code> function allows you to realize this style of data processing. It is particularly advantageous when you wish to perform deeply nested conditional logic. It is also very useful for by-group processing.</p>
-<div id="example-1-simple-data-step" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-1-simple-data-step" class="anchor"></a>Example 1: Simple Data Step</h4>
-<p>Here is an example of a simple data step:</p>
-<pre><code># Add some columns to mtcars using data step logic
-df &lt;- datastep(mtcars[1:10, 1:3], {
-
-    if (mpg &gt;= 20) 
-      mpgcat &lt;- "High"
-    else 
-      mpgcat &lt;- "Low"
-      
-    recdt &lt;- as.Date("1974-06-10")
-    
-    if (cyl == 8)
-      is8cyl &lt;- TRUE
-
-  })
-  
-# View results  
-df
-#                    mpg cyl  disp      recdt mpgcat is8cyl
-# Mazda RX4         21.0   6 160.0 1974-06-10   High     NA
-# Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA
-# Datsun 710        22.8   4 108.0 1974-06-10   High     NA
-# Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA
-# Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE
-# Valiant           18.1   6 225.0 1974-06-10    Low     NA
-# Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE
-# Merc 240D         24.4   4 146.7 1974-06-10   High     NA
-# Merc 230          22.8   4 140.8 1974-06-10   High     NA
-# Merc 280          19.2   6 167.6 1974-06-10    Low     NA
-</code></pre>
-</div>
-<div id="keep-drop-and-rename" class="section level3">
-<h3 class="hasAnchor">
-<a href="#keep-drop-and-rename" class="anchor"></a>Keep, Drop, and Rename</h3>
-<p>The data step has parameters to perform basic shaping of the resulting data frame. These parameters are ‘keep’, ‘drop’, and ‘rename’. For example, the above data step could have been performed by sending all columns into the data step, and keeping only the desired columns. Using the <code>keep</code> parameter also allows you to order the resulting columns.</p>
-<div id="example-2-keeping-data-step-variables" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-2-keeping-data-step-variables" class="anchor"></a>Example 2: Keeping Data Step Variables</h4>
-<pre><code># Keep and order output columns 
-df &lt;- datastep(mtcars[1:10,], 
-  keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
-
-    if (mpg &gt;= 20) 
-      mpgcat &lt;- "High"
-    else 
-      mpgcat &lt;- "Low"
-      
-    recdt &lt;- as.Date("1974-06-10")
-    
-    if (cyl == 8)
-      is8cyl &lt;- TRUE
-
-  })
-  
-df
-#                    mpg cyl  disp mpgcat      recdt
-# Mazda RX4         21.0   6 160.0   High 1974-06-10
-# Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10
-# Datsun 710        22.8   4 108.0   High 1974-06-10
-# Hornet 4 Drive    21.4   6 258.0   High 1974-06-10
-# Hornet Sportabout 18.7   8 360.0    Low 1974-06-10
-# Valiant           18.1   6 225.0    Low 1974-06-10
-# Duster 360        14.3   8 360.0    Low 1974-06-10
-# Merc 240D         24.4   4 146.7   High 1974-06-10
-# Merc 230          22.8   4 140.8   High 1974-06-10
-# Merc 280          19.2   6 167.6    Low 1974-06-10
-</code></pre>
-</div>
-</div>
-<div id="the-retain-parameter" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-retain-parameter" class="anchor"></a>The Retain Parameter</h3>
-<p>The retain parameter allows you to define variables that will be seeded with the value from the previous step. The retain option is useful for creating cumulative values or for performing conditions based on the value of the previous row.</p>
-<div id="example-3-drop-retain-and-rename-parameters" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-3-drop-retain-and-rename-parameters" class="anchor"></a>Example 3: Drop, Retain, and Rename Parameters</h4>
-<pre><code>df &lt;- datastep(mtcars[1:10, ],
-               drop = c("disp", "hp", "drat", "qsec",
-                        "vs", "am", "gear", "carb"),
-               retain = list(cumwt = 0 ),
-               rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt",
-                          cumwt = "Cumulative Wgt"), {
-
-  cumwt &lt;- cumwt + wt
-
- })
-
-df
-#                    MPG Cylinders   Wgt Cumulative Wgt
-# Mazda RX4         21.0         6 2.620          2.620
-# Mazda RX4 Wag     21.0         6 2.875          5.495
-# Datsun 710        22.8         4 2.320          7.815
-# Hornet 4 Drive    21.4         6 3.215         11.030
-# Hornet Sportabout 18.7         8 3.440         14.470
-# Valiant           18.1         6 3.460         17.930
-# Duster 360        14.3         8 3.570         21.500
-# Merc 240D         24.4         4 3.190         24.690
-# Merc 230          22.8         4 3.150         27.840
-# Merc 280          19.2         6 3.440         31.280
-</code></pre>
-</div>
-</div>
-<div id="by-group-processing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#by-group-processing" class="anchor"></a>By Group Processing</h3>
-<p>The <code><a href="reference/datastep.html">datastep()</a></code> function also has the capabilities of performing by-group processing. A by-group is accomplished using the <code>by</code> parameter, and passing a vector of column names that define the group. Once a by-group is defined, the <code>first.</code> and <code>last.</code> automatic variables become active, which allow you to identify the boundaries between groups. Note that, by default, your data must be sorted properly before sending it into the data step. To turn the sort check off, set the <code>sort_check</code> parameter to FALSE.</p>
-<div id="example-4-by-groups" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-4-by-groups" class="anchor"></a>Example 4: By Groups</h4>
-<pre><code># Identify start and end of by-groups
-df &lt;- datastep(mtcars[1:10,], 
-  keep = c("mpg", "cyl", "gear", "grp"), 
-  by = c("gear"), sort_check = FALSE, {
-
-    if (first. &amp; last.)
-      grp &lt;- "Start - End"
-    else if (first.)
-      grp &lt;- "Start"
-    else if (last.)
-      grp &lt;- "End"
-    else 
-      grp &lt;- "-"
-
-  })
-  
-df
-#                    mpg cyl gear   grp
-# Mazda RX4         21.0   6    4 Start
-# Mazda RX4 Wag     21.0   6    4     -
-# Datsun 710        22.8   4    4   End
-# Hornet 4 Drive    21.4   6    3 Start
-# Hornet Sportabout 18.7   8    3     -
-# Valiant           18.1   6    3     -
-# Duster 360        14.3   8    3   End
-# Merc 240D         24.4   4    4 Start
-# Merc 230          22.8   4    4     -
-# Merc 280          19.2   6    4   End
-</code></pre>
-</div>
-</div>
-<div id="using-summary-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-summary-functions" class="anchor"></a>Using Summary Functions</h3>
-<p>There may be times when you want to combine row-by-row conditional processing with column-by-column vector operations. For example, let’s say you want to calculate a mean and then perform conditional processing on that mean. This situation can be handled using the <code>calculate</code> parameter on the <code><a href="reference/datastep.html">datastep()</a></code> function. The function will execute the <code>calculate</code> block first, add any assigned variables to the data frame, and then execute the data step. Below is an example of such a scenario:</p>
-<div id="example-5-calculate-block" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-5-calculate-block" class="anchor"></a>Example 5: Calculate Block</h4>
-<pre><code># Categorize mpg as above or below the mean
-df &lt;- datastep(mtcars, 
-  keep = c("mpg", "cyl", "mean_mpg", "mpgcat"), 
-  calculate = { mean_mpg = mean(mpg) },
-  {
-
-    if (mpg &gt;= mean_mpg)
-      mpgcat &lt;- "High"
-    else 
-      mpgcat &lt;- "Low"
-
-  })
-  
-df[1:10,]
-#                    mpg cyl mean_mpg mpgcat
-# Mazda RX4         21.0   6 20.09062   High
-# Mazda RX4 Wag     21.0   6 20.09062   High
-# Datsun 710        22.8   4 20.09062   High
-# Hornet 4 Drive    21.4   6 20.09062   High
-# Hornet Sportabout 18.7   8 20.09062    Low
-# Valiant           18.1   6 20.09062    Low
-# Duster 360        14.3   8 20.09062    Low
-# Merc 240D         24.4   4 20.09062   High
-# Merc 230          22.8   4 20.09062   High
-# Merc 280          19.2   6 20.09062    Low
-</code></pre>
-</div>
-</div>
-<div id="data-steps-with-dplyr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-steps-with-dplyr" class="anchor"></a>Data Steps with <code>dplyr</code>
+<a href="#introduction-" class="anchor"></a>Introduction <img src="./man/images/libr1.png" align="right" height="138">
 </h3>
-<p>Note that the <code><a href="reference/datastep.html">datastep()</a></code> function is pipe-friendly, and can be combined with <strong>dplyr</strong> functions in a data pipeline. Also note that the <code><a href="reference/datastep.html">datastep()</a></code> function will recognize any group attributes added by the <code>group_by()</code> function. Therefore, within a <strong>dplyr</strong> pipeline, it is not necessary to use any <code>datastep</code> parameters. The following example recreates the above data frame from Example 5, but with a <strong>dplyr</strong> pipeline.</p>
-<div id="example-6-data-pipeline" class="section level4">
-<h4 class="hasAnchor">
-<a href="#example-6-data-pipeline" class="anchor"></a>Example 6: Data Pipeline</h4>
-<pre><code><a href="https://dplyr.tidyverse.org">library(dplyr)
-library(magrittr)
-
-# Add datastep to dplyr pipeline
-df &lt;- mtcars %&gt;% 
-  select(mpg, cyl, gear) %&gt;% 
-  mutate(mean_mpg = mean(mpg)) %&gt;% 
-  datastep({
-
-    if (mpg &gt;= mean_mpg)
-      mpgcat &lt;- "High"
-    else 
-      mpgcat &lt;- "Low"
-
-  }) %&gt;% 
-  filter(row_number() &lt;= 10)
-  
-df
-#     mpg cyl gear mean_mpg mpgcat
-# 1  21.0   6    4 20.09062   High
-# 2  21.0   6    4 20.09062   High
-# 3  22.8   4    4 20.09062   High
-# 4  21.4   6    3 20.09062   High
-# 5  18.7   8    3 20.09062    Low
-# 6  18.1   6    3 20.09062    Low
-# 7  14.3   8    3 20.09062    Low
-# 8  24.4   4    4 20.09062   High
-# 9  22.8   4    4 20.09062   High
-# 10 19.2   6    4 20.09062    Low
-</a></code></pre>
+<p>Here is the introduction for libr.</p>
 </div>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
+<p>The easiest way to install the <strong>sassy</strong> system is to run the following command from your R console:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"sassy"</span>)</span></code></pre></div>
+<p>Then put the following line at the top of your script:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(sassy)</span></code></pre></div>
+<p>That’s it!</p>
+<p>The above commands will install and load a set of packages that will allow you to think about programming in R very much the same way you thought about programming in SAS®.</p>
+<p>It is not <em>identical</em> to SAS®. R is, after all, a very different language. R is functional, vector-based, and runs entirely in memory. As a result, the syntax of <strong>sassy</strong> functions will be different than their corresponding SAS® functions.</p>
+<p>The <strong>sassy</strong> functions will, however, have a similar feel. Overall, you will find programming with the <strong>sassy</strong> system much more comfortable than programming in <strong>Base R</strong> or <strong>tidyverse</strong> alone.</p>
 </div>
+<div id="getting-help" class="section level3">
+<h3 class="hasAnchor">
+<a href="#getting-help" class="anchor"></a>Getting Help</h3>
+<p>If you need help with the <strong>sassy</strong> family of packages, the best place to turn to is the <a href="http://www.r-sassy.org">r-sassy</a> web site.<br>
+This web site offers many examples, and full documentation on every function.</p>
+<p>If you need additional help, please turn to <a href="https://stackoverflow.com">stackoverflow.com</a>. The stackoverflow community will be very willing to answer your questions.</p>
 </div>
-<div id="enhanced-equality-operator-eq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#enhanced-equality-operator-eq" class="anchor"></a>Enhanced Equality Operator <code>%eq%</code>
-</h2>
-<p>Lastly, the <strong>libr</strong> package contains an enhanced equality operator. The objective of the <code><a href="reference/%eq%.html">%eq%</a></code> operator is to return a TRUE or FALSE value when any two objects are compared. This enhanced equality operator is useful for situations when you don’t want to check for NULL or NA values, or care about the data types of the objects you are comparing.</p>
-<p>The <code><a href="reference/%eq%.html">%eq%</a></code> operator also compares data frames. The comparison will include all data values, but no attributes. This functionality is particularly useful when comparing tibbles, as tibbles often have many attributes assigned by <code>dplyr</code> functions.</p>
-<p>While it can be advantageous to have a comparison operator that does not give errors when encountering a NULL or NA value, note that this behavior can also mask problems with your code. Therefore, use the <code><a href="reference/%eq%.html">%eq%</a></code> operator with care.</p>
-<p>Below is an example of several comparisons using the <code><a href="reference/%eq%.html">%eq%</a></code> infix operator:</p>
-<pre><code># Comparing of NULLs and NA
-NULL %eq% NULL        # TRUE
-NULL %eq% NA          # FALSE
-NA %eq% NA            # TRUE
-1 %eq% NULL           # FALSE
-1 %eq% NA             # FALSE
-
-# Comparing of atomic values
-1 %eq% 1              # TRUE
-"one" %eq% "one"      # TRUE
-1 %eq% "one"          # FALSE
-1 %eq% Sys.Date()     # FALSE
-
-# Comparing of vectors
-v1 &lt;- c("A", "B", "C")
-v2 &lt;- c("A", "B", "D")
-v1 %eq% v1            # TRUE
-v1 %eq% v2            # FALSE
-
-# Comparing of data frames
-mtcars %eq% mtcars    # TRUE
-mtcars %eq% iris      # FALSE
-iris %eq% iris[1:50,] # FALSE
-
-# Mixing it up 
-mtcars %eq% NULL      # FALSE
-v1 %eq% NA            # FALSE
-1 %eq% v1             # FALSE</code></pre>
-</div>
-<div id="package-disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-disclaimer" class="anchor"></a>Package Disclaimer</h2>
-<p>Note that the <strong>libr</strong> package is intended to be used with small and medium-sized data sets. It is not recommended for big data, as big data requires very careful control over which data is or is not loaded into memory. The <strong>libr</strong> package, on the other hand, tends to load all data into memory indiscriminately.</p>
+<div id="next-steps" class="section level3">
+<h3 class="hasAnchor">
+<a href="#next-steps" class="anchor"></a>Next Steps</h3>
+<p>Next, you should read the <a href="http://sassy.r-sassy.org/articles/sassy.html">Get started</a> page, and look at some examples. From these pages, you will be able to link into each of the packages included in the <strong>sassy</strong> system, and explore them in depth.</p>
 </div>
 </div>
   </div>
