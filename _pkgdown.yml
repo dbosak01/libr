@@ -5,7 +5,7 @@ articles:
   navbar: ~
   contents:
   - libr-basics
-  - libr-manipulation
+  - libr-management
   - libr-datastep
   - libr-eq
   - libr-disclaimer

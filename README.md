@@ -15,8 +15,8 @@ R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:
 
 1. **Loading many related datasets**:  When you have a lot of data files
-that are related in some way, it is a troublesome when you want to load 
-them all into your program.  Most data import packages make you load each
+that are related in some way, it is troublesome when you want to use 
+them all in your analysis.  Most data import packages make you load each
 file individually. And the thing is, *almost all data* comes in sets of related 
 files.  So you would think that there would be an easy-to-use mechanism 
 to load them all at once.
@@ -45,7 +45,7 @@ NA values are so frequently encountered in data, it would convenient if
 there were an infix operator that didn't crash when it encountered an
 aberrant value.  
 
-#### Solution
+### Solution
 
 The **libr** package was developed to address all of the above problems. It does so
 by introducing four concepts:
