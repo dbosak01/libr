@@ -1,3 +1,8 @@
+# libr 1.1.0
+
+* Added pkgdown site
+* Added filter parameters to `libname()` and `lib_load()` parameters
+
 # libr 1.0.1
 
 A package to create data libraries, data dictionaries, and the ability
