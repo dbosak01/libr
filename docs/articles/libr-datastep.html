@@ -120,7 +120,9 @@
 <a href="#example-1-simple-data-step" class="anchor"></a>Example 1: Simple Data Step</h4>
 <p>Here is an example of a simple data step:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Add some columns to mtcars using data step logic</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+
+<span class="co"># Add some columns to mtcars using data step logic</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="op">{</span>
 
     <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> 
@@ -157,7 +159,9 @@
 <h4 class="hasAnchor">
 <a href="#example-2-keeping-data-step-variables" class="anchor"></a>Example 2: Keeping Data Step Variables</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Keep and order output columns </span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+
+<span class="co"># Keep and order output columns </span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, 
   keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"disp"</span>, <span class="st">"mpgcat"</span>, <span class="st">"recdt"</span><span class="op">)</span>, <span class="op">{</span>
 
@@ -195,7 +199,9 @@
 <h4 class="hasAnchor">
 <a href="#example-3-drop-retain-and-rename-parameters" class="anchor"></a>Example 3: Drop, Retain, and Rename Parameters</h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,
                drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span>, <span class="st">"drat"</span>, <span class="st">"qsec"</span>,
                         <span class="st">"vs"</span>, <span class="st">"am"</span>, <span class="st">"gear"</span>, <span class="st">"carb"</span><span class="op">)</span>,
                retain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cumwt <span class="op">=</span> <span class="fl">0</span> <span class="op">)</span>,
@@ -228,7 +234,9 @@
 <h4 class="hasAnchor">
 <a href="#example-4-by-groups" class="anchor"></a>Example 4: By Groups</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Identify start and end of by-groups</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+
+<span class="co"># Identify start and end of by-groups</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, 
   keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"grp"</span><span class="op">)</span>, 
   by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gear"</span><span class="op">)</span>, sort_check <span class="op">=</span> <span class="cn">FALSE</span>, <span class="op">{</span>
@@ -266,7 +274,9 @@
 <h4 class="hasAnchor">
 <a href="#example-5-calculate-block" class="anchor"></a>Example 5: Calculate Block</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Categorize mpg as above or below the mean</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+
+<span class="co"># Categorize mpg as above or below the mean</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span>, 
   keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mean_mpg"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>, 
   calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,
@@ -302,7 +312,8 @@
 <h4 class="hasAnchor">
 <a href="#example-6-data-pipeline" class="anchor"></a>Example 6: Data Pipeline</h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 
 <span class="co"># Add datastep to dplyr pipeline</span>

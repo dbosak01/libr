@@ -32,6 +32,8 @@ with care.
 Below is an example of several comparisons using the `%eq%` infix operator:
 
 ```{r eval=FALSE, echo=TRUE}
+library(libr)
+
 # Comparing of NULLs and NA
 NULL %eq% NULL        # TRUE
 NULL %eq% NA          # FALSE

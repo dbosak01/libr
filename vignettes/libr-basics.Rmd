@@ -61,6 +61,8 @@ illustration purposes.  Then the example creates a libname from the temp
 directory, loads it into memory, adds data to it, and then unloads and 
 writes everything to disk:
 ```{r eval=FALSE, echo=TRUE}
+library(libr)
+
 # Create temp directory
 tmp <- tempdir()
 
