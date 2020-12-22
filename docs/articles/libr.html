@@ -115,17 +115,35 @@
 
     
     
-<p>The <strong>libr</strong> package brings the concepts of data libraries, data dictionaries, and data steps to R. A data library is an object used to define and manage an entire directory of data files. A data dictionary is a data frame full of information about a data library, data frame, or tibble. A data step is a mechanism to perform row-by-row processing of data.</p>
-<div id="glossary" class="section level3">
+<p>The <strong>libr</strong> package brings the concepts of data libraries, data dictionaries, and data steps to R.</p>
+<ul>
+<li>A <strong>data library</strong> is an object used to define and manage an entire directory of data files.<br>
+</li>
+<li>A <strong>data dictionary</strong> is a data frame full of information about a data library, data frame, or tibble.</li>
+<li>A <strong>data step</strong> is a mechanism to perform row-by-row processing of data.</li>
+</ul>
+<p>These concepts have been available in SAS® software for decades. But they have not been available in R … until now!</p>
+<p>The <strong>libr</strong> package also includes an enhanced equality operator to make comparisons between columns less error-prone.</p>
+<div id="key-functions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#glossary" class="anchor"></a>Glossary</h3>
-<p>The functions contained in the <strong>libr</strong> package are as follows:</p>
-<div id="library-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#library-functions" class="anchor"></a>Library Functions</h4>
+<a href="#key-functions" class="anchor"></a>Key Functions</h3>
+<p>The above concepts are implemented in the <strong>libr</strong> package with four key functions. They are:</p>
 <ul>
 <li>
 <code><a href="../reference/libname.html">libname()</a></code>: Creates a data library</li>
+<li>
+<code><a href="../reference/dictionary.html">dictionary()</a></code>: Creates a data dictionary</li>
+<li>
+<code><a href="../reference/datastep.html">datastep()</a></code>: Performs row-by-row processing of data</li>
+<li>
+<code><a href="../reference/%eq%.html">%eq%</a></code>: An infix operator to check equality between objects</li>
+</ul>
+</div>
+<div id="library-management-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#library-management-functions" class="anchor"></a>Library Management Functions</h3>
+<p>There are several additional functions related to libraries. These functions allow you to easily manage the data in your library. The functions are:</p>
+<ul>
 <li>
 <code><a href="../reference/lib_load.html">lib_load()</a></code>: Loads a library into the workspace</li>
 <li>
@@ -151,31 +169,21 @@
 <li>
 <code><a href="../reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in bytes</li>
 </ul>
-</div>
-<div id="import-specs-functions" class="section level4">
+<div id="import-specs" class="section level4">
 <h4 class="hasAnchor">
-<a href="#import-specs-functions" class="anchor"></a>Import Specs Functions</h4>
+<a href="#import-specs" class="anchor"></a>Import Specs</h4>
+<p>Special functions are needed when you want to control how the columns in your data files are imported. These functions allow you to define an <code>import_spec</code> that controls the data type of each column.<br>
+The import specs can even be saved and reused for future imports.</p>
+<p>The functions related to import specs are as follows:</p>
 <ul>
 <li>
-<code><a href="../reference/specs.html">specs()</a></code>: Define import specs for a libname</li>
+<code><a href="../reference/specs.html">specs()</a></code>: Define a import specs collection for a library</li>
 <li>
-<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import spec for a specific file</li>
+<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import spec for a specific data file</li>
 <li>
-<code><a href="../reference/write.specs.html">write.specs()</a></code>: Writes a specs object to the file system</li>
+<code><a href="../reference/write.specs.html">write.specs()</a></code>: Writes a specs collection to the file system</li>
 <li>
 <code><a href="../reference/read.specs.html">read.specs()</a></code>: Reads a specs file from the file system</li>
-</ul>
-</div>
-<div id="other-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#other-functions" class="anchor"></a>Other Functions</h4>
-<ul>
-<li>
-<code><a href="../reference/dictionary.html">dictionary()</a></code>: Creates a data dictionary</li>
-<li>
-<code><a href="../reference/datastep.html">datastep()</a></code>: Perform row-by-row processing of data</li>
-<li>
-<code><a href="../reference/%eq%.html">%eq%</a></code>: An infix operator to check equality between objects</li>
 </ul>
 </div>
 </div>

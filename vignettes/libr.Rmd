@@ -16,16 +16,35 @@ knitr::opts_chunk$set(
 ```
   
 The **libr** package brings the concepts of data libraries, data 
-dictionaries, and data steps to R.  A data library is an object used to define 
-and manage an entire directory of data files.  A data dictionary is a data 
-frame full of information about a data library, data frame, or tibble. A
-data step is a mechanism to perform row-by-row processing of data.
+dictionaries, and data steps to R.  
 
-### Glossary 
-The functions contained in the **libr** package are as follows:
+* A **data library** is an object used to define 
+and manage an entire directory of data files.  
+* A **data dictionary** is a data 
+frame full of information about a data library, data frame, or tibble. 
+* A **data step** is a mechanism to perform row-by-row processing of data.
 
-#### Library Functions
+These concepts have been available in SAS® software for decades. 
+But they have not been available in R ... until now!
+
+The **libr** package also includes an enhanced equality operator to
+make comparisons between columns less error-prone.
+
+### Key Functions
+
+The above concepts are implemented in the **libr** package with four key 
+functions. They are:
+
 * `libname()`: Creates a data library
+* `dictionary()`: Creates a data dictionary 
+* `datastep()`: Performs row-by-row processing of data
+* `%eq%`: An infix operator to check equality between objects
+
+### Library Management Functions
+There are several additional functions related to libraries.
+These functions allow you to easily manage the data in your library.
+The functions are:
+
 * `lib_load()`: Loads a library into the workspace
 * `lib_unload()`: Unloads a library from the workspace
 * `lib_sync()`: Synchronizes the workspace with the library list
@@ -39,16 +58,20 @@ The functions contained in the **libr** package are as follows:
 * `lib_path()`: Returns the path of a data library
 * `lib_size()`: Returns the size of the data library in bytes
 
-#### Import Specs Functions
-* `specs()`: Define import specs for a libname
-* `import_spec()`: Define an import spec for a specific file
-* `write.specs()`: Writes a specs object to the file system
+#### Import Specs 
+
+Special functions are needed when you want to control how the columns
+in your data files are imported.  These functions allow you to
+define an `import_spec` that controls the data type of each column.  
+The import specs can even be saved and reused for future imports.
+
+The functions related to import specs are as follows:
+
+* `specs()`: Define a import specs collection for a library
+* `import_spec()`: Define an import spec for a specific data file
+* `write.specs()`: Writes a specs collection to the file system
 * `read.specs()`: Reads a specs file from the file system
 
-#### Other Functions
-* `dictionary()`: Creates a data dictionary
-* `datastep()`: Perform row-by-row processing of data
-* `%eq%`: An infix operator to check equality between objects
 
 
 
