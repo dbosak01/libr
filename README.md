@@ -1,5 +1,3 @@
-# libr 
-
 <!-- badges: start -->
   
 [![libr version](https://www.r-pkg.org/badges/version/libr)](https://cran.r-project.org/package=libr)
@@ -9,7 +7,8 @@
 
 <!-- badges: end -->
   
-### Introduction <img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px"/>
+# Introduction to **libr** 
+<img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px"/>
 
 R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:
