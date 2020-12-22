@@ -8,16 +8,16 @@
 <!-- badges: end -->
   
 # Introduction to **libr** 
-<img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px;margin-bottom:40px"/>
+<img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px"/>
 
 R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:
 
-1. **Loading many related datasets**:  When you have many of data files
+1. **Loading many related datasets**:  When you have many data files
 that are related in some way, it is troublesome when you want to use 
 them all in your analysis.  Most data import packages make you load each
 file individually. And the thing is, *almost all data* comes in sets of related 
-files.  So you would think that there would be an easy-to-use mechanism 
+files.  So you would think that there would be an easy mechanism 
 to load them all at once.
 
 2. **Examining the Attributes of Your Data**:  Once you have a set of related

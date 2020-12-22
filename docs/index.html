@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -109,24 +109,21 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="libr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#libr" class="anchor"></a>libr</h1></div>
-<!-- badges: start -->
+
 
 <!-- badges: end -->
-<div id="introduction-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#introduction-" class="anchor"></a>Introduction <img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px">
-</h3>
+<div id="introduction-to-libr" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#introduction-to-libr" class="anchor"></a>Introduction to <strong>libr</strong>
+</h1></div>
+<p><img src="./man/images/libr1.png" align="left" height="138" style="margin-right: 20px"></p>
 <p>R is a very flexible and powerful language. But there are some inconveniences when working with data:</p>
 <ol>
-<li><p><strong>Loading many related datasets</strong>: When you have a lot of data files that are related in some way, it is troublesome when you want to use them all in your analysis. Most data import packages make you load each file individually. And the thing is, <em>almost all data</em> comes in sets of related files. So you would think that there would be an easy-to-use mechanism to load them all at once.</p></li>
+<li><p><strong>Loading many related datasets</strong>: When you have many data files that are related in some way, it is troublesome when you want to use them all in your analysis. Most data import packages make you load each file individually. And the thing is, <em>almost all data</em> comes in sets of related files. So you would think that there would be an easy mechanism to load them all at once.</p></li>
 <li><p><strong>Examining the Attributes of Your Data</strong>: Once you have a set of related data files loaded into your program, the next problem is how to examine the structure of <em>all of them</em>. R has the <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> function if you want to understand the structure of a single dataset. But what if there are many? There is no simple way to examine the attributes of many related datasets. And further, some valuable attributes are missing from the <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> function output.</p></li>
 <li><p><strong>Row-By-Row Processing of Data</strong>: R processes data column by column. In most cases, column-by-column is a perfectly suitable way of processing data. But in some cases it is desirable to process data row-by-row. Row-by-row processing is useful when you have many related columns, and want to perform complex conditional processing across them. It is also very convenient when you have grouped data, and want to perform conditional processing within a group.</p></li>
 <li><p><strong>Comparison Operator</strong>: Once you are comparing two columns of data, you run into the next inconvenience: the R comparison operator (==). This operator is highly susceptible to crashing. All you need is one NA value in one of the columns, and the comparison will crash. Since NA values are so frequently encountered in data, it would convenient if there were an infix operator that didn’t crash when it encountered an aberrant value.</p></li>
 </ol>
-</div>
 <div id="solution" class="section level3">
 <h3 class="hasAnchor">
 <a href="#solution" class="anchor"></a>Solution</h3>
@@ -163,6 +160,7 @@
 <p>If you encounter a bug or have a feature request, please submit an issue <a href="https://github.com/dbosak01/libr/issues">here</a>.</p>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
