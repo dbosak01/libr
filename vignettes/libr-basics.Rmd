@@ -1,6 +1,5 @@
 ---
 title: "Basic Library Operations"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basic Library Operations}
@@ -142,3 +141,6 @@ lib_delete(dat)
 ls()
 # [1] "tmp"
 ```
+
+
+Next: [Library Management](https://libr.r-sassy.org/articles/libr-management.html)

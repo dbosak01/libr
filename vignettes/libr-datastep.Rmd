@@ -1,6 +1,5 @@
 ---
 title: "Data Step Operations"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data Step Operations}
@@ -251,6 +250,6 @@ df
 
 ```
 
-
+Next: [Enhanced Equality](https://libr.r-sassy.org/articles/libr-eq.html)
 
 

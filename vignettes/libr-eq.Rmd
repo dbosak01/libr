@@ -1,6 +1,5 @@
 ---
 title: "Enhanced Equality"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Enhanced Equality}
@@ -62,3 +61,5 @@ mtcars %eq% NULL      # FALSE
 v1 %eq% NA            # FALSE
 1 %eq% v1             # FALSE
 ```
+
+Next: [Disclaimer](https://libr.r-sassy.org/articles/libr-disclaimer.html)

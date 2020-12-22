@@ -6,9 +6,9 @@ articles:
   libr-datastep: libr-datastep.html
   libr-disclaimer: libr-disclaimer.html
   libr-eq: libr-eq.html
-  libr-manipulation: libr-manipulation.html
+  libr-management: libr-management.html
   libr: libr.html
-last_built: 2020-12-21T22:33Z
+last_built: 2020-12-22T04:35Z
 urls:
   reference: https://libr.r-sassy.org/reference
   article: https://libr.r-sassy.org/articles

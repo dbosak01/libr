@@ -1,6 +1,5 @@
 ---
 title: "Library Management"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Library Management}
@@ -153,3 +152,6 @@ lib_unload(s1)
 lib_delete(s1)
 lib_delete(s2)
 ```
+
+
+Next: [Data Step Operations](https://libr.r-sassy.org/articles/libr-datastep.html)

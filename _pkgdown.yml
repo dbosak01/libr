@@ -10,7 +10,41 @@ articles:
   - libr-eq
   - libr-disclaimer
 
+reference:
+- title: Library Functions
+  desc: Functions to create and manage data libraries.
+  contents:
+  - libname
+  - lib_load
+  - lib_unload
+  - lib_sync
+  - lib_write
+  - lib_add
+  - lib_replace
+  - lib_remove
+  - lib_copy
+  - lib_delete
+  - lib_info
+  - lib_path
+  - lib_size
+  - is.lib
+  - print.lib
+- title: Library Specs Functions
+  desc: Functions to create, read, and write import specs.
+  contents:
+  - specs
+  - import_spec
+  - write.specs
+  - read.specs
+  - print.specs
+- title: Other Functions
+  desc: Other useful functions in the libr package.
+  contents:
+  - dictionary
+  - datastep
+  - "%eq%"
+
 navbar:
   structure:
-    left:  [home, intro, reference, articles, news]
+    left:  [home, intro, articles, reference, news]
     right: [github]
