@@ -13,7 +13,7 @@
 R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:
 
-1. **Loading many related datasets**:  When you have a lot of data files
+1. **Loading many related datasets**:  When you have many of data files
 that are related in some way, it is troublesome when you want to use 
 them all in your analysis.  Most data import packages make you load each
 file individually. And the thing is, *almost all data* comes in sets of related 
