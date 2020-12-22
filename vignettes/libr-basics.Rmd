@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-
-## Libnames and Dictionaries
-
 The main motivation for developing the **libr** package is to create and use 
 data libraries and data dictionaries.  These concepts are useful when 
 dealing with sets of related data files.  The `libname()` function allows

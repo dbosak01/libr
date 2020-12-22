@@ -1,9 +1,9 @@
 ---
-title: "Data Step Examples"
+title: "Data Step Operations"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Step Examples}
+  %\VignetteIndexEntry{Data Step Operations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-### The Datastep Function `datastep()`
 Normally, R processes data column-by-column. The data step allows you 
 to process data row-by-row.  Row-by-row processing of data is useful when you 
 have related columns, and wish to perform conditional logic on those 

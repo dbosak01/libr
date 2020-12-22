@@ -67,10 +67,7 @@
       <a href="../articles/libr-basics.html">Basic Library Operations</a>
     </li>
     <li>
-      <a href="../articles/libr-manipulation.html">Library Manipulation</a>
-    </li>
-    <li>
-      <a href="../articles/libr-datastep.html">Data Step Examples</a>
+      <a href="../articles/libr-datastep.html">Data Step Operations</a>
     </li>
     <li>
       <a href="../articles/libr-eq.html">Enhanced Equality</a>
@@ -115,10 +112,6 @@
 
     
     
-<div id="enhanced-equality-operator-eq" class="section level3">
-<h3 class="hasAnchor">
-<a href="#enhanced-equality-operator-eq" class="anchor"></a>Enhanced Equality Operator <code>%eq%</code>
-</h3>
 <p>Lastly, the <strong>libr</strong> package contains an enhanced equality operator. The objective of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator is to return a TRUE or FALSE value when any two objects are compared. This enhanced equality operator is useful for situations when you don’t want to check for NULL or NA values, or care about the data types of the objects you are comparing.</p>
 <p>The <code><a href="../reference/%eq%.html">%eq%</a></code> operator also compares data frames. The comparison will include all data values, but no attributes. This functionality is particularly useful when comparing tibbles, as tibbles often have many attributes assigned by <code>dplyr</code> functions.</p>
 <p>While it can be advantageous to have a comparison operator that does not give errors when encountering a NULL or NA value, note that this behavior can also mask problems with your code. Therefore, use the <code><a href="../reference/%eq%.html">%eq%</a></code> operator with care.</p>
@@ -139,7 +132,7 @@
 
 <span class="co"># Comparing of vectors</span>
 <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>
-<span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"D"</span><span class="op">)</span>
+<span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>
 <span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v1</span>            <span class="co"># TRUE</span>
 <span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v2</span>            <span class="co"># FALSE</span>
 
@@ -152,7 +145,6 @@
 <span class="va">mtcars</span> <span class="op">%eq%</span> <span class="cn">NULL</span>      <span class="co"># FALSE</span>
 <span class="va">v1</span> <span class="op">%eq%</span> <span class="cn">NA</span>            <span class="co"># FALSE</span>
 <span class="fl">1</span> <span class="op">%eq%</span> <span class="va">v1</span>             <span class="co"># FALSE</span></code></pre></div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

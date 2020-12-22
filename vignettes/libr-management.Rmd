@@ -1,9 +1,9 @@
 ---
-title: "Library Manipulation"
+title: "Library Management"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Library Manipulation}
+  %\VignetteIndexEntry{Library Management}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,18 +15,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Manipulating Data Libraries
-The **libr** package also contains a number of functions for manipulating
+The **libr** package also contains a number of functions for managing
 data libraries.  There are functions to add and remove data from a library,
 as well as copy or delete an entire library.
 
-The example below illustrates some of these additional functions.  The example
+The example below illustrates some of these management functions.  The example
 first creates a library and adds some data to it.  The example then proceeds
 to copy it to another library and perform some manipulation of the data
 in the libraries.  The example ends by looking at some of the metadata 
 available for libraries:
 
 ```{r eval=FALSE, echo=TRUE}
+library(libr)
+
 # Create temp directory
 tmp <- tempdir()
 

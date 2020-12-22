@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Step Examples • libr</title>
+<title>Data Step Operations • libr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Data Step Examples">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Data Step Operations">
 <meta property="og:description" content="libr">
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -67,10 +67,7 @@
       <a href="../articles/libr-basics.html">Basic Library Operations</a>
     </li>
     <li>
-      <a href="../articles/libr-manipulation.html">Library Manipulation</a>
-    </li>
-    <li>
-      <a href="../articles/libr-datastep.html">Data Step Examples</a>
+      <a href="../articles/libr-datastep.html">Data Step Operations</a>
     </li>
     <li>
       <a href="../articles/libr-eq.html">Enhanced Equality</a>
@@ -104,7 +101,7 @@
       </header><script src="libr-datastep_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Data Step Examples</h1>
+      <h1 data-toc-skip>Data Step Operations</h1>
             
             <h4 class="date">2020-12-21</h4>
       
@@ -115,10 +112,6 @@
 
     
     
-<div id="the-datastep-function-datastep" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-datastep-function-datastep" class="anchor"></a>The Datastep Function <code>datastep()</code>
-</h3>
 <p>Normally, R processes data column-by-column. The data step allows you to process data row-by-row. Row-by-row processing of data is useful when you have related columns, and wish to perform conditional logic on those columns. The <code><a href="../reference/datastep.html">datastep()</a></code> function allows you to realize this style of data processing. It is particularly advantageous when you wish to perform deeply nested conditional logic. It is also very useful for by-group processing.</p>
 <div id="example-1-simple-data-step" class="section level4">
 <h4 class="hasAnchor">
@@ -153,7 +146,6 @@
 <span class="co"># Merc 240D         24.4   4 146.7 1974-06-10   High     NA</span>
 <span class="co"># Merc 230          22.8   4 140.8 1974-06-10   High     NA</span>
 <span class="co"># Merc 280          19.2   6 167.6 1974-06-10    Low     NA</span></code></pre></div>
-</div>
 </div>
 <div id="keep-drop-and-rename" class="section level3">
 <h3 class="hasAnchor">

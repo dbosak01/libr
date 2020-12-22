@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-### Enhanced Equality Operator `%eq%`
 Lastly, the **libr** package contains an enhanced equality operator.  The 
 objective of the `%eq%` operator is to return a TRUE or FALSE value when
 any two objects are compared.  This enhanced equality operator is useful
@@ -49,7 +48,7 @@ NA %eq% NA            # TRUE
 
 # Comparing of vectors
 v1 <- c("A", "B", "C")
-v2 <- c("A", "B", "D")
+v2 <- c("A", "B", "C", "D")
 v1 %eq% v1            # TRUE
 v1 %eq% v2            # FALSE
 

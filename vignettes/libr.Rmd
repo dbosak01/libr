@@ -58,11 +58,11 @@ The functions are:
 * `lib_path()`: Returns the path of a data library
 * `lib_size()`: Returns the size of the data library in bytes
 
-#### Import Specs 
+### Import Specs 
 
 Special functions are needed when you want to control how the columns
 in your data files are imported.  These functions allow you to
-define an `import_spec` that controls the data type of each column.  
+define an `import_spec` that controls the data type of each column. 
 The import specs can even be saved and reused for future imports.
 
 The functions related to import specs are as follows:
@@ -72,6 +72,16 @@ The functions related to import specs are as follows:
 * `write.specs()`: Writes a specs collection to the file system
 * `read.specs()`: Reads a specs file from the file system
 
+
+### Next Steps 
+
+For next steps, please review the examples provided in the articles
+section of this web site.  Those articles include:
+
+* [Basic Library Operations](https://libr.r-sassy.org/articles/libr-basics.html)
+* [Library Management](https://libr.r-sassy.org/articles/libr-management.html)
+* [Data Step Operations](https://libr.r-sassy.org/articles/libr-datastep.html)
+* [Enhanced Equality](https://libr.r-sassy.org/articles/libr-eq.html)
 
 
 
