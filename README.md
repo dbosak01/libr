@@ -59,9 +59,6 @@ data in R much easier and faster.  The **libr** package can greatly simplify
 your data processing code.  And it makes some types of data operations effortless 
 that are quite tricky to do with **Base R** or even **tidyverse** functions.
 
-For additional reading on the **libr** package, visit the documentation 
-site [here](https://libr.r-sassy.org/articles/libr.html).
-
 ### Installation
 
 To install the **libr** package, run the following 
@@ -74,7 +71,9 @@ Then put the following line at the top of your program or script:
 
     library(libr)
     
-The **libr** package will then be ready to use!  
+The **libr** package will then be ready to use! For examples and usage 
+information, please visit the **libr** documentation site 
+[here](https://libr.r-sassy.org/articles/libr.html)
 
 ### Development Version
 
@@ -94,6 +93,15 @@ If you need additional help, please consult
 [stackoverflow.com](https://stackoverflow.com).  The stackoverflow 
 community will be very willing to answer your questions.  
 
+If you want to look at the code for the **libr** package, visit the
+github page [here](https://github.com/dbosak01/libr).
+
 If you encounter a bug or have a feature request, please submit an issue 
 [here](https://github.com/dbosak01/libr/issues).
 
+### See Also
+
+The **libr** package is part of the **sassy** meta-package. 
+The **sassy** meta-package includes several packages that help make R
+easier for SAS® programmers.  You can read more about the **sassy** package
+[here](http://sassy.r-sassy.org).
