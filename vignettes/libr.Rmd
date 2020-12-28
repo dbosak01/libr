@@ -49,7 +49,7 @@ in the **libr** package, and also available for download
 The **libr** `libname()` function is quite similar to the SAS® `libname`
 statement.  The first parameter is the name of the library.  The 
 second parameter is a path to a directory the library will point to.  The 
-third parameter is the engine to use to read/write the data.  
+third parameter is the engine with which to read and write the data.  
 ```{r eval=FALSE, echo=TRUE} 
 library(libr)
 
@@ -164,8 +164,9 @@ pane will now show all the datasets available in the library.
 <img src="../man/images/lib_load.png"/>
 
 At this point, you can work with your data very much the same way
-as you would in SAS®.  Note that you can also work with individual variables
-on the datasets using dollar sign ("$") syntax.  
+as you would in SAS®.  You can pass these datasets into statistical functions, 
+or manipulate them with **dplyr** functions. Note that you can also 
+work with individual variables on the datasets using dollar sign ("$") syntax.  
 ```{r eval=FALSE, echo=TRUE} 
 # Get total number of records
 nrow(sdtm.DM)
@@ -177,13 +178,13 @@ table(sdtm.DM$ARM)
 # 20             21             21             23              2 
 ```
 
-The data will be available in the workspace for the length of your session.
-If you wish to unload it from the workspace, call the `lib_unload()` 
+The datasets will be available in the workspace for the length of your session.
+If you wish to unload them from the workspace, call the `lib_unload()` 
 function.  See the `lib_load()` and `lib_unload()` documentation for 
-additional information.  
+additional information on these functions.  
 
-For more library
-functions, see the articles on [Basic Library Operations](libr-basics.html)
+To see more examples of the **libr** data management 
+functions, refer to the articles on [Basic Library Operations](libr-basics.html)
 and [Library Management](libr-management.html).
 
 #### The `dictionary()` Function
@@ -264,8 +265,8 @@ age_groups
 
 Notice that the `datastep()` function kept only those variables specified
 on the `keep` parameter.  The data step itself is passed within the 
-curly braces. You can put a variety of conditional statements and assignments
-inside the curly braces.  
+curly braces. You can put any number of conditional statements and assignments
+inside the curly braces, just like a SAS® data step. 
 
 The datastep function also supports "first." and "last." functionality through
 use of the `by` parameter.  See additional examples on the `datastep()`
@@ -275,15 +276,15 @@ help page and in the data step [article](libr-datastep.html).
 In Base R, there are two comparison functions:  The double-equal (==) infix 
 operator, and the `identical()` function.  The weakness of the infix operator
 is that it will not test for NULL or NA values.  The weakness of the 
-`identical()` function is, when comparing vectors and datasets, it will compare
-everything, including attributes.  
+`identical()` function is it will compare
+everything, including attributes assigned to objects you are comparing. 
 
 The `%eq%` function contained in the **libr** packages attempts to provide
 a more intuitive comparison.  The `%eq%` is an infix operator that will
 test for NA and NULL values, and will ignore attributes in any data comparison.
 These qualities make it more suitable for the types of comparisons normally
 encountered when working with data.  The suitability of the `%eq%` operator
-can be illustrated by comparing these methods side-by-side on the same
+can be illustrated by examining these methods side-by-side on the same
 input data.
 ```{r eval=FALSE, echo=TRUE}
 # Set up input data
@@ -304,13 +305,13 @@ v1 %eq% v3            # FALSE
 
 ```
 
-Examine the different results returned by the three different comparison 
+Note the different results returned by the three different comparison 
 functions. The `%eq%` operator is similar to the `identical()` function 
 in that it will always return a single TRUE or FALSE value.  The difference
 is that it ignored the "label" attribute assigned to vector *v2*, and only
 looked at the data values. Since it saw all the data values were equal,
 the `%eq%` operator returned TRUE, while the `identical()` function
-returned FALSE.
+returned FALSE. 
 
 You can see some more examples of the `%eq%` operator in the help 
 documentation, or in the [Enhanced Equality](libr-eq.html) article.

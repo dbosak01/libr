@@ -145,7 +145,7 @@
 <div id="the-libname-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-libname-function" class="anchor"></a>The <code>libname()</code> Function</h4>
-<p>The <strong>libr</strong> <code><a href="../reference/libname.html">libname()</a></code> function is quite similar to the SAS® <code>libname</code> statement. The first parameter is the name of the library. The second parameter is a path to a directory the library will point to. The third parameter is the engine to use to read/write the data.</p>
+<p>The <strong>libr</strong> <code><a href="../reference/libname.html">libname()</a></code> function is quite similar to the SAS® <code>libname</code> statement. The first parameter is the name of the library. The second parameter is a path to a directory the library will point to. The third parameter is the engine with which to read and write the data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
 
@@ -224,7 +224,7 @@ cols(
 <span class="co"># 8   VS       csv 3358   17   467 Kb 2020-09-18 14:30:24</span></code></pre></div>
 <p>Notice on the console printout that the library is now “loaded”. That means the data has been loaded into the workspace, and is available using two-level syntax. If you are working in <strong>RStudio</strong>, the environment pane will now show all the datasets available in the library.</p>
 <p><img src="../man/images/lib_load.png"></p>
-<p>At this point, you can work with your data very much the same way as you would in SAS®. Note that you can also work with individual variables on the datasets using dollar sign (“$”) syntax.</p>
+<p>At this point, you can work with your data very much the same way as you would in SAS®. You can pass these datasets into statistical functions, or manipulate them with <strong>dplyr</strong> functions. Note that you can also work with individual variables on the datasets using dollar sign (“$”) syntax.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Get total number of records</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sdtm.DM</span><span class="op">)</span>
@@ -234,8 +234,8 @@ cols(
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">sdtm.DM</span><span class="op">$</span><span class="va">ARM</span><span class="op">)</span>
 <span class="co"># ARM A          ARM B          ARM C          ARM D SCREEN FAILURE </span>
 <span class="co"># 20             21             21             23              2 </span></code></pre></div>
-<p>The data will be available in the workspace for the length of your session. If you wish to unload it from the workspace, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code> function. See the <code><a href="../reference/lib_load.html">lib_load()</a></code> and <code><a href="../reference/lib_unload.html">lib_unload()</a></code> documentation for additional information.</p>
-<p>For more library functions, see the articles on <a href="libr-basics.html">Basic Library Operations</a> and <a href="libr-management.html">Library Management</a>.</p>
+<p>The datasets will be available in the workspace for the length of your session. If you wish to unload them from the workspace, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code> function. See the <code><a href="../reference/lib_load.html">lib_load()</a></code> and <code><a href="../reference/lib_unload.html">lib_unload()</a></code> documentation for additional information on these functions.</p>
+<p>To see more examples of the <strong>libr</strong> data management functions, refer to the articles on <a href="libr-basics.html">Basic Library Operations</a> and <a href="libr-management.html">Library Management</a>.</p>
 </div>
 <div id="the-dictionary-function" class="section level4">
 <h4 class="hasAnchor">
@@ -295,13 +295,13 @@ cols(
 <span class="co">#  9 ABC-01-113    74 60+     </span>
 <span class="co"># 10 ABC-01-114    72 60+     </span>
 <span class="co"># # ... with 77 more rows</span></code></pre></div>
-<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those variables specified on the <code>keep</code> parameter. The data step itself is passed within the curly braces. You can put a variety of conditional statements and assignments inside the curly braces.</p>
+<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those variables specified on the <code>keep</code> parameter. The data step itself is passed within the curly braces. You can put any number of conditional statements and assignments inside the curly braces, just like a SAS® data step.</p>
 <p>The datastep function also supports “first.” and “last.” functionality through use of the <code>by</code> parameter. See additional examples on the <code><a href="../reference/datastep.html">datastep()</a></code> help page and in the data step <a href="libr-datastep.html">article</a>.</p>
 <div id="the-eq-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-eq-function" class="anchor"></a>The %eq% Function</h4>
-<p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is, when comparing vectors and datasets, it will compare everything, including attributes.</p>
-<p>The <code><a href="../reference/%eq%.html">%eq%</a></code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code><a href="../reference/%eq%.html">%eq%</a></code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator can be illustrated by comparing these methods side-by-side on the same input data.</p>
+<p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare everything, including attributes assigned to objects you are comparing.</p>
+<p>The <code><a href="../reference/%eq%.html">%eq%</a></code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code><a href="../reference/%eq%.html">%eq%</a></code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator can be illustrated by examining these methods side-by-side on the same input data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set up input data</span>
 <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>
@@ -318,7 +318,7 @@ cols(
 <span class="va">v1</span> <span class="op">==</span> <span class="va">v3</span>              <span class="co"># TRUE TRUE NA</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v3</span><span class="op">)</span>     <span class="co"># FALSE</span>
 <span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v3</span>            <span class="co"># FALSE</span></code></pre></div>
-<p>Examine the different results returned by the three different comparison functions. The <code><a href="../reference/%eq%.html">%eq%</a></code> operator is similar to the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single TRUE or FALSE value. The difference is that it ignored the “label” attribute assigned to vector <em>v2</em>, and only looked at the data values. Since it saw all the data values were equal, the <code><a href="../reference/%eq%.html">%eq%</a></code> operator returned TRUE, while the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
+<p>Note the different results returned by the three different comparison functions. The <code><a href="../reference/%eq%.html">%eq%</a></code> operator is similar to the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single TRUE or FALSE value. The difference is that it ignored the “label” attribute assigned to vector <em>v2</em>, and only looked at the data values. Since it saw all the data values were equal, the <code><a href="../reference/%eq%.html">%eq%</a></code> operator returned TRUE, while the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
 <p>You can see some more examples of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator in the help documentation, or in the <a href="libr-eq.html">Enhanced Equality</a> article.</p>
 </div>
 </div>
