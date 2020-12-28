@@ -277,7 +277,11 @@ In Base R, there are two comparison functions:  The double-equal (==) infix
 operator, and the `identical()` function.  The weakness of the infix operator
 is that it will not test for NULL or NA values.  The weakness of the 
 `identical()` function is it will compare
-everything, including attributes assigned to objects you are comparing. 
+everything, including attributes assigned to the objects you are comparing. 
+If there is even a small difference in one of these attributes, the 
+`identical()` function will return FALSE.  This behavior is inconvenient, 
+especially when working with **dplyr** functions, as these functions
+assign many attributes to the datasets they are working on.
 
 The `%eq%` function contained in the **libr** packages attempts to provide
 a more intuitive comparison.  The `%eq%` is an infix operator that will
