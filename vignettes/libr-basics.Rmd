@@ -145,4 +145,4 @@ ls()
 ```
 
 
-Next: [Library Management](https://libr.r-sassy.org/articles/libr-management.html)
+Next: [Library Management](libr-management.html)

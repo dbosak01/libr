@@ -154,4 +154,4 @@ lib_delete(s2)
 ```
 
 
-Next: [Data Step Operations](https://libr.r-sassy.org/articles/libr-datastep.html)
+Next: [Data Step Operations](libr-datastep.html)

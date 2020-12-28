@@ -261,6 +261,6 @@ df
 
 ```
 
-Next: [Enhanced Equality](https://libr.r-sassy.org/articles/libr-eq.html)
+Next: [Enhanced Equality](libr-eq.html)
 
 
