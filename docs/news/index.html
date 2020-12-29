@@ -154,8 +154,12 @@
 <a href="#libr-110" class="anchor"></a>libr 1.1.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>Added pkgdown site</li>
-<li>Added filter parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> parameters</li>
+<li>Added pkgdown site.</li>
+<li>Added filter parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> parameters.</li>
+<li>Changed default “na” parameter on csv export to empty string instead of NA to accommodate import into SAS. SAS couldn’t deal with the NA strings.</li>
+<li>Fixed bug in dbf engine when outputting tibbles.</li>
+<li>Fixed bug in %eq% operator when comparing objects with different numbers of classes.</li>
+<li>Greatly improved performance of datastep, especially on grouped tibbles.</li>
 </ul>
 </div>
     <div id="libr-101" class="section level1">

@@ -1,7 +1,14 @@
 # libr 1.1.0
 
-* Added pkgdown site
-* Added filter parameters to `libname()` and `lib_load()` parameters
+* Added pkgdown site.
+* Added filter parameters to `libname()` and `lib_load()` parameters.
+* Changed default "na" parameter on csv export to empty string instead of NA
+to accommodate import into SAS.  SAS couldn't deal with the NA strings.
+* Fixed bug in dbf engine when outputting tibbles.
+* Fixed bug in %eq% operator when comparing objects with different numbers of 
+classes.
+* Greatly improved performance of datastep, especially on grouped tibbles.
+  
 
 # libr 1.0.1
 

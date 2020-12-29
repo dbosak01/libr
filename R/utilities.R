@@ -161,7 +161,7 @@ is.lib <- function(x) {
     ret <- TRUE
   else if (is.null(x1) | is.null(x2)) {
     ret <- FALSE
-  } else if (all(class(x1) != class(x2))) {
+  } else if (all(typeof(x1) != typeof(x2))) {
     ret <- FALSE
   } else if ("data.frame" %in% class(x1)) {
     
@@ -304,7 +304,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
     if (!cs_comp | force) {
       if (file.exists(file_path))
         file.remove(file_path)
-      write_csv(x, file_path)
+      write_csv(x, file_path, na = "")
       attr(x, "checksum") <- md5sum(file_path)
     }
     
@@ -331,7 +331,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
     if (!cs_comp | force) {
       if (file.exists(file_path))
         file.remove(file_path)
-      foreign::write.dbf(x, file_path)
+      foreign::write.dbf(as.data.frame(x), file_path)
       attr(x, "checksum") <- md5sum(file_path)
     }
     
