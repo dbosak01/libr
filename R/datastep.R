@@ -419,12 +419,7 @@ datastep <- function(data, steps, keep = NULL,
     ret <- ret[ , keep]
   }
 
-  # Perform rename operation
-  if (!is.null(rename)) {
-    nms <- names(ret)
-    names(ret) <- ifelse(nms %in% names(rename), rename, nms)
-  }
-  
+
   # Convert back to tibble if original was a tibble
   if ("tbl_df" %in% orig_class & !"tbl_df" %in% class(ret)) {
     ret <- as_tibble(ret)
@@ -440,6 +435,13 @@ datastep <- function(data, steps, keep = NULL,
   
   # Restore attributes from original data 
   ret <- copy_attributes(data_attributes, ret)
+  
+  
+  # Perform rename operation
+  if (!is.null(rename)) {
+    nms <- names(ret)
+    names(ret) <- ifelse(nms %in% names(rename), rename, nms)
+  }
 
   return(ret)
 }

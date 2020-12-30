@@ -424,4 +424,18 @@ test_that("datastep() attributes on data are maintained.", {
   
 })
 
+test_that("datastep retains class attributes.", {
+  
+  
+  s1 <-  1:3
+  dt1 <- c(Sys.Date(), Sys.Date() - 1, Sys.Date() - 2)
+  df1 <- data.frame(s1, dt1)
+  
+  df2 <- datastep(df1, rename = c(dt1 = "dt2"), {
+    csum <- 1
+  })
+  
+  expect_equal(class(df2$dt2), "Date")
+
+})
 
