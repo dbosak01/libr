@@ -423,7 +423,6 @@ libname <- function(name, directory_path, engine = "rds",
   }
   
   assign(name_c, l, envir = e$env)
-
   
   return(l)
   
