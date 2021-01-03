@@ -252,6 +252,9 @@ datastep <- function(data, steps, keep = NULL,
     
   }
   
+  # Capture number of starting columns
+  startcols <- ncol(data)
+  
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
 
@@ -442,6 +445,17 @@ datastep <- function(data, steps, keep = NULL,
     nms <- names(ret)
     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
   }
+  
+  endcols <- ncol(ret)
+  if (startcols > endcols)
+    log_logr(paste("Datastep columns increased from ", startcols, "to", 
+                   endcols, "."))
+  else if (startcols < endcols)
+    log_logr(paste("Datastep columns decreased from ", startcols, "to", 
+                   endcols, "."))
+  else 
+    log_logr(paste("Datastep columns started with ", startcols, 
+                   " and ended with ", endcols, "."))
 
   return(ret)
 }
