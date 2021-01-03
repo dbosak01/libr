@@ -508,7 +508,7 @@ lib_load <- function(x, filter = NULL) {
   # Reassign with current attributes
   assign(libnm, x, envir = e$env)
   
-  log_logr(paste0("lib_load: library '", libnm, "' loaded."))  
+  log_logr(paste0("lib_load: library '", libnm, "' loaded"))  
   
   return(x)
 }
@@ -597,7 +597,7 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
   # Reassign with updated attributes
   assign(libnm, x, envir = e$env)
   
-  log_logr(paste0("lib_unload: library '", libnm, "' unloaded."))  
+  log_logr(paste0("lib_unload: library '", libnm, "' unloaded"))  
   
   return(x)
 }
@@ -1034,7 +1034,7 @@ lib_write <- function(x, force = FALSE) {
     # Update the library variable
     assign(lbnm, x, envir = e$env)
     
-    log_logr(paste0("lib_write: write data in library '", lbnm, "'."))
+    log_logr(paste0("lib_write: write data in library '", lbnm, "'"))
     log_logr(x)
   
   } else {
@@ -1139,7 +1139,7 @@ lib_sync <- function(x, name = NULL) {
     # Update lib variable
     assign(libnm, x, envir = e$env)
     
-    log_logr(paste0("lib_sync: synchronized data in library '", libnm, "'."))
+    log_logr(paste0("lib_sync: synchronized data in library '", libnm, "'"))
     
   } else {
     
@@ -1249,7 +1249,7 @@ lib_copy <- function(x, nm, directory_path) {
   # Update environment
   assign(newlib, cpy, envir = e$env)
   
-  log_logr(paste0("lib_copy: copied data from library '", libnm, "' to '", newlib, "'."))
+  log_logr(paste0("lib_copy: copied data from library '", libnm, "' to '", newlib, "'"))
   log_logr(cpy)
   
   return(cpy)
@@ -1334,7 +1334,7 @@ lib_delete <- function(x) {
     if (lnm %in% ls(envir = e$env))
       rm(list = lnm, envir = e$env)
     
-    log_logr(paste0("lib_delete: deleted library '", lnm, "'."))
+    log_logr(paste0("lib_delete: deleted library '", lnm, "'"))
   
   } else {
     

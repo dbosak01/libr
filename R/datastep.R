@@ -449,13 +449,13 @@ datastep <- function(data, steps, keep = NULL,
   endcols <- ncol(ret)
   if (startcols > endcols)
     log_logr(paste0("datastep: columns increased from ", startcols, " to ", 
-                   endcols, "."))
+                   endcols))
   else if (startcols < endcols)
     log_logr(paste0("datastep: columns decreased from ", startcols, " to ", 
-                   endcols, "."))
+                   endcols))
   else 
     log_logr(paste0("datastep: columns started with ", startcols, 
-                   " and ended with ", endcols, "."))
+                   " and ended with ", endcols))
 
   return(ret)
 }
