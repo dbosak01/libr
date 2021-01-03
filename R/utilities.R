@@ -569,6 +569,16 @@ dofilter <- function(str, vect, extension = NULL) {
 }
 
 
+#' @noRd
+log_logr <- function(x) {
+  
+  if (length(find.package('logr', quiet=TRUE)) > 0) {
+    if (utils::packageVersion("logr") >= "1.2.0") {
+      logr::log_hook(x)
+    }
+  }
+}
+
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
 #   set.seed(seed_no)
 #   pool <- c(letters, LETTERS, 0:9)

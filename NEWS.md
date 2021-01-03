@@ -1,5 +1,7 @@
 # libr 1.1.0
 
+* Integrated libr with logr.  All library functions will automatically
+provide logging entries if the autolog feature of the logr package is enabled.
 * Added pkgdown site.
 * Added filter parameters to `libname()` and `lib_load()` parameters.
 * Changed default "na" parameter on csv export to empty string instead of NA

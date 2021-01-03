@@ -22,7 +22,9 @@ Suggests:
     knitr,
     rmarkdown,
     foreign,
-    magrittr
+    magrittr,
+    utils,
+    logr
 Imports:     
     readr,
     readxl,
