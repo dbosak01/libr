@@ -14,7 +14,7 @@ Description: Contains a set of functions to create data libraries,
 License: CC0
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/dbosak01/libr
+URL: https://libr.r-sassy.org
 BugReports: https://github.com/dbosak01/libr/issues
 Depends: R (>= 4.0.0)
 Suggests: 
