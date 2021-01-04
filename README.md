@@ -86,7 +86,7 @@ with the following command line:
 ### Getting Help
 
 If you need help, the first place 
-to turn to is the [libr](http://libr.r-sassy.org) web site. The web site
+to turn to is the [libr](https://libr.r-sassy.org) web site. The web site
 has full documentation on all **libr** functions.
 
 If you need additional help, please consult 
@@ -104,4 +104,4 @@ If you encounter a bug or have a feature request, please submit an issue
 The **libr** package is part of the **sassy** meta-package. 
 The **sassy** meta-package includes several packages that help make R
 easier for SAS® programmers.  You can read more about the **sassy** package
-[here](http://sassy.r-sassy.org).
+[here](https://sassy.r-sassy.org).
