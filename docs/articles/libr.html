@@ -157,9 +157,9 @@
 <p>The <code><a href="../reference/libname.html">libname()</a></code> function above will send two types of information to the console:</p>
 <ul>
 <li>The column specifications for each data file imported</li>
-<li>A summary print out of the library</li>
+<li>A summary print-out of the library</li>
 </ul>
-<p>The summary print out looks like this:</p>
+<p>The summary print-out looks like this:</p>
 <pre><code># library 'sdtm': 8 items
 - attributes: csv not loaded
 - path: C:/packages/libr/inst/extdata
@@ -295,12 +295,12 @@ cols(
 <span class="co">#  9 ABC-01-113    74 60+     </span>
 <span class="co"># 10 ABC-01-114    72 60+     </span>
 <span class="co"># # ... with 77 more rows</span></code></pre></div>
-<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those variables specified on the <code>keep</code> parameter. The data step itself is passed within the curly braces. You can put any number of conditional statements and assignments inside the curly braces, just like a SAS® data step.</p>
+<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those variables specified on the <code>keep</code> parameter. The data step itself is passed within the curly braces. You can put any number of conditional statements and assignments inside the curly braces, just like a SAS® data step. Also like a SAS® data step, you do not need to ‘declare’ new variables. Any name not identified as an R function name is assumed to be a new variable, and will be created automatically on the input data.</p>
 <p>The datastep function also supports “first.” and “last.” functionality through use of the <code>by</code> parameter. See additional examples on the <code><a href="../reference/datastep.html">datastep()</a></code> help page and in the data step <a href="libr-datastep.html">article</a>.</p>
 <div id="the-eq-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-eq-function" class="anchor"></a>The %eq% Function</h4>
-<p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare everything, including attributes assigned to the objects you are comparing. If there is even a small difference in one of these attributes, the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function will return FALSE. This behavior is inconvenient, especially when working with <strong>dplyr</strong> functions, as these functions assign many attributes to the datasets they are working on.</p>
+<p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare everything, including attributes assigned to the objects you are comparing. If there is even a small difference in one of these attributes, the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function will return FALSE. This behavior is inconvenient, especially when working with <strong>dplyr</strong> functions, as these functions assign many attributes to the datasets they are manipulating.</p>
 <p>The <code><a href="../reference/%eq%.html">%eq%</a></code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code><a href="../reference/%eq%.html">%eq%</a></code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator can be illustrated by examining these methods side-by-side on the same input data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set up input data</span>
@@ -325,8 +325,7 @@ cols(
 <div id="next-steps" class="section level3">
 <h3 class="hasAnchor">
 <a href="#next-steps" class="anchor"></a>Next Steps</h3>
-<p>For next steps, please review the examples provided in the vignette articles.<br>
-Those articles include:</p>
+<p>For next steps, please review the examples provided in the vignette articles. Those articles include:</p>
 <ul>
 <li><a href="libr-basics.html">Basic Library Operations</a></li>
 <li><a href="libr-management.html">Library Management</a></li>

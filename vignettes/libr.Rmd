@@ -65,9 +65,9 @@ libname(sdtm, pkg, "csv")
 The `libname()` function above will send two types of information to the console:
 
 * The column specifications for each data file imported
-* A summary print out of the library 
+* A summary print-out of the library 
 
-The summary print out looks like this:
+The summary print-out looks like this:
 ```
 # library 'sdtm': 8 items
 - attributes: csv not loaded
@@ -266,7 +266,10 @@ age_groups
 Notice that the `datastep()` function kept only those variables specified
 on the `keep` parameter.  The data step itself is passed within the 
 curly braces. You can put any number of conditional statements and assignments
-inside the curly braces, just like a SAS® data step. 
+inside the curly braces, just like a SAS® data step. Also like a 
+SAS® data step, you do not need to 'declare' new variables.  Any name 
+not identified as an R function name is assumed to be a new variable,
+and will be created automatically on the input data.
 
 The datastep function also supports "first." and "last." functionality through
 use of the `by` parameter.  See additional examples on the `datastep()`
@@ -281,7 +284,7 @@ everything, including attributes assigned to the objects you are comparing.
 If there is even a small difference in one of these attributes, the 
 `identical()` function will return FALSE.  This behavior is inconvenient, 
 especially when working with **dplyr** functions, as these functions
-assign many attributes to the datasets they are working on.
+assign many attributes to the datasets they are manipulating.
 
 The `%eq%` function contained in the **libr** packages attempts to provide
 a more intuitive comparison.  The `%eq%` is an infix operator that will
@@ -322,7 +325,7 @@ documentation, or in the [Enhanced Equality](libr-eq.html) article.
 
 ### Next Steps 
 
-For next steps, please review the examples provided in the vignette articles.  
+For next steps, please review the examples provided in the vignette articles. 
 Those articles include:
 
 * [Basic Library Operations](libr-basics.html)
