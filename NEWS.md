@@ -1,4 +1,4 @@
-# libr 1.1.0
+# libr 1.1.1
 
 * Integrated libr with logr.  All library functions will automatically
 provide logging entries if the autolog feature of the logr package is enabled.

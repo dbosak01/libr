@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@
 <p>When you are done with the data, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code> function to remove the data from the parent frame and put it back in the library list. To write any added or modified data to disk, call the <code><a href="../reference/lib_write.html">lib_write()</a></code> function. The <code><a href="../reference/lib_write.html">lib_write()</a></code> function will only write data that has changed since the last write.</p>
 <p>The following example will illustrate some basic functionality of the <strong>libr</strong> package regarding the creation of libnames and use of dictionaries. The example first places some sample data in a temp directory for illustration purposes. Then the example creates a libname from the temp directory, loads it into memory, adds data to it, and then unloads and writes everything to disk:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dbosak01/libr">libr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
 
 <span class="co"># Create temp directory</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>
