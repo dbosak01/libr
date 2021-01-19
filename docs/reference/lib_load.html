@@ -207,7 +207,7 @@ to identify the missing portion. The match will be case-insensitive.</p></td>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Create temp directory</span>
+    <pre class="examples"><span class='co'># Create temp directory</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Save some data to temp directory for illustration purposes</span>
@@ -217,62 +217,28 @@ to identify the missing portion. The match will be case-insensitive.</p></td>
 
 <span class='co'># Create library</span>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat': 3 items
-#&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo
-#&gt; - items:
-#&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.3 Kb 2021-01-06 13:57:27
-#&gt; 2 PlantGrowth       rds   30    2   3 Kb 2021-01-06 13:57:27
-#&gt; 3 ToothGrowth       rds   60    3 3.9 Kb 2021-01-06 13:57:27</div><div class='input'>
+
 <span class='co'># Load library into workspace</span>
 <span class='fu'>lib_load</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
-#&gt; </span><span>- attributes: rds loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo
-#&gt; - items:
-#&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.3 Kb 2021-01-06 13:57:27
-#&gt; 2 PlantGrowth       rds   30    2   3 Kb 2021-01-06 13:57:27
-#&gt; 3 ToothGrowth       rds   60    3 3.9 Kb 2021-01-06 13:57:27</div><div class='input'>
+
 <span class='co'># Examine workspace</span>
 <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "dat"             "dat.iris"        "dat.PlantGrowth" "dat.ToothGrowth"
-#&gt; [5] "tmp"            </div><div class='input'><span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span>
+<span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span>
 
 <span class='co'># Use some data</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.PlantGrowth</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;      weight       group   
-#&gt;  Min.   :3.590   ctrl:10  
-#&gt;  1st Qu.:4.550   trt1:10  
-#&gt;  Median :5.155   trt2:10  
-#&gt;  Mean   :5.073            
-#&gt;  3rd Qu.:5.530            
-#&gt;  Max.   :6.310            </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       len        supp         dose      
-#&gt;  Min.   : 4.20   OJ:30   Min.   :0.500  
-#&gt;  1st Qu.:13.07   VC:30   1st Qu.:0.500  
-#&gt;  Median :19.25           Median :1.000  
-#&gt;  Mean   :18.81           Mean   :1.167  
-#&gt;  3rd Qu.:25.27           3rd Qu.:2.000  
-#&gt;  Max.   :33.90           Max.   :2.000  </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span>
+
 <span class='co'># Unload library</span>
 <span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat': 3 items
-#&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo
-#&gt; - items:
-#&gt;          Name Extension Rows Cols   Size        LastModified
-#&gt; 1        iris       rds  150    5 8.3 Kb 2021-01-06 13:57:27
-#&gt; 2 PlantGrowth       rds   30    2   3 Kb 2021-01-06 13:57:27
-#&gt; 3 ToothGrowth       rds   60    3 3.9 Kb 2021-01-06 13:57:27</div><div class='input'>
+
 <span class='co'># Examine workspace again</span>
 <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "dat" "tmp"</div><div class='input'><span class='co'># [1] "dat" "tmp"</span>
+<span class='co'># [1] "dat" "tmp"</span>
 
 <span class='co'># Clean up</span>
 <span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</div></span></pre>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

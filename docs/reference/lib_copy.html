@@ -210,33 +210,18 @@ that is the version that will be copied.</p>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Create temp directory</span>
+    <pre class="examples"><span class='co'># Create temp directory</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Create library</span>
 <span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>tmp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># library 'dat1': 0 items
-#&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo
-#&gt; NULL</div><div class='input'>
+
 <span class='co'># Add dat to library</span>
 <span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat1': 2 items
-#&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo
-#&gt; - items:
-#&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2021-01-06 13:57:26
-#&gt; 2   iris       rds  150    5 8.1 Kb 2021-01-06 13:57:26</div><div class='input'>
+
 <span class='co'># Copy dat1 to dat2</span>
 <span class='fu'>lib_copy</span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>dat2</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"copy"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># library 'dat2': 2 items
-#&gt; </span><span>- attributes: rds not loaded
-#&gt; - path: C:\Users\User\AppData\Local\Temp\RtmpU9luKo/copy
-#&gt; - items:
-#&gt;     Name Extension Rows Cols   Size        LastModified
-#&gt; 1 mtcars       rds   32   11   8 Kb 2021-01-06 13:57:26
-#&gt; 2   iris       rds  150    5 8.1 Kb 2021-01-06 13:57:26</div><div class='input'><span class='co'># library 'dat2': 2 items</span>
+<span class='co'># library 'dat2': 2 items</span>
 <span class='co'># - attributes: not loaded</span>
 <span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc/copy</span>
 <span class='co'># - items:</span>
@@ -247,7 +232,7 @@ that is the version that will be copied.</p>
 <span class='co'># Clean up</span>
 <span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>)</span>
 <span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat2</span><span class='op'>)</span>
-</div></span></pre>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
