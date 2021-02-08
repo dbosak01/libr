@@ -439,3 +439,23 @@ test_that("datastep retains class attributes.", {
 
 })
 
+test_that("datastep works on single column data frame.", {
+  
+  df <- data.frame(a = 1:10)
+  
+  
+  df2 <- datastep(df, {
+    
+    if (a > 5)
+      status <- "High"
+    else 
+      status <- "Low"
+    
+  })
+  
+  expect_equal(ncol(df2), 2)
+  expect_equal(nrow(df2), 10)
+  
+  
+})
+

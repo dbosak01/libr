@@ -1,4 +1,9 @@
-# libr 1.1.1
+# libr 1.1.3
+
+* Fixed bug on datastep when data frame/tibble had a single column.
+
+
+# libr 1.1.2
 
 * Integrated libr with logr.  All library functions will automatically
 provide logging entries if the autolog feature of the logr package is enabled.

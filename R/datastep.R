@@ -285,7 +285,13 @@ datastep <- function(data, steps, keep = NULL,
     }
   }
   
-  data_attributes <- data[1, ]
+  # Deal with 1 column situation
+  if (ncol(data) > 1) {
+    data_attributes <- data[1, ]
+  } else {
+    data_attributes <- data.frame(data[1, ])
+    names(data_attributes) <- names(data)
+  }
   
   # For some reason the grouped tibble kills performance.
   # Temporarily convert to a data frame.  
@@ -301,9 +307,17 @@ datastep <- function(data, steps, keep = NULL,
   # Step through row by row
   for (n. in seq_len(rowcount)) {
 
-    rw <- data[n., ]
-    byrw <- rw[1, by]
+    # If one column, subset comes back with a vector
+    if (ncol(data) > 1)
+      rw <- data[n., ]
+    else {
+      rw <- data.frame(data[n., ])
+      names(rw) <- names(data)
+    }
     
+    if (!is.null(by))
+      byrw <- rw[1, by]
+
     # Deal with first. and last.
     # These can be accessed from within the evaluated code,
     # which is really cool.
