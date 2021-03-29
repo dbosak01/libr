@@ -45,6 +45,6 @@ reference:
   - "%eq%"
 
 navbar:
+  type: inverse
   structure:
-    left:  [home, intro, articles, reference, news]
-    right: [github]
+    right: [home, intro, articles, reference, news, github]
