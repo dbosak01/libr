@@ -260,7 +260,7 @@ datastep <- function(data, steps, keep = NULL,
 
   # Put aggregate functions in a variable 
   agg <- substitute(calculate, env = environment())
-  if (deparse1(agg) != "NULL") {
+  if (paste(deparse(agg), collapse = "") != "NULL") {
    data <- within(data, eval(agg), keepAttrs = TRUE)
   }
   

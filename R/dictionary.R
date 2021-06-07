@@ -78,7 +78,7 @@ dictionary <- function(x) {
     
   } else {
     
-    nm <- deparse1(substitute(x, env = environment()))
+    nm <- paste(deparse(substitute(x, env = environment())), collapse = "")
     ret = getDictionary(x, nm)
   
   }
