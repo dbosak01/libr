@@ -17,8 +17,8 @@ test_that("getDictionary() function works as expected.", {
   res <- getDictionary(crs, "crs")
 
   expect_equal(nrow(res), 13)
-  expect_equal(res[1, "Label"], "Car Name")
-  expect_equal(res[1, "Description"], "Derived from rownames")
+  expect_equal(as.character(res[1, "Label"]), "Car Name")
+  expect_equal(as.character(res[1, "Description"]), "Derived from rownames")
   expect_equal(res[13, "Width"], 4)
   
 })
