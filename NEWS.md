@@ -1,3 +1,8 @@
+# libr 1.1.4
+
+* Add GitHub actions standard check
+* Made code compatible to R 3.6.
+
 # libr 1.1.3
 
 * Fixed bug on datastep when data frame/tibble had a single column.
