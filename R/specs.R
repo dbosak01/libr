@@ -262,7 +262,7 @@ write.specs <- function(x, dir_path = getwd(), file_name = NULL) {
   
   # Construct File Path
   if (is.null(file_name)) {
-    nm <- deparse1(substitute(x, env = environment()))
+    nm <- paste(deparse(substitute(x, env = environment())), collapse = "")
     pth <- file.path(dir_path, paste0(nm, ".specs"))
     
   } else {
