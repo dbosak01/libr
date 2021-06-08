@@ -16,7 +16,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://libr.r-sassy.org
 BugReports: https://github.com/dbosak01/libr/issues
-Depends: R (>= 4.0.0)
+Depends: R (>= 3.6.0)
 Suggests: 
     testthat,
     knitr,
@@ -25,14 +25,17 @@ Suggests:
     magrittr,
     utils,
     logr
-Imports:     
+Imports: 
     readr,
     readxl,
     haven,
     openxlsx,
-    crayon, 
+    crayon,
     dplyr,
     tibble,
-    tools
+    tools,
+    Rcpp
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp
