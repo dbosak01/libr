@@ -1,7 +1,10 @@
-# libr 1.1.4
 
-* Add GitHub actions standard check
-* Made code compatible to R 3.6.
+# libr 1.2.0
+
+* Made package compatible to R version 3.6.
+* Added GitHub actions to test previous versions of R.
+* Increased performance of datastep() function.
+* Added varname parameter to libname() function to allow for variable names.
 
 # libr 1.1.3
 
