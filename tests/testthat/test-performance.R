@@ -4,7 +4,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
-DEV <- TRUE
+DEV <- FALSE
 
 
 test_that("add_autos() function works as expected", {
