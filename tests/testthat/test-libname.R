@@ -261,14 +261,14 @@ test_that("libname() function works as expected with filter", {
   
   d <- lib_info(dat)[["Name"]]
   
-  expect_equal(d, c("ae", "dm", "lb", "vs"))
+  expect_equal(as.character(d), c("ae", "dm", "lb", "vs"))
   
   libname(dat, file.path( base_path, "SDTM"), 
           engine = "sas7bdat", filter = c("*e"))
   
   d <- lib_info(dat)[["Name"]]
   
-  expect_equal(d, c("ae", "ie", "pe")) 
+  expect_equal(as.character(d), c("ae", "ie", "pe")) 
   
   libname(dat, file.path( base_path, "SDTM"), 
           engine = "sas7bdat", filter = c("d*", "ex", "qs"))
