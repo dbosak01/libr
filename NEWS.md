@@ -1,5 +1,5 @@
 
-# libr 1.2
+# libr 1.2.0
 
 * Made package compatible to R version 3.6.
 * Added GitHub actions to test previous versions of R.
