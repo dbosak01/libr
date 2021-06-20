@@ -248,7 +248,7 @@ libname <- function(name, directory_path, engine = "rds",
     dir.create(directory_path, showWarnings = FALSE)
   
   # Get safe library name 
-  name_c <- deparse1(substitute(name, env = environment()))
+  name_c <- paste(deparse(substitute(name, env = environment())), collapse = "")
   
 
   # Create new structure of class "lib"
@@ -489,7 +489,7 @@ lib_load <- function(x, filter = NULL) {
     stop("Object must be a data library.")
   
   # Get library name
-  libnm <- deparse1(substitute(x, env = environment())) 
+  libnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (is.null(filter))
     nms <- names(x)
@@ -572,7 +572,7 @@ lib_unload <- function(x, sync = TRUE, name = NULL) {
   }
   
   # Get name of library
-  libnm <- deparse1(substitute(x, env = environment())) 
+  libnm <- paste(deparse(substitute(x, env = environment())), collapse = "") 
   
   # Use override name if requested
   if (!is.null(name))
@@ -649,7 +649,7 @@ lib_add <- function(x, ..., name = NULL) {
   if (all(class(x) != "lib"))
     stop("Object must be a data library.")
   
-  lbnm  <- deparse1(substitute(x, env = environment()))
+  lbnm  <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (attr(x, "read_only") == FALSE) {
     
@@ -768,7 +768,7 @@ lib_replace <- function(x, ...,  name = NULL) {
     stop("Object must be a data library.")
   
   # Get safe variable name
-  lbnm  <- deparse1(substitute(x, env = environment()))
+  lbnm  <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (attr(x, "read_only") == FALSE) {
     
@@ -882,7 +882,7 @@ lib_remove <- function(x, name) {
     stop("Object must be a data library.")
   
   # Get safe names
-  libnm <- deparse1(substitute(x, env = environment()))
+  libnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   # Get file path
   libpth <- attr(x, "path")
@@ -994,7 +994,7 @@ lib_write <- function(x, force = FALSE) {
     stop("Object must be a data library.")
   
   # Get safe name
-  lbnm <- deparse1(substitute(x, env = environment()))
+  lbnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (attr(x, "read_only") != TRUE) { 
   
@@ -1110,7 +1110,7 @@ lib_sync <- function(x, name = NULL) {
   if (!is.null(name))
     libnm <- name
   else 
-    libnm <- deparse1(substitute(x, env = environment()))
+    libnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (is.loaded.lib(libnm) == TRUE) {
     
@@ -1200,7 +1200,7 @@ lib_copy <- function(x, nm, directory_path) {
     dir.create(directory_path)
   
   # Get safe lib name
-  libnm <- deparse1(substitute(x, env = environment()))
+  libnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
 
   # Sync with list if needed
   if (attr(x, "loaded") == TRUE) {
@@ -1209,7 +1209,7 @@ lib_copy <- function(x, nm, directory_path) {
   }
   
   # Get safe name of new library
-  newlib <- deparse1(substitute(nm, env = environment()))
+  newlib <- paste(deparse(substitute(nm, env = environment())), collapse = "")
   
   # Copy lib
   cpy <- x
@@ -1310,7 +1310,7 @@ lib_delete <- function(x) {
     stop("Object must be a data library.")
   
   # Get safe name
-  lnm <- deparse1(substitute(x, env = environment()))
+  lnm <- paste(deparse(substitute(x, env = environment())), collapse = "")
   
   if (attr(x, "read_only") == FALSE) {
   
