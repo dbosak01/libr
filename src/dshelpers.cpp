@@ -11,10 +11,74 @@ using namespace Rcpp;
 //   http://gallery.rcpp.org/
 //
 
+
 // [[Rcpp::export]]
-NumericVector timesTwo(NumericVector x) {
-  return x * 2;
+CharacterVector bychanges(CharacterVector dat) {
+   
+   int n = dat.length();
+   CharacterVector res(1);
+   //int counter = 0;
+   
+   res[0] = dat[0];
+   
+   for(int i = 1; i < n; i++) {
+      
+      if (dat[i] != dat[i - 1]) {
+         res.push_back(dat[i]);
+      }
+      
+   }
+   
+   return res;
 }
+
+
+// [[Rcpp::export]]
+LogicalVector byfirst(CharacterVector dat) {
+
+ int n = dat.length();
+ LogicalVector res(n);
+
+
+ res[0] = true;
+
+ for(int i = 1; i < n; i++) {
+
+   if (dat[i] == dat[i - 1]) {
+     res[i] = false;
+   } else {
+
+     res[i] = true;
+   }
+
+ }
+
+ return res;
+}
+
+
+// [[Rcpp::export]]
+LogicalVector bylast(CharacterVector dat) {
+   
+   int n = dat.length() - 1;
+   LogicalVector res(n + 1);
+   
+   res[n] = true;
+   
+   for(int i = 0; i < n; i++) {
+      
+      if (dat[i] == dat[i + 1]) {
+         res[i] = false;
+      } else {
+         
+         res[i] = true;
+      }
+      
+   }
+   
+   return res;
+}
+
 
 
 // You can include R code blocks in C++ files processed with sourceCpp
@@ -23,5 +87,28 @@ NumericVector timesTwo(NumericVector x) {
 //
 
 /*** R
-timesTwo(42)
+
+
+#bychanges(as.character(mtcars[["gear"]]))
+
+#inp <- mtcars[order(mtcars[["cyl"]]), ]
+
+#dat <- add_autos(inp, c("cyl"))
+
+#dat
+
+#paste(mtcars[["am"]], mtcars[["gear"]])
+
+#dat["first."] <- byfirst2(mtcars, c("am", "gear"))
+
+#dat["first."] <- byfirst(mtcars, "am")
+#dat["last."] <- bylast(mtcars, c("am"))
+
+#dat
+
+# 
+# nrow(mtcars)
+# ncol(mtcars)
+
+
 */

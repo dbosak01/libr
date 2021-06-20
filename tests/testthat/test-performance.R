@@ -4,40 +4,45 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
-DEV <- FALSE
+DEV <- TRUE
 
 
-# Baseline of 12.6 sec on condition
+test_that("add_autos() function works as expected", {
+  
+  libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+
+  tm <- Sys.time()
+  
+  dat3 <- add_autos(dat$lb, c("USUBJID", "LBCAT", "LBTESTCD"))
+  
+  
+  tmdiff <- Sys.time() - tm
+  tmdiff
+  
+  expect_equal("first." %in% names(dat3), TRUE)
+  expect_equal("last." %in% names(dat3), TRUE)
+  expect_equal("n." %in% names(dat3), TRUE)
+})
+
+test_that("sort check works as expected", {
+
+  dat3 <- add_autos(mtcars, c("am"), sort_check = FALSE)
+  
+
+  expect_equal("first." %in% names(dat3), TRUE)
+  expect_equal("last." %in% names(dat3), TRUE)
+  expect_equal("n." %in% names(dat3), TRUE)
+  expect_error( add_autos(mtcars, c("am"), sort_check = TRUE))
+})
+
+
+# Baseline of 10 sec on condition
 test_that("datastep() performance is good", {
   
   if (DEV) {
     
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
-    
-    dat2 <- data.frame(dat$lb, n. = seq(1, nrow(dat$lb)))
-    
-    tm <- Sys.time()
-   res <-  split(dat2, dat2$n.)
-    
-   tmdiff <- Sys.time() - tm
-   tmdiff
-   
-   res[[2]]
-  
-   
-   t(res[[2]])
-    
-    fanny <- Vectorize(function() {
-      if (is.na(LBBLFL))
-        blisna <- TRUE
-      else
-        blisna <- FALSE
-      
-    })
-    
-    res <- within(dat$lb, fanny)
-    
-    names(res)
+
     
     tm <- Sys.time()
     
@@ -54,66 +59,18 @@ test_that("datastep() performance is good", {
     tmdiff <- Sys.time() - tm
     tmdiff
     
-    expect_equal(tmdiff < 1, TRUE)
+    expect_equal(tmdiff < 10, TRUE)
     
   } else
     expect_equal(TRUE, TRUE)
   
 })
 
-# Jumps to 13.1 seconds when retain added
+# Jumps to 14 seconds when retain added
 test_that("datastep() performance with retain is good", {
   
   
   libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
-  
-  data <- as.data.frame(dat$lb)
-  
-  ret <- list()
-  
-  tm <- Sys.time()
-  
-  for (i in seq_len(nrow(data)))
-  {
-
-   data[i, "fork"] <- i
-
-   ret[[i]] <-  data[i, ]
-
-  }
-  
-  
-  ret2 <- list()
-  
-  for (i in seq_len(nrow(data)))
-  {
-    
-    
-    ret2[[i]] <-  ret[[i]][]
-    
-  }
-  
-
-  forkfunc <- Vectorize(function(dat) {
-    
-    
-    dat[["sammy"]] <- dat[["LBBLFL"]] 
-    
-    return(dat)
-    
-  })
-  
-  res2 <- forkfunc(ret)
-  
-  res2[1]
-  
-  ret[2]
-  
-  #d2 <- bind_rows(ret, .id = "column_label")
-  
-  tmdiff <- Sys.time() - tm
-  tmdiff
-  
   
   
   if (DEV) {
@@ -137,19 +94,20 @@ test_that("datastep() performance with retain is good", {
     tmdiff <- Sys.time() - tm
     tmdiff
     
-    expect_equal(tmdiff < 16, TRUE)
+    expect_equal(tmdiff < 14, TRUE)
     
   } else
     expect_equal(TRUE, TRUE)
   
 })
 
-# Still less than < 1 second when group by added
+# Still less than < 11 seconds when group by added
 test_that("datastep() performance with by group is good", {
   
   if (DEV) {
     
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+    
     
     tm <- Sys.time()
     
@@ -168,7 +126,7 @@ test_that("datastep() performance with by group is good", {
     tmdiff <- Sys.time() - tm
     tmdiff
     
-    expect_equal(tmdiff < 16, TRUE)
+    expect_equal(tmdiff < 11, TRUE)
     
   } else
     expect_equal(TRUE, TRUE)
@@ -183,9 +141,10 @@ test_that("datastep() performance with retain is good", {
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
     
     tm <- Sys.time()
+  
     
     res <- datastep(dat$lb, retain = list(rnum = 0),
-                    by = c("USUBJID"),
+                    by = c("USUBJID", "LBCAT", "LBTESTCD"),
                     {
                       if (first.)
                         subjstart <- TRUE
@@ -194,7 +153,9 @@ test_that("datastep() performance with retain is good", {
                       
                       rnum <- rnum + 1
                       
-                    })
+                      rnum2 <- n.
+                      
+                    }, sort_check = TRUE)
     
     tmdiff <- Sys.time() - tm
     tmdiff
@@ -258,7 +219,7 @@ test_that("datastep() with group_by performance is good", {
     tmdiff <- Sys.time() - tm 
     tmdiff
     
-    expect_equal(tmdiff < 20, TRUE)
+    expect_equal(tmdiff < 3, TRUE)
     
   } else 
     expect_equal(TRUE, TRUE)

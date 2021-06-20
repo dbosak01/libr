@@ -18,7 +18,7 @@ test_that("datastep() function works as expected with mtcars.", {
 
   })
 
-
+  
   expect_equal("mpgcat" %in% names(d1), TRUE)
 
 })

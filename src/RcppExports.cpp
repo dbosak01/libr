@@ -5,20 +5,44 @@
 
 using namespace Rcpp;
 
-// timesTwo
-NumericVector timesTwo(NumericVector x);
-RcppExport SEXP _libr_timesTwo(SEXP xSEXP) {
+// bychanges
+CharacterVector bychanges(CharacterVector dat);
+RcppExport SEXP _libr_bychanges(SEXP datSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(timesTwo(x));
+    Rcpp::traits::input_parameter< CharacterVector >::type dat(datSEXP);
+    rcpp_result_gen = Rcpp::wrap(bychanges(dat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// byfirst
+LogicalVector byfirst(CharacterVector dat);
+RcppExport SEXP _libr_byfirst(SEXP datSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type dat(datSEXP);
+    rcpp_result_gen = Rcpp::wrap(byfirst(dat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bylast
+LogicalVector bylast(CharacterVector dat);
+RcppExport SEXP _libr_bylast(SEXP datSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type dat(datSEXP);
+    rcpp_result_gen = Rcpp::wrap(bylast(dat));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_libr_timesTwo", (DL_FUNC) &_libr_timesTwo, 1},
+    {"_libr_bychanges", (DL_FUNC) &_libr_bychanges, 1},
+    {"_libr_byfirst", (DL_FUNC) &_libr_byfirst, 1},
+    {"_libr_bylast", (DL_FUNC) &_libr_bylast, 1},
     {NULL, NULL, 0}
 };
 

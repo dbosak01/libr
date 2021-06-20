@@ -1,3 +1,10 @@
+# libr 1.2
+
+* Made package compatible to R version 3.6.
+* Added GitHub actions to test previous versions of R.
+* Increased performance of datastep() function.
+* Added varname parameter to libname() function to allow for variable names.
+
 # libr 1.1.3
 
 * Fixed bug on datastep when data frame/tibble had a single column.
