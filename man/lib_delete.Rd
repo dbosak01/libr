@@ -7,7 +7,9 @@
 lib_delete(x)
 }
 \arguments{
-\item{x}{The data library to delete.}
+\item{x}{The data library to delete.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 }
 \description{
 The \code{lib_delete} function deletes a data library from

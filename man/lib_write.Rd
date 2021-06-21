@@ -7,7 +7,9 @@
 lib_write(x, force = FALSE)
 }
 \arguments{
-\item{x}{The data library to write.}
+\item{x}{The data library to write.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
 \item{force}{Force writing each data file to disk, even if it has not 
 changed.}

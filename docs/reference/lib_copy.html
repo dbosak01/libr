@@ -89,7 +89,7 @@ that is the version that will be copied." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -179,11 +179,16 @@ that is the version that will be copied.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The library to copy.</p></td>
+      <td><p>The library to copy.  The parameter will assume non-standard
+(unquoted) evaluation unless the <code>libr.standard_eval</code> option is set
+to TRUE.</p></td>
     </tr>
     <tr>
       <th>nm</th>
-      <td><p>The unquoted variable name to hold the new library.</p></td>
+      <td><p>The unquoted variable name to hold the new library.
+The parameter will assume non-standard
+(unquoted) evaluation unless the <code>libr.standard_eval</code> option is set
+to TRUE.</p></td>
     </tr>
     <tr>
       <th>directory_path</th>

@@ -7,7 +7,9 @@
 lib_size(x)
 }
 \arguments{
-\item{x}{The data library.}
+\item{x}{The data library.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 }
 \value{
 The size of the data library in bytes as stored on the file system.

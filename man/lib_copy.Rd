@@ -7,9 +7,14 @@
 lib_copy(x, nm, directory_path)
 }
 \arguments{
-\item{x}{The library to copy.}
+\item{x}{The library to copy.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
-\item{nm}{The unquoted variable name to hold the new library.}
+\item{nm}{The unquoted variable name to hold the new library.
+The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
 \item{directory_path}{The path to copy the library to.}
 }

@@ -96,7 +96,7 @@ disk, use the lib_write function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -193,7 +193,9 @@ disk, use the <code><a href='lib_write.html'>lib_write</a></code> function.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The data library to synchronize.</p></td>
+      <td><p>The data library to synchronize.  The parameter will assume non-standard
+(unquoted) evaluation unless the <code>libr.standard_eval</code> option is set
+to TRUE.</p></td>
     </tr>
     <tr>
       <th>name</th>

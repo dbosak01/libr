@@ -4,8 +4,8 @@
 [![libr lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://cran.r-project.org/package=libr)
 [![libr downloads](https://cranlogs.r-pkg.org/badges/grand-total/libr)](https://cran.r-project.org/package=libr)
 [![Travis build status](https://travis-ci.com/dbosak01/libr.svg?branch=master)](https://travis-ci.com/dbosak01/libr)
-
 [![R-CMD-check](https://github.com/dbosak01/libr/workflows/R-CMD-check/badge.svg)](https://github.com/dbosak01/libr/actions)
+
 <!-- badges: end -->
   
 # Introduction to **libr** 

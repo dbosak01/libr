@@ -4,7 +4,8 @@
 * Made package compatible to R version 3.6.
 * Added GitHub actions to test previous versions of R.
 * Increased performance of datastep() function.
-* Added varname parameter to libname() function to allow for variable names.
+* Added standard_eval parameter to `libname()` and `lib_copy()` functions to
+allow user to pass library names as a variable.
 
 # libr 1.1.3
 

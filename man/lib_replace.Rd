@@ -7,7 +7,9 @@
 lib_replace(x, ..., name = NULL)
 }
 \arguments{
-\item{x}{The library to replace data in.}
+\item{x}{The library to replace data in.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
 \item{...}{The data frame(s) to replace.  If you wish to replace more than
 one data set, separate with commas.}

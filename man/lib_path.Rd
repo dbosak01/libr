@@ -7,7 +7,9 @@
 lib_path(x)
 }
 \arguments{
-\item{x}{The data library.}
+\item{x}{The data library.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 }
 \value{
 The path of the data library as a single string.

@@ -7,7 +7,9 @@
 lib_remove(x, name)
 }
 \arguments{
-\item{x}{The data library.}
+\item{x}{The data library.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
 \item{name}{The quoted name of the item to remove from the data library. 
 For more than one name, pass a vector of quoted names.}

@@ -18,7 +18,9 @@ libname(
 \arguments{
 \item{name}{The unquoted name of the library to create.  The library name will 
 be created as a variable in the environment specified on the \code{env}
-parameter.  The default environment is the parent frame.}
+parameter.  The default environment is the parent frame. If you want
+to pass the library name as a quoted string or with a variable, 
+use \code{options("libr.standard_eval" = TRUE)}.}
 
 \item{directory_path}{A directory path to associate with the library.  If 
 the directory contains data files of the type specified on the 

@@ -7,7 +7,9 @@
 lib_load(x, filter = NULL)
 }
 \arguments{
-\item{x}{The data library to load.}
+\item{x}{The data library to load.  The parameter will assume non-standard
+(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+to TRUE.}
 
 \item{filter}{One or more quoted strings to use as filters for the
 data names to load into the workspace. For more than one filter string, 

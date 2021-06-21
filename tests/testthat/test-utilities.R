@@ -132,3 +132,23 @@ test_that("copy_attributes function works as expected.", {
   
 })
 
+# 
+# test_that("libname() var_name parameter works as expected.", {
+#   
+#   
+#   
+#   expect_equal(standard_eval(), FALSE)
+#   
+#   options("libr.standard_eval" = TRUE)
+#   
+#   expect_equal(standard_eval(), TRUE)
+#   
+#   options("libr.standard_eval" = FALSE)
+#   
+#   expect_equal(standard_eval(), FALSE)
+#   
+#   
+#   
+#   
+# })
+

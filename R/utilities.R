@@ -579,6 +579,28 @@ log_logr <- function(x) {
   }
 }
 
+
+# @noRd
+# standard_eval <- function() {
+#   
+#   ret <- FALSE
+#   
+#   if (is.null(options("libr.standard_eval")[[1]]) == FALSE) {
+#     if (options("libr.standard_eval")[[1]] == TRUE)
+#       ret <- TRUE
+#     
+#   }
+#   
+#   if (is.null(options("sassy.standard_eval")[[1]]) == FALSE) {
+#     if (options("sassy.standard_eval")[[1]] == TRUE)
+#       ret <- TRUE
+#     
+#   }
+#   
+#   return(ret)
+# }
+
+
 # get_id <- function(n = 1, seed_no = 1, id_len = 5){
 #   set.seed(seed_no)
 #   pool <- c(letters, LETTERS, 0:9)

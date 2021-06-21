@@ -58,6 +58,18 @@
 #' @export
 dictionary <- function(x) {
   
+
+  
+  if (all(class(x) == "character")) {
+    lbnm <- x
+    x <- get(lbnm, envir = e$env)
+    
+  } else {
+    
+    # Get safe variable name
+    lbnm  <- paste(deparse(substitute(x, env = environment())), collapse = "")
+  }
+  
   if (!any(class(x) == "lib") & !any(class(x) == "data.frame"))
     stop("Input object must be a library or data frame.")
    
@@ -78,9 +90,8 @@ dictionary <- function(x) {
     
   } else {
     
-    nm <- paste(deparse(substitute(x, env = environment())), collapse = "")
-    ret = getDictionary(x, nm)
-  
+    ret <- getDictionary(x, lbnm)
+    
   }
   
   ret <- as_tibble(ret)
