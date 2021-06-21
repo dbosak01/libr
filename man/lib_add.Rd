@@ -7,9 +7,7 @@
 lib_add(x, ..., name = NULL)
 }
 \arguments{
-\item{x}{The library to add data to.  The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
-to TRUE.}
+\item{x}{The library to add data to.}
 
 \item{...}{The data frame(s) to add to the library.  If more than one,
 separate with commas.}

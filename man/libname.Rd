@@ -12,15 +12,17 @@ libname(
   read_only = FALSE,
   env = parent.frame(),
   import_specs = NULL,
-  filter = NULL
+  filter = NULL,
+  standard_eval = FALSE
 )
 }
 \arguments{
 \item{name}{The unquoted name of the library to create.  The library name will 
 be created as a variable in the environment specified on the \code{env}
 parameter.  The default environment is the parent frame. If you want
-to pass the library name as a quoted string or with a variable, 
-use \code{options("libr.standard_eval" = TRUE)}.}
+to pass the library name as a quoted string or a variable, 
+set the \code{standard_eval} parameter to TRUE to turn off the
+non-standard evaluation.}
 
 \item{directory_path}{A directory path to associate with the library.  If 
 the directory contains data files of the type specified on the 
@@ -58,6 +60,10 @@ file names. For more than one filter string, pass them as a vector of
 strings. The filter string can be a full or partial file name, without
 extension.  If using a partial file name, use a wild-card character (*) 
 to identify the missing portion. The match will be case-insensitive.}
+
+\item{standard_eval}{A TRUE or FALSE value which indicates whether to 
+use standard (quoted) or non-standard (unquoted) evaluation on the library
+\code{name} parameter. Default is FALSE.}
 }
 \value{
 The library object, with all data files loaded into the library

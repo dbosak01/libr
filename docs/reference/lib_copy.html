@@ -172,27 +172,32 @@ the workspace version will be considered the most current version, and
 that is the version that will be copied.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_copy</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>nm</span>, <span class='va'>directory_path</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>lib_copy</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>nm</span>, <span class='va'>directory_path</span>, standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The library to copy.  The parameter will assume non-standard
-(unquoted) evaluation unless the <code>libr.standard_eval</code> option is set
-to TRUE.</p></td>
+      <td><p>The library to copy.</p></td>
     </tr>
     <tr>
       <th>nm</th>
       <td><p>The unquoted variable name to hold the new library.
 The parameter will assume non-standard
-(unquoted) evaluation unless the <code>libr.standard_eval</code> option is set
+(unquoted) evaluation unless the <code>standard_eval</code> parameter is set
 to TRUE.</p></td>
     </tr>
     <tr>
       <th>directory_path</th>
       <td><p>The path to copy the library to.</p></td>
+    </tr>
+    <tr>
+      <th>standard_eval</th>
+      <td><p>A TRUE or FALSE value which indicates whether to 
+use standard (quoted) or non-standard (unquoted) evaluation on the 
+<code>nm</code> parameter. Default is FALSE.  Use this parameter if you want to 
+pass the target library name in a variable.</p></td>
     </tr>
     </table>
 

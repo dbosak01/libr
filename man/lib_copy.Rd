@@ -4,19 +4,22 @@
 \alias{lib_copy}
 \title{Copy a Data Library}
 \usage{
-lib_copy(x, nm, directory_path)
+lib_copy(x, nm, directory_path, standard_eval = FALSE)
 }
 \arguments{
-\item{x}{The library to copy.  The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
-to TRUE.}
+\item{x}{The library to copy.}
 
 \item{nm}{The unquoted variable name to hold the new library.
 The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
+(unquoted) evaluation unless the \code{standard_eval} parameter is set
 to TRUE.}
 
 \item{directory_path}{The path to copy the library to.}
+
+\item{standard_eval}{A TRUE or FALSE value which indicates whether to 
+use standard (quoted) or non-standard (unquoted) evaluation on the 
+\code{nm} parameter. Default is FALSE.  Use this parameter if you want to 
+pass the target library name in a variable.}
 }
 \value{
 The new library.

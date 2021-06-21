@@ -177,7 +177,8 @@ copy the library, and write any changed data to the file system.</p>
   read_only <span class='op'>=</span> <span class='cn'>FALSE</span>,
   env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   import_specs <span class='op'>=</span> <span class='cn'>NULL</span>,
-  filter <span class='op'>=</span> <span class='cn'>NULL</span>
+  filter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -188,8 +189,9 @@ copy the library, and write any changed data to the file system.</p>
       <td><p>The unquoted name of the library to create.  The library name will 
 be created as a variable in the environment specified on the <code>env</code>
 parameter.  The default environment is the parent frame. If you want
-to pass the library name as a quoted string or with a variable, 
-use <code><a href='https://rdrr.io/r/base/options.html'>options("libr.standard_eval" = TRUE)</a></code>.</p></td>
+to pass the library name as a quoted string or a variable, 
+set the <code>standard_eval</code> parameter to TRUE to turn off the
+non-standard evaluation.</p></td>
     </tr>
     <tr>
       <th>directory_path</th>
@@ -239,6 +241,12 @@ file names. For more than one filter string, pass them as a vector of
 strings. The filter string can be a full or partial file name, without
 extension.  If using a partial file name, use a wild-card character (*) 
 to identify the missing portion. The match will be case-insensitive.</p></td>
+    </tr>
+    <tr>
+      <th>standard_eval</th>
+      <td><p>A TRUE or FALSE value which indicates whether to 
+use standard (quoted) or non-standard (unquoted) evaluation on the library
+<code>name</code> parameter. Default is FALSE.</p></td>
     </tr>
     </table>
 

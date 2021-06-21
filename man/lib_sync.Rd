@@ -7,9 +7,7 @@
 lib_sync(x, name = NULL)
 }
 \arguments{
-\item{x}{The data library to synchronize.  The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
-to TRUE.}
+\item{x}{The data library to synchronize.}
 
 \item{name}{The name of the library to sync if not the variable
 name. Used internally.}

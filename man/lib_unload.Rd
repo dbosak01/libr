@@ -7,9 +7,7 @@
 lib_unload(x, sync = TRUE, name = NULL)
 }
 \arguments{
-\item{x}{The data library to unload. The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
-to TRUE.}
+\item{x}{The data library to unload.}
 
 \item{sync}{Whether to sync the workspace with the library list before
 it is unloaded.  Default is TRUE. If you want to unload the workspace 

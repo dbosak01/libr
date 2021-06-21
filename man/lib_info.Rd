@@ -7,9 +7,7 @@
 lib_info(x)
 }
 \arguments{
-\item{x}{The data library.  The parameter will assume non-standard
-(unquoted) evaluation unless the \code{libr.standard_eval} option is set
-to TRUE.}
+\item{x}{The data library.}
 }
 \value{
 A data frame of information about the library.
