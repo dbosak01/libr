@@ -15,6 +15,19 @@ test_that("libname() function works as expected with csv.", {
   expect_equal(nrow(dat[[2]]), 2)
   expect_equal(ncol(dat[[2]]), 9)
 })
+
+test_that("libname() and quiet parameter works as expected with csv.", {
+  
+  libname(dat, base_path, engine = "csv", quiet = TRUE)
+  
+  expect_equal(class(dat)[[1]], "lib")
+  expect_equal(length(dat), 2) 
+  expect_equal(nrow(dat[[1]]), 10)
+  expect_equal(ncol(dat[[1]]), 9)
+  expect_equal(nrow(dat[[2]]), 2)
+  expect_equal(ncol(dat[[2]]), 9)
+})
+
   
 
 test_that("libname() function works as expected with rds", {

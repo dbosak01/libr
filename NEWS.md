@@ -3,9 +3,12 @@
 
 * Made package compatible to R version 3.6.
 * Added GitHub actions to test previous versions of R.
-* Increased performance of datastep() function.
-* Added standard_eval parameter to `libname()` and `lib_copy()` functions to
+* Increased performance of datastep() function generally.  Benchmarks show
+about 40% improvement on average.
+* Added _standard_eval_ parameter to `libname()` and `lib_copy()` functions to
 allow user to pass library names as a variable.
+* Added _quiet_ parameter on `libname()` function to minimize console output
+if desired.
 
 # libr 1.1.3
 
@@ -17,7 +20,7 @@ allow user to pass library names as a variable.
 * Integrated libr with logr.  All library functions will automatically
 provide logging entries if the autolog feature of the logr package is enabled.
 * Added pkgdown site.
-* Added filter parameters to `libname()` and `lib_load()` parameters. The
+* Added _filter_ parameters to `libname()` and `lib_load()` functions. The
 filter parameter allows the user to specify which data from the library
 they want loaded into memory.
 * Changed default "na" parameter on csv export to empty string instead of NA

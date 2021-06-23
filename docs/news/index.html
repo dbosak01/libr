@@ -159,8 +159,9 @@
 <ul>
 <li>Made package compatible to R version 3.6.</li>
 <li>Added GitHub actions to test previous versions of R.</li>
-<li>Increased performance of datastep() function.</li>
-<li>Added standard_eval parameter to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_copy.html">lib_copy()</a></code> functions to allow user to pass library names as a variable.</li>
+<li>Increased performance of datastep() function generally. Benchmarks show about 40% improvement on average.</li>
+<li>Added <em>standard_eval</em> parameter to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_copy.html">lib_copy()</a></code> functions to allow user to pass library names as a variable.</li>
+<li>Added <em>quiet</em> parameter on <code><a href="../reference/libname.html">libname()</a></code> function to minimize console output if desired.</li>
 </ul>
 </div>
     <div id="libr-113" class="section level1">
@@ -178,7 +179,7 @@
 <ul>
 <li>Integrated libr with logr. All library functions will automatically provide logging entries if the autolog feature of the logr package is enabled.</li>
 <li>Added pkgdown site.</li>
-<li>Added filter parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> parameters. The filter parameter allows the user to specify which data from the library they want loaded into memory.</li>
+<li>Added <em>filter</em> parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> functions. The filter parameter allows the user to specify which data from the library they want loaded into memory.</li>
 <li>Changed default “na” parameter on csv export to empty string instead of NA to accommodate import into SAS. SAS couldn’t deal with the NA strings.</li>
 <li>Fixed bug in dbf engine when outputting tibbles.</li>
 <li>Fixed bug in %eq% operator when comparing objects with different numbers of classes.</li>

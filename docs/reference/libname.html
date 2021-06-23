@@ -178,7 +178,8 @@ copy the library, and write any changed data to the file system.</p>
   env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   import_specs <span class='op'>=</span> <span class='cn'>NULL</span>,
   filter <span class='op'>=</span> <span class='cn'>NULL</span>,
-  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>
+  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,6 +248,11 @@ to identify the missing portion. The match will be case-insensitive.</p></td>
       <td><p>A TRUE or FALSE value which indicates whether to 
 use standard (quoted) or non-standard (unquoted) evaluation on the library
 <code>name</code> parameter. Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>When TRUE, minimizes output to the console when loading 
+files.  Default is FALSE.</p></td>
     </tr>
     </table>
 

@@ -13,7 +13,8 @@ libname(
   env = parent.frame(),
   import_specs = NULL,
   filter = NULL,
-  standard_eval = FALSE
+  standard_eval = FALSE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -64,6 +65,9 @@ to identify the missing portion. The match will be case-insensitive.}
 \item{standard_eval}{A TRUE or FALSE value which indicates whether to 
 use standard (quoted) or non-standard (unquoted) evaluation on the library
 \code{name} parameter. Default is FALSE.}
+
+\item{quiet}{When TRUE, minimizes output to the console when loading 
+files.  Default is FALSE.}
 }
 \value{
 The library object, with all data files loaded into the library

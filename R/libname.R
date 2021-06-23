@@ -164,6 +164,8 @@ e$env <- parent.frame()
 #' @param standard_eval A TRUE or FALSE value which indicates whether to 
 #' use standard (quoted) or non-standard (unquoted) evaluation on the library
 #' \code{name} parameter. Default is FALSE.
+#' @param quiet When TRUE, minimizes output to the console when loading 
+#' files.  Default is FALSE.
 #' @return The library object, with all data files loaded into the library
 #' list.  Items in the list will be named according the the file name,
 #' minus the file extension.
@@ -230,7 +232,8 @@ e$env <- parent.frame()
 #' @export
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
-                    import_specs = NULL, filter = NULL, standard_eval = FALSE) {
+                    import_specs = NULL, filter = NULL, standard_eval = FALSE,
+                    quiet = FALSE) {
   if (is.null(engine))
     stop("engine parameter cannot be null")
   
@@ -290,13 +293,19 @@ libname <- function(name, directory_path, engine = "rds",
       if (ext == "csv") {
         message(paste0("$", nm))
         
-        if (is.null(import_specs))
-          dat <- read_csv(fp)
-        else {
-
-          if (is.null(import_specs$specs[[nm]]))
+        if (is.null(import_specs)) {
+          if (quiet)
+            dat <- read_csv(fp, col_types = cols())
+          else 
             dat <- read_csv(fp)
-          else {
+        } else {
+
+          if (is.null(import_specs$specs[[nm]])) {
+            if (quiet) 
+              dat <- read_csv(fp, col_types = cols())
+            else
+              dat <- read_csv(fp)
+          } else {
             spcs <- get_colspec_csv(import_specs$specs[[nm]]$col_types)
            # print(spcs)
             na <- import_specs$specs[[nm]]$na
