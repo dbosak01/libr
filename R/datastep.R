@@ -88,6 +88,7 @@
 #' \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
 #' value for a variable.  You must supply an initial value for each retained
 #' variable.
+#' @param arrays A list of \code{\link{dsarray}} objects.
 #' @param sort_check Checks to see if the input data is sorted according to
 #' the \code{by} variable parameter.  The sort check will give an error
 #' if the input data is not sorted according to the \code{by} variable.
@@ -97,6 +98,7 @@
 #' processing on unsorted data, or data that is not sorted according
 #' to the by-group.
 #' @return The processed data frame or tibble.  
+#' @family datastep
 #' @examples 
 #' # Example #1: Simple Data Step
 #' df <- datastep(mtcars[1:10,], 
@@ -239,7 +241,7 @@
 datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
                      by = NULL, calculate = NULL,
-                     retain = NULL,
+                     retain = NULL, arrays = NULL,
                      sort_check = TRUE) {
   
   if (!"data.frame" %in% class(data))
@@ -254,6 +256,14 @@ datastep <- function(data, steps, keep = NULL,
   
   # Capture number of starting columns
   startcols <- ncol(data)
+  
+  if (!is.null(arrays)) {
+    for (nm in names(arrays)) {
+      
+      assign(nm, arrays[[nm]]) 
+      
+    }
+  }
   
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())

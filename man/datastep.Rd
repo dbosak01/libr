@@ -13,6 +13,7 @@ datastep(
   by = NULL,
   calculate = NULL,
   retain = NULL,
+  arrays = NULL,
   sort_check = TRUE
 )
 }
@@ -60,6 +61,8 @@ character column, set the initial value to an empty string, i.e.
 \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
 value for a variable.  You must supply an initial value for each retained
 variable.}
+
+\item{arrays}{A list of \code{\link{dsarray}} objects.}
 
 \item{sort_check}{Checks to see if the input data is sorted according to
 the \code{by} variable parameter.  The sort check will give an error
@@ -261,3 +264,10 @@ df
 # Merc 230          22.8         4 3.150         27.840
 # Merc 280          19.2         6 3.440         31.280
 }
+\seealso{
+Other datastep: 
+\code{\link{[.dsarray}()},
+\code{\link{dsarray}()},
+\code{\link{length.dsarray}()}
+}
+\concept{datastep}
