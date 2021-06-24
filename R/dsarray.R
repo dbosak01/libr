@@ -10,7 +10,7 @@
 #' the \code{\link{datastep}} to loop over columns.  
 #' @param ... Column names to include as part of the datastep array.
 #' Separate column identifiers with commas.
-#' @return The import specifications object.
+#' @return The datastep array object.
 #' @seealso \code{\link{libname}} to create a data library, and
 #' \code{\link{dictionary}} for generating a data dictionary
 #' @family datastep

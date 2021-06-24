@@ -20,36 +20,93 @@ dsattr(
 'character', 'numeric', 'integer', 'logical', and 'complex'.}
 
 \item{label}{The label to associate with this column.  Accepts
-any string value.}
+any string value. The label will appear as a column header on some 
+data viewers.}
 
 \item{description}{A description for this column.  Accepts any string
-value.}
+value.  The description is intended to be a longer explanation of the 
+purpose or source of the variable.}
 
-\item{width}{The desired width for the column.  Works only on character
-columns. Applying a width to a column will make it fixed-width.}
+\item{width}{The desired width for the column in number of characters.}
 
 \item{format}{The format associated with this column.  See the 
 \code{\link[fmtr]{fmtr}} package for more information about formatting.}
 
 \item{justify}{The desired justification for the column.  This parameter
-it normally used only for fixed-width, character columns.}
+it normally used only for fixed-width, character columns.  Valid values
+are 'left', 'right', 'center', and 'centre'.}
 
-\item{...}{Any other attributes you wish to assign to this column.}
+\item{...}{Any other attributes you wish to assign to this column. Pass
+these additional attributes as a name/value pair.}
 }
 \value{
-The import specifications object.
+The datastep attributes object.
 }
 \description{
-A function to capture a set of column names with
-which to create a datastep array.  The datastep array can be used inside
-the \code{\link{datastep}} to loop over columns.
+An object with which to assign attributes
+to a column in a \code{\link{datastep}}.  The parameters allow you
+to set the following attributes: 'class', 'label', 'description', 'width', 
+'justify', and 'format'.  Any other desired attributes can be set 
+with \code{...}.
+
+The attributes available in the \code{dsattr} class are closely aligned
+with those available in the \strong{fmtr} package, and are intended
+to be used together. See the \code{\link[fmtr]{fmtr}} package documentation
+for additional details.  In particular, the \code{\link[fmtr]{fdata}} and
+\code{\link[fmtr]{fapply}} functions provide relevant examples and 
+explanations.
 }
 \examples{
 library(libr)
+
+# Create small sample dataframe
+dat <- mtcars[1:10, c("mpg", "cyl")]
+
+# Perform datastep and assign attributes
+dat1 <- datastep(dat, 
+                 attrib = list(mpg = dsattr(label = "Miles Per Gallon"),
+                               cyl = dsattr(label = "Cylinders"),
+                               mpgcat = dsattr(label = "Fuel Efficiency")),
+                {
+                
+                  if (mpg >= 20) 
+                    mpgcat = "High"
+                  else 
+                    mpgcat = "Low"
+                
+                })
+
+# Print results                 
+dat1
+#                    mpg cyl mpgcat
+# Mazda RX4         21.0   6   High
+# Mazda RX4 Wag     21.0   6   High
+# Datsun 710        22.8   4   High
+# Hornet 4 Drive    21.4   6   High
+# Hornet Sportabout 18.7   8    Low
+# Valiant           18.1   6    Low
+# Duster 360        14.3   8    Low
+# Merc 240D         24.4   4   High
+# Merc 230          22.8   4   High
+# Merc 280          19.2   6    Low
+                
+# Examine label attributes
+attr(dat1$mpg, "label") 
+# [1] "Miles Per Gallon"
+
+attr(dat1$cyl, "label") 
+# [1] "Cylinders"
+
+attr(dat1$mpgcat, "label")
+# [1] "Fuel Efficiency"
+
+# See labels in viewer 
+# View(dat1)
 }
 \seealso{
-\code{\link{libname}} to create a data library, and
-\code{\link{dictionary}} for generating a data dictionary
+The \code{\link[fmtr]{fdata}} function in the \strong{fmtr}
+package for more information
+on formatting and rendering dataframes.
 
 Other datastep: 
 \code{\link{[.dsarray}()},

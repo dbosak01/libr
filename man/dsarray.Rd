@@ -12,7 +12,7 @@ dsarray(...)
 Separate column identifiers with commas.}
 }
 \value{
-The import specifications object.
+The datastep array object.
 }
 \description{
 A function to capture a set of column names with

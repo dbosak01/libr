@@ -176,6 +176,7 @@ and last rows in a group.</p>
   calculate <span class='op'>=</span> <span class='cn'>NULL</span>,
   retain <span class='op'>=</span> <span class='cn'>NULL</span>,
   arrays <span class='op'>=</span> <span class='cn'>NULL</span>,
+  attrib <span class='op'>=</span> <span class='cn'>NULL</span>,
   sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -244,7 +245,11 @@ variable.</p></td>
     </tr>
     <tr>
       <th>arrays</th>
-      <td><p>A list of <code><a href='dsarray.html'>dsarray</a></code> objects.</p></td>
+      <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects.</p></td>
+    </tr>
+    <tr>
+      <th>attrib</th>
+      <td><p>A named list of <code><a href='dsattr.html'>dsattr</a></code> objects.</p></td>
     </tr>
     <tr>
       <th>sort_check</th>
@@ -303,6 +308,7 @@ step is also very readable compared to other pipeline conditionals.</p>
     <div class='dont-index'><p>Other datastep: 
 <code><a href='[.dsarray.html'>[.dsarray</a>()</code>,
 <code><a href='dsarray.html'>dsarray</a>()</code>,
+<code><a href='dsattr.html'>dsattr</a>()</code>,
 <code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
