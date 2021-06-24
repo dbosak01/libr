@@ -10,6 +10,9 @@
     <loc>https://libr.r-sassy.org/reference/dictionary.html</loc>
   </url>
   <url>
+    <loc>https://libr.r-sassy.org/reference/dsarray.html</loc>
+  </url>
+  <url>
     <loc>https://libr.r-sassy.org/reference/grapes-eq-grapes.html</loc>
   </url>
   <url>
@@ -17,6 +20,9 @@
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/is.lib.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/reference/length.dsarray.html</loc>
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/libname.html</loc>
@@ -71,6 +77,9 @@
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/specs.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/reference/sub-.dsarray.html</loc>
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/write.specs.html</loc>

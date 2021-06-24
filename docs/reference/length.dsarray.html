@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • libr</title>
+<title>Length function for dsarray class — length.dsarray • libr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,7 +48,8 @@
   
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Length function for dsarray class — length.dsarray" />
+<meta property="og:description" content="A length function for the Datastep Array." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -68,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -148,100 +149,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/dbosak01/libr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Length function for dsarray class</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dbosak01/libr/blob/master/R/dsarray.R'><code>R/dsarray.R</code></a></small>
+    <div class="hidden name"><code>length.dsarray.Rd</code></div>
     </div>
 
-    <div id="libr-120" class="section level1">
-<h1 class="page-header" data-toc-text="1.2.0">
-<a href="#libr-120" class="anchor"></a>libr 1.2.0<small> Unreleased </small>
-</h1>
-<ul>
-<li>Made package compatible to R version 3.6.</li>
-<li>Added GitHub actions to test previous versions of R.</li>
-<li>Increased performance of datastep() function generally. Benchmarks show about 40% improvement on average.</li>
-<li>Added <em>standard_eval</em> parameter to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_copy.html">lib_copy()</a></code> functions to allow user to pass library names as a variable.</li>
-<li>Added <em>quiet</em> parameter on <code><a href="../reference/libname.html">libname()</a></code> function to minimize console output if desired.</li>
-<li>Added <em>arrays</em> parameter and <code><a href="../reference/dsarray.html">dsarray()</a></code> class to handle data step arrays. This functionality allows iteration across a list of variables inside a <code><a href="../reference/datastep.html">datastep()</a></code>.</li>
-</ul>
-</div>
-    <div id="libr-113" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.3">
-<a href="#libr-113" class="anchor"></a>libr 1.1.3<small> 2021-02-08 </small>
-</h1>
-<ul>
-<li>Fixed bug on datastep when data frame/tibble had a single column.</li>
-</ul>
-</div>
-    <div id="libr-111" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.1">
-<a href="#libr-111" class="anchor"></a>libr 1.1.1<small> 2021-01-06 </small>
-</h1>
-<ul>
-<li>Integrated libr with logr. All library functions will automatically provide logging entries if the autolog feature of the logr package is enabled.</li>
-<li>Added pkgdown site.</li>
-<li>Added <em>filter</em> parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> functions. The filter parameter allows the user to specify which data from the library they want loaded into memory.</li>
-<li>Changed default “na” parameter on csv export to empty string instead of NA to accommodate import into SAS. SAS couldn’t deal with the NA strings.</li>
-<li>Fixed bug in dbf engine when outputting tibbles.</li>
-<li>Fixed bug in %eq% operator when comparing objects with different numbers of classes.</li>
-<li>Greatly improved performance of datastep, especially on grouped tibbles.</li>
-</ul>
-</div>
-    <div id="libr-101" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.1">
-<a href="#libr-101" class="anchor"></a>libr 1.0.1<small> 2020-12-09 </small>
-</h1>
-<p>A package to create data libraries, data dictionaries, and the ability to perform a data step. The major functions are:</p>
-<ul>
-<li>
-<code><a href="../reference/libname.html">libname()</a></code> function creates a data library</li>
-<li>
-<code><a href="../reference/dictionary.html">dictionary()</a></code> function creates a data dictionary</li>
-<li>
-<code><a href="../reference/datastep.html">datastep()</a></code> function steps through data row-by-row</li>
-<li>
-<code><a href="../reference/%eq%.html">%eq%</a></code> allows comparison of any two R objects without error</li>
-</ul>
-<p>The packages also contains a variety of functions to manipulate data libraries:</p>
-<ul>
-<li>
-<code><a href="../reference/lib_load.html">lib_load()</a></code>: Loads a library into the workspace</li>
-<li>
-<code><a href="../reference/lib_unload.html">lib_unload()</a></code>: Unloads a library from the workspace</li>
-<li>
-<code><a href="../reference/lib_sync.html">lib_sync()</a></code>: Synchronizes the workspace with the library list</li>
-<li>
-<code><a href="../reference/lib_write.html">lib_write()</a></code>: Writes library data to the file system</li>
-<li>
-<code><a href="../reference/lib_add.html">lib_add()</a></code>: Adds data to a library</li>
-<li>
-<code><a href="../reference/lib_replace.html">lib_replace()</a></code>: Replaces data in a library</li>
-<li>
-<code><a href="../reference/lib_remove.html">lib_remove()</a></code>: Removes data from a library</li>
-<li>
-<code><a href="../reference/lib_copy.html">lib_copy()</a></code>: Copies a data library</li>
-<li>
-<code><a href="../reference/lib_delete.html">lib_delete()</a></code>: Deletes a data library</li>
-<li>
-<code><a href="../reference/lib_info.html">lib_info()</a></code>: Returns a data frame of information about the library</li>
-<li>
-<code><a href="../reference/lib_path.html">lib_path()</a></code>: Returns the path of a data library</li>
-<li>
-<code><a href="../reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in bytes</li>
-<li>
-<code><a href="../reference/specs.html">specs()</a></code>: Create a collection of import specifications</li>
-<li>
-<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import specification for a file</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>A length function for the Datastep Array.</p>
+    </div>
 
+    <pre class="usage"><span class='co'># S3 method for dsarray</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>The dsarray object.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The number of items in the specified dsarray.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other datastep: 
+<code><a href='[.dsarray.html'>[.dsarray</a>()</code>,
+<code><a href='datastep.html'>datastep</a>()</code>,
+<code><a href='dsarray.html'>dsarray</a>()</code></p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 

@@ -9,6 +9,9 @@ about 40% improvement on average.
 allow user to pass library names as a variable.
 * Added _quiet_ parameter on `libname()` function to minimize console output
 if desired.
+* Added _arrays_ parameter and `dsarray()` class to handle data step arrays. 
+This functionality allows iteration across a list of variables inside a 
+`datastep()`.
 
 # libr 1.1.3
 
