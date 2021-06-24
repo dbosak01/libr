@@ -296,6 +296,8 @@ test_that("datastep() attributes on data are maintained.", {
   
   libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
   
+  attributes(dat$dm$USUBJID)
+  
   prep <- dat$dm %>% 
     left_join(dat$vs, by = c("USUBJID" = "USUBJID")) %>% 
     select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
@@ -395,3 +397,24 @@ test_that("datastep works on single column tibble.", {
   
   
 })
+
+
+test_that("datastep() attributes on data are maintained on base dataframe.", {
+  
+  
+  dat <- mtcars
+  
+  attr(dat$mpg, "label") <- "Miles Per Gallon"
+  
+  
+  dat2 <- datastep(dat, {
+    fork <- "Hello" 
+  })
+
+  expect_equal(attr(dat2$mpg, "label"), "Miles Per Gallon")  
+  
+})
+  
+  
+  
+  

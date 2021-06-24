@@ -88,7 +88,8 @@
 #' \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
 #' value for a variable.  You must supply an initial value for each retained
 #' variable.
-#' @param arrays A list of \code{\link{dsarray}} objects.
+#' @param arrays A named list of \code{\link{dsarray}} objects.
+#' @param attrib A named list of \code{\link{dsattr}} objects.
 #' @param sort_check Checks to see if the input data is sorted according to
 #' the \code{by} variable parameter.  The sort check will give an error
 #' if the input data is not sorted according to the \code{by} variable.
@@ -242,6 +243,7 @@ datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
                      by = NULL, calculate = NULL,
                      retain = NULL, arrays = NULL,
+                     attrib = NULL,
                      sort_check = TRUE) {
   
   if (!"data.frame" %in% class(data))
@@ -257,6 +259,21 @@ datastep <- function(data, steps, keep = NULL,
   # Capture number of starting columns
   startcols <- ncol(data)
   
+  # Apply variable attributes
+  if (!is.null(attrib)) {
+    for (nm in names(attrib)) { 
+      if (!nm %in% names(data)) {
+        data[[nm]] <- NA
+      }
+      for (at in names(attrib[[nm]])) {
+        
+        attr(data[[nm]], at) <-  attrib[[nm]][[at]]
+        
+      }
+    }
+  }
+  
+  # Assign arrays to variables in this environment
   if (!is.null(arrays)) {
     for (nm in names(arrays)) {
       
@@ -295,12 +312,18 @@ datastep <- function(data, steps, keep = NULL,
     }
   }
   
-  # Deal with 1 column situation
+  # Save off any attributes
   if (ncol(data) > 1) {
+    # Deal with 1 column situation
     data_attributes <- data[1, ]
   } else {
     data_attributes <- data.frame(data[1, ])
     names(data_attributes) <- names(data)
+  }
+  # Tibble subset will keep attributes, but data.frame will not
+  if (!"tbl_df" %in% class(data)) {
+    data_attributes <- copy_attributes(data, data_attributes)
+    
   }
   
   # For some reason the grouped tibble kills performance.
@@ -412,154 +435,6 @@ datastep <- function(data, steps, keep = NULL,
   return(ret)
 }
 
-#' @noRd
-datastep2 <- function(data, steps, keep = NULL,
-                     drop = NULL, rename = NULL,
-                     by = NULL, calculate = NULL,
-                     retain = NULL,
-                     sort_check = TRUE) {
-  
-  if (!"data.frame" %in% class(data))
-    stop("input data must be inherited from data.frame")
-  
-  
-  if (!is.null(retain)) {
-    if (!"list" %in% class(retain))
-      stop("retain parameter value must be of class 'list'")
-    
-  }
-  
-  # Capture number of starting columns
-  startcols <- ncol(data)
-  
-  # Put code in a variable for safe-keeping
-  code <- substitute(steps, env = environment())
-
-  # Put aggregate functions in a variable 
-  agg <- substitute(calculate, env = environment())
-  if (paste(deparse(agg), collapse = "") != "NULL") {
-   data <- within(data, eval(agg), keepAttrs = TRUE)
-  }
-  
-  ret <- list()
-  firstval <- NULL
-  firstvals <- list()
-  rowcount <- nrow(data)
-  orig_class <- class(data)
-  
-  # Set by if data is a grouped tibble
-  if (is.null(by) && "grouped_df" %in% class(data)) {
-    if (!is.null(attr(data, "groups"))) {
-      grpdf <- attr(data, "groups")
-      nms <- names(grpdf)
-      if (!is.null(nms)) {
-        nms <- nms[nms != ".rows"]
-        if (length(nms) > 0) {
-          by <- nms
-          
-        }
-      }
-    }
-  }
-  
-  # Store attributes for later use
-  # Deal with 1 column situation
-  if (ncol(data) > 1) {
-    data_attributes <- data[1, ]
-  } else {
-    data_attributes <- data.frame(data[1, ])
-    names(data_attributes) <- names(data)
-  }
-  
-  # For some reason the grouped tibble kills performance.
-  # Temporarily convert to a data frame.  
-  # Seriously like 20X performance increase.
-  if (all("data.frame" != class(data)))
-    data <- as.data.frame(data)
-  
-  # Add automatic variables
-  data <- add_autos(data, by) 
-  
-  # Split dataframe into a list of rows
-  splt <- split(data, seq_len(nrow(data)))
-  
-  # Apply within function to list of rows
-  ret <- lapply(splt, FUN = function(rw) {within(rw, eval(code))})
-  
-  
-  
-  # Bind all rows
-  ret <- bind_rows(ret, .id = "column_label")
-  ret["column_label"] <- NULL
-
-  # if (sort_check & !is.null(by)) {
-  #   if (length(firstvals) > 0) {
-  #     d <- bind_rows(firstvals, .id = "column_label")
-  #     d["column_label"] <- NULL
-  #     ddat <- distinct(d)
-  #     if (nrow(ddat) != nrow(d)) {
-  #       stop(paste("Input data is not sorted according to the 'by' variable",
-  #                  "parameter.\n  Either sort the input data properly or",
-  #                  "set the sort_check parameter to FALSE."))
-  #     }
-  #   }
-  # }
-  
-  # Remove automatic variables
-  ret["n."] <- NULL
-  
-  if (!is.null(by)) {
-    ret["first."] <- NULL
-    ret["last."] <- NULL
-  }
-  
-  # Perform drop operation
-  if (!is.null(drop))
-    ret <- ret[ , !names(ret) %in% drop]
-
-  # Perform keep operation
-  if (!is.null(keep)) {
-    ret <- ret[ , keep]
-  }
-
-
-  # Convert back to tibble if original was a tibble
-  if ("tbl_df" %in% orig_class & !"tbl_df" %in% class(ret)) {
-    ret <- as_tibble(ret)
-  }
-  
-  # Put back grouping attributes if original data was grouped
-  if (!is.null(by) & "grouped_df" %in% orig_class) {
-    
-    if (all(by %in% names(ret)))
-      ret <- group_by(ret, across({{by}})) 
-    
-  }
-  
-  # Restore attributes from original data 
-  ret <- copy_attributes(data_attributes, ret)
-  
-  
-  # Perform rename operation
-  if (!is.null(rename)) {
-    nms <- names(ret)
-    names(ret) <- ifelse(nms %in% names(rename), rename, nms)
-  }
-  
-  endcols <- ncol(ret)
-  if (startcols > endcols)
-    log_logr(paste0("datastep: columns increased from ", startcols, " to ", 
-                   endcols))
-  else if (startcols < endcols)
-    log_logr(paste0("datastep: columns decreased from ", startcols, " to ", 
-                   endcols))
-  else 
-    log_logr(paste0("datastep: columns started with ", startcols, 
-                   " and ended with ", endcols))
-
-  return(ret)
-}
-
 
 
 
@@ -621,12 +496,13 @@ datastep_back <- function(data, steps, keep = NULL,
     names(data_attributes) <- names(data)
   }
   
+  
   # For some reason the grouped tibble kills performance.
   # Temporarily convert to a data frame.  
   # Seriously like 20X performance increase.
   if (all("data.frame" != class(data)))
     data <- as.data.frame(data)
-  #data <- as.data.frame(data)
+
   
   # Increases performance
   if (!is.null(by)) {

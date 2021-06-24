@@ -29,6 +29,7 @@ library(libr)
 Other datastep: 
 \code{\link{[.dsarray}()},
 \code{\link{datastep}()},
+\code{\link{dsattr}()},
 \code{\link{length.dsarray}()}
 }
 \concept{datastep}

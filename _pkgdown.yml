@@ -37,11 +37,16 @@ reference:
   - write.specs
   - read.specs
   - print.specs
+- title: Datastep Functions
+  desc: Functions to perform and enhance a datastep.
+  contents:
+  - datastep
+  - dsarray
+  - dsattr
 - title: Other Functions
   desc: Other useful functions in the libr package.
   contents:
   - dictionary
-  - datastep
   - "%eq%"
 
 navbar:

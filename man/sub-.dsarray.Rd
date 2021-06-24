@@ -28,6 +28,7 @@ For additional details, see the \code{\link{dsarray}} function.
 Other datastep: 
 \code{\link{datastep}()},
 \code{\link{dsarray}()},
+\code{\link{dsattr}()},
 \code{\link{length.dsarray}()}
 }
 \concept{datastep}

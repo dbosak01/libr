@@ -20,6 +20,7 @@ A length function for the Datastep Array.
 Other datastep: 
 \code{\link{[.dsarray}()},
 \code{\link{datastep}()},
-\code{\link{dsarray}()}
+\code{\link{dsarray}()},
+\code{\link{dsattr}()}
 }
 \concept{datastep}

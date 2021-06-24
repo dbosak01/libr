@@ -12,6 +12,11 @@ if desired.
 * Added _arrays_ parameter and `dsarray()` class to handle data step arrays. 
 This functionality allows iteration across a list of variables inside a 
 `datastep()`.
+* Added _attributes_ parameter and `dsattr()` class to handle data step
+attributes.  This functionality allows the user to add attributes 
+to datastep variables.
+* Fixed bug in `datastep()` where it was stripping column attributes on Base R
+data frames.
 
 # libr 1.1.3
 
