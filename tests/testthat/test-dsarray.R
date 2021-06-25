@@ -184,5 +184,70 @@ test_that("for loop and data type check works as expected.", {
 })
 
 
-
-
+test_that("System test of datastep array.", {
+  
+  dfin <- read.table(header = TRUE, text = '
+   C1 C2 C3 C4 C5 C6 C7 
+   12 R11 D21 201901 09 D89 Real
+   21 R23 D77 201901 21 D77 Fetched
+   33 R43 D87 201901 31 D87 Real 
+   33 R43 D87 201901 31 D87 Fetched  
+   57 R12 D87 201901 12 D87 Fetched')
+  
+  
+  dfout <- datastep(dfin, 
+                    arrays = list(dsa = dsarray(names(dfin[1:6]))),
+                    drop = c("nm"),
+                    {
+                      
+                      
+                      # After the first row
+                      if (n. > 1) {
+                        
+                        # Loop through column array
+                        for (nm in dsa) {
+                          
+                          # If any of the first 6 columns don't match
+                          # or C7 is equal to Real, keep the row
+                          if (dsa[nm] != data[[n. - 1, nm]] || 
+                              C7 == "Real") {
+                            delete <- FALSE
+                            break
+                          } else {
+                            
+                            delete <- TRUE 
+                            
+                          }
+                          
+                        }
+                        
+                      } else {
+                        
+                        # Keep first row by default
+                        delete <- FALSE 
+                      }
+                      
+                    })
+  
+  # See results of datastep
+  dfout
+  #   C1  C2  C3     C4 C5  C6      C7 delete
+  # 1 12 R11 D21 201901  9 D89    Real  FALSE
+  # 2 21 R23 D77 201901 21 D77 Fetched  FALSE
+  # 3 33 R43 D87 201901 31 D87    Real  FALSE
+  # 4 33 R43 D87 201901 31 D87 Fetched   TRUE
+  # 5 57 R12 D87 201901 12 D87 Fetched  FALSE
+  
+  expect_equal(nrow(dfout), 5)
+  
+  # Filter out rows flagged for deletion
+  res <- dfout[dfout$delete == FALSE, names(dfout)[1:7]]
+  res
+  #   C1  C2  C3     C4 C5  C6      C7
+  # 1 12 R11 D21 201901  9 D89    Real
+  # 2 21 R23 D77 201901 21 D77 Fetched
+  # 3 33 R43 D87 201901 31 D87    Real
+  # 5 57 R12 D87 201901 12 D87 Fetched
+  
+  expect_equal(nrow(res), 4)
+})

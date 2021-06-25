@@ -11,10 +11,18 @@
 \item{x}{The dsarray object.}
 }
 \value{
-The number of items in the specified dsarray.
+The number of items in the specified \code{\link{dsarray}}.
 }
 \description{
-A length function for the Datastep Array.
+A length function for the Datastep Array \code{\link{dsarray}}.
+The length function can by used either inside or outside the datastep.
+}
+\examples{
+# Define datastep array
+carr <- dsarray(names(mtcars))
+
+length(carr)
+# 11
 }
 \seealso{
 Other datastep: 

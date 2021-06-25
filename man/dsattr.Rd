@@ -6,7 +6,7 @@
 \title{Assign Datastep Variable Attributes}
 \usage{
 dsattr(
-  class = NULL,
+  default = NA,
   label = NULL,
   description = NULL,
   width = NULL,
@@ -16,8 +16,9 @@ dsattr(
 )
 }
 \arguments{
-\item{class}{The desired class of the column. Valid values are 
-'character', 'numeric', 'integer', 'logical', and 'complex'.}
+\item{default}{The default value of the column.  Typical default 
+values might be an empty string ("") or a zero (0).  If no
+default value is specified, the column will be defaulted to NA.}
 
 \item{label}{The label to associate with this column.  Accepts
 any string value. The label will appear as a column header on some 
@@ -43,18 +44,16 @@ these additional attributes as a name/value pair.}
 The datastep attributes object.
 }
 \description{
-An object with which to assign attributes
+An object to assign attributes
 to a column in a \code{\link{datastep}}.  The parameters allow you
 to set the following attributes: 'class', 'label', 'description', 'width', 
 'justify', and 'format'.  Any other desired attributes can be set 
 with \code{...}.
 
 The attributes available in the \code{dsattr} class are closely aligned
-with those available in the \strong{fmtr} package, and are intended
-to be used together. See the \code{\link[fmtr]{fmtr}} package documentation
-for additional details.  In particular, the \code{\link[fmtr]{fdata}} and
-\code{\link[fmtr]{fapply}} functions provide relevant examples and 
-explanations.
+with those available in the \strong{fmtr} package. See the 
+\code{\link[fmtr]{fmtr}} package documentation
+for additional details.
 }
 \examples{
 library(libr)

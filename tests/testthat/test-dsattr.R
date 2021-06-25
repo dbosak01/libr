@@ -136,3 +136,47 @@ test_that("dsattr function works with datastep and a tibble.", {
   expect_equal(attr(d1[["mpg"]], "label"), "Miles Per Gallon")
 })
 
+
+test_that("attrib parameter works with datastep and no dsattr.", {
+  
+
+  
+  dat <- mtcars[1:10, ]
+  
+  
+  d1 <- datastep(dat, attrib = list(fork = "", bork = 0), {
+    
+    
+  })
+  
+  attributes(d1$fork)
+  attributes(d1$bork)
+  
+  d1
+  
+  
+  expect_equal("fork" %in% names(d1), TRUE)
+  expect_equal("bork" %in% names(d1), TRUE)
+  expect_equal(d1[["fork"]][1], "")
+  expect_equal(d1[["bork"]][1], 0)
+  
+  
+  
+  d2 <- datastep(dat, attrib = list(fork = "hello", bork = 23), {
+    
+    
+  })
+
+  
+  d2
+  
+  
+  expect_equal("fork" %in% names(d2), TRUE)
+  expect_equal("bork" %in% names(d2), TRUE)
+  expect_equal(d2[["fork"]][1], "hello")
+  expect_equal(d2[["bork"]][1], 23)
+  
+})
+
+
+

@@ -262,12 +262,25 @@ datastep <- function(data, steps, keep = NULL,
   # Apply variable attributes
   if (!is.null(attrib)) {
     for (nm in names(attrib)) { 
-      if (!nm %in% names(data)) {
-        data[[nm]] <- NA
-      }
-      for (at in names(attrib[[nm]])) {
+      if ("dsattr" %in% class(attrib[[nm]])) {
         
-        attr(data[[nm]], at) <-  attrib[[nm]][[at]]
+        # If the attrib is a dsattr
+        if (!nm %in% names(data)) {
+          data[[nm]] <- attrib[[nm]][["default"]]
+        }
+        for (at in names(attrib[[nm]])) {
+          
+          if (at != "class")
+            attr(data[[nm]], at) <-  attrib[[nm]][[at]]
+          
+        }
+      } else {
+        
+        # If the attrib is not a dsattr, use as default value
+        if (!nm %in% names(data)) {
+          data[[nm]] <- attrib[[nm]]
+        }
+        
         
       }
     }

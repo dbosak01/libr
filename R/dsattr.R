@@ -1,20 +1,21 @@
 
 #' @title Assign Datastep Variable Attributes
 #' @encoding UTF-8
-#' @description An object with which to assign attributes
+#' @description An object to assign attributes
 #' to a column in a \code{\link{datastep}}.  The parameters allow you
 #' to set the following attributes: 'class', 'label', 'description', 'width', 
 #' 'justify', and 'format'.  Any other desired attributes can be set 
 #' with \code{...}.
 #' 
 #' The attributes available in the \code{dsattr} class are closely aligned
-#' with those available in the \strong{fmtr} package, and are intended
-#' to be used together. See the \code{\link[fmtr]{fmtr}} package documentation
-#' for additional details.  In particular, the \code{\link[fmtr]{fdata}} and
-#' \code{\link[fmtr]{fapply}} functions provide relevant examples and 
-#' explanations.
-#' @param class The desired class of the column. Valid values are 
-#' 'character', 'numeric', 'integer', 'logical', and 'complex'.
+#' with those available in the \strong{fmtr} package. See the 
+#' \code{\link[fmtr]{fmtr}} package documentation
+#' for additional details.  
+#' @param default The default value of the column.  Typical default 
+#' values might be an empty string ("") or a zero (0).  If no
+#' default value is specified, the column will be defaulted to NA.
+# @param class The desired class of the column. Valid values are 
+# 'character', 'numeric', 'integer', 'logical', and 'complex'.
 #' @param label The label to associate with this column.  Accepts
 #' any string value. The label will appear as a column header on some 
 #' data viewers.
@@ -81,7 +82,7 @@
 #' # See labels in viewer 
 #' # View(dat1)
 #' @export
-dsattr <- function(class = NULL, label = NULL, description = NULL, 
+dsattr <- function(default = NA, label = NULL, description = NULL, 
                    width = NULL, format = NULL, 
                    justify = NULL, ...) {
   
@@ -89,12 +90,12 @@ dsattr <- function(class = NULL, label = NULL, description = NULL,
   s <- structure(list(), class = c("dsattr", "list"))
   
   # Assign parameters to class properties
-  s$class <- class
   s$label <- label
   s$format <- format
   s$width <- width
   s$justify <- justify
   s$description <- description
+  s$default <- default
   
   # Deal with ... custom attributes
   l <- list(...)

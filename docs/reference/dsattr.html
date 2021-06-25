@@ -49,17 +49,15 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Assign Datastep Variable Attributes — dsattr" />
-<meta property="og:description" content="An object with which to assign attributes
+<meta property="og:description" content="An object to assign attributes
 to a column in a datastep.  The parameters allow you
 to set the following attributes: 'class', 'label', 'description', 'width', 
 'justify', and 'format'.  Any other desired attributes can be set 
 with ....
 The attributes available in the dsattr class are closely aligned
-with those available in the fmtr package, and are intended
-to be used together. See the fmtr package documentation
-for additional details.  In particular, the fdata and
-fapply functions provide relevant examples and 
-explanations." />
+with those available in the fmtr package. See the 
+fmtr package documentation
+for additional details." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -165,21 +163,19 @@ explanations." />
     </div>
 
     <div class="ref-description">
-    <p>An object with which to assign attributes
+    <p>An object to assign attributes
 to a column in a <code><a href='datastep.html'>datastep</a></code>.  The parameters allow you
 to set the following attributes: 'class', 'label', 'description', 'width', 
 'justify', and 'format'.  Any other desired attributes can be set 
 with <code>...</code>.</p>
 <p>The attributes available in the <code>dsattr</code> class are closely aligned
-with those available in the <strong>fmtr</strong> package, and are intended
-to be used together. See the <code><a href='https://fmtr.r-sassy.org/reference/fmtr.html'>fmtr</a></code> package documentation
-for additional details.  In particular, the <code><a href='https://fmtr.r-sassy.org/reference/fdata.html'>fdata</a></code> and
-<code><a href='https://fmtr.r-sassy.org/reference/fapply.html'>fapply</a></code> functions provide relevant examples and 
-explanations.</p>
+with those available in the <strong>fmtr</strong> package. See the 
+<code><a href='https://fmtr.r-sassy.org/reference/fmtr.html'>fmtr</a></code> package documentation
+for additional details.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dsattr</span><span class='op'>(</span>
-  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  default <span class='op'>=</span> <span class='cn'>NA</span>,
   label <span class='op'>=</span> <span class='cn'>NULL</span>,
   description <span class='op'>=</span> <span class='cn'>NULL</span>,
   width <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -192,9 +188,10 @@ explanations.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>class</th>
-      <td><p>The desired class of the column. Valid values are 
-'character', 'numeric', 'integer', 'logical', and 'complex'.</p></td>
+      <th>default</th>
+      <td><p>The default value of the column.  Typical default 
+values might be an empty string ("") or a zero (0).  If no
+default value is specified, the column will be defaulted to NA.</p></td>
     </tr>
     <tr>
       <th>label</th>

@@ -41,8 +41,8 @@ reference:
   desc: Functions to perform and enhance a datastep.
   contents:
   - datastep
-  - dsarray
   - dsattr
+  - dsarray
 - title: Other Functions
   desc: Other useful functions in the libr package.
   contents:
