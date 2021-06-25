@@ -209,8 +209,8 @@ test_that("System test of datastep array.", {
                           
                           # If any of the first 6 columns don't match
                           # or C7 is equal to Real, keep the row
-                          print(paste0("DSA", n., ":", dsa[nm]))
-                          print(paste0("data", n., ":", data[[n. - 1, nm]]))
+                          #print(paste0("DSA", n., ":", dsa[nm]))
+                          #print(paste0("data", n., ":", data[[n. - 1, nm]]))
                           if (as.character(data[[n., nm]]) != as.character(data[[n. - 1, nm]]) || 
                               C7 == "Real") {
                             delete <- FALSE
@@ -240,13 +240,13 @@ test_that("System test of datastep array.", {
   # 4 33 R43 D87 201901 31 D87 Fetched   TRUE
   # 5 57 R12 D87 201901 12 D87 Fetched  FALSE
   
-  print(dfout)
+  #print(dfout)
   
   expect_equal(nrow(dfout), 5)
   
   # Filter out rows flagged for deletion
   res <- dfout[dfout$delete == FALSE, names(dfout)[1:7]]
-  print(res)
+  #print(res)
   res
   #   C1  C2  C3     C4 C5  C6      C7
   # 1 12 R11 D21 201901  9 D89    Real
@@ -276,8 +276,9 @@ test_that("System test of datastep array.", {
                     D2 <- arr1["C2"]
                    
                  })
-  
+  print(dt)
   expect_equal(dt$D1, c(1, 2, 3))
+  print(dt$D2)
   expect_equal(dt$D2, c("A1", "A2", "A3"))
   
 })
