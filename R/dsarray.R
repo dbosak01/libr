@@ -155,12 +155,13 @@ dsarray <- function(...) {
     # Otherwise, lookup the column name from the array
     for (j in i) {
       
-      print(paste0("Class of i:", class(i)))
+      #print(paste0("Class of i:", class(i)))
       if (any(class(i) == "character")) {
-        print(paste0("Value of rw[[j]]", rw[[j]]))
+        print(paste0("Value of rw[[j]]:", rw[[j]]))
         ret[j] <- rw[[j]]
+        print(paste0("ret[j]:", ret[j]))
       } else { 
-        print(paste0("Value of rw[[x[[j]]]]", rw[[x[[j]]]]))
+        print(paste0("Value of rw[[x[[j]]]]:", rw[[x[[j]]]]))
         ret[x[[j]]] <- rw[[x[[j]]]] 
         
       }
