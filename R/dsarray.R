@@ -154,9 +154,13 @@ dsarray <- function(...) {
     # If index is a column name, return the column
     # Otherwise, lookup the column name from the array
     for (j in i) {
+      
+      print(paste0("Class of i:", class(i)))
       if (any(class(i) == "character")) {
+        print(paste0("Value of rw[[j]]", rw[[j]]))
         ret[j] <- rw[[j]]
       } else { 
+        print(paste0("Value of rw[[x[[j]]]]", rw[[x[[j]]]]))
         ret[x[[j]]] <- rw[[x[[j]]]] 
         
       }

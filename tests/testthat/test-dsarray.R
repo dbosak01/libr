@@ -262,9 +262,9 @@ test_that("System test of datastep array.", {
   
   df <- read.table(header = TRUE, text = '
       C1    C2
-       1    A1
+       3    A1
        2    A2
-       3    A3
+       1    A3
   ')
   
   
@@ -277,7 +277,7 @@ test_that("System test of datastep array.", {
                    
                  })
   print(dt)
-  expect_equal(dt$D1, c(1, 2, 3))
+  expect_equal(dt$D1, c(3, 2, 1))
   print(dt$D2)
   expect_equal(dt$D2, c("A1", "A2", "A3"))
   
