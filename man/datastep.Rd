@@ -63,9 +63,12 @@ character column, set the initial value to an empty string, i.e.
 value for a variable.  You must supply an initial value for each retained
 variable.}
 
-\item{arrays}{A named list of \code{\link{dsarray}} objects.}
+\item{arrays}{A named list of \code{\link{dsarray}} objects. The}
 
-\item{attrib}{A named list of \code{\link{dsattr}} objects.}
+\item{attrib}{A named list of attributes.  The list can be either
+\code{\link{dsattr}} objects or single default values.  The \code{dsattr}
+objects allow you to set more attributes on each column.  The 
+single default value is convenient if you simply want to create a variable.}
 
 \item{sort_check}{Checks to see if the input data is sorted according to
 the \code{by} variable parameter.  The sort check will give an error

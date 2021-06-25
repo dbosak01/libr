@@ -256,3 +256,28 @@ test_that("System test of datastep array.", {
   
   expect_equal(nrow(res), 4)
 })
+
+
+test_that("System test of datastep array.", {
+  
+  df <- read.table(header = TRUE, text = '
+      C1    C2
+       1    A1
+       2    A2
+       3    A3
+  ')
+  
+  
+  dt <- datastep(df, 
+                 arrays = list(arr1 = dsarray("C1", "C2")),
+                 {
+                   
+                    D1 <- arr1["C1"]
+                    D2 <- arr1["C2"]
+                   
+                 })
+  
+  expect_equal(dt$D1, c(1, 2, 3))
+  expect_equal(dt$D2, c("A1", "A2", "A3"))
+  
+})

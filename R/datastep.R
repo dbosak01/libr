@@ -88,8 +88,11 @@
 #' \code{retain = list(col1 = 0, col2 = "")}.  There is no default initial 
 #' value for a variable.  You must supply an initial value for each retained
 #' variable.
-#' @param arrays A named list of \code{\link{dsarray}} objects.
-#' @param attrib A named list of \code{\link{dsattr}} objects.
+#' @param arrays A named list of \code{\link{dsarray}} objects. The 
+#' @param attrib A named list of attributes.  The list can be either
+#' \code{\link{dsattr}} objects or single default values.  The \code{dsattr}
+#' objects allow you to set more attributes on each column.  The 
+#' single default value is convenient if you simply want to create a variable.
 #' @param sort_check Checks to see if the input data is sorted according to
 #' the \code{by} variable parameter.  The sort check will give an error
 #' if the input data is not sorted according to the \code{by} variable.
