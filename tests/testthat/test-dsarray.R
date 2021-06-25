@@ -211,7 +211,7 @@ test_that("System test of datastep array.", {
                           # or C7 is equal to Real, keep the row
                           print(paste0("DSA", n., ":", dsa[nm]))
                           print(paste0("data", n., ":", data[[n. - 1, nm]]))
-                          if (as.character(dsa[nm]) != as.character(data[[n. - 1, nm]]) || 
+                          if (as.character(data[[n., nm]]) != as.character(data[[n. - 1, nm]]) || 
                               C7 == "Real") {
                             delete <- FALSE
                             break
