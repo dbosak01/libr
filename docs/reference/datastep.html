@@ -175,8 +175,8 @@ and last rows in a group.</p>
   by <span class='op'>=</span> <span class='cn'>NULL</span>,
   calculate <span class='op'>=</span> <span class='cn'>NULL</span>,
   retain <span class='op'>=</span> <span class='cn'>NULL</span>,
-  arrays <span class='op'>=</span> <span class='cn'>NULL</span>,
   attrib <span class='op'>=</span> <span class='cn'>NULL</span>,
+  arrays <span class='op'>=</span> <span class='cn'>NULL</span>,
   sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -244,15 +244,24 @@ value for a variable.  You must supply an initial value for each retained
 variable.</p></td>
     </tr>
     <tr>
-      <th>arrays</th>
-      <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects. The</p></td>
-    </tr>
-    <tr>
       <th>attrib</th>
       <td><p>A named list of attributes.  The list can be either
 <code><a href='dsattr.html'>dsattr</a></code> objects or single default values.  The <code>dsattr</code>
-objects allow you to set more attributes on each column.  The 
-single default value is convenient if you simply want to create a variable.</p></td>
+object allows you to set more attributes on each column.  The 
+single default value is convenient if you simply want to create a variable.
+See the <code><a href='dsattr.html'>dsattr</a></code> documentation for a complete list of 
+available attributes. By default, variables will be created on
+the fly with no attributes.</p></td>
+    </tr>
+    <tr>
+      <th>arrays</th>
+      <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects. The 
+<code>dsarray</code> is essentially a list of columns which you can 
+iterate over inside the datastep.  You can iterate over a <code>dsarray</code>
+either with a <code>for</code> loop, or with a vectorized function. See
+the <code><a href='dsarray.html'>dsarray</a></code> class definition for additional information.
+The default value of the <code>arrays</code> parameter is NULL, meaning
+no arrays are defined.</p></td>
     </tr>
     <tr>
       <th>sort_check</th>
@@ -302,6 +311,31 @@ At the start of the data step, the retained variable is seeded with the
 initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment 
 values or perform cumulative operations.</p>
+<p>To set attributes for a column on your data, use the <code>attrib</code>
+parameter.  Attributes include 'label', 'description', 
+and 'format'.  These types of attributes are set using a named list and a 
+<code><a href='dsattr.html'>dsattr</a></code> object. The name of the list item
+is the column for which you want to set attributes for. 
+The value of the list item is the <code>dsattr</code> object.
+For a complete list of available attributes, 
+see the <code><a href='dsattr.html'>dsattr</a></code> documentation.</p>
+<p>It should be mentioned  that the <code>dsattr</code> object is not required.  
+You can also set attributes with a name and a default value.  
+The default value can be any valid data value, such as a number or string.</p>
+<p>There are times you may want to iterate over columns.  Such 
+iteration is particularly useful when you have a wide dataset,
+and wish to perform the same operations on several columns.
+For instance, you may want to calculate the mean for 10 different
+variables on your dataset.</p>
+<p>The <code>arrays</code> parameter allows you to iterate across columns
+inside the datastep.  This parameter accepts a named list of 
+<code><a href='dsarray.html'>dsarray</a></code> objects.  The <code>dsarray</code> is essentially
+a list of columns.  You can use a <code>for</code> loop to iterate over the
+<code>dsarray</code>, and also send it into a vectorized function.  This 
+functionality allows you to calculate or make decisions over rows.  
+For instance, you can
+use the <code>arrays</code> functionality to calculate 
+row-wise summary statistics.</p>
 <p>Note that the data step is pipe-friendly.  It can be used within 
 a <strong>dplyr</strong> pipeline.  The data step allows you to perform
 deeply nested and complex conditionals within the pipeline.  The data

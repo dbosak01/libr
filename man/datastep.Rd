@@ -13,8 +13,8 @@ datastep(
   by = NULL,
   calculate = NULL,
   retain = NULL,
-  arrays = NULL,
   attrib = NULL,
+  arrays = NULL,
   sort_check = TRUE
 )
 }
@@ -63,12 +63,21 @@ character column, set the initial value to an empty string, i.e.
 value for a variable.  You must supply an initial value for each retained
 variable.}
 
-\item{arrays}{A named list of \code{\link{dsarray}} objects. The}
-
 \item{attrib}{A named list of attributes.  The list can be either
 \code{\link{dsattr}} objects or single default values.  The \code{dsattr}
-objects allow you to set more attributes on each column.  The 
-single default value is convenient if you simply want to create a variable.}
+object allows you to set more attributes on each column.  The 
+single default value is convenient if you simply want to create a variable.
+See the \code{\link{dsattr}} documentation for a complete list of 
+available attributes. By default, variables will be created on
+the fly with no attributes.}
+
+\item{arrays}{A named list of \code{\link{dsarray}} objects. The 
+\code{dsarray} is essentially a list of columns which you can 
+iterate over inside the datastep.  You can iterate over a \code{dsarray}
+either with a \code{for} loop, or with a vectorized function. See
+the \code{\link{dsarray}} class definition for additional information.
+The default value of the \code{arrays} parameter is NULL, meaning
+no arrays are defined.}
 
 \item{sort_check}{Checks to see if the input data is sorted according to
 the \code{by} variable parameter.  The sort check will give an error
@@ -126,6 +135,35 @@ At the start of the data step, the retained variable is seeded with the
 initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment 
 values or perform cumulative operations.
+
+To set attributes for a column on your data, use the \code{attrib}
+parameter.  Attributes include 'label', 'description', 
+and 'format'.  These types of attributes are set using a named list and a 
+\code{\link{dsattr}} object. The name of the list item
+is the column for which you want to set attributes for. 
+The value of the list item is the \code{dsattr} object.
+For a complete list of available attributes, 
+see the \code{\link{dsattr}} documentation.
+
+It should be mentioned  that the \code{dsattr} object is not required.  
+You can also set attributes with a name and a default value.  
+The default value can be any valid data value, such as a number or string.  
+
+There are times you may want to iterate over columns.  Such 
+iteration is particularly useful when you have a wide dataset,
+and wish to perform the same operations on several columns.
+For instance, you may want to calculate the mean for 10 different
+variables on your dataset.
+
+The \code{arrays} parameter allows you to iterate across columns
+inside the datastep.  This parameter accepts a named list of 
+\code{\link{dsarray}} objects.  The \code{dsarray} is essentially
+a list of columns.  You can use a \code{for} loop to iterate over the
+\code{dsarray}, and also send it into a vectorized function.  This 
+functionality allows you to calculate or make decisions over rows.  
+For instance, you can
+use the \code{arrays} functionality to calculate 
+row-wise summary statistics.  
 
 Note that the data step is pipe-friendly.  It can be used within 
 a \strong{dplyr} pipeline.  The data step allows you to perform
