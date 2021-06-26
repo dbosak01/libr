@@ -50,7 +50,10 @@
 
 <meta property="og:title" content="Indexer for Datastep Array — [.dsarray" />
 <meta property="og:description" content="A custom indexer for the Datastep Array.  The indexer will
-return an individual row/column value for the specified column name.  
+return an row/column value for all columns or a specified column. To 
+access all columns, leave the indexer empty. Otherwise, specify the
+the column name(s) or number(s) to return data for.  The indexer will
+always act upon the current row in the datastep.  
 For additional details, see the dsarray function." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
@@ -158,7 +161,10 @@ For additional details, see the dsarray function." />
 
     <div class="ref-description">
     <p>A custom indexer for the Datastep Array.  The indexer will
-return an individual row/column value for the specified column name.  
+return an row/column value for all columns or a specified column. To 
+access all columns, leave the indexer empty. Otherwise, specify the
+the column name(s) or number(s) to return data for.  The indexer will
+always act upon the current row in the datastep.  
 For additional details, see the <code><a href='dsarray.html'>dsarray</a></code> function.</p>
     </div>
 
@@ -170,13 +176,13 @@ For additional details, see the <code><a href='dsarray.html'>dsarray</a></code> 
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The dsarray object.</p></td>
+      <td><p>The <code><a href='dsarray.html'>dsarray</a></code> object.</p></td>
     </tr>
     <tr>
       <th>i</th>
       <td><p>The index of the datastep array item to return a value for.
 This index can be a column name or position in the array.  If no index
-is supplied, a vector of all dataset values will be returned.</p></td>
+is supplied, a vector of all array values will be returned.</p></td>
     </tr>
     </table>
 

@@ -276,9 +276,9 @@ test_that("System test of datastep array.", {
                     D2 <- arr1["C2"]
                    
                  })
-  print(dt)
+  #print(dt)
   expect_equal(dt$D1, c(3, 2, 1))
-  print(dt$D2)
+  #print(dt$D2)
   expect_equal(dt$D2, c("A1", "A2", "A3"))
   
 })

@@ -240,6 +240,39 @@
 #' # Merc 240D         24.4         4 3.190         24.690
 #' # Merc 230          22.8         4 3.150         27.840
 #' # Merc 280          19.2         6 3.440         31.280
+#' 
+#' # Example #6: Attributes and Arrays
+#' dat <- read.table(header = TRUE, text = '
+#'    Year  Q1   Q2  Q3  Q4
+#'    2000 125  137 152 140
+#'    2001 132  145 138  87
+#'    2002 101  104 115 121')
+#'  
+#' df <- datastep(dat,
+#'                attrib = list(Tot = dsattr(0, label = "Year Total"),
+#'                              Avg = dsattr(0, label = "Year Average"),
+#'                              Best = dsattr(0, label = "Best Quarter")),
+#'                arrays = list(qtrs = dsarray("Q1", "Q2", "Q3", "Q4")),
+#'                drop = "i",
+#'                steps = {
+#'                
+#'                  Tot <- sum(qtrs[])
+#'                  Avg <- mean(qtrs[])
+#'                  
+#'                  for (i in qtrs) {
+#'                    if (qtrs[i] == max(qtrs[]))
+#'                      Best <- i
+#'                  }
+#'                })
+#'                
+#' df
+#' #   Year  Q1  Q2  Q3  Q4 Tot    Avg Best
+#' # 1 2000 125 137 152 140 554 138.50   Q3
+#' # 2 2001 132 145 138  87 502 125.50   Q2
+#' # 3 2002 101 104 115 121 441 110.25   Q4
+#' 
+#' attr(df$Tot, "label")
+#' # [1] "Year Total"
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,

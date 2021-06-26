@@ -245,11 +245,14 @@ variable.</p></td>
     </tr>
     <tr>
       <th>arrays</th>
-      <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects.</p></td>
+      <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects. The</p></td>
     </tr>
     <tr>
       <th>attrib</th>
-      <td><p>A named list of <code><a href='dsattr.html'>dsattr</a></code> objects.</p></td>
+      <td><p>A named list of attributes.  The list can be either
+<code><a href='dsattr.html'>dsattr</a></code> objects or single default values.  The <code>dsattr</code>
+objects allow you to set more attributes on each column.  The 
+single default value is convenient if you simply want to create a variable.</p></td>
     </tr>
     <tr>
       <th>sort_check</th>
@@ -448,6 +451,39 @@ step is also very readable compared to other pipeline conditionals.</p>
 <span class='co'># Merc 240D         24.4         4 3.190         24.690</span>
 <span class='co'># Merc 230          22.8         4 3.150         27.840</span>
 <span class='co'># Merc 280          19.2         6 3.440         31.280</span>
+
+<span class='co'># Example #6: Attributes and Arrays</span>
+<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'
+   Year  Q1   Q2  Q3  Q4
+   2000 125  137 152 140
+   2001 132  145 138  87
+   2002 101  104 115 121'</span><span class='op'>)</span>
+ 
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>,
+               attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Tot <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Total"</span><span class='op'>)</span>,
+                             Avg <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Average"</span><span class='op'>)</span>,
+                             Best <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Best Quarter"</span><span class='op'>)</span><span class='op'>)</span>,
+               arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>qtrs <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span><span class='op'>)</span><span class='op'>)</span>,
+               drop <span class='op'>=</span> <span class='st'>"i"</span>,
+               steps <span class='op'>=</span> <span class='op'>{</span>
+               
+                 <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
+                 <span class='va'>Avg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
+                 
+                 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='va'>qtrs</span><span class='op'>)</span> <span class='op'>{</span>
+                   <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+                     <span class='va'>Best</span> <span class='op'>&lt;-</span> <span class='va'>i</span>
+                 <span class='op'>}</span>
+               <span class='op'>}</span><span class='op'>)</span>
+               
+<span class='va'>df</span>
+<span class='co'>#   Year  Q1  Q2  Q3  Q4 Tot    Avg Best</span>
+<span class='co'># 1 2000 125 137 152 140 554 138.50   Q3</span>
+<span class='co'># 2 2001 132 145 138  87 502 125.50   Q2</span>
+<span class='co'># 3 2002 101 104 115 121 441 110.25   Q4</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Tot</span>, <span class='st'>"label"</span><span class='op'>)</span>
+<span class='co'># [1] "Year Total"</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
