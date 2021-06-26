@@ -51,9 +51,8 @@
 <meta property="og:title" content="Step through data row-by-row — datastep" />
 <meta property="og:description" content="The datastep function allows you to perform
 row-wise conditional processing on a data frame or tibble. The function
-contains parameters to drop, keep, or rename variables.  It also 
-has the ability to perform by-group processing, and identify first
-and last rows in a group." />
+contains parameters to drop, keep, or rename variables, perform
+by-group processing, and perform row-wise or column-wise calculations." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -161,9 +160,8 @@ and last rows in a group." />
     <div class="ref-description">
     <p>The <code>datastep</code> function allows you to perform
 row-wise conditional processing on a data frame or tibble. The function
-contains parameters to drop, keep, or rename variables.  It also 
-has the ability to perform by-group processing, and identify first
-and last rows in a group.</p>
+contains parameters to drop, keep, or rename variables, perform
+by-group processing, and perform row-wise or column-wise calculations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>datastep</span><span class='op'>(</span>
@@ -249,17 +247,14 @@ variable.</p></td>
 <code><a href='dsattr.html'>dsattr</a></code> objects or single default values.  The <code>dsattr</code>
 object allows you to set more attributes on each column.  The 
 single default value is convenient if you simply want to create a variable.
-See the <code><a href='dsattr.html'>dsattr</a></code> documentation for a complete list of 
-available attributes. By default, variables will be created on
-the fly with no attributes.</p></td>
+By default, variables will be created on the fly with no attributes.</p></td>
     </tr>
     <tr>
       <th>arrays</th>
       <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects. The 
-<code>dsarray</code> is essentially a list of columns which you can 
+<code>dsarray</code> is a list of columns which you can 
 iterate over inside the datastep.  You can iterate over a <code>dsarray</code>
-either with a <code>for</code> loop, or with a vectorized function. See
-the <code><a href='dsarray.html'>dsarray</a></code> class definition for additional information.
+either with a <code>for</code> loop, or with a vectorized function. 
 The default value of the <code>arrays</code> parameter is NULL, meaning
 no arrays are defined.</p></td>
     </tr>
@@ -281,7 +276,21 @@ to the by-group.</p></td>
     <p>The processed data frame or tibble.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that the <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters
+    <p>Two parameters on the <code>datastep</code> function are required: 
+<strong>data</strong> and <strong>steps</strong>.  The <strong>data</strong> parameter is
+the input data to the data step.  The <strong>steps</strong> parameter contains
+the code statements you want to apply to the data. The <strong>steps</strong>
+should be wrapped in curly braces.  When running, the datastep
+will loop through the input data row-by-row, and execute the steps for 
+each row.  Variables inside the data step can be accessed using 
+non-standard evaluation (meaning they  do not have to be quoted).</p>  
+<p>Other parameters on the <code>datastep</code> allow you to shape 
+the output dataset or enhance the operation of the <code>datastep</code>.  Some
+parameters are classified as input parameters, and others as output 
+parameters.  Input parameters modify the data before the datastep
+operations takes place.  Output parameters operate on the data
+after the datastep.</p>
+<p>The <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters
 are output parameters.  These parameters will be applied after the
 data step statements are executed.  Therefore, within the data step, 
 refer to variables using the input variable name. New variables may 

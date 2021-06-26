@@ -67,15 +67,12 @@ variable.}
 \code{\link{dsattr}} objects or single default values.  The \code{dsattr}
 object allows you to set more attributes on each column.  The 
 single default value is convenient if you simply want to create a variable.
-See the \code{\link{dsattr}} documentation for a complete list of 
-available attributes. By default, variables will be created on
-the fly with no attributes.}
+By default, variables will be created on the fly with no attributes.}
 
 \item{arrays}{A named list of \code{\link{dsarray}} objects. The 
-\code{dsarray} is essentially a list of columns which you can 
+\code{dsarray} is a list of columns which you can 
 iterate over inside the datastep.  You can iterate over a \code{dsarray}
-either with a \code{for} loop, or with a vectorized function. See
-the \code{\link{dsarray}} class definition for additional information.
+either with a \code{for} loop, or with a vectorized function. 
 The default value of the \code{arrays} parameter is NULL, meaning
 no arrays are defined.}
 
@@ -94,12 +91,27 @@ The processed data frame or tibble.
 \description{
 The \code{datastep} function allows you to perform
 row-wise conditional processing on a data frame or tibble. The function
-contains parameters to drop, keep, or rename variables.  It also 
-has the ability to perform by-group processing, and identify first
-and last rows in a group.
+contains parameters to drop, keep, or rename variables, perform
+by-group processing, and perform row-wise or column-wise calculations.
 }
 \details{
-Note that the \code{keep}, \code{drop}, and \code{rename} parameters
+Two parameters on the \code{datastep} function are required: 
+\strong{data} and \strong{steps}.  The \strong{data} parameter is
+the input data to the data step.  The \strong{steps} parameter contains
+the code statements you want to apply to the data. The \strong{steps}
+should be wrapped in curly braces.  When running, the datastep
+will loop through the input data row-by-row, and execute the steps for 
+each row.  Variables inside the data step can be accessed using 
+non-standard evaluation (meaning they  do not have to be quoted).
+  
+Other parameters on the \code{datastep} allow you to shape 
+the output dataset or enhance the operation of the \code{datastep}.  Some
+parameters are classified as input parameters, and others as output 
+parameters.  Input parameters modify the data before the datastep
+operations takes place.  Output parameters operate on the data
+after the datastep.
+
+The \code{keep}, \code{drop}, and \code{rename} parameters
 are output parameters.  These parameters will be applied after the
 data step statements are executed.  Therefore, within the data step, 
 refer to variables using the input variable name. New variables may 
