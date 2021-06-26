@@ -158,7 +158,10 @@ dsarray <- function(...) {
       #print(paste0("Class of i:", class(i)))
       if (any(class(i) == "character")) {
         print(paste0("Value of rw[[j]]:", rw[[j]], " ", class(rw[[j]])))
-        ret[j] <- rw[[j]]
+        if ("factor" %in% class(rw[[j]]))
+          ret[j] <- as.character(rw[[j]])
+        else 
+          ret[j] <- rw[[j]]
         print(paste0("ret[j]:", ret[j], " ", j, " ", class(ret[j])))
       } else { 
         print(paste0("Value of rw[[x[[j]]]]:", rw[[x[[j]]]]))
@@ -178,9 +181,7 @@ dsarray <- function(...) {
     }
     
   }
-  
-  if ("factor" %in% class(ret))
-    ret <- as.character(ret)
+
   
   return(ret)
 
