@@ -179,6 +179,9 @@ dsarray <- function(...) {
     
   }
   
+  if ("factor" %in% class(ret))
+    ret <- as.character(ret)
+  
   return(ret)
 
 }
