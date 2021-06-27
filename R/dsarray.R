@@ -9,18 +9,21 @@
 #' across a set of columns inside a \code{\link{datastep}}.  This structure is
 #' useful when you need to perform the same or similar operations on many columns.  
 #' 
+#' @details
 #' The datastep array has an indexer that allows you to access a particular
 #' column value.  The indexer can be used within a for loop to iterate over
 #' the array. In this manner, you can place a set of conditions inside
 #' the for loop and run the same conditional logic on all the columns 
-#' in the array.
+#' in the array. 
 #' 
 #' You can also use the datastep array with an empty indexer in vectorized 
 #' functions like \code{\link[base]{sum}}, \code{\link[base]{mean}}, 
-#' and \code{\link[base]{max}}.  
+#' and \code{\link[base]{max}}.  The empty indexer will return all the 
+#' values in the array for the current row.
 #' @param ... Column names to include as part of the datastep array.  The 
 #' names can be provided as quoted strings or a vector of strings.
-#' If names are provided as quoted strings, separate the strings with commas.
+#' If names are provided as quoted strings, separate the strings with commas 
+#' (i.e. \code{dsarray("col1", "col2", "col3")}).
 #' @return The datastep array object.
 #' @seealso \code{\link{libname}} to create a data library, and
 #' \code{\link{dictionary}} for generating a data dictionary
@@ -80,7 +83,7 @@ dsarray <- function(...) {
 #' @title Indexer for Datastep Array
 #' @encoding UTF-8
 #' @description A custom indexer for the Datastep Array.  The indexer will
-#' return an row/column value for all columns or a specified column. To 
+#' return a value for all columns or a specified column. To 
 #' access all columns, leave the indexer empty. Otherwise, specify the
 #' the column name(s) or number(s) to return data for.  The indexer will
 #' always act upon the current row in the datastep.  
@@ -120,7 +123,7 @@ dsarray <- function(...) {
 #'                    # Reference by row position
 #'                    Q4 <- rw$Oct + rw[["Nov"]] + rw[[12]]
 #'                    
-#'                    # Empty indexer returns all columns in array
+#'                    # Empty indexer returns all column values in array
 #'                    Tot <- sum(months[])
 #'                   
 #'                 })

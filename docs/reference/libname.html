@@ -247,7 +247,8 @@ to identify the missing portion. The match will be case-insensitive.</p></td>
       <th>standard_eval</th>
       <td><p>A TRUE or FALSE value which indicates whether to 
 use standard (quoted) or non-standard (unquoted) evaluation on the library
-<code>name</code> parameter. Default is FALSE.</p></td>
+<code>name</code> parameter. Use standard evaluation when you want to pass
+the library name with a variable.  Default is FALSE.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -290,22 +291,6 @@ assumptions based on each type of file.  As a result, there are very few
 import options on the <code>libname</code> function.  If your data does not
 follow standard conventions, it is recommended that you import your 
 data using a package that gives you more control over import options.</p>
-    <h2 class="hasAnchor" id="import-specifications"><a class="anchor" href="#import-specifications"></a>Import Specifications</h2>
-
-    
-
-<p>In most cases, it is not necessary to specify the data types for incoming
-columns in your data.  Either the file format will preserve the appropriate
-data type information, or the assigned engine will guess correctly.</p>
-<p>However, in some cases it will be necessary to control the column data types.
-For these cases, use the  
-<code>import_specs</code> parameter.  The <code>import_specs</code> parameter allows you
-to specify the data types by data set and column name. All the data type
-specifications are contained within a <code>specs</code> collection, and the 
-specifications for a particular data set are defined by an 
-<code>import_spec</code> function. See the <code><a href='specs.html'>specs</a></code> and 
-<code><a href='import_spec.html'>import_spec</a></code> documentation for further information
-and examples of defining an import spec.</p>
     <h2 class="hasAnchor" id="data-engines"><a class="anchor" href="#data-engines"></a>Data Engines</h2>
 
     
@@ -371,6 +356,22 @@ names of the files you want to import.  The function allows a
 wild-card (\*) for partial matching.  For example, <code>"te\*"</code> means any
 file name that that begins with a "te", and <code>"\*st"</code> means any file name
 that ends with an "st".</p>
+    <h2 class="hasAnchor" id="import-specifications"><a class="anchor" href="#import-specifications"></a>Import Specifications</h2>
+
+    
+
+<p>In most cases, it is not necessary to specify the data types for incoming
+columns in your data.  Either the file format will preserve the appropriate
+data type information, or the assigned engine will guess correctly.</p>
+<p>However, in some cases it will be necessary to control the column data types.
+For these cases, use the  
+<code>import_specs</code> parameter.  The <code>import_specs</code> parameter allows you
+to specify the data types by data set and column name. All the data type
+specifications are contained within a <code>specs</code> collection, and the 
+specifications for a particular data set are defined by an 
+<code>import_spec</code> function. See the <code><a href='specs.html'>specs</a></code> and 
+<code><a href='import_spec.html'>import_spec</a></code> documentation for further information
+and examples of defining an import spec.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='specs.html'>specs</a></code> to define import specifications, 

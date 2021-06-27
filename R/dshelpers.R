@@ -36,7 +36,6 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     
   }
   
-  df["n."] <- seq_len(nrow(df))
   
   return(df)
   

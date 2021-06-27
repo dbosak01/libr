@@ -10,7 +10,8 @@ dsarray(...)
 \arguments{
 \item{...}{Column names to include as part of the datastep array.  The 
 names can be provided as quoted strings or a vector of strings.
-If names are provided as quoted strings, separate the strings with commas.}
+If names are provided as quoted strings, separate the strings with commas 
+(i.e. \code{dsarray("col1", "col2", "col3")}).}
 }
 \value{
 The datastep array object.
@@ -18,17 +19,19 @@ The datastep array object.
 \description{
 A datastep array is an object that allows you to iterate
 across a set of columns inside a \code{\link{datastep}}.  This structure is
-useful when you need to perform the same or similar operations on many columns.  
-
+useful when you need to perform the same or similar operations on many columns.
+}
+\details{
 The datastep array has an indexer that allows you to access a particular
 column value.  The indexer can be used within a for loop to iterate over
 the array. In this manner, you can place a set of conditions inside
 the for loop and run the same conditional logic on all the columns 
-in the array.
+in the array. 
 
 You can also use the datastep array with an empty indexer in vectorized 
 functions like \code{\link[base]{sum}}, \code{\link[base]{mean}}, 
-and \code{\link[base]{max}}.
+and \code{\link[base]{max}}.  The empty indexer will return all the 
+values in the array for the current row.
 }
 \examples{
 library(libr)

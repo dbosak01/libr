@@ -5,7 +5,8 @@
 
 #' @title Step through data row-by-row
 #' @description The \code{datastep} function allows you to perform
-#' row-wise conditional processing on a data frame or tibble. The function
+#' row-wise conditional processing on a data frame, data table, or tibble. 
+#' The function
 #' contains parameters to drop, keep, or rename variables, perform
 #' by-group processing, and perform row-wise or column-wise calculations.  
 #' @details 
@@ -13,31 +14,17 @@
 #' \strong{data} and \strong{steps}.  The \strong{data} parameter is
 #' the input data to the data step.  The \strong{steps} parameter contains
 #' the code statements you want to apply to the data. The \strong{steps}
-#' should be wrapped in curly braces.  When running, the datastep
+#' should be wrapped in curly braces.  When running, the data step
 #' will loop through the input data row-by-row, and execute the steps for 
 #' each row.  Variables inside the data step can be accessed using 
 #' non-standard evaluation (meaning they  do not have to be quoted).
-#'   
-#' Other parameters on the \code{datastep} allow you to shape 
-#' the output dataset or enhance the operation of the \code{datastep}.  Some
-#' parameters are classified as input parameters, and others as output 
-#' parameters.  Input parameters modify the data before the datastep
-#' operations takes place.  Output parameters operate on the data
-#' after the datastep.
 #' 
-#' The \code{keep}, \code{drop}, and \code{rename} parameters
-#' are output parameters.  These parameters will be applied after the
-#' data step statements are executed.  Therefore, within the data step, 
-#' refer to variables using the input variable name. New variables may 
-#' be created on the fly, just by assigning a value to the new
-#' variable name.
+#' Note that the data step is pipe-friendly.  It can be used within 
+#' a \strong{dplyr} pipeline.  The data step allows you to perform
+#' deeply nested and complex conditionals within the pipeline.  The data
+#' step is also very readable compared to other pipeline conditionals.
 #' 
-#' The \code{keep}, \code{drop}, and \code{rename} parameters require 
-#' quoted variable names, as the variables may not yet exist at the 
-#' time they are passed into the function.  Within a data step or 
-#' calculate function, however, 
-#' variable names do not need to be quoted. 
-#' 
+#' @section Automatic Variables:
 #' The \code{datastep} function provides four automatic variables. These 
 #' variables are generated for every data step, and can 
 #' be accessed at any point within the data step: 
@@ -51,6 +38,41 @@
 #' of the data step.  If you wish to keep the automatic variable values,
 #' assign the automatic variable to a new variable and keep that variable.
 #' 
+#' @section Column Attributes:
+#' To set attributes for a column on your data, use the \code{attrib}
+#' parameter.  Example attributes include 'label', 'description', 
+#' and 'format'.  These types of attributes are set using a named list and a 
+#' \code{\link{dsattr}} object. The name of the list item
+#' is the column name you want to set attributes on. 
+#' The value of the list item is the \code{dsattr} object.
+#' For a complete list of available attributes, 
+#' see the \code{\link{dsattr}} documentation.
+#' 
+#' It should be mentioned  that the \code{dsattr} object is not required.  
+#' You can also set attributes with a name and a default value.  
+#' The default value can be any valid data value, such as a number or string.  
+#' 
+#' @section Optional Parameters:
+#' Optional parameters on the \code{datastep} allow you to shape 
+#' the output dataset or enhance the operation of the \code{datastep}.  Some
+#' parameters are classified as input parameters, and others as output 
+#' parameters.  Input parameters modify the data before the data step
+#' operations takes place.  Output parameters operate on the data
+#' after the data step.
+#' 
+#' The \code{keep}, \code{drop}, and \code{rename} parameters
+#' are output parameters.  These parameters will be applied after the
+#' data step statements are executed.  Therefore, within the data step, 
+#' refer to variables using the input variable name. New variables may 
+#' be created on the fly, just by assigning a value to the new
+#' variable name.
+#' 
+#' The \code{keep}, \code{drop}, and \code{rename} parameters require 
+#' quoted variable names, as the variables may not yet exist at the 
+#' time they are passed into the function.  Within a data step or 
+#' calculate block, however, 
+#' variable names do not need to be quoted. 
+#' 
 #' The \code{calculate} parameter is used to perform vectorized functions
 #' on the data prior to executing the data step.  For example, you 
 #' may want to determine a mean for a variable in the \code{calculate}
@@ -62,40 +84,62 @@
 #' value of the prior step/row.  This functionality allows you to increment 
 #' values or perform cumulative operations.
 #' 
-#' To set attributes for a column on your data, use the \code{attrib}
-#' parameter.  Attributes include 'label', 'description', 
-#' and 'format'.  These types of attributes are set using a named list and a 
-#' \code{\link{dsattr}} object. The name of the list item
-#' is the column for which you want to set attributes for. 
-#' The value of the list item is the \code{dsattr} object.
-#' For a complete list of available attributes, 
-#' see the \code{\link{dsattr}} documentation.
+#' \code{calculate} and \code{retain} are both input parameters.
 #' 
-#' It should be mentioned  that the \code{dsattr} object is not required.  
-#' You can also set attributes with a name and a default value.  
-#' The default value can be any valid data value, such as a number or string.  
-#' 
-#' There are times you may want to iterate over columns.  Such 
+#' @section Data step Arrays:
+#' There are times you may want to iterate over columns in your data step.  Such 
 #' iteration is particularly useful when you have a wide dataset,
-#' and wish to perform the same operations on several columns.
+#' and wish to perform the same operation on several columns.
 #' For instance, you may want to calculate the mean for 10 different
 #' variables on your dataset.
 #' 
-#' The \code{arrays} parameter allows you to iterate across columns
-#' inside the datastep.  This parameter accepts a named list of 
+#' The \code{arrays} parameter allows you to iterate across columns.  
+#' This parameter accepts a named list of 
 #' \code{\link{dsarray}} objects.  The \code{dsarray} is essentially
 #' a list of columns.  You can use a \code{for} loop to iterate over the
-#' \code{dsarray}, and also send it into a vectorized function.  This 
-#' functionality allows you to calculate or make decisions over rows.  
-#' For instance, you can
-#' use the \code{arrays} functionality to calculate 
-#' row-wise summary statistics.  
+#' \code{dsarray}, and also send it into a vectorized function.  Data 
+#' step arrays allow to you to perform row-wise calculations. 
+#' For instance, you can calculate 
+#' a sum or mean by row for the variables in your array.
 #' 
-#' Note that the data step is pipe-friendly.  It can be used within 
-#' a \strong{dplyr} pipeline.  The data step allows you to perform
-#' deeply nested and complex conditionals within the pipeline.  The data
-#' step is also very readable compared to other pipeline conditionals.
+#' @section Output Column Order:
+#' By default, the data step will retain the column order of any variables that
+#' already exist on the input data set. New variables created 
+#' in a data step will be appended to the right of existing variables.  
+#' Yet these new variables can sometimes appear in an order that is 
+#' unexpected or undesirable.  
 #' 
+#' There are two ways to control the order of output columns:
+#' the \code{keep} parameter and the \code{attrib} parameter.
+#' 
+#' Columns names included on the 
+#' \code{keep} parameter will appear in the order indicated on the keep
+#' vector.  This ordering mechanism is appropriate when you have a small
+#' number of columns and can easily pass the entire keep list.
+#' 
+#' To control the order of new variables only, use the \code{attrib} parameter.
+#' New variables for which attributes are defined will appear in the 
+#' order indicated on the \code{attrib} list.  The \code{attrib} list
+#' is useful when you are adding a relatively small number of columns to 
+#' an existing data set, and don't want to pass all the column names. 
+#' 
+#' Remember
+#' that you can supply an attribute list with default values only,
+#' such as \code{attrib = list(column1 = 0, column2 = "")}.  This style of 
+#' attribute definition is convenient if you are only trying to control
+#' the order of columns.
+#' 
+#' If the above two mechanisms to control column order are not sufficient,
+#' use the data frame subset operators or column ordering functions 
+#' provided by other packages.
+#' 
+#' @section Datastep Performance:
+#' The \code{datastep} is intended to be used on small and medium-sized 
+#' datasets.  It is not recommended for large datasets or big data.
+#' If your dataset is greater than one million rows, you should consider
+#' other techniques for processing your data.  While there is no 
+#' built-in restriction on the number of rows, performance of the
+#' \code{datastep} can become unacceptable with a large number of rows.
 #' @param data The data to step through.
 #' @param steps The operations to perform on the data.  This parameter is 
 #' typically specified as a set of R statements contained within 
@@ -115,11 +159,12 @@
 #' variables, that indicate the first or last rows in a group.  These 
 #' automatic variables are useful for conditional processing on groups.
 #' @param calculate Steps to set up calculated variables.  
-#' Calculated variables are commonly performed with summary functions such as
+#' Calculated variables are commonly generated with summary functions such as
 #' \code{mean}, \code{median}, \code{min}, \code{max}, etc.  It is more 
 #' efficient to set up calculated variables with the calculate parameter and then 
 #' use those variables in the data step, rather than perform the summary
-#' function inside the data step.
+#' function inside the data step.  The calculate block will be executed 
+#' immediately before the data step.
 #' @param retain A list of variable names and initial values 
 #' to retain.  Retained variables will begin the data step with the initial
 #' value.  Then for each iteration of the data step, the variable will
@@ -139,7 +184,7 @@
 #' By default, variables will be created on the fly with no attributes.
 #' @param arrays A named list of \code{\link{dsarray}} objects. The 
 #' \code{dsarray} is a list of columns which you can 
-#' iterate over inside the datastep.  You can iterate over a \code{dsarray}
+#' iterate over inside the data step.  You can iterate over a \code{dsarray}
 #' either with a \code{for} loop, or with a vectorized function. 
 #' The default value of the \code{arrays} parameter is NULL, meaning
 #' no arrays are defined.
@@ -151,7 +196,7 @@
 #' is TRUE.  Turn the sort check off if you want to perform by-group 
 #' processing on unsorted data, or data that is not sorted according
 #' to the by-group.
-#' @return The processed data frame or tibble.  
+#' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @examples 
 #' # Example #1: Simple Data Step
@@ -292,26 +337,32 @@
 #' # Merc 280          19.2         6 3.440         31.280
 #' 
 #' # Example #6: Attributes and Arrays
+#' 
+#' # Create sample data
 #' dat <- read.table(header = TRUE, text = '
 #'    Year  Q1   Q2  Q3  Q4
 #'    2000 125  137 152 140
 #'    2001 132  145 138  87
 #'    2002 101  104 115 121')
 #'  
+#' # Use attrib list to control column order and add labels
+#' # Use array to calculate row sums and means, and get best quarter
 #' df <- datastep(dat,
 #'                attrib = list(Tot = dsattr(0, label = "Year Total"),
 #'                              Avg = dsattr(0, label = "Year Average"),
 #'                              Best = dsattr(0, label = "Best Quarter")),
 #'                arrays = list(qtrs = dsarray("Q1", "Q2", "Q3", "Q4")),
-#'                drop = "i",
+#'                drop = "q",
 #'                steps = {
 #'                
+#'                  # Empty brackets return all array values
 #'                  Tot <- sum(qtrs[])
 #'                  Avg <- mean(qtrs[])
 #'                  
-#'                  for (i in qtrs) {
-#'                    if (qtrs[i] == max(qtrs[]))
-#'                      Best <- i
+#'                  # Iterate to find best quarter
+#'                  for (q in qtrs) {
+#'                    if (qtrs[q] == max(qtrs[]))
+#'                      Best <- q
 #'                  }
 #'                })
 #'                
@@ -373,6 +424,7 @@ datastep <- function(data, steps, keep = NULL,
   }
   
   # Assign arrays to variables in this environment
+  # Otherwise they won't be accessible from datastep code
   if (!is.null(arrays)) {
     for (nm in names(arrays)) {
       
@@ -431,6 +483,10 @@ datastep <- function(data, steps, keep = NULL,
   if (any("grouped_df" == class(data)))
     data <- as.data.frame(data)
   
+  # data.table is not that bad, but data.frame is better.
+  if (any("data.table" == class(data)))
+    data <- as.data.frame(data)
+  
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
   
@@ -482,7 +538,6 @@ datastep <- function(data, steps, keep = NULL,
   
   
   # Remove automatic variables
-  ret["n."] <- NULL
   ret["first."] <- NULL
   ret["last."] <- NULL
 
@@ -508,6 +563,11 @@ datastep <- function(data, steps, keep = NULL,
     if (all(by %in% names(ret)))
       ret <- group_by(ret, across({{by}})) 
     
+  }
+  
+  # Convert back to tibble if original was a tibble
+  if ("data.table" %in% orig_class & !"data.table" %in% class(ret)) {
+    ret <- data.table::as.data.table(ret)
   }
   
   # Restore attributes from original data 

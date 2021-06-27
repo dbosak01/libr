@@ -34,7 +34,8 @@ Imports:
     dplyr,
     tibble,
     tools,
-    Rcpp
+    Rcpp,
+    data.table
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 LinkingTo: 

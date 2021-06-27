@@ -21,7 +21,7 @@ be returned.
 }
 \description{
 A custom indexer for the Datastep Array.  The indexer will
-return an row/column value for all columns or a specified column. To 
+return a value for all columns or a specified column. To 
 access all columns, leave the indexer empty. Otherwise, specify the
 the column name(s) or number(s) to return data for.  The indexer will
 always act upon the current row in the datastep.  
@@ -54,7 +54,7 @@ dat <- datastep(df,
                    # Reference by row position
                    Q4 <- rw$Oct + rw[["Nov"]] + rw[[12]]
                    
-                   # Empty indexer returns all columns in array
+                   # Empty indexer returns all column values in array
                    Tot <- sum(months[])
                   
                 })

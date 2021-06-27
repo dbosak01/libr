@@ -51,15 +51,7 @@
 <meta property="og:title" content="Create a Datastep Array — dsarray" />
 <meta property="og:description" content="A datastep array is an object that allows you to iterate
 across a set of columns inside a datastep.  This structure is
-useful when you need to perform the same or similar operations on many columns.
-The datastep array has an indexer that allows you to access a particular
-column value.  The indexer can be used within a for loop to iterate over
-the array. In this manner, you can place a set of conditions inside
-the for loop and run the same conditional logic on all the columns 
-in the array.
-You can also use the datastep array with an empty indexer in vectorized 
-functions like sum, mean, 
-and max." />
+useful when you need to perform the same or similar operations on many columns." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -168,14 +160,6 @@ and max." />
     <p>A datastep array is an object that allows you to iterate
 across a set of columns inside a <code><a href='datastep.html'>datastep</a></code>.  This structure is
 useful when you need to perform the same or similar operations on many columns.</p>
-<p>The datastep array has an indexer that allows you to access a particular
-column value.  The indexer can be used within a for loop to iterate over
-the array. In this manner, you can place a set of conditions inside
-the for loop and run the same conditional logic on all the columns 
-in the array.</p>
-<p>You can also use the datastep array with an empty indexer in vectorized 
-functions like <code><a href='https://rdrr.io/r/base/sum.html'>sum</a></code>, <code><a href='https://rdrr.io/r/base/mean.html'>mean</a></code>, 
-and <code><a href='https://rdrr.io/r/base/Extremes.html'>max</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dsarray</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
@@ -187,13 +171,25 @@ and <code><a href='https://rdrr.io/r/base/Extremes.html'>max</a></code>.</p>
       <th>...</th>
       <td><p>Column names to include as part of the datastep array.  The 
 names can be provided as quoted strings or a vector of strings.
-If names are provided as quoted strings, separate the strings with commas.</p></td>
+If names are provided as quoted strings, separate the strings with commas 
+(i.e. <code>dsarray("col1", "col2", "col3")</code>).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The datastep array object.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The datastep array has an indexer that allows you to access a particular
+column value.  The indexer can be used within a for loop to iterate over
+the array. In this manner, you can place a set of conditions inside
+the for loop and run the same conditional logic on all the columns 
+in the array.</p>
+<p>You can also use the datastep array with an empty indexer in vectorized 
+functions like <code><a href='https://rdrr.io/r/base/sum.html'>sum</a></code>, <code><a href='https://rdrr.io/r/base/mean.html'>mean</a></code>, 
+and <code><a href='https://rdrr.io/r/base/Extremes.html'>max</a></code>.  The empty indexer will return all the 
+values in the array for the current row.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='libname.html'>libname</a></code> to create a data library, and

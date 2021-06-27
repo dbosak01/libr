@@ -50,7 +50,8 @@
 
 <meta property="og:title" content="Step through data row-by-row — datastep" />
 <meta property="og:description" content="The datastep function allows you to perform
-row-wise conditional processing on a data frame or tibble. The function
+row-wise conditional processing on a data frame, data table, or tibble. 
+The function
 contains parameters to drop, keep, or rename variables, perform
 by-group processing, and perform row-wise or column-wise calculations." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
@@ -159,7 +160,8 @@ by-group processing, and perform row-wise or column-wise calculations." />
 
     <div class="ref-description">
     <p>The <code>datastep</code> function allows you to perform
-row-wise conditional processing on a data frame or tibble. The function
+row-wise conditional processing on a data frame, data table, or tibble. 
+The function
 contains parameters to drop, keep, or rename variables, perform
 by-group processing, and perform row-wise or column-wise calculations.</p>
     </div>
@@ -220,11 +222,12 @@ automatic variables are useful for conditional processing on groups.</p></td>
     <tr>
       <th>calculate</th>
       <td><p>Steps to set up calculated variables.
-Calculated variables are commonly performed with summary functions such as
+Calculated variables are commonly generated with summary functions such as
 <code>mean</code>, <code>median</code>, <code>min</code>, <code>max</code>, etc.  It is more 
 efficient to set up calculated variables with the calculate parameter and then 
 use those variables in the data step, rather than perform the summary
-function inside the data step.</p></td>
+function inside the data step.  The calculate block will be executed 
+immediately before the data step.</p></td>
     </tr>
     <tr>
       <th>retain</th>
@@ -253,7 +256,7 @@ By default, variables will be created on the fly with no attributes.</p></td>
       <th>arrays</th>
       <td><p>A named list of <code><a href='dsarray.html'>dsarray</a></code> objects. The 
 <code>dsarray</code> is a list of columns which you can 
-iterate over inside the datastep.  You can iterate over a <code>dsarray</code>
+iterate over inside the data step.  You can iterate over a <code>dsarray</code>
 either with a <code>for</code> loop, or with a vectorized function. 
 The default value of the <code>arrays</code> parameter is NULL, meaning
 no arrays are defined.</p></td>
@@ -273,34 +276,25 @@ to the by-group.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The processed data frame or tibble.</p>
+    <p>The processed data frame, tibble, or data table.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Two parameters on the <code>datastep</code> function are required: 
 <strong>data</strong> and <strong>steps</strong>.  The <strong>data</strong> parameter is
 the input data to the data step.  The <strong>steps</strong> parameter contains
 the code statements you want to apply to the data. The <strong>steps</strong>
-should be wrapped in curly braces.  When running, the datastep
+should be wrapped in curly braces.  When running, the data step
 will loop through the input data row-by-row, and execute the steps for 
 each row.  Variables inside the data step can be accessed using 
-non-standard evaluation (meaning they  do not have to be quoted).</p>  
-<p>Other parameters on the <code>datastep</code> allow you to shape 
-the output dataset or enhance the operation of the <code>datastep</code>.  Some
-parameters are classified as input parameters, and others as output 
-parameters.  Input parameters modify the data before the datastep
-operations takes place.  Output parameters operate on the data
-after the datastep.</p>
-<p>The <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters
-are output parameters.  These parameters will be applied after the
-data step statements are executed.  Therefore, within the data step, 
-refer to variables using the input variable name. New variables may 
-be created on the fly, just by assigning a value to the new
-variable name.</p>
-<p>The <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters require 
-quoted variable names, as the variables may not yet exist at the 
-time they are passed into the function.  Within a data step or 
-calculate function, however, 
-variable names do not need to be quoted.</p>
+non-standard evaluation (meaning they  do not have to be quoted).</p>
+<p>Note that the data step is pipe-friendly.  It can be used within 
+a <strong>dplyr</strong> pipeline.  The data step allows you to perform
+deeply nested and complex conditionals within the pipeline.  The data
+step is also very readable compared to other pipeline conditionals.</p>
+    <h2 class="hasAnchor" id="automatic-variables"><a class="anchor" href="#automatic-variables"></a>Automatic Variables</h2>
+
+    
+
 <p>The <code>datastep</code> function provides four automatic variables. These 
 variables are generated for every data step, and can 
 be accessed at any point within the data step:</p><ul>
@@ -311,6 +305,42 @@ be accessed at any point within the data step:</p><ul>
 </ul><p>Automatic variables will be dropped from the data frame at the end
 of the data step.  If you wish to keep the automatic variable values,
 assign the automatic variable to a new variable and keep that variable.</p>
+    <h2 class="hasAnchor" id="column-attributes"><a class="anchor" href="#column-attributes"></a>Column Attributes</h2>
+
+    
+
+<p>To set attributes for a column on your data, use the <code>attrib</code>
+parameter.  Example attributes include 'label', 'description', 
+and 'format'.  These types of attributes are set using a named list and a 
+<code><a href='dsattr.html'>dsattr</a></code> object. The name of the list item
+is the column name you want to set attributes on. 
+The value of the list item is the <code>dsattr</code> object.
+For a complete list of available attributes, 
+see the <code><a href='dsattr.html'>dsattr</a></code> documentation.</p>
+<p>It should be mentioned  that the <code>dsattr</code> object is not required.  
+You can also set attributes with a name and a default value.  
+The default value can be any valid data value, such as a number or string.</p>
+    <h2 class="hasAnchor" id="optional-parameters"><a class="anchor" href="#optional-parameters"></a>Optional Parameters</h2>
+
+    
+
+<p>Optional parameters on the <code>datastep</code> allow you to shape 
+the output dataset or enhance the operation of the <code>datastep</code>.  Some
+parameters are classified as input parameters, and others as output 
+parameters.  Input parameters modify the data before the data step
+operations takes place.  Output parameters operate on the data
+after the data step.</p>
+<p>The <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters
+are output parameters.  These parameters will be applied after the
+data step statements are executed.  Therefore, within the data step, 
+refer to variables using the input variable name. New variables may 
+be created on the fly, just by assigning a value to the new
+variable name.</p>
+<p>The <code>keep</code>, <code>drop</code>, and <code>rename</code> parameters require 
+quoted variable names, as the variables may not yet exist at the 
+time they are passed into the function.  Within a data step or 
+calculate block, however, 
+variable names do not need to be quoted.</p>
 <p>The <code>calculate</code> parameter is used to perform vectorized functions
 on the data prior to executing the data step.  For example, you 
 may want to determine a mean for a variable in the <code>calculate</code>
@@ -320,35 +350,62 @@ At the start of the data step, the retained variable is seeded with the
 initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment 
 values or perform cumulative operations.</p>
-<p>To set attributes for a column on your data, use the <code>attrib</code>
-parameter.  Attributes include 'label', 'description', 
-and 'format'.  These types of attributes are set using a named list and a 
-<code><a href='dsattr.html'>dsattr</a></code> object. The name of the list item
-is the column for which you want to set attributes for. 
-The value of the list item is the <code>dsattr</code> object.
-For a complete list of available attributes, 
-see the <code><a href='dsattr.html'>dsattr</a></code> documentation.</p>
-<p>It should be mentioned  that the <code>dsattr</code> object is not required.  
-You can also set attributes with a name and a default value.  
-The default value can be any valid data value, such as a number or string.</p>
-<p>There are times you may want to iterate over columns.  Such 
+<p><code>calculate</code> and <code>retain</code> are both input parameters.</p>
+    <h2 class="hasAnchor" id="data-step-arrays"><a class="anchor" href="#data-step-arrays"></a>Data step Arrays</h2>
+
+    
+
+<p>There are times you may want to iterate over columns in your data step.  Such 
 iteration is particularly useful when you have a wide dataset,
-and wish to perform the same operations on several columns.
+and wish to perform the same operation on several columns.
 For instance, you may want to calculate the mean for 10 different
 variables on your dataset.</p>
-<p>The <code>arrays</code> parameter allows you to iterate across columns
-inside the datastep.  This parameter accepts a named list of 
+<p>The <code>arrays</code> parameter allows you to iterate across columns.  
+This parameter accepts a named list of 
 <code><a href='dsarray.html'>dsarray</a></code> objects.  The <code>dsarray</code> is essentially
 a list of columns.  You can use a <code>for</code> loop to iterate over the
-<code>dsarray</code>, and also send it into a vectorized function.  This 
-functionality allows you to calculate or make decisions over rows.  
-For instance, you can
-use the <code>arrays</code> functionality to calculate 
-row-wise summary statistics.</p>
-<p>Note that the data step is pipe-friendly.  It can be used within 
-a <strong>dplyr</strong> pipeline.  The data step allows you to perform
-deeply nested and complex conditionals within the pipeline.  The data
-step is also very readable compared to other pipeline conditionals.</p>
+<code>dsarray</code>, and also send it into a vectorized function.  Data 
+step arrays allow to you to perform row-wise calculations. 
+For instance, you can calculate 
+a sum or mean by row for the variables in your array.</p>
+    <h2 class="hasAnchor" id="output-column-order"><a class="anchor" href="#output-column-order"></a>Output Column Order</h2>
+
+    
+
+<p>By default, the data step will retain the column order of any variables that
+already exist on the input data set. New variables created 
+in a data step will be appended to the right of existing variables.  
+Yet these new variables can sometimes appear in an order that is 
+unexpected or undesirable.</p>
+<p>There are two ways to control the order of output columns:
+the <code>keep</code> parameter and the <code>attrib</code> parameter.</p>
+<p>Columns names included on the 
+<code>keep</code> parameter will appear in the order indicated on the keep
+vector.  This ordering mechanism is appropriate when you have a small
+number of columns and can easily pass the entire keep list.</p>
+<p>To control the order of new variables only, use the <code>attrib</code> parameter.
+New variables for which attributes are defined will appear in the 
+order indicated on the <code>attrib</code> list.  The <code>attrib</code> list
+is useful when you are adding a relatively small number of columns to 
+an existing data set, and don't want to pass all the column names.</p>
+<p>Remember
+that you can supply an attribute list with default values only,
+such as <code>attrib = list(column1 = 0, column2 = "")</code>.  This style of 
+attribute definition is convenient if you are only trying to control
+the order of columns.</p>
+<p>If the above two mechanisms to control column order are not sufficient,
+use the data frame subset operators or column ordering functions 
+provided by other packages.</p>
+    <h2 class="hasAnchor" id="datastep-performance"><a class="anchor" href="#datastep-performance"></a>Datastep Performance</h2>
+
+    
+
+<p>The <code>datastep</code> is intended to be used on small and medium-sized 
+datasets.  It is not recommended for large datasets or big data.
+If your dataset is greater than one million rows, you should consider
+other techniques for processing your data.  While there is no 
+built-in restriction on the number of rows, performance of the
+<code>datastep</code> can become unacceptable with a large number of rows.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other datastep: 
@@ -445,8 +502,8 @@ step is also very readable compared to other pipeline conditionals.</p>
 
 <span class='co'># Add datastep to dplyr pipeline</span>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>datastep</span><span class='op'>(</span><span class='op'>{</span>
     
     <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span>
@@ -455,7 +512,7 @@ step is also very readable compared to other pipeline conditionals.</p>
       <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
     
   <span class='op'>}</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span>
 
 <span class='va'>df</span>
 <span class='co'>#     mpg cyl gear mean_mpg mpgcat</span>
@@ -496,26 +553,32 @@ step is also very readable compared to other pipeline conditionals.</p>
 <span class='co'># Merc 280          19.2         6 3.440         31.280</span>
 
 <span class='co'># Example #6: Attributes and Arrays</span>
+
+<span class='co'># Create sample data</span>
 <span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'
    Year  Q1   Q2  Q3  Q4
    2000 125  137 152 140
    2001 132  145 138  87
    2002 101  104 115 121'</span><span class='op'>)</span>
  
+<span class='co'># Use attrib list to control column order and add labels</span>
+<span class='co'># Use array to calculate row sums and means, and get best quarter</span>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>,
                attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Tot <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Total"</span><span class='op'>)</span>,
                              Avg <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Average"</span><span class='op'>)</span>,
                              Best <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Best Quarter"</span><span class='op'>)</span><span class='op'>)</span>,
                arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>qtrs <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span><span class='op'>)</span><span class='op'>)</span>,
-               drop <span class='op'>=</span> <span class='st'>"i"</span>,
+               drop <span class='op'>=</span> <span class='st'>"q"</span>,
                steps <span class='op'>=</span> <span class='op'>{</span>
                
+                 <span class='co'># Empty brackets return all array values</span>
                  <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
                  <span class='va'>Avg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
                  
-                 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='va'>qtrs</span><span class='op'>)</span> <span class='op'>{</span>
-                   <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-                     <span class='va'>Best</span> <span class='op'>&lt;-</span> <span class='va'>i</span>
+                 <span class='co'># Iterate to find best quarter</span>
+                 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>q</span> <span class='kw'>in</span> <span class='va'>qtrs</span><span class='op'>)</span> <span class='op'>{</span>
+                   <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='va'>q</span><span class='op'>]</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+                     <span class='va'>Best</span> <span class='op'>&lt;-</span> <span class='va'>q</span>
                  <span class='op'>}</span>
                <span class='op'>}</span><span class='op'>)</span>
                

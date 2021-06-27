@@ -49,21 +49,6 @@ e$env <- parent.frame()
 #' follow standard conventions, it is recommended that you import your 
 #' data using a package that gives you more control over import options. 
 #' 
-#' @section Import Specifications:
-#' In most cases, it is not necessary to specify the data types for incoming
-#' columns in your data.  Either the file format will preserve the appropriate
-#' data type information, or the assigned engine will guess correctly.  
-#' 
-#' However, in some cases it will be necessary to control the column data types.
-#' For these cases, use the  
-#' \code{import_specs} parameter.  The \code{import_specs} parameter allows you
-#' to specify the data types by data set and column name. All the data type
-#' specifications are contained within a \code{specs} collection, and the 
-#' specifications for a particular data set are defined by an 
-#' \code{import_spec} function. See the \code{\link{specs}} and 
-#' \code{\link{import_spec}} documentation for further information
-#' and examples of defining an import spec.
-#' 
 #' @section Data Engines:
 #' The \code{libname} function currently provides seven different engines for 
 #' seven different types of data files.
@@ -115,6 +100,7 @@ e$env <- parent.frame()
 #' file format for interchange between software systems.  The DBASE file 
 #' format contains type information.}
 #' }
+#' 
 #' @section File Filters:
 #' If you wish to import only a portion of your data files into a library, 
 #' you may accomplish it with the \code{filter} parameter.  The filter 
@@ -123,6 +109,21 @@ e$env <- parent.frame()
 #' wild-card (\*) for partial matching.  For example, \code{"te\*"} means any
 #' file name that that begins with a "te", and \code{"\*st"} means any file name
 #' that ends with an "st". 
+#' 
+#' @section Import Specifications:
+#' In most cases, it is not necessary to specify the data types for incoming
+#' columns in your data.  Either the file format will preserve the appropriate
+#' data type information, or the assigned engine will guess correctly.  
+#' 
+#' However, in some cases it will be necessary to control the column data types.
+#' For these cases, use the  
+#' \code{import_specs} parameter.  The \code{import_specs} parameter allows you
+#' to specify the data types by data set and column name. All the data type
+#' specifications are contained within a \code{specs} collection, and the 
+#' specifications for a particular data set are defined by an 
+#' \code{import_spec} function. See the \code{\link{specs}} and 
+#' \code{\link{import_spec}} documentation for further information
+#' and examples of defining an import spec.
 #' 
 #' @param name The unquoted name of the library to create.  The library name will 
 #' be created as a variable in the environment specified on the \code{env}
@@ -163,7 +164,8 @@ e$env <- parent.frame()
 #' to identify the missing portion. The match will be case-insensitive.
 #' @param standard_eval A TRUE or FALSE value which indicates whether to 
 #' use standard (quoted) or non-standard (unquoted) evaluation on the library
-#' \code{name} parameter. Default is FALSE.
+#' \code{name} parameter. Use standard evaluation when you want to pass
+#' the library name with a variable.  Default is FALSE.
 #' @param quiet When TRUE, minimizes output to the console when loading 
 #' files.  Default is FALSE.
 #' @return The library object, with all data files loaded into the library

@@ -16,13 +16,14 @@ dsattr(
 )
 }
 \arguments{
-\item{default}{The default value of the column.  Typical default 
+\item{default}{The default value of the column.  The default value can
+be any valid data value. Typical default 
 values might be an empty string ("") or a zero (0).  If no
 default value is specified, the column will be defaulted to NA.}
 
 \item{label}{The label to associate with this column.  Accepts
 any string value. The label will appear as a column header on some 
-data viewers.}
+data viewers and reporting packages.}
 
 \item{description}{A description for this column.  Accepts any string
 value.  The description is intended to be a longer explanation of the 
@@ -41,7 +42,7 @@ are 'left', 'right', 'center', and 'centre'.}
 these additional attributes as a name/value pair.}
 }
 \value{
-The datastep attributes object.
+The data step attributes object.
 }
 \description{
 An object to assign attributes
@@ -51,9 +52,7 @@ to set the following attributes: 'class', 'label', 'description', 'width',
 with \code{...}.
 
 The attributes available in the \code{dsattr} class are closely aligned
-with those available in the \strong{fmtr} package. See the 
-\code{\link[fmtr]{fmtr}} package documentation
-for additional details.
+with those available on the \code{\link{dictionary}} object.
 }
 \examples{
 library(libr)
@@ -103,9 +102,10 @@ attr(dat1$mpgcat, "label")
 # View(dat1)
 }
 \seealso{
-The \code{\link[fmtr]{fdata}} function in the \strong{fmtr}
-package for more information
-on formatting and rendering dataframes.
+\code{\link{dictionary}} function to observe the attributes
+associated with a dataset.  Also see the \code{\link[fmtr]{fdata}} 
+function in the \strong{fmtr}
+package for more information on formatting and rendering data frames.
 
 Other datastep: 
 \code{\link{[.dsarray}()},

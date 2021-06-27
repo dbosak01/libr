@@ -21,7 +21,7 @@ test_that("add_autos() function works as expected", {
   
   expect_equal("first." %in% names(dat3), TRUE)
   expect_equal("last." %in% names(dat3), TRUE)
-  expect_equal("n." %in% names(dat3), TRUE)
+
 })
 
 test_that("sort check works as expected", {
@@ -31,7 +31,6 @@ test_that("sort check works as expected", {
 
   expect_equal("first." %in% names(dat3), TRUE)
   expect_equal("last." %in% names(dat3), TRUE)
-  expect_equal("n." %in% names(dat3), TRUE)
   expect_error( add_autos(mtcars, c("am"), sort_check = TRUE))
 })
 
@@ -225,5 +224,117 @@ test_that("datastep() with group_by performance is good", {
     expect_equal(TRUE, TRUE)
   
 })
+
+
+test_that("100,000 row datastep on data.frame is good.", {
+  
+  if (DEV) {
+    
+    l <- 100000
+    
+    df <- data.frame(C1 = seq_len(l), C2 = runif(l), 
+                     C3 = runif(l), C4 = runif(l))
+    
+    tm <- Sys.time()
+    
+    res <- datastep(df, attrib = list(C5 = 0, C6 = 0),
+                    {
+                      C5 <- C2 + C3 + C4
+                      C6 <- max(C2, C3, C4)
+                      
+                    })
+    
+    
+    tmdiff <- Sys.time() - tm
+    tmdiff
+    
+    res[1:10, ]
+    
+    expect_equal(tmdiff < 30, TRUE)
+    
+    # 100,000 rows is 20 seconds
+    # 1,000,000 rows is 3.6 minutes
+    
+  } else
+    expect_equal(TRUE, TRUE)
+  
+})
+
+
+test_that("100,000 row datastep on tibble is good.", {
+  
+  if (DEV) {
+    
+    library(tibble)
+    
+    l <- 100000
+    
+    df <- tibble(C1 = seq_len(l), C2 = runif(l), 
+                     C3 = runif(l), C4 = runif(l))
+    
+    tm <- Sys.time()
+    
+    res <- datastep(df, attrib = list(C5 = 0, C6 = 0),
+                    {
+                      C5 <- C2 + C3 + C4
+                      C6 <- max(C2, C3, C4)
+                      
+                    })
+    
+    
+    tmdiff <- Sys.time() - tm
+    tmdiff
+    
+    res[1:10, ]
+    
+    expect_equal(tmdiff < 30, TRUE)
+    
+    # 100,000 rows is 21.2 seconds
+    # 1,000,000 rows is 3.8 minutes
+    
+  } else
+    expect_equal(TRUE, TRUE)
+  
+})
+
+
+
+test_that("100,000 row datastep on data.table is good.", {
+  
+  if (DEV) {
+    
+    library(data.table)
+    
+    l <- 100000
+    
+    df <- data.table(C1 = seq_len(l), C2 = runif(l), 
+                 C3 = runif(l), C4 = runif(l))
+    
+    tm <- Sys.time()
+    
+    res <- datastep(df, attrib = list(C5 = 0, C6 = 0),
+                    {
+                      C5 <- C2 + C3 + C4
+                      C6 <- max(C2, C3, C4)
+                      
+                    })
+    
+    
+    tmdiff <- Sys.time() - tm
+    tmdiff
+    
+    res[1:10, ]
+    
+    expect_equal(tmdiff < 30, TRUE)
+    
+    # 100,000 rows is 1.3 minutes with out modification to datastep
+    # 100,000 rows is 22.3 seconds after modification 
+    # 1,000,000 rows is not going to try
+    
+  } else
+    expect_equal(TRUE, TRUE)
+  
+})
+
 
 

@@ -55,9 +55,7 @@ to set the following attributes: 'class', 'label', 'description', 'width',
 'justify', and 'format'.  Any other desired attributes can be set 
 with ....
 The attributes available in the dsattr class are closely aligned
-with those available in the fmtr package. See the 
-fmtr package documentation
-for additional details." />
+with those available on the dictionary object." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -169,9 +167,7 @@ to set the following attributes: 'class', 'label', 'description', 'width',
 'justify', and 'format'.  Any other desired attributes can be set 
 with <code>...</code>.</p>
 <p>The attributes available in the <code>dsattr</code> class are closely aligned
-with those available in the <strong>fmtr</strong> package. See the 
-<code><a href='https://fmtr.r-sassy.org/reference/fmtr.html'>fmtr</a></code> package documentation
-for additional details.</p>
+with those available on the <code><a href='dictionary.html'>dictionary</a></code> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dsattr</span><span class='op'>(</span>
@@ -189,7 +185,8 @@ for additional details.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>default</th>
-      <td><p>The default value of the column.  Typical default 
+      <td><p>The default value of the column.  The default value can
+be any valid data value. Typical default 
 values might be an empty string ("") or a zero (0).  If no
 default value is specified, the column will be defaulted to NA.</p></td>
     </tr>
@@ -197,7 +194,7 @@ default value is specified, the column will be defaulted to NA.</p></td>
       <th>label</th>
       <td><p>The label to associate with this column.  Accepts
 any string value. The label will appear as a column header on some 
-data viewers.</p></td>
+data viewers and reporting packages.</p></td>
     </tr>
     <tr>
       <th>description</th>
@@ -212,7 +209,7 @@ purpose or source of the variable.</p></td>
     <tr>
       <th>format</th>
       <td><p>The format associated with this column.  See the 
-<code><a href='https://fmtr.r-sassy.org/reference/fmtr.html'>fmtr</a></code> package for more information about formatting.</p></td>
+<code><a href='https://rdrr.io/pkg/fmtr/man/fmtr.html'>fmtr</a></code> package for more information about formatting.</p></td>
     </tr>
     <tr>
       <th>justify</th>
@@ -229,12 +226,13 @@ these additional attributes as a name/value pair.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The datastep attributes object.</p>
+    <p>The data step attributes object.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <code><a href='https://fmtr.r-sassy.org/reference/fdata.html'>fdata</a></code> function in the <strong>fmtr</strong>
-package for more information
-on formatting and rendering dataframes.</p>
+    <div class='dont-index'><p><code><a href='dictionary.html'>dictionary</a></code> function to observe the attributes
+associated with a dataset.  Also see the <code><a href='https://rdrr.io/pkg/fmtr/man/fdata.html'>fdata</a></code> 
+function in the <strong>fmtr</strong>
+package for more information on formatting and rendering data frames.</p>
 <p>Other datastep: 
 <code><a href='[.dsarray.html'>[.dsarray</a>()</code>,
 <code><a href='datastep.html'>datastep</a>()</code>,

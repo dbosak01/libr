@@ -8,17 +8,14 @@
 #' with \code{...}.
 #' 
 #' The attributes available in the \code{dsattr} class are closely aligned
-#' with those available in the \strong{fmtr} package. See the 
-#' \code{\link[fmtr]{fmtr}} package documentation
-#' for additional details.  
-#' @param default The default value of the column.  Typical default 
+#' with those available on the \code{\link{dictionary}} object. 
+#' @param default The default value of the column.  The default value can
+#' be any valid data value. Typical default 
 #' values might be an empty string ("") or a zero (0).  If no
 #' default value is specified, the column will be defaulted to NA.
-# @param class The desired class of the column. Valid values are 
-# 'character', 'numeric', 'integer', 'logical', and 'complex'.
 #' @param label The label to associate with this column.  Accepts
 #' any string value. The label will appear as a column header on some 
-#' data viewers.
+#' data viewers and reporting packages.
 #' @param description A description for this column.  Accepts any string
 #' value.  The description is intended to be a longer explanation of the 
 #' purpose or source of the variable.
@@ -30,10 +27,11 @@
 #' are 'left', 'right', 'center', and 'centre'.  
 #' @param ... Any other attributes you wish to assign to this column. Pass
 #' these additional attributes as a name/value pair.
-#' @return The datastep attributes object.
-#' @seealso The \code{\link[fmtr]{fdata}} function in the \strong{fmtr}
-#' package for more information
-#' on formatting and rendering dataframes.
+#' @return The data step attributes object.
+#' @seealso \code{\link{dictionary}} function to observe the attributes
+#' associated with a dataset.  Also see the \code{\link[fmtr]{fdata}} 
+#' function in the \strong{fmtr}
+#' package for more information on formatting and rendering data frames.
 #' @family datastep
 #' @examples 
 #' library(libr)

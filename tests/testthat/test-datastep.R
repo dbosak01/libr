@@ -416,5 +416,63 @@ test_that("datastep() attributes on data are maintained on base dataframe.", {
 })
   
   
+
+test_that("datastep works on tibble.", {
   
+
+    
+    library(tibble)
+    
+    l <- 1000
+    
+    df <- tibble(C1 = seq_len(l), C2 = runif(l), 
+                 C3 = runif(l), C4 = runif(l))
+    
+    
+    res <- datastep(df, attrib = list(C5 = 0, C6 = 0),
+                    {
+                      C5 <- C2 + C3 + C4
+                      C6 <- max(C2, C3, C4)
+                      
+                    })
+    
+    
+    expect_equal("C5" %in% names(res), TRUE)
+    expect_equal("C6" %in% names(res), TRUE)
+    expect_equal(nrow(res), 1000)
+    
+  
+})
+
+
+
+test_that("datastep works on data.table", {
+  
+  
+  
+  library(data.table)
+  
+  l <- 1000
+  
+  df <- data.table(C1 = seq_len(l), C2 = runif(l), 
+               C3 = runif(l), C4 = runif(l))
+  
+  
+  res <- datastep(df, attrib = list(C5 = 0, C6 = 0),
+                  {
+                    C5 <- C2 + C3 + C4
+                    C6 <- max(C2, C3, C4)
+                    
+                  })
+  
+  
+  expect_equal("C5" %in% names(res), TRUE)
+  expect_equal("C6" %in% names(res), TRUE)
+  expect_equal(nrow(res), 1000)
+  
+  
+})
+
+
+
   

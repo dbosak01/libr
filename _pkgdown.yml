@@ -43,6 +43,8 @@ reference:
   - datastep
   - dsattr
   - dsarray
+  - "[.dsarray"
+  - length.dsarray
 - title: Other Functions
   desc: Other useful functions in the libr package.
   contents:
