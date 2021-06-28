@@ -383,7 +383,7 @@
 <h3 class="hasAnchor">
 <a href="#data-step-array" class="anchor"></a>Data Step Array</h3>
 <p>As mentioned previously, R typically operates in a column-wise manner. That is, R processes data column-by-column. But what if you need to get a sum or mean across a row?</p>
-<p>This situation is what led to the creation of the <strong>data step array</strong>. The data step array allows you to define a list of columns and<br>
+<p>This situation is what led to the development of the <strong>data step array</strong>. The data step array allows you to define a list of columns and<br>
 iterate over the list inside a data step. Data step arrays are defined with the <em>arrays</em> parameter, which accepts a named list of <code><a href="../reference/dsarray.html">dsarray()</a></code> objects.</p>
 <p>To see the array in action, we’ll use the <em>AirPassengers</em> sample data. This data shows international airline passengers by month between 1949 and 1960. The data looks like this:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -401,7 +401,7 @@ iterate over the list inside a data step. Data step arrays are defined with the 
 <span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337</span>
 <span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405</span>
 <span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432</span></code></pre></div>
-<p>This example illustrates how to create row totals, row means, and find the top month using a data step array. The array has an indexer (<code>sub-.dsarray()</code>) to extract values. You can use the indexer to extract a single value or a subset of values. An empty indexer will return all the values in the array.</p>
+<p>This example illustrates how to create row totals, row means, and find the top month using a data step array. The array has an indexer to extract values. You can use the indexer to extract a single value or a subset of values. An empty indexer will return all the values in the array.</p>
 <div id="example-8-using-a-data-step-array" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-8-using-a-data-step-array" class="anchor"></a>Example 8: Using a Data Step Array</h4>

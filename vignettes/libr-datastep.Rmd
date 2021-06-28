@@ -305,7 +305,7 @@ As mentioned previously, R typically operates in a column-wise manner.  That is,
 R processes data column-by-column.  But what if you need to get a sum or 
 mean across a row?
 
-This situation is what led to the creation of the **data step array**.  The 
+This situation is what led to the development of the **data step array**.  The 
 data step array allows you to define a list of columns and  
 iterate over the list inside a data step.  Data step arrays are defined with the 
 _arrays_ parameter, which accepts a named list of `dsarray()` objects.
