@@ -18,6 +18,7 @@ test_that("datastep() function works as expected with mtcars.", {
 
   })
 
+  d1
   
   expect_equal("mpgcat" %in% names(d1), TRUE)
 
@@ -42,6 +43,8 @@ test_that("datastep() function works as expected with demo_studya.", {
       sexc <- "Other"
 
   })
+  
+  d1
 
   expect_equal("sexc" %in% names(d1), TRUE)
 
@@ -65,6 +68,8 @@ test_that("datastep() keep parameter works as expected.", {
       sexc <- "Other"
 
   })
+  
+  d1
 
   expect_equal(names(d1), c("usubjid", "sexc", "race"))
 
@@ -87,6 +92,8 @@ test_that("datastep() drop parameter works as expected.", {
       sexc <- "Other"
 
   })
+  
+  d1
 
   expect_equal(names(d1), c("study", "inv", "patient", "race",
                             "dob", "treatment", "sexc", "usubjid"))
@@ -265,6 +272,20 @@ test_that("datastep() retain class check works as expected", {
 
 })
 
+test_that("datastep() array class check works as expected", {
+  
+  
+  expect_error(datastep(mtcars, array = c(fork = 0), {fork <- fork + 1}))
+  
+})
+
+
+test_that("datastep() attrib class check works as expected", {
+  
+  
+  expect_error(datastep(mtcars, attrib = c(fork = 0), {fork <- fork + 1}))
+  
+})
 
 
 
@@ -282,7 +303,10 @@ test_that("Rename works as expected", {
 
   df
 
-  expect_equal("TRUE", "TRUE")
+  expect_equal("MPG" %in% names(df), TRUE)
+  expect_equal("Cylinders" %in% names(df), TRUE)
+  expect_equal("Wgt" %in% names(df), TRUE)
+  expect_equal("Cumulative Wgt" %in% names(df), TRUE)
 
 })
 
@@ -351,7 +375,11 @@ test_that("datastep retains class attributes.", {
     csum <- 1
   })
   
+  df2
+  
+  expect_equal(class(df2$s1), "integer")
   expect_equal(class(df2$dt2), "Date")
+  expect_equal(class(df2$csum), "numeric")
 
 })
 
@@ -368,6 +396,8 @@ test_that("datastep works on single column data frame.", {
       status <- "Low"
     
   })
+  
+  df2
   
   expect_equal(ncol(df2), 2)
   expect_equal(nrow(df2), 10)
@@ -391,6 +421,8 @@ test_that("datastep works on single column tibble.", {
     
   })
   
+  df2
+  
   expect_equal(ncol(df2), 2)
   expect_equal(nrow(df2), 10)
   expect_equal(class(df2), c("tbl_df", "tbl", "data.frame"))
@@ -411,6 +443,8 @@ test_that("datastep() attributes on data are maintained on base dataframe.", {
     fork <- "Hello" 
   })
 
+  dat2
+  
   expect_equal(attr(dat2$mpg, "label"), "Miles Per Gallon")  
   
 })
@@ -436,6 +470,7 @@ test_that("datastep works on tibble.", {
                       
                     })
     
+    res
     
     expect_equal("C5" %in% names(res), TRUE)
     expect_equal("C6" %in% names(res), TRUE)
@@ -465,6 +500,7 @@ test_that("datastep works on data.table", {
                     
                   })
   
+  res
   
   expect_equal("C5" %in% names(res), TRUE)
   expect_equal("C6" %in% names(res), TRUE)

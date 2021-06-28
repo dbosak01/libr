@@ -393,6 +393,18 @@ datastep <- function(data, steps, keep = NULL,
     
   }
   
+  if (!is.null(attrib)) {
+    if (!"list" %in% class(attrib))
+      stop("attrib parameter value must be of class 'list'")
+    
+  }
+  
+  if (!is.null(arrays)) {
+    if (!"list" %in% class(arrays))
+      stop("arrays parameter value must be of class 'list'")
+    
+  }
+  
   # Capture number of starting columns
   startcols <- ncol(data)
   
