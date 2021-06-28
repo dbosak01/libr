@@ -260,7 +260,124 @@ df
 # 10 19.2   6    4 20.09062    Low
 
 ```
+### Data Attributes
+The **libr** package recognizes several useful data attributes that
+are not normally recognized by other R functions.  For example, it is 
+very convenient to assign _label_ and _description_ attributes to your columns, 
+so other people can understand what data the columns contain.  
 
+For this reason,
+the `datastep()` function provides an _attrib_ parameter that allows you 
+to supply such attributes as part of a data step.  Attributes are 
+assigned with a named list and the `dsattr()` object. 
+
+#### Example 7: Attributes
+```{r eval=FALSE, echo=TRUE}
+library(libr)
+
+# Assign label attributes to all columns
+df <- datastep(mtcars[1:10, ], 
+               keep = c("mpg", "cyl", "mpgcat"),
+               calculate = { mean_mpg = mean(mpg) },
+               attrib = list(mpg = dsattr(label = "Miles Per Gallon"),
+                             cyl = dsattr(label = "Cylinders"),
+                             mpgcat = dsattr(label = "Mileage Category")), {
+
+    if (mpg >= mean_mpg)
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+
+  }) 
+
+# View attributes in dictionary
+dictionary(df)
+# # A tibble: 3 x 10
+#   Name  Column Class     Label            Description Format Width Justify  Rows   NAs
+#   <chr> <chr>  <chr>     <chr>            <chr>       <lgl>  <int> <chr>   <int> <int>
+# 1 df    mpg    numeric   Miles Per Gallon NA          NA        NA NA         10     0
+# 2 df    cyl    numeric   Cylinders        NA          NA        NA NA         10     0
+# 3 df    mpgcat character Mileage Category NA          NA         4 NA         10     0
+
+```
+### Data Step Array
+As mentioned previously, R typically operates in a column-wise manner.  That is, 
+R processes data column-by-column.  But what if you need to get a sum or 
+mean across a row?
+
+This situation is what led to the creation of the **data step array**.  The 
+data step array allows you to define a list of columns and  
+iterate over the list inside a data step.  Data step arrays are defined with the 
+_arrays_ parameter, which accepts a named list of `dsarray()` objects.
+
+To see the array in action, we'll use the _AirPassengers_ sample 
+data.  This data shows international airline passengers by month between
+1949 and 1960.  The data looks like this:  
+```{r eval=FALSE, echo=TRUE}
+AirPassengers
+#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+# 1949 112 118 132 129 121 135 148 148 136 119 104 118
+# 1950 115 126 141 135 125 149 170 170 158 133 114 140
+# 1951 145 150 178 163 172 178 199 199 184 162 146 166
+# 1952 171 180 193 181 183 218 230 242 209 191 172 194
+# 1953 196 196 236 235 229 243 264 272 237 211 180 201
+# 1954 204 188 235 227 234 264 302 293 259 229 203 229
+# 1955 242 233 267 269 270 315 364 347 312 274 237 278
+# 1956 284 277 317 313 318 374 413 405 355 306 271 306
+# 1957 315 301 356 348 355 422 465 467 404 347 305 336
+# 1958 340 318 362 348 363 435 491 505 404 359 310 337
+# 1959 360 342 406 396 420 472 548 559 463 407 362 405
+# 1960 417 391 419 461 472 535 622 606 508 461 390 432
+
+```
+This example illustrates how to create row totals, row means, and find the 
+top month using a data step array. The array has an indexer 
+to extract values.  You can use the indexer to extract a single value or
+a subset of values.  An empty indexer will return all the values in the
+array.
+
+#### Example 8: Using a Data Step Array
+```{r eval=FALSE, echo=TRUE}
+library(libr)
+
+# Create AirPassengers Data Frame
+df <- as.data.frame(t(matrix(AirPassengers, 12,
+                    dimnames = list(month.abb, seq(1949, 1960)))))
+
+# Use datastep array to get year tot, mean, and top month
+dat <- datastep(df,
+                arrays = list(months = dsarray(names(df))),
+                attrib = list(Tot = 0, Mean = 0, Top = ""),
+                drop = "mth",
+                {
+
+                  Tot <- sum(months[])
+                  Mean <- mean(months[])
+
+                  for (mth in months) {
+                    if (months[mth] == max(months[])) {
+                      Top <- mth
+                    }
+                  }
+                })
+
+
+dat
+#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  Tot     Mean Top
+# 1949 112 118 132 129 121 135 148 148 136 119 104 118 1520 126.6667 Aug
+# 1950 115 126 141 135 125 149 170 170 158 133 114 140 1676 139.6667 Aug
+# 1951 145 150 178 163 172 178 199 199 184 162 146 166 2042 170.1667 Aug
+# 1952 171 180 193 181 183 218 230 242 209 191 172 194 2364 197.0000 Aug
+# 1953 196 196 236 235 229 243 264 272 237 211 180 201 2700 225.0000 Aug
+# 1954 204 188 235 227 234 264 302 293 259 229 203 229 2867 238.9167 Jul
+# 1955 242 233 267 269 270 315 364 347 312 274 237 278 3408 284.0000 Jul
+# 1956 284 277 317 313 318 374 413 405 355 306 271 306 3939 328.2500 Jul
+# 1957 315 301 356 348 355 422 465 467 404 347 305 336 4421 368.4167 Aug
+# 1958 340 318 362 348 363 435 491 505 404 359 310 337 4572 381.0000 Aug
+# 1959 360 342 406 396 420 472 548 559 463 407 362 405 5140 428.3333 Aug
+# 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul
+
+```
 Next: [Enhanced Equality](libr-eq.html)
 
 

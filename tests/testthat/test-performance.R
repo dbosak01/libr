@@ -329,7 +329,7 @@ test_that("100,000 row datastep on data.table is good.", {
     
     # 100,000 rows is 1.3 minutes with out modification to datastep
     # 100,000 rows is 22.3 seconds after modification 
-    # 1,000,000 rows is not going to try
+    # 1,000,000 rows not going to try
     
   } else
     expect_equal(TRUE, TRUE)
@@ -337,4 +337,61 @@ test_that("100,000 row datastep on data.table is good.", {
 })
 
 
+test_that("complex datastep() performance is good", {
+  
+  if (DEV) {
+    
+    library(dplyr)
+    
+    scs <- specs(PE = import_spec(PESTAT = "character"))
+    
+    libname(dat, file.path(base_path, "SDTM"), "csv", import_specs = scs, 
+            quiet = TRUE)
+    
+    tm <- Sys.time()
+    
+    prep <- dat$DM %>% 
+      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) %>% 
+      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
+      filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"), 
+             !(VISIT == "SCREENING" & VSBLFL != "Y")) %>% 
+      arrange(USUBJID, VSTESTCD, VISITNUM) %>% 
+      group_by(USUBJID, VSTESTCD) %>%
+      datastep(by = c("USUBJID", "VSTESTCD"), retain = list(BSTRESN = 0), {
+        
+        # Combine treatment groups
+        # And distingish baseline time points
+        if (ARM == "ARM A") {
+          
+          if (VSBLFL %eq% "Y") {
+            GRP <- "A_BASE"
+          } else {
+            GRP <- "A_TRT"
+          }
+          
+        } else {
+          
+          if (VSBLFL %eq% "Y") {
+            GRP <- "O_BASE"
+          } else {
+            GRP <- "O_TRT"
+          }
+          
+        }
+        
+        # Populate baseline value
+        if (first.)
+          BSTRESN = VSSTRESN
+        
+      })
+    
+    tmdiff <- Sys.time() - tm 
+    tmdiff
+    
+    expect_equal(tmdiff < 3, TRUE)
+    
+  } else 
+    expect_equal(TRUE, TRUE)
+  
+})
 

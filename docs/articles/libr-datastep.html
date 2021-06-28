@@ -341,6 +341,109 @@
 <span class="co"># 8  24.4   4    4 20.09062   High</span>
 <span class="co"># 9  22.8   4    4 20.09062   High</span>
 <span class="co"># 10 19.2   6    4 20.09062    Low</span></code></pre></div>
+</div>
+</div>
+<div id="data-attributes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-attributes" class="anchor"></a>Data Attributes</h3>
+<p>The <strong>libr</strong> package recognizes several useful data attributes that are not normally recognized by other R functions. For example, it is very convenient to assign <em>label</em> and <em>description</em> attributes to your columns, so other people can understand what data the columns contain.</p>
+<p>For this reason, the <code><a href="../reference/datastep.html">datastep()</a></code> function provides an <em>attrib</em> parameter that allows you to supply such attributes as part of a data step. Attributes are assigned with a named list and the <code><a href="../reference/dsattr.html">dsattr()</a></code> object.</p>
+<div id="example-7-attributes" class="section level4">
+<h4 class="hasAnchor">
+<a href="#example-7-attributes" class="anchor"></a>Example 7: Attributes</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
+
+<span class="co"># Assign label attributes to all columns</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, 
+               keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>,
+               calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,
+               attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Miles Per Gallon"</span><span class="op">)</span>,
+                             cyl <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Cylinders"</span><span class="op">)</span>,
+                             mpgcat <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Mileage Category"</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span>
+
+    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span>
+      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
+    <span class="kw">else</span> 
+      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
+
+  <span class="op">}</span><span class="op">)</span> 
+
+<span class="co"># View attributes in dictionary</span>
+<span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
+<span class="co"># # A tibble: 3 x 10</span>
+<span class="co">#   Name  Column Class     Label            Description Format Width Justify  Rows   NAs</span>
+<span class="co">#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
+<span class="co"># 1 df    mpg    numeric   Miles Per Gallon NA          NA        NA NA         10     0</span>
+<span class="co"># 2 df    cyl    numeric   Cylinders        NA          NA        NA NA         10     0</span>
+<span class="co"># 3 df    mpgcat character Mileage Category NA          NA         4 NA         10     0</span></code></pre></div>
+</div>
+</div>
+<div id="data-step-array" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-step-array" class="anchor"></a>Data Step Array</h3>
+<p>As mentioned previously, R typically operates in a column-wise manner. That is, R processes data column-by-column. But what if you need to get a sum or mean across a row?</p>
+<p>This situation is what led to the creation of the <strong>data step array</strong>. The data step array allows you to define a list of columns and<br>
+iterate over the list inside a data step. Data step arrays are defined with the <em>arrays</em> parameter, which accepts a named list of <code><a href="../reference/dsarray.html">dsarray()</a></code> objects.</p>
+<p>To see the array in action, we’ll use the <em>AirPassengers</em> sample data. This data shows international airline passengers by month between 1949 and 1960. The data looks like this:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">AirPassengers</span>
+<span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</span>
+<span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118</span>
+<span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140</span>
+<span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166</span>
+<span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194</span>
+<span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201</span>
+<span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229</span>
+<span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278</span>
+<span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306</span>
+<span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336</span>
+<span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337</span>
+<span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405</span>
+<span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432</span></code></pre></div>
+<p>This example illustrates how to create row totals, row means, and find the top month using a data step array. The array has an indexer (<code>sub-.dsarray()</code>) to extract values. You can use the indexer to extract a single value or a subset of values. An empty indexer will return all the values in the array.</p>
+<div id="example-8-using-a-data-step-array" class="section level4">
+<h4 class="hasAnchor">
+<a href="#example-8-using-a-data-step-array" class="anchor"></a>Example 8: Using a Data Step Array</h4>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
+
+<span class="co"># Create AirPassengers Data Frame</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">AirPassengers</span>, <span class="fl">12</span>,
+                    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">month.abb</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1949</span>, <span class="fl">1960</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Use datastep array to get year tot, mean, and top month</span>
+<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">df</span>,
+                arrays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>months <span class="op">=</span> <span class="fu"><a href="../reference/dsarray.html">dsarray</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+                attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Tot <span class="op">=</span> <span class="fl">0</span>, Mean <span class="op">=</span> <span class="fl">0</span>, Top <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,
+                drop <span class="op">=</span> <span class="st">"mth"</span>,
+                <span class="op">{</span>
+
+                  <span class="va">Tot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
+                  <span class="va">Mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
+
+                  <span class="kw">for</span> <span class="op">(</span><span class="va">mth</span> <span class="kw">in</span> <span class="va">months</span><span class="op">)</span> <span class="op">{</span>
+                    <span class="kw">if</span> <span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="va">mth</span><span class="op">]</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                      <span class="va">Top</span> <span class="op">&lt;-</span> <span class="va">mth</span>
+                    <span class="op">}</span>
+                  <span class="op">}</span>
+                <span class="op">}</span><span class="op">)</span>
+
+
+<span class="va">dat</span>
+<span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  Tot     Mean Top</span>
+<span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118 1520 126.6667 Aug</span>
+<span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140 1676 139.6667 Aug</span>
+<span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166 2042 170.1667 Aug</span>
+<span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194 2364 197.0000 Aug</span>
+<span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201 2700 225.0000 Aug</span>
+<span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229 2867 238.9167 Jul</span>
+<span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278 3408 284.0000 Jul</span>
+<span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306 3939 328.2500 Jul</span>
+<span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336 4421 368.4167 Aug</span>
+<span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337 4572 381.0000 Aug</span>
+<span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405 5140 428.3333 Aug</span>
+<span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul</span></code></pre></div>
 <p>Next: <a href="libr-eq.html">Enhanced Equality</a></p>
 </div>
 </div>
