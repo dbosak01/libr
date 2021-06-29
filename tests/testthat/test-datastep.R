@@ -4,7 +4,6 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
-DEV <- FALSE
 
 test_that("datastep() function works as expected with mtcars.", {
 
@@ -511,4 +510,20 @@ test_that("datastep works on data.table", {
 
 
 
+test_that("datastep() works on a dataframe with a factor.", {
+  
+  
+  dat <- iris
+  
+  
+  dat2 <- datastep(dat, {
+    fork <- Petal.Length + Petal.Width 
+  })
+  
+  dat2
+  
+  expect_equal("fork" %in% names(dat2), TRUE)  
+  expect_equal(class(dat2$Species), "factor")
+  
+})
   

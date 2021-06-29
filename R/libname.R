@@ -173,7 +173,8 @@ e$env <- parent.frame()
 #' minus the file extension.
 #' @family lib
 #' @seealso \code{\link{specs}} to define import specifications, 
-#' and \code{\link{dictionary}} to view the data dictionary for a library.
+#' \code{\link{dictionary}} to view the data dictionary for a library,
+#' and \code{\link{datastep}} to perform a data step.
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()

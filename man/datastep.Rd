@@ -429,8 +429,8 @@ dictionary(df)
 # 8 df    Best   character Best Quarter NA          NA         2 NA          3     0
 }
 \seealso{
-\code{link{libname}} function to create a data library, and
-\code{\link{dictionary}} function to create a data dictionary.
+\code{\link{libname}} function to create a data library, and
+the \code{\link{dictionary}} function to create a data dictionary.
 
 Other datastep: 
 \code{\link{[.dsarray}()},

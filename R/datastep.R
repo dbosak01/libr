@@ -199,8 +199,8 @@
 #' to the by-group.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
-#' @seealso \code{link{libname}} function to create a data library, and
-#' \code{\link{dictionary}} function to create a data dictionary.
+#' @seealso \code{\link{libname}} function to create a data library, and
+#' the \code{\link{dictionary}} function to create a data dictionary.
 #' @examples 
 #' # Example #1: Simple Data Step
 #' df <- datastep(mtcars[1:10,], 

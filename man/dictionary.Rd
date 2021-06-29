@@ -57,8 +57,7 @@ lib_delete(dat)
 }
 \seealso{
 \code{\link{libname}} to create a data library.  Also 
-see the \code{\link[fmtr]{fmtr}} package for functions to set the
-\code{\link[fmtr]{formats}}, \code{\link[fmtr]{descriptions}}, 
-\code{\link[fmtr]{widths}}, and \code{\link[fmtr]{justification}} 
-attributes on a data frame.
+see the \code{\link{dsattr}} function to set attributes for your 
+dataset from within a \code{\link{datastep}}.  To render attributes, 
+see the \code{\link[fmtr]{fmtr}} package.
 }
