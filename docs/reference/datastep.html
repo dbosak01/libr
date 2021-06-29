@@ -295,10 +295,11 @@ step is also very readable compared to other pipeline conditionals.</p>
 
     
 
-<p>The <code>datastep</code> function provides four automatic variables. These 
+<p>The <code>datastep</code> function provides five automatic variables. These 
 variables are generated for every data step, and can 
 be accessed at any point within the data step:</p><ul>
-<li><p><strong>data</strong>: Represents the input data frame.</p></li>
+<li><p><strong>data</strong>: Represents the entire input data frame.</p></li>
+<li><p><strong>rw</strong>: Represents the current row.</p></li>
 <li><p><strong>n.</strong>: Contains the row number.</p></li>
 <li><p><strong>first.</strong>: Indicates the beginning of a by-group.</p></li>
 <li><p><strong>last.</strong>: Indicates the end of a by-group.</p></li>
@@ -351,7 +352,7 @@ initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment 
 values or perform cumulative operations.</p>
 <p><code>calculate</code> and <code>retain</code> are both input parameters.</p>
-    <h2 class="hasAnchor" id="data-step-arrays"><a class="anchor" href="#data-step-arrays"></a>Data step Arrays</h2>
+    <h2 class="hasAnchor" id="data-step-arrays"><a class="anchor" href="#data-step-arrays"></a>Data Step Arrays</h2>
 
     
 
@@ -401,14 +402,16 @@ provided by other packages.</p>
     
 
 <p>The <code>datastep</code> is intended to be used on small and medium-sized 
-datasets.  It is not recommended for large datasets or big data.
+datasets.  It is not recommended for large datasets.
 If your dataset is greater than one million rows, you should consider
 other techniques for processing your data.  While there is no 
 built-in restriction on the number of rows, performance of the
 <code>datastep</code> can become unacceptable with a large number of rows.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other datastep: 
+    <div class='dont-index'><p><code>link{libname}</code> function to create a data library, and
+<code><a href='dictionary.html'>dictionary</a></code> function to create a data dictionary.</p>
+<p>Other datastep: 
 <code><a href='[.dsarray.html'>[.dsarray</a>()</code>,
 <code><a href='dsarray.html'>dsarray</a>()</code>,
 <code><a href='dsattr.html'>dsattr</a>()</code>,
@@ -502,8 +505,8 @@ built-in restriction on the number of rows, performance of the
 
 <span class='co'># Add datastep to dplyr pipeline</span>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>datastep</span><span class='op'>(</span><span class='op'>{</span>
     
     <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span>
@@ -512,7 +515,7 @@ built-in restriction on the number of rows, performance of the
       <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
     
   <span class='op'>}</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span>
 
 <span class='va'>df</span>
 <span class='co'>#     mpg cyl gear mean_mpg mpgcat</span>
@@ -588,8 +591,18 @@ built-in restriction on the number of rows, performance of the
 <span class='co'># 2 2001 132 145 138  87 502 125.50   Q2</span>
 <span class='co'># 3 2002 101 104 115 121 441 110.25   Q4</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Tot</span>, <span class='st'>"label"</span><span class='op'>)</span>
-<span class='co'># [1] "Year Total"</span>
+<span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
+<span class='co'>#   A tibble: 8 x 10</span>
+<span class='co'>#   Name  Column Class     Label        Description Format Width Justify  Rows   NAs</span>
+<span class='co'>#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
+<span class='co'># 1 df    Year   integer   NA           NA          NA        NA NA          3     0</span>
+<span class='co'># 2 df    Q1     integer   NA           NA          NA        NA NA          3     0</span>
+<span class='co'># 3 df    Q2     integer   NA           NA          NA        NA NA          3     0</span>
+<span class='co'># 4 df    Q3     integer   NA           NA          NA        NA NA          3     0</span>
+<span class='co'># 5 df    Q4     integer   NA           NA          NA        NA NA          3     0</span>
+<span class='co'># 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0</span>
+<span class='co'># 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0</span>
+<span class='co'># 8 df    Best   character Best Quarter NA          NA         2 NA          3     0</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

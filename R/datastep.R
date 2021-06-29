@@ -25,11 +25,12 @@
 #' step is also very readable compared to other pipeline conditionals.
 #' 
 #' @section Automatic Variables:
-#' The \code{datastep} function provides four automatic variables. These 
+#' The \code{datastep} function provides five automatic variables. These 
 #' variables are generated for every data step, and can 
 #' be accessed at any point within the data step: 
 #' \itemize{
-#'   \item{\strong{data}: Represents the input data frame.}
+#'   \item{\strong{data}: Represents the entire input data frame.}
+#'   \item{\strong{rw}: Represents the current row.}
 #'   \item{\strong{n.}: Contains the row number.}
 #'   \item{\strong{first.}: Indicates the beginning of a by-group.}
 #'   \item{\strong{last.}: Indicates the end of a by-group.}
@@ -86,7 +87,7 @@
 #' 
 #' \code{calculate} and \code{retain} are both input parameters.
 #' 
-#' @section Data step Arrays:
+#' @section Data Step Arrays:
 #' There are times you may want to iterate over columns in your data step.  Such 
 #' iteration is particularly useful when you have a wide dataset,
 #' and wish to perform the same operation on several columns.
@@ -135,7 +136,7 @@
 #' 
 #' @section Datastep Performance:
 #' The \code{datastep} is intended to be used on small and medium-sized 
-#' datasets.  It is not recommended for large datasets or big data.
+#' datasets.  It is not recommended for large datasets.
 #' If your dataset is greater than one million rows, you should consider
 #' other techniques for processing your data.  While there is no 
 #' built-in restriction on the number of rows, performance of the
@@ -198,6 +199,8 @@
 #' to the by-group.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
+#' @seealso \code{link{libname}} function to create a data library, and
+#' \code{\link{dictionary}} function to create a data dictionary.
 #' @examples 
 #' # Example #1: Simple Data Step
 #' df <- datastep(mtcars[1:10,], 
@@ -372,8 +375,18 @@
 #' # 2 2001 132 145 138  87 502 125.50   Q2
 #' # 3 2002 101 104 115 121 441 110.25   Q4
 #' 
-#' attr(df$Tot, "label")
-#' # [1] "Year Total"
+#' dictionary(df)
+#' #   A tibble: 8 x 10
+#' #   Name  Column Class     Label        Description Format Width Justify  Rows   NAs
+#' #   <chr> <chr>  <chr>     <chr>        <chr>       <lgl>  <int> <chr>   <int> <int>
+#' # 1 df    Year   integer   NA           NA          NA        NA NA          3     0
+#' # 2 df    Q1     integer   NA           NA          NA        NA NA          3     0
+#' # 3 df    Q2     integer   NA           NA          NA        NA NA          3     0
+#' # 4 df    Q3     integer   NA           NA          NA        NA NA          3     0
+#' # 5 df    Q4     integer   NA           NA          NA        NA NA          3     0
+#' # 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0
+#' # 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0
+#' # 8 df    Best   character Best Quarter NA          NA         2 NA          3     0
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Indexer for Datastep Array — [.dsarray • libr</title>
+<title>Indexer for Data Step Array — [.dsarray • libr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,7 +48,7 @@
   
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Indexer for Datastep Array — [.dsarray" />
+<meta property="og:title" content="Indexer for Data Step Array — [.dsarray" />
 <meta property="og:description" content="A custom indexer for the Datastep Array.  The indexer will
 return a value for all columns or a specified column. To 
 access all columns, leave the indexer empty. Otherwise, specify the
@@ -154,7 +154,7 @@ For additional details, see the dsarray function." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Indexer for Datastep Array</h1>
+    <h1>Indexer for Data Step Array</h1>
     <small class="dont-index">Source: <a href='https://github.com/dbosak01/libr/blob/master/R/dsarray.R'><code>R/dsarray.R</code></a></small>
     <div class="hidden name"><code>sub-.dsarray.Rd</code></div>
     </div>
@@ -181,7 +181,8 @@ For additional details, see the <code><a href='dsarray.html'>dsarray</a></code> 
     <tr>
       <th>i</th>
       <td><p>The index of the datastep array item to return a value for.
-This index can be a column name or position in the array.  If no index
+This index can be a column name or position in the array. It can also
+be a vector of column names or positions.  If no index
 is supplied, a vector of all array values will be returned.</p></td>
     </tr>
     </table>
@@ -200,7 +201,7 @@ be returned.</p>
 <code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'>#' library(libr)</span>
+    <pre class="examples"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://libr.r-sassy.org'>libr</a></span><span class='op'>)</span>
 
 <span class='co'># Create AirPassengers Data Frame</span>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>AirPassengers</span>, <span class='fl'>12</span>, 
@@ -211,7 +212,6 @@ be returned.</p>
 <span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>df</span>,
                 keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span>, <span class='st'>"Tot"</span><span class='op'>)</span>,
                 arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>months <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-                attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Q1 <span class='op'>=</span> <span class='fl'>0</span>, Q2 <span class='op'>=</span> <span class='fl'>0</span>, Q3 <span class='op'>=</span> <span class='fl'>0</span>, Q4 <span class='op'>=</span> <span class='fl'>0</span>, Tot <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>,
                 <span class='op'>{</span>
                 
                    <span class='co'># Reference by column name</span>

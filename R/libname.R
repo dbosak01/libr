@@ -106,8 +106,8 @@ e$env <- parent.frame()
 #' you may accomplish it with the \code{filter} parameter.  The filter 
 #' parameter allows you to pass a vector of strings corresponding to the 
 #' names of the files you want to import.  The function allows a 
-#' wild-card (\*) for partial matching.  For example, \code{"te\*"} means any
-#' file name that that begins with a "te", and \code{"\*st"} means any file name
+#' wild-card (*) for partial matching.  For example, \code{"te*"} means any
+#' file name that that begins with a "te", and \code{"*st"} means any file name
 #' that ends with an "st". 
 #' 
 #' @section Import Specifications:

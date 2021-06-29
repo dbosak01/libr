@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{dsarray}
 \alias{dsarray}
-\title{Create a Datastep Array}
+\title{Create a Data Step Array}
 \usage{
 dsarray(...)
 }
@@ -17,7 +17,7 @@ If names are provided as quoted strings, separate the strings with commas
 The datastep array object.
 }
 \description{
-A datastep array is an object that allows you to iterate
+A data step array is an object that allows you to iterate
 across a set of columns inside a \code{\link{datastep}}.  This structure is
 useful when you need to perform the same or similar operations on many columns.
 }

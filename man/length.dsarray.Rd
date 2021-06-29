@@ -8,14 +8,14 @@
 \method{length}{dsarray}(x)
 }
 \arguments{
-\item{x}{The dsarray object.}
+\item{x}{The \code{\link{dsarray}} object.}
 }
 \value{
 The number of items in the specified \code{\link{dsarray}}.
 }
 \description{
-A length function for the Datastep Array \code{\link{dsarray}}.
-The length function can by used either inside or outside the datastep.
+A length function for the data step array \code{\link{dsarray}}.
+The length function can by used either inside or outside the data step.
 }
 \examples{
 # Define datastep array

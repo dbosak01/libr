@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{[.dsarray}
 \alias{[.dsarray}
-\title{Indexer for Datastep Array}
+\title{Indexer for Data Step Array}
 \usage{
 \method{[}{dsarray}(x, i = NULL)
 }
@@ -11,7 +11,8 @@
 \item{x}{The \code{\link{dsarray}} object.}
 
 \item{i}{The index of the datastep array item to return a value for.
-This index can be a column name or position in the array.  If no index
+This index can be a column name or position in the array. It can also
+be a vector of column names or positions.  If no index
 is supplied, a vector of all array values will be returned.}
 }
 \value{
@@ -28,7 +29,7 @@ always act upon the current row in the datastep.
 For additional details, see the \code{\link{dsarray}} function.
 }
 \examples{
-#' library(libr)
+library(libr)
 
 # Create AirPassengers Data Frame
 df <- as.data.frame(t(matrix(AirPassengers, 12, 
@@ -39,7 +40,6 @@ df <- as.data.frame(t(matrix(AirPassengers, 12,
 dat <- datastep(df,
                 keep = c("Q1", "Q2", "Q3", "Q4", "Tot"),
                 arrays = list(months = dsarray(names(df))),
-                attrib = list(Q1 = 0, Q2 = 0, Q3 = 0, Q4 = 0, Tot = 0),
                 {
                 
                    # Reference by column name

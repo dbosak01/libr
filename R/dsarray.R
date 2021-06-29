@@ -3,9 +3,9 @@
 # dsarray Definition ------------------------------------------------------
 
 
-#' @title Create a Datastep Array
+#' @title Create a Data Step Array
 #' @encoding UTF-8
-#' @description A datastep array is an object that allows you to iterate
+#' @description A data step array is an object that allows you to iterate
 #' across a set of columns inside a \code{\link{datastep}}.  This structure is
 #' useful when you need to perform the same or similar operations on many columns.  
 #' 
@@ -80,7 +80,7 @@ dsarray <- function(...) {
 }
 
 
-#' @title Indexer for Datastep Array
+#' @title Indexer for Data Step Array
 #' @encoding UTF-8
 #' @description A custom indexer for the Datastep Array.  The indexer will
 #' return a value for all columns or a specified column. To 
@@ -90,14 +90,15 @@ dsarray <- function(...) {
 #' For additional details, see the \code{\link{dsarray}} function.
 #' @param x The \code{\link{dsarray}} object.
 #' @param i The index of the datastep array item to return a value for.
-#' This index can be a column name or position in the array.  If no index
+#' This index can be a column name or position in the array. It can also
+#' be a vector of column names or positions.  If no index
 #' is supplied, a vector of all array values will be returned.
 #' @return The value of the specified column for the current row in the 
 #' datastep.  If no index is supplied, a vector of all column values will
 #' be returned.
 #' @family datastep
 #' @examples 
-#' #' library(libr)
+#' library(libr)
 #' 
 #' # Create AirPassengers Data Frame
 #' df <- as.data.frame(t(matrix(AirPassengers, 12, 
@@ -108,7 +109,6 @@ dsarray <- function(...) {
 #' dat <- datastep(df,
 #'                 keep = c("Q1", "Q2", "Q3", "Q4", "Tot"),
 #'                 arrays = list(months = dsarray(names(df))),
-#'                 attrib = list(Q1 = 0, Q2 = 0, Q3 = 0, Q4 = 0, Tot = 0),
 #'                 {
 #'                 
 #'                    # Reference by column name
@@ -199,9 +199,9 @@ dsarray <- function(...) {
 
 #' @title Length function for dsarray class
 #' @encoding UTF-8
-#' @description A length function for the Datastep Array \code{\link{dsarray}}.
-#' The length function can by used either inside or outside the datastep.
-#' @param x The dsarray object.
+#' @description A length function for the data step array \code{\link{dsarray}}.
+#' The length function can by used either inside or outside the data step.
+#' @param x The \code{\link{dsarray}} object.
 #' @return The number of items in the specified \code{\link{dsarray}}.
 #' @family datastep
 #' @examples 
