@@ -11,12 +11,18 @@ test_that("print() functions works as expected.", {
   libname(dat, base_path, engine = "csv")
 
   
-  # Just run the print functions and make sure there is no errors.
-  #print(dat)
-  #print(dat, verbose = TRUE)
   dat
   
-  expect_equal(TRUE, TRUE)
+  expect_equal(is.lib(dat), TRUE)
+  
+  res <- capture.output(print(dat))
+  
+  expect_equal(length(res) > 0, TRUE)
+  
+  
+  res2 <- capture.output(print(dat, verbose = TRUE))
+  
+  expect_equal(length(res2) > 0, TRUE)
   
 })
 
@@ -129,6 +135,22 @@ test_that("copy_attributes function works as expected.", {
 
   expect_equal(attr(d3$mpg, "label"), "Here1")
   expect_equal(attr(d3$disp, "label"), "Here2")
+  
+})
+
+
+test_that("equality operators are working as expected.", {
+  
+  
+  expect_equal(NULL %eq% NULL, TRUE)
+  expect_equal(NULL %eq% "fork", FALSE)
+  expect_equal(1 %eq% "fork", FALSE)
+  
+  
+  expect_equal(data.frame(A = 1) %eq% data.frame(B = 1), FALSE)
+  
+  expect_equal(strong_eq(1 , "fork"), FALSE)
+  
   
 })
 

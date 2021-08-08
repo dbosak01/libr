@@ -39,6 +39,8 @@ test_that("dsarray function works with character index.", {
 })
 
 
+
+
 test_that("dsarray function works with numeric index.", {
   
   
@@ -51,6 +53,27 @@ test_that("dsarray function works with numeric index.", {
   
   expect_equal("temp" %in% names(d1), TRUE)
   expect_equal(d1[["temp"]], mtcars[["am"]])
+  
+})
+
+
+test_that("dsarray function works with factors.", {
+  
+  dat <- mtcars
+  dat$cat <- factor("A")
+  
+  d1 <- datastep(dat, arrays = list(dsa = dsarray("vs", "am", "gear", "cat")), {
+    
+    temp <- dsa[4]
+    temp2 <- dsa["cat"]
+    
+  })
+  
+  expect_equal("temp" %in% names(d1), TRUE)
+  expect_equal(d1[["temp"]], as.character(dat[["cat"]]))
+  
+  expect_equal("temp2" %in% names(d1), TRUE)
+  expect_equal(d1[["temp2"]], as.character(dat[["cat"]]))
   
 })
 

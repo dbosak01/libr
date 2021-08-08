@@ -248,32 +248,32 @@ getFileName <- function(file){
   return(ex[1])
 }
 
-#' @description Had an idea to add a unique name if user tries to put a 
-#' duplicate name.  Idea never came to fruition.  Keeping code here anyway.
-#' @noRd
-getUniqueName <- function(nm, nms) {
-  
-  ret <- nm
-  pos <- match(nm, nms)
-  if (!is.na(pos)) {
-    
-    ex <- strsplit(basename(nm), split="\\_")[[1]]
-    #print(ex)
-    num <- as.numeric(ex[-1])
-    #print(num)
-    if (length(num) == 0 )
-      ret <- paste0(nm, "_1")
-    else if (is.na(num))
-      ret <- paste0(nm, "_1")
-    else {
-      tmp <- sub(paste0("_", num), "", nm)
-      ret <- paste0(tmp, "_", num + 1)
-    }
-    
-  }
-  
-  return(ret)
-}
+# @description Had an idea to add a unique name if user tries to put a 
+# duplicate name.  Idea never came to fruition.  Keeping code here anyway.
+# @noRd
+# getUniqueName <- function(nm, nms) {
+#   
+#   ret <- nm
+#   pos <- match(nm, nms)
+#   if (!is.na(pos)) {
+#     
+#     ex <- strsplit(basename(nm), split="\\_")[[1]]
+#     #print(ex)
+#     num <- as.numeric(ex[-1])
+#     #print(num)
+#     if (length(num) == 0 )
+#       ret <- paste0(nm, "_1")
+#     else if (is.na(num))
+#       ret <- paste0(nm, "_1")
+#     else {
+#       tmp <- sub(paste0("_", num), "", nm)
+#       ret <- paste0(tmp, "_", num + 1)
+#     }
+#     
+#   }
+#   
+#   return(ret)
+# }
 
 #' @description Write data to the file system.  This will compare the stored
 #' checksums with the current checksum and only update if the file has

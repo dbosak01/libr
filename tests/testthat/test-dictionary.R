@@ -135,3 +135,15 @@ test_that("dictionary() function works as expected with lib.", {
   
   options("libr.standard_eval" = FALSE)
 })
+
+
+test_that("dictionary() parameter checks work as expected.", {
+  
+  f <- "fork"
+  
+  expect_error(dictionary(f))
+  
+  
+})
+
+

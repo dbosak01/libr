@@ -16,6 +16,7 @@ test_that("libname() function works as expected with csv.", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
+
 test_that("libname() and quiet parameter works as expected with csv.", {
   
   libname(dat, base_path, engine = "csv", quiet = TRUE)
@@ -119,41 +120,18 @@ test_that("libname() function works as expected with xpt", {
 })
 
 
-# test_that("libname() function works as expected with multiple data formats", {
-#   
-#   
-#   suppressWarnings(libname(dat, base_path))
-#   
-#   expect_equal(class(dat)[[1]], "lib")
-#   expect_equal(length(dat), 2) 
-#   expect_equal(nrow(dat[[1]]), 10)
-#   expect_equal(ncol(dat[[1]]), 9)
-#   expect_equal(nrow(dat[[2]]), 2)
-#   expect_equal(ncol(dat[[2]]), 9)
-#   
-# })
+test_that("libname() parameter checks work as expected.", {
+  
+  expect_error(libname(sam, engine = NULL))
+  expect_error(libname(sam, engine = c("sas7bdat", "rds")))
+  expect_error(libname(sam, engine = "rds", import_specs = "fork"))
+  expect_error(libname(sam, engine = "fork"))
+               
+  
+})
 
-# test_that("libname() function works as expected with multiple data formats", {
-#   
-#   tmp <- tempdir()
-#   libname(dat, tmp)
-#   
-#   lib_add(dat, mtcars, "xlsx")
-#   lib_add(dat, iris, "csv")
-#   lib_add(dat, beaver1, "dbf")
-#   
-#   libname(dat2, tmp, c("xlsx", "dbf", "rds"))
-#   
-#   
-#   
-#   expect_equal(class(dat)[[1]], "lib")
-#   expect_equal(length(dat), 2) 
-#   expect_equal(nrow(dat[[1]]), 10)
-#   expect_equal(ncol(dat[[1]]), 9)
-#   expect_equal(nrow(dat[[2]]), 2)
-#   expect_equal(ncol(dat[[2]]), 9)
-#   
-# })
+
+
 
 test_that("libname() function works as expected with new directory", {
   
@@ -417,4 +395,23 @@ test_that("libname() standard_eval parameter works as expected with all operatio
 })
 
 
+test_that("library parameter checks work as expected.", {
+  fork <- "bork"
+  f <- "fork"
+  
+  expect_error(lib_load(f))
+  expect_error(lib_unload(f))
+  expect_error(lib_add(f))
+  expect_error(lib_replace(f))
+  expect_error(lib_remove(f))
+  expect_error(lib_write(f))
+  expect_error(lib_sync(f))
+  expect_error(lib_copy(f))
+  expect_error(lib_delete(f))
+  expect_error(lib_path(f))
+  expect_error(lib_size(f))
+  expect_error(lib_info(f))
+  
+  
+})
 
