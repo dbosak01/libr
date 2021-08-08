@@ -1,3 +1,7 @@
+# libr 1.2.1 
+
+* Added covr and codecov
+
 
 # libr 1.2.0
 
