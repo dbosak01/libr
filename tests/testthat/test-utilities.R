@@ -4,6 +4,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
+DEV <- FALSE
 
 test_that("print() functions works as expected.", {
   
