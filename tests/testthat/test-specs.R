@@ -1,4 +1,4 @@
-context("Utilities Tests")
+context("Specs Tests")
 
 base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
