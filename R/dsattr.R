@@ -23,7 +23,7 @@
 #' @param format The format associated with this column.  See the 
 #' \code{\link[fmtr]{fmtr}} package for more information about formatting.
 #' @param justify The desired justification for the column.  This parameter
-#' it normally used only for fixed-width, character columns.  Valid values
+#' is normally used only for fixed-width, character columns.  Valid values
 #' are 'left', 'right', 'center', and 'centre'.  
 #' @param ... Any other attributes you wish to assign to this column. Pass
 #' these additional attributes as a name/value pair.
