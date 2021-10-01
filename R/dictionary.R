@@ -16,7 +16,8 @@
 #'   \item{\strong{Label:} The value of the label attribute.}
 #'   \item{\strong{Description:} A description applied to this column.}
 #'   \item{\strong{Format:} The value of the format attribute.}
-#'   \item{\strong{Width:} The max character width of the data in this column.}
+#'   \item{\strong{Width:} The value of the width attribute or max character 
+#'          width of the data in this column if there is no width attribute.}
 #'   \item{\strong{Justify:} The justification or alignment attribute value.}
 #'   \item{\strong{Rows:} The number of data rows.}
 #'   \item{\strong{NAs:} The number of NA values in this column.}
@@ -25,7 +26,7 @@
 #' @seealso \code{\link{libname}} to create a data library.  Also 
 #' see the \code{\link{dsattr}} function to set attributes for your 
 #' dataset from within a \code{\link{datastep}}.  To render attributes, 
-#' see the \code{\link[fmtr]{fmtr}} package.
+#' see the \strong{fmtr} package.
 #' @examples 
 #' # Create temp directory
 #' tmp <- tempdir()
@@ -113,6 +114,13 @@ getDictionary <- function(x, dsnm) {
     desc <- attr(x[[nm]], "description")
     fmt <- attr(x[[nm]], "format")
     jst <- attr(x[[nm]], "justify")
+    wdth <- attr(x[[nm]], "width")
+    
+    if (is.null(wdth)) {
+      wdth <- ifelse(typeof(x[[nm]]) == "character", 
+             max(nchar(x[[nm]])),
+             NA) 
+    }
     
     rw <- data.frame(Name = dsnm,
                      Column = nm,
@@ -120,9 +128,7 @@ getDictionary <- function(x, dsnm) {
                      Label = ifelse(!is.null(lbl), lbl, as.character(NA)),
                      Description = ifelse(!is.null(desc), desc, as.character(NA)),
                      Format = ifelse(!is.null(fmt), fmt, NA),
-                     Width = ifelse(typeof(x[[nm]]) == "character", 
-                                    max(nchar(x[[nm]])),
-                                    NA),
+                     Width = ifelse(!is.null(wdth), wdth, NA),
                      Justify = ifelse(!is.null(jst), jst, as.character(NA)),
                      Rows = nrow(x),
                      NAs = sum(is.na(x[[nm]])))

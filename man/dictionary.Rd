@@ -20,7 +20,8 @@ information about the data.  The tibble will contain the following columns:
   \item{\strong{Label:} The value of the label attribute.}
   \item{\strong{Description:} A description applied to this column.}
   \item{\strong{Format:} The value of the format attribute.}
-  \item{\strong{Width:} The max character width of the data in this column.}
+  \item{\strong{Width:} The value of the width attribute or max character 
+         width of the data in this column if there is no width attribute.}
   \item{\strong{Justify:} The justification or alignment attribute value.}
   \item{\strong{Rows:} The number of data rows.}
   \item{\strong{NAs:} The number of NA values in this column.}
@@ -59,5 +60,5 @@ lib_delete(dat)
 \code{\link{libname}} to create a data library.  Also 
 see the \code{\link{dsattr}} function to set attributes for your 
 dataset from within a \code{\link{datastep}}.  To render attributes, 
-see the \code{\link[fmtr]{fmtr}} package.
+see the \strong{fmtr} package.
 }

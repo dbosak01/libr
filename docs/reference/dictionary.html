@@ -58,7 +58,8 @@ Class: The class of the column.
 Label: The value of the label attribute.
 Description: A description applied to this column.
 Format: The value of the format attribute.
-Width: The max character width of the data in this column.
+Width: The value of the width attribute or max character 
+         width of the data in this column if there is no width attribute.
 Justify: The justification or alignment attribute value.
 Rows: The number of data rows.
 NAs: The number of NA values in this column.
@@ -178,7 +179,8 @@ information about the data.  The tibble will contain the following columns:</p><
 <li><p><strong>Label:</strong> The value of the label attribute.</p></li>
 <li><p><strong>Description:</strong> A description applied to this column.</p></li>
 <li><p><strong>Format:</strong> The value of the format attribute.</p></li>
-<li><p><strong>Width:</strong> The max character width of the data in this column.</p></li>
+<li><p><strong>Width:</strong> The value of the width attribute or max character 
+         width of the data in this column if there is no width attribute.</p></li>
 <li><p><strong>Justify:</strong> The justification or alignment attribute value.</p></li>
 <li><p><strong>Rows:</strong> The number of data rows.</p></li>
 <li><p><strong>NAs:</strong> The number of NA values in this column.</p></li>
@@ -202,7 +204,7 @@ information about the data.  The tibble will contain the following columns:</p><
     <div class='dont-index'><p><code><a href='libname.html'>libname</a></code> to create a data library.  Also 
 see the <code><a href='dsattr.html'>dsattr</a></code> function to set attributes for your 
 dataset from within a <code><a href='datastep.html'>datastep</a></code>.  To render attributes, 
-see the <code><a href='https://fmtr.r-sassy.org/reference/fmtr.html'>fmtr</a></code> package.</p></div>
+see the <strong>fmtr</strong> package.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Create temp directory</span>

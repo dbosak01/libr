@@ -1,6 +1,8 @@
 # libr 1.2.1 
 
 * Added covr and codecov
+* Fixed bug on `dictionary()` function that wasn't showing width attribute.
+* Small documentation fixes.
 
 
 # libr 1.2.0
