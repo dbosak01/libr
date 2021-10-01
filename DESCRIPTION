@@ -24,7 +24,8 @@ Suggests:
     magrittr,
     utils,
     logr,
-    covr
+    covr,
+    fmtr
 Imports: 
     readr,
     readxl,
