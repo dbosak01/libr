@@ -7,6 +7,7 @@ base_path <- "./data"
 
 test_that("print() functions works as expected.", {
   
+  if (DEV) {
 
   libname(dat, base_path, engine = "csv")
 
@@ -23,6 +24,9 @@ test_that("print() functions works as expected.", {
   res2 <- capture.output(print(dat, verbose = TRUE))
   
   expect_equal(length(res2) > 0, TRUE)
+  
+  } else 
+    expect_equal(TRUE, TRUE)
   
 })
 
