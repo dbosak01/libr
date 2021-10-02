@@ -128,6 +128,7 @@ test_that("dictionary() function works as expected with lib.", {
   
   res <- dictionary(dat)
   
+  res
   expect_equal(nrow(res), 22)
   
   
@@ -146,4 +147,37 @@ test_that("dictionary() parameter checks work as expected.", {
   
 })
 
+test_that("dictionary() widths work as expected when width attribute set.", {
+  
+  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork")
+  
+  attr(crs$name, "width") <- 4
+  attr(crs$name, "description") <- "Derived from rownames"
+
+  
+  res <- dictionary(crs)
+  
+  res
+  
+  expect_equal(res$Width[1], 4)  
+  expect_equal(is.na(res$Width[13]), TRUE) 
+  
+})
+
+test_that("dictionary() widths work as expected when width attribute not set.", {
+  
+  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork")
+  
+  #attr(crs$name, "width") <- 4
+  attr(crs$name, "description") <- "Derived from rownames"
+  
+  
+  res <- dictionary(crs)
+  
+  res
+  
+  expect_equal(res$Width[1], 19)  
+  expect_equal(res$Width[13], 4) 
+  
+})
 

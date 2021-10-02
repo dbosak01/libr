@@ -16,8 +16,9 @@
 #'   \item{\strong{Label:} The value of the label attribute.}
 #'   \item{\strong{Description:} A description applied to this column.}
 #'   \item{\strong{Format:} The value of the format attribute.}
-#'   \item{\strong{Width:} The value of the width attribute or max character 
-#'          width of the data in this column if there is no width attribute.}
+#'   \item{\strong{Width:} The value of the width attribute if any have been
+#'   assigned.  If no width attributes have been assigned, 
+#'   the max character width.}
 #'   \item{\strong{Justify:} The justification or alignment attribute value.}
 #'   \item{\strong{Rows:} The number of data rows.}
 #'   \item{\strong{NAs:} The number of NA values in this column.}
@@ -108,7 +109,13 @@ getDictionary <- function(x, dsnm) {
   
   ret <- NULL
   rw <- NULL
+  usr_wdth <- c()
+  str_wdth <- c()
+  cntr <- 0
+  
   for (nm in names(x)) {
+    
+    cntr <- cntr + 1
     
     lbl <- attr(x[[nm]], "label")
     desc <- attr(x[[nm]], "description")
@@ -117,9 +124,11 @@ getDictionary <- function(x, dsnm) {
     wdth <- attr(x[[nm]], "width")
     
     if (is.null(wdth)) {
-      wdth <- ifelse(typeof(x[[nm]]) == "character", 
+      str_wdth[cntr] <- ifelse(typeof(x[[nm]]) == "character", 
              max(nchar(x[[nm]])),
              NA) 
+    } else {
+      usr_wdth[cntr] <- wdth 
     }
     
     rw <- data.frame(Name = dsnm,
@@ -140,6 +149,9 @@ getDictionary <- function(x, dsnm) {
       ret <- rbind(ret, rw)
     
   }
+  
+  if (length(usr_wdth) == 0)
+    ret[["Width"]] <- str_wdth
   
   return(ret)
   

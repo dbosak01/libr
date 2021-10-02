@@ -20,8 +20,9 @@ information about the data.  The tibble will contain the following columns:
   \item{\strong{Label:} The value of the label attribute.}
   \item{\strong{Description:} A description applied to this column.}
   \item{\strong{Format:} The value of the format attribute.}
-  \item{\strong{Width:} The value of the width attribute or max character 
-         width of the data in this column if there is no width attribute.}
+  \item{\strong{Width:} The value of the width attribute if any have been
+  assigned.  If no width attributes have been assigned, 
+  the max character width.}
   \item{\strong{Justify:} The justification or alignment attribute value.}
   \item{\strong{Rows:} The number of data rows.}
   \item{\strong{NAs:} The number of NA values in this column.}
