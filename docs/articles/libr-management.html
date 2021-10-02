@@ -160,7 +160,8 @@
 <span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
 
 <span class="va">s1.combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">s2.name</span>, abb <span class="op">=</span> <span class="va">s2.abb</span>, 
-                              area <span class="op">=</span> <span class="va">s2.area</span>, region <span class="op">=</span> <span class="va">s2.region</span><span class="op">)</span>
+                          area <span class="op">=</span> <span class="va">s2.area</span>, region <span class="op">=</span> <span class="va">s2.region</span>, 
+                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">s1.east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"Northeast"</span><span class="op">)</span>
 <span class="va">s1.west</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"West"</span><span class="op">)</span>

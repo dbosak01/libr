@@ -7,7 +7,7 @@ base_path <- "./data"
 
 test_that("getDictionary() function works as expected.", {
   
-  crs <- data.frame(name = rownames(mtcars), mtcars)
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
   attr(crs$name, "label") <- "Car Name"
   attr(crs$name, "description") <- "Derived from rownames"
@@ -27,7 +27,7 @@ test_that("getDictionary() function works as expected.", {
 
 test_that("dictionary() function works as expected with df.", {
   
-  crs <- data.frame(name = rownames(mtcars), mtcars)
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
   attr(crs$name, "label") <- "Car Name"
   attr(crs$name, "description") <- "Derived from rownames"
@@ -63,7 +63,7 @@ test_that("dictionary() function works as expected with tibble.", {
 
 test_that("dictionary() function works as expected with lib.", {
   
-  crs <- data.frame(name = rownames(mtcars), mtcars)
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
   attr(crs$name, "label") <- "Car Name"
   attr(crs$name, "description") <- "Derived from rownames"
@@ -92,7 +92,7 @@ test_that("dictionary() function works as expected with df and standard_eval.", 
   
   options("libr.standard_eval" = TRUE)
   
-  crs <- data.frame(name = rownames(mtcars), mtcars)
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
   attr(crs$name, "label") <- "Car Name"
   attr(crs$name, "description") <- "Derived from rownames"
@@ -112,7 +112,7 @@ test_that("dictionary() function works as expected with lib.", {
   
   options("libr.standard_eval" = TRUE)
   
-  crs <- data.frame(name = rownames(mtcars), mtcars)
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
   attr(crs$name, "label") <- "Car Name"
   attr(crs$name, "description") <- "Derived from rownames"
@@ -149,7 +149,8 @@ test_that("dictionary() parameter checks work as expected.", {
 
 test_that("dictionary() widths work as expected when width attribute set.", {
   
-  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork")
+  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork",
+                    stringsAsFactors = FALSE)
   
   attr(crs$name, "width") <- 4
   attr(crs$name, "description") <- "Derived from rownames"
@@ -166,7 +167,8 @@ test_that("dictionary() widths work as expected when width attribute set.", {
 
 test_that("dictionary() widths work as expected when width attribute not set.", {
   
-  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork")
+  crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork", 
+                    stringsAsFactors = FALSE)
   
   #attr(crs$name, "width") <- 4
   attr(crs$name, "description") <- "Derived from rownames"

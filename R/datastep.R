@@ -493,7 +493,7 @@ datastep <- function(data, steps, keep = NULL,
     # Deal with 1 column situation
     data_attributes <- data[1, ]
   } else {
-    data_attributes <- data.frame(data[1, ])
+    data_attributes <- data.frame(data[1, ], stringsAsFactors = FALSE)
     names(data_attributes) <- names(data)
   }
   # Tibble subset will keep attributes, but data.frame will not
@@ -506,11 +506,11 @@ datastep <- function(data, steps, keep = NULL,
   # Temporarily convert to a data frame.  
   # Seriously like 20X performance increase.
   if (any("grouped_df" == class(data)))
-    data <- as.data.frame(data)
+    data <- as.data.frame(data, stringsAsFactors = FALSE)
   
   # data.table is not that bad, but data.frame is better.
   if (any("data.table" == class(data)))
-    data <- as.data.frame(data)
+    data <- as.data.frame(data, stringsAsFactors = FALSE)
   
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
@@ -522,7 +522,7 @@ datastep <- function(data, steps, keep = NULL,
     if (ncol(data) > 1)
       rw <- data[n., ]
     else {
-      rw <- data.frame(data[n., ])
+      rw <- data.frame(data[n., ], stringsAsFactors = FALSE)
       names(rw) <- names(data)
     }
     

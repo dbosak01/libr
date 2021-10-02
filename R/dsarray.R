@@ -33,7 +33,8 @@
 #' 
 #' # Create AirPassengers Data Frame
 #' df <- as.data.frame(t(matrix(AirPassengers, 12, 
-#'                     dimnames = list(month.abb, seq(1949, 1960)))))
+#'                     dimnames = list(month.abb, seq(1949, 1960)))),
+#'                     stringsAsFactors = FALSE)
 #' 
 #' # Use datastep array to get year tot, mean, and top month
 #' dat <- datastep(df,
@@ -102,7 +103,8 @@ dsarray <- function(...) {
 #' 
 #' # Create AirPassengers Data Frame
 #' df <- as.data.frame(t(matrix(AirPassengers, 12, 
-#'                     dimnames = list(month.abb, seq(1949, 1960)))))
+#'                     dimnames = list(month.abb, seq(1949, 1960)))), 
+#'                     stringsAsFactors = FALSE)
 #' 
 #' # Use datastep array to get sums by quarter
 #' # Examine different ways of referencing data inside datastep

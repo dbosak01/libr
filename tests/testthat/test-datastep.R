@@ -368,7 +368,7 @@ test_that("datastep retains class attributes.", {
   
   s1 <-  1:3
   dt1 <- c(Sys.Date(), Sys.Date() - 1, Sys.Date() - 2)
-  df1 <- data.frame(s1, dt1)
+  df1 <- data.frame(s1, dt1, stringsAsFactors = FALSE)
   
   df2 <- datastep(df1, rename = c(dt1 = "dt2"), {
     csum <- 1
@@ -384,7 +384,7 @@ test_that("datastep retains class attributes.", {
 
 test_that("datastep works on single column data frame.", {
   
-  df <- data.frame(a = 1:10)
+  df <- data.frame(a = 1:10, stringsAsFactors = FALSE)
   
   
   df2 <- datastep(df, {

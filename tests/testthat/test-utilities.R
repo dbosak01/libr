@@ -152,7 +152,9 @@ test_that("equality operators are working as expected.", {
   expect_equal(1 %eq% "fork", FALSE)
   
   
-  expect_equal(data.frame(A = 1) %eq% data.frame(B = 1), FALSE)
+  expect_equal(data.frame(A = 1, 
+                          stringsAsFactors = FALSE) %eq% data.frame(B = 1, 
+                          stringsAsFactors = FALSE), FALSE)
   
   expect_equal(strong_eq(1 , "fork"), FALSE)
   

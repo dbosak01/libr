@@ -233,7 +233,7 @@ test_that("100,000 row datastep on data.frame is good.", {
     l <- 100000
     
     df <- data.frame(C1 = seq_len(l), C2 = runif(l), 
-                     C3 = runif(l), C4 = runif(l))
+                     C3 = runif(l), C4 = runif(l), stringsAsFactors = FALSE)
     
     tm <- Sys.time()
     

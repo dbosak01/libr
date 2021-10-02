@@ -218,7 +218,8 @@ test_that("import_specs works as expected with dates.", {
   tmp <- file.path(tempdir(), "mtcars.csv")
 
   # Create data for illustration purposes
-  df <- data.frame(vehicle = rownames(mtcars), mtcars[c("mpg", "cyl", "disp")])
+  df <- data.frame(vehicle = rownames(mtcars), mtcars[c("mpg", "cyl", "disp")], 
+                   stringsAsFactors = FALSE)
 
   # Kill rownames
   rownames(df) <- NULL

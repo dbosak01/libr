@@ -1622,7 +1622,7 @@ lib_info <- function(x) {
                      Rows = rws,
                      Cols = cls,
                      Size = format(utils::object.size(itm), units = "auto"),
-                     LastModified = lm)
+                     LastModified = lm, stringsAsFactors = FALSE)
     
     # Bind the info rows for each file
     if (is.null(ret))

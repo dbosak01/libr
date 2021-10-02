@@ -331,7 +331,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
     if (!cs_comp | force) {
       if (file.exists(file_path))
         file.remove(file_path)
-      foreign::write.dbf(as.data.frame(x), file_path)
+      foreign::write.dbf(as.data.frame(x, stringsAsFactors = FALSE), file_path)
       attr(x, "checksum") <- md5sum(file_path)
     }
     
