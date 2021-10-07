@@ -2,6 +2,7 @@
 
 * Added covr and codecov
 * Fixed bug on `dictionary()` function that wasn't showing width attribute.
+* Fixed bug on `datastep()` when applying attributes to a calculated variable.
 * Small documentation fixes.
 
 

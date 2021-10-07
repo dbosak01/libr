@@ -70,7 +70,7 @@ test_that("dsattr function works with datastep and new variable.", {
 test_that("dsattr function works with datastep and two new variables.", {
 
   dsa1 <- dsattr(class = "character", label = "My label1")
-  dsa2 <- dsattr(class = "character", label = "My label2")
+  dsa2 <- dsattr(class = "character", label = "My label2", format = "%1.1f")
 
 
   dat <- mtcars[1:10, ]
@@ -98,6 +98,7 @@ test_that("dsattr function works with datastep and two new variables.", {
   expect_equal(attr(d1[["fork"]], "label"), "My label1")
   expect_equal(attr(d1[["bork"]], "label"), "My label2")
   expect_equal(attr(d1[["mpg"]], "label"), "Miles Per Gallon")
+  expect_equal(attr(d1[["bork"]], "format"), "%1.1f")
 })
 
 
@@ -177,6 +178,42 @@ test_that("attrib parameter works with datastep and no dsattr.", {
   expect_equal(d2[["bork"]][1], 23)
 
 })
-#
+
+
+test_that("dsattr function works with datastep and calculated variable.", {
+  
+  dsa <- dsattr(class = "character", label = "My label", description = "Desc",
+                format = "%s", width = 8, justify = "left", fork = "hi",
+                bork = "bye")
+  
+  
+  dat <- mtcars[1:10, ]
+  
+  attr(dat$mpg, "label") <- "Miles Per Gallon"
+  
+  expect_equal(attr(dat$mpg, "label"), "Miles Per Gallon")
+  
+  
+  d1 <- datastep(dat, attrib = list(fork = dsa), 
+                 calculate = {fork = 1}, {
+    
+  })
+  
+  attributes(d1$mpg)
+  attributes(d1$fork)
+  
+  
+  expect_equal("fork" %in% names(d1), TRUE)
+  expect_equal(class(d1[["fork"]]), "numeric")
+  expect_equal(attr(d1[["fork"]], "label"), "My label")
+  expect_equal(attr(d1[["fork"]], "description"), "Desc")
+  expect_equal(attr(d1[["fork"]], "format"), "%s")
+  expect_equal(attr(d1[["fork"]], "width"), 8)
+  expect_equal(attr(d1[["fork"]], "justify"), "left")
+  expect_equal(attr(d1[["fork"]], "fork"), "hi")
+  expect_equal(attr(d1[["fork"]], "bork"), "bye")
+  expect_equal(attr(d1[["mpg"]], "label"), "Miles Per Gallon")
+})
+
 
 

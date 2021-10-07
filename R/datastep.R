@@ -421,6 +421,17 @@ datastep <- function(data, steps, keep = NULL,
   # Capture number of starting columns
   startcols <- ncol(data)
   
+  # Put code in a variable for safe-keeping
+  code <- substitute(steps, env = environment())
+  
+  # Put aggregate functions in a variable 
+  agg <- substitute(calculate, env = environment())
+  
+  # Execute aggregate functions
+  if (paste0(deparse(agg), collapse = "") != "NULL") {
+    data <- within(data, eval(agg), keepAttrs = TRUE)
+  }
+  
   # Apply variable attributes
   if (!is.null(attrib)) {
     for (nm in names(attrib)) { 
@@ -456,15 +467,6 @@ datastep <- function(data, steps, keep = NULL,
       assign(nm, arrays[[nm]]) 
       
     }
-  }
-  
-  # Put code in a variable for safe-keeping
-  code <- substitute(steps, env = environment())
-  
-  # Put aggregate functions in a variable 
-  agg <- substitute(calculate, env = environment())
-  if (paste0(deparse(agg), collapse = "") != "NULL") {
-    data <- within(data, eval(agg), keepAttrs = TRUE)
   }
   
   ret <- list()
