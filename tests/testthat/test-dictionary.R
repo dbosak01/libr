@@ -183,3 +183,26 @@ test_that("dictionary() widths work as expected when width attribute not set.", 
   
 })
 
+test_that("dictionary() function works as expected with user-defined format.", {
+  
+  library(fmtr)
+  
+  fmt <- value(condition(x == 4, "A"),
+               condition(x == 8, "B"),
+               condition(TRUE, "C"))
+  
+  
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
+  
+  fapply(crs$cyl, fmt)
+  
+  attr(crs$cyl, "format") <- fmt 
+  
+  # Shouldn't get an error
+  res <- dictionary(crs)
+  
+  expect_equal(nrow(res), 12)
+  
+})
+
+

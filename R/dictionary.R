@@ -119,7 +119,7 @@ getDictionary <- function(x, dsnm) {
     
     lbl <- attr(x[[nm]], "label")
     desc <- attr(x[[nm]], "description")
-    fmt <- attr(x[[nm]], "format")
+    fmt <- paste(as.character(attr(x[[nm]], "format")), collapse = "\n")
     jst <- attr(x[[nm]], "justify")
     wdth <- attr(x[[nm]], "width")
     

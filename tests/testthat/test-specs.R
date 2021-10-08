@@ -258,6 +258,7 @@ test_that("import_specs works as expected with dates.", {
   # View data types
   dictionary(dat)
   
+  expect_equal(class(dat$mtcars$recdt), "Date")
   
 })
 
