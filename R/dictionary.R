@@ -123,6 +123,9 @@ getDictionary <- function(x, dsnm) {
     jst <- attr(x[[nm]], "justify")
     wdth <- attr(x[[nm]], "width")
     
+    if (fmt == "")
+      fmt <- NA
+    
     if (is.null(wdth)) {
       str_wdth[cntr] <- ifelse(typeof(x[[nm]]) == "character", 
              max(nchar(x[[nm]])),
