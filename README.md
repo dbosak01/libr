@@ -2,7 +2,8 @@
   
 [![libr version](https://www.r-pkg.org/badges/version/libr)](https://cran.r-project.org/package=libr)
 [![libr lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://cran.r-project.org/package=libr)
-[![libr downloads](https://cranlogs.r-pkg.org/badges/grand-total/libr)](https://cran.r-project.org/package=libr)
+[![libr downloads](https://cranlogs.r-pkg.org/badges/libr)](https://cran.r-project.org/package=libr)
+[![libr total downloads](https://cranlogs.r-pkg.org/badges/grand-total/libr)](https://cran.r-project.org/package=libr)
 [![R-CMD-check](https://github.com/dbosak01/libr/workflows/R-CMD-check/badge.svg)](https://github.com/dbosak01/libr/actions)
 [![Codecov test coverage](https://codecov.io/gh/dbosak01/libr/branch/master/graph/badge.svg)](https://codecov.io/gh/dbosak01/libr?branch=master)
 
