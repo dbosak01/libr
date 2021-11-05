@@ -91,7 +91,6 @@ If you need help, the first place
 to turn to is the [libr](https://libr.r-sassy.org) web site. The web site
 has full documentation on all **libr** functions.
 
-
 If you want to look at the code for the **libr** package, visit the
 github page [here](https://github.com/dbosak01/libr).
 
