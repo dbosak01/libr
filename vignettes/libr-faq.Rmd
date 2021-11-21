@@ -1,0 +1,265 @@
+---
+title: "Frequently Asked Questions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FAQ}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(rmarkdown.html_vignette.check_title = FALSE)
+
+```
+
+Below are some frequently asked questions about the **libr** package. Click
+on the links below to navigate to the full question and answer content.
+
+## Index{#top}
+
+* [How do I create a libname in R?](#libname)
+* [Which data formats does the libname function support?](#formats)
+* [Is there a way to filter the datasets in my libname?](#filter)
+* [How do I view the variables in my datasets?](#dictionary)
+* [How do I export data to another file format?](#export)
+* [How do I copy a library?](#copy)
+* [Can I really do a datastep in R?](#datastep)
+
+
+## Content
+
+### How do I create a libname in R? {#libname}
+
+**Q:** I have a directory full of datasets.  I need to use several of them
+in my analysis.  In SAS®, I would create a libname so I could access all of them.
+Is there a way to do something similar in R?
+
+**A:** With the **libr** package, you can create a libname in R very 
+much the same way you create a libname in SAS®.  
+```{r eval=FALSE, echo=TRUE}
+libname(mylib, "c:/mypath/mydata", "csv")
+
+```
+The above statement will create a libname "mylib" from the directory
+specified on the second parameter.  The libname will use the CSV engine.
+If there are any CSV files in the directory, they will be all loaded 
+into the library.  To work directly with the datasets, you can then do:
+```{r eval=FALSE, echo=TRUE}
+lib_load(mylib)
+```
+This statement will load the datasets into your workspace, where you can begin
+using them.  For instance, you could get summary statistics for a variable like
+this:
+```{r eval=FALSE, echo=TRUE}
+summary(mylib.dat1$var1)
+```
+
+If you made any changes to the data, and want to keep those changes, remember
+to save them with:
+```{r eval=FALSE, echo=TRUE}
+lib_write(mylib)
+```
+When you are done, unload the datasets with:
+```{r eval=FALSE, echo=TRUE}
+lib_unload(mylib)
+```
+
+[top](#top) 
+
+******
+
+### Which data formats does the libname function support? {#formats}
+
+**Q:** I can see from the examples that the **libr** package supports
+CSV and SAS dataset file formats.  What other data formats does the package
+support?
+
+
+**A:** The package supports the following data formats: csv, sas7bdat, 
+rds, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
+and a short discussion of some details on each format.
+
+[top](#top) 
+
+******
+
+### Is there a way to filter the datasets in my libname? {#filter}
+
+**Q:** I have a directory with over 100 datasets.  I want to use the 
+`libname()` function, but worry about loading all those datasets into 
+memory.  Is there a way I can filter the libname, to get only some of
+the datasets?
+
+**A:** Yes.  The `filter` parameter on the `libname()` function allows
+you to pass a wildcard filter string.  For example, the following call
+will load only those datasets that start with 'a':
+```{r eval=FALSE, echo=TRUE}
+libname(mylib, "c:/mypath/mydata", "csv", filter = "a*")
+
+```
+If you have a more complicated filter criteria, you can also pass a vector
+of filter strings.  The below example will load only those datasets that
+start with 'a' or 'b'.
+```{r eval=FALSE, echo=TRUE}
+libname(mylib, "c:/mypath/mydata", "csv", filter = c("a*", "b*"))
+
+```
+
+[top](#top) 
+
+******
+
+
+### How do I view the variables in my datasets? {#dictionary}
+
+**Q:** I'm doing some analysis with my data, and can't remember all the variable
+names.  Is there an easy way to view or print out the variables in my 
+datasets?
+
+**A:** Yes.  The `dictionary()` function from the **libr** pacakge will 
+return a dataset with all the 
+variables in your dataset, and some interesting attributes for each variable.
+The `dictionary()` function works on a single data frame, or an entire 
+library.  You can save this dictionary as metadata, print it, or even create 
+a report from it.  Here is an example:
+```{r eval=FALSE, echo=TRUE}
+# Create libname
+libname(mylib, "c:/mypath/mydata", "csv")
+
+# Get dictionary
+d <- dictionary(mylib)
+
+# View dictionary
+# View(d)
+```
+
+[top](#top)
+
+******
+
+### How do I export data to another file format? {#export}
+
+**Q:** Let's say I have some data in one format (sas7bdat), and want to export
+this data to another format (csv or Excel).  How can I do that with the **libr**
+package?
+
+**A:** What you can do is open two libnames, and copy data from one to another.
+Like this:
+```{r eval=FALSE, echo=TRUE}
+libname(libA, "c:/mypath/mydata1", "sas7bdat")
+libname(libB, "c:/mypath/mydata2", "csv")
+
+lib_add(libB, libA$dat1, name = "dat1")
+
+```
+The above statements will take the SAS® dataset "dat1", export it to CSV, and
+place the new CSV file in the directory associated with the libname "libB".
+
+[top](#top) 
+
+******
+
+
+### How do I copy a library? {#copy}
+
+**Q:** I have a directory full of datasets.  I want to back up the entire
+thing to another directory.  How can I do that?
+
+**A:** You can use the `lib_copy()` function, like this:
+```{r eval=FALSE, echo=TRUE}
+# Create libname
+libname(lib1, "c:/mypath/mydata1", "csv")
+
+# Copy to a new location
+lib_copy(lib1, lib2, "c:/mypath/mydata2")
+```
+You will now have a reference to the new libname `lib2` at the new location, and
+can use this libname like any other.
+
+[top](#top)
+
+******
+
+### Can I really do a datastep in R? {#datastep}
+
+**Q:** When I first started learning R I searched all over for a way 
+to do a datastep.  I was shocked to learn there was nothing similar.  Does
+the **libr** package really allow me to do a datastep in R?
+
+**A:** Yes.  The **libr** `datastep()` function does not have all the 
+capabilities of a SAS® datastep.  But it has the most commonly-used 
+functionality.  You can loop through the data row by row, examine, 
+and compare variable values for each row.  It has basic data shaping, 
+grouping, retain, assigning
+of attributes, and a datastep array. Here is a simple example showing
+categorization of an age variable into age groups:
+```{r eval=FALSE, echo=TRUE}
+library(dplyr)
+library(libr)
+
+# Define data library
+libname(dat, "./data", "csv") 
+
+# Loads data into workspace
+lib_load(dat)
+
+# Prepare data
+dm_mod <- dat.DM %>% 
+  select(USUBJID, SEX, AGE, ARM) %>% 
+  filter(ARM != "SCREEN FAILURE") %>% 
+  datastep({
+    
+    if (AGE >= 18 & AGE <= 24)
+      AGECAT = "18 to 24"
+    else if (AGE >= 25 & AGE <= 44)
+      AGECAT = "25 to 44"
+    else if (AGE >= 45 & AGE <= 64)
+      AGECAT <- "45 to 64"
+    else if (AGE >= 65)
+      AGECAT <- ">= 65"
+    
+  }) 
+  
+lib_unload(dat)
+```
+The datastep example above is part of a **dplyr** pipeline,
+but it can also function independently.
+Notice that, just like a SAS® datastep, you don't have to declare new variables.
+You can just assign the new variable a value, and the datastep function will 
+create it automatically.  
+
+You can check out the `datastep()` help page, or the 
+[datastep vignette](https://libr.r-sassy.org/articles/libr-datastep.html) 
+for additional examples and complete documentation.
+
+[top](#top) 
+
+******
+
+
+<!-- ### Question 2? {#q2} -->
+
+<!-- **Q:** Question here. -->
+
+<!-- **A:** Answer here. -->
+
+<!-- [top](#top) -->
+
+<!-- ****** -->
+
+<!-- ### Question 1? {#q1} -->
+
+<!-- **Q:** Question here. -->
+
+
+<!-- **A:** Answer here. -->
+
+<!-- [top](#top)  -->
+
+<!-- ****** -->
+

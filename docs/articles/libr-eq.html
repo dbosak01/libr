@@ -76,10 +76,19 @@
     <li>
       <a href="../articles/libr-disclaimer.html">Disclaimer</a>
     </li>
+    <li>
+      <a href="../articles/libr-example1.html">Complete Example 1</a>
+    </li>
+    <li>
+      <a href="../articles/libr-example2.html">Complete Example 2</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href=".././articles/libr-faq.html">FAQ</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -113,41 +122,41 @@
 
     
     
-<p>Lastly, the <strong>libr</strong> package contains an enhanced equality operator. The objective of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator is to return a TRUE or FALSE value when any two objects are compared. This enhanced equality operator is useful for situations when you don’t want to check for NULL or NA values, or care about the data types of the objects you are comparing.</p>
-<p>The <code><a href="../reference/%eq%.html">%eq%</a></code> operator also compares data frames. The comparison will include all data values, but no attributes. This functionality is particularly useful when comparing tibbles, as tibbles often have many attributes assigned by <code>dplyr</code> functions.</p>
-<p>While it can be advantageous to have a comparison operator that does not give errors when encountering a NULL or NA value, note that this behavior can also mask problems with your code. Therefore, use the <code><a href="../reference/%eq%.html">%eq%</a></code> operator with care.</p>
-<p>Below is an example of several comparisons using the <code><a href="../reference/%eq%.html">%eq%</a></code> infix operator:</p>
+<p>Lastly, the <strong>libr</strong> package contains an enhanced equality operator. The objective of the <code>%eq%</code> operator is to return a TRUE or FALSE value when any two objects are compared. This enhanced equality operator is useful for situations when you don’t want to check for NULL or NA values, or care about the data types of the objects you are comparing.</p>
+<p>The <code>%eq%</code> operator also compares data frames. The comparison will include all data values, but no attributes. This functionality is particularly useful when comparing tibbles, as tibbles often have many attributes assigned by <code>dplyr</code> functions.</p>
+<p>While it can be advantageous to have a comparison operator that does not give errors when encountering a NULL or NA value, note that this behavior can also mask problems with your code. Therefore, use the <code>%eq%</code> operator with care.</p>
+<p>Below is an example of several comparisons using the <code>%eq%</code> infix operator:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
 
 <span class="co"># Comparing of NULLs and NA</span>
-<span class="cn">NULL</span> <span class="op">%eq%</span> <span class="cn">NULL</span>        <span class="co"># TRUE</span>
-<span class="cn">NULL</span> <span class="op">%eq%</span> <span class="cn">NA</span>          <span class="co"># FALSE</span>
-<span class="cn">NA</span> <span class="op">%eq%</span> <span class="cn">NA</span>            <span class="co"># TRUE</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="cn">NULL</span>           <span class="co"># FALSE</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="cn">NA</span>             <span class="co"># FALSE</span>
+<span class="cn">NULL</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NULL</span>        <span class="co"># TRUE</span>
+<span class="cn">NULL</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NA</span>          <span class="co"># FALSE</span>
+<span class="cn">NA</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NA</span>            <span class="co"># TRUE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NULL</span>           <span class="co"># FALSE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NA</span>             <span class="co"># FALSE</span>
 
 <span class="co"># Comparing of atomic values</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="fl">1</span>              <span class="co"># TRUE</span>
-<span class="st">"one"</span> <span class="op">%eq%</span> <span class="st">"one"</span>      <span class="co"># TRUE</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="st">"one"</span>          <span class="co"># FALSE</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>     <span class="co"># FALSE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="fl">1</span>              <span class="co"># TRUE</span>
+<span class="st">"one"</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="st">"one"</span>      <span class="co"># TRUE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="st">"one"</span>          <span class="co"># FALSE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>     <span class="co"># FALSE</span>
 
 <span class="co"># Comparing of vectors</span>
 <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>
 <span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>
-<span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v1</span>            <span class="co"># TRUE</span>
-<span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v2</span>            <span class="co"># FALSE</span>
+<span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v1</span>            <span class="co"># TRUE</span>
+<span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v2</span>            <span class="co"># FALSE</span>
 
 <span class="co"># Comparing of data frames</span>
-<span class="va">mtcars</span> <span class="op">%eq%</span> <span class="va">mtcars</span>    <span class="co"># TRUE</span>
-<span class="va">mtcars</span> <span class="op">%eq%</span> <span class="va">iris</span>      <span class="co"># FALSE</span>
-<span class="va">iris</span> <span class="op">%eq%</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>,<span class="op">]</span> <span class="co"># FALSE</span>
+<span class="va">mtcars</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">mtcars</span>    <span class="co"># TRUE</span>
+<span class="va">mtcars</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">iris</span>      <span class="co"># FALSE</span>
+<span class="va">iris</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>,<span class="op">]</span> <span class="co"># FALSE</span>
 
 <span class="co"># Mixing it up </span>
-<span class="va">mtcars</span> <span class="op">%eq%</span> <span class="cn">NULL</span>      <span class="co"># FALSE</span>
-<span class="va">v1</span> <span class="op">%eq%</span> <span class="cn">NA</span>            <span class="co"># FALSE</span>
-<span class="fl">1</span> <span class="op">%eq%</span> <span class="va">v1</span>             <span class="co"># FALSE</span></code></pre></div>
+<span class="va">mtcars</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NULL</span>      <span class="co"># FALSE</span>
+<span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="cn">NA</span>            <span class="co"># FALSE</span>
+<span class="fl">1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v1</span>             <span class="co"># FALSE</span></code></pre></div>
 <p>Next: <a href="libr-disclaimer.html">Disclaimer</a></p>
   </div>
 

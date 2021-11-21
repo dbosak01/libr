@@ -137,10 +137,19 @@ for additional information on saving specs." />
     <li>
       <a href="../articles/libr-disclaimer.html">Disclaimer</a>
     </li>
+    <li>
+      <a href="../articles/libr-example1.html">Complete Example 1</a>
+    </li>
+    <li>
+      <a href="../articles/libr-example2.html">Complete Example 2</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href=".././articles/libr-faq.html">FAQ</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -204,11 +213,11 @@ parameters for that object.</p></td>
     <tr>
       <th>na</th>
       <td><p>A vector of values to be treated as NA.  For example, the 
-vector <code><a href='https://rdrr.io/r/base/c.html'>c('', ' ')</a></code> will cause empty strings and single blanks to 
+vector <code>c('', ' ')</code> will cause empty strings and single blanks to 
 be converted to NA values. For most file types, 
 empty strings and the string 'NA' <code>('', 'NA')</code> are considered NA.  
 For SAS® datasets and transport files, a single blank and a single dot 
-<code><a href='https://rdrr.io/r/base/c.html'>c(" ", ".")</a></code> are considered NA. The value of the 
+<code>c(" ", ".")</code> are considered NA. The value of the 
 <code>na</code> parameter on the <code>specs</code> function can be overridden
 by the <code>na</code> parameter on the <code>import_spec</code> function.</p></td>
     </tr>

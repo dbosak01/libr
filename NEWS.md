@@ -1,3 +1,8 @@
+# libr 1.2.2
+
+* Added FAQ and Complete Examples
+
+
 # libr 1.2.1 
 
 * Added covr and codecov

@@ -9,6 +9,8 @@ articles:
   - libr-datastep
   - libr-eq
   - libr-disclaimer
+  - libr-example1
+  - libr-example2
 
 reference:
 - title: Library Functions
@@ -54,4 +56,8 @@ reference:
 navbar:
   type: inverse
   structure:
-    right: [home, intro, articles, reference, news, github]
+    right: [home, intro, articles, reference, faq, news, github]
+  components:
+    faq:
+      text: FAQ
+      href: ./articles/libr-faq.html

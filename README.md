@@ -5,7 +5,7 @@
 [![libr downloads](https://cranlogs.r-pkg.org/badges/libr)](https://cran.r-project.org/package=libr)
 [![libr total downloads](https://cranlogs.r-pkg.org/badges/grand-total/libr)](https://cran.r-project.org/package=libr)
 [![R-CMD-check](https://github.com/dbosak01/libr/workflows/R-CMD-check/badge.svg)](https://github.com/dbosak01/libr/actions)
-[![Codecov test coverage](https://codecov.io/gh/dbosak01/libr/branch/master/graph/badge.svg)](https://codecov.io/gh/dbosak01/libr?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/dbosak01/libr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dbosak01/libr?branch=master)
 
 <!-- badges: end -->
   

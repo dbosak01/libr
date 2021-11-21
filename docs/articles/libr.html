@@ -76,10 +76,19 @@
     <li>
       <a href="../articles/libr-disclaimer.html">Disclaimer</a>
     </li>
+    <li>
+      <a href="../articles/libr-example1.html">Complete Example 1</a>
+    </li>
+    <li>
+      <a href="../articles/libr-example2.html">Complete Example 2</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href=".././articles/libr-faq.html">FAQ</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -134,7 +143,7 @@
 <li>
 <code><a href="../reference/datastep.html">datastep()</a></code>: Performs row-by-row processing of data</li>
 <li>
-<code><a href="../reference/%eq%.html">%eq%</a></code>: An infix operator to check equality between objects</li>
+<code>%eq%</code>: An infix operator to check equality between objects</li>
 </ul>
 </div>
 <div id="how-to-use" class="section level3">
@@ -300,7 +309,7 @@ cols(
 <h4 class="hasAnchor">
 <a href="#the-eq-function" class="anchor"></a>The %eq% Function</h4>
 <p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare everything, including attributes assigned to the objects you are comparing. If there is even a small difference in one of these attributes, the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function will return FALSE. This behavior is inconvenient, especially when working with <strong>dplyr</strong> functions, as these functions assign many attributes to the datasets they are manipulating.</p>
-<p>The <code><a href="../reference/%eq%.html">%eq%</a></code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code><a href="../reference/%eq%.html">%eq%</a></code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator can be illustrated by examining these methods side-by-side on the same input data.</p>
+<p>The <code>%eq%</code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code>%eq%</code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code>%eq%</code> operator can be illustrated by examining these methods side-by-side on the same input data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set up input data</span>
 <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>
@@ -311,14 +320,14 @@ cols(
 <span class="co"># Comparing "equal" vectors</span>
 <span class="va">v1</span> <span class="op">==</span> <span class="va">v2</span>              <span class="co"># TRUE TRUE TRUE</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span>     <span class="co"># FALSE</span>
-<span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v2</span>            <span class="co"># TRUE</span>
+<span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v2</span>            <span class="co"># TRUE</span>
 
 <span class="co"># Comparing "unequal" vectors</span>
 <span class="va">v1</span> <span class="op">==</span> <span class="va">v3</span>              <span class="co"># TRUE TRUE NA</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v3</span><span class="op">)</span>     <span class="co"># FALSE</span>
-<span class="va">v1</span> <span class="op">%eq%</span> <span class="va">v3</span>            <span class="co"># FALSE</span></code></pre></div>
-<p>Note the different results returned by the three different comparison functions. The <code><a href="../reference/%eq%.html">%eq%</a></code> operator is similar to the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single TRUE or FALSE value. The difference is that it ignored the “label” attribute assigned to vector <em>v2</em>, and only looked at the data values. Since it saw all the data values were equal, the <code><a href="../reference/%eq%.html">%eq%</a></code> operator returned TRUE, while the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
-<p>You can see some more examples of the <code><a href="../reference/%eq%.html">%eq%</a></code> operator in the help documentation, or in the <a href="libr-eq.html">Enhanced Equality</a> article.</p>
+<span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v3</span>            <span class="co"># FALSE</span></code></pre></div>
+<p>Note the different results returned by the three different comparison functions. The <code>%eq%</code> operator is similar to the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single TRUE or FALSE value. The difference is that it ignored the “label” attribute assigned to vector <em>v2</em>, and only looked at the data values. Since it saw all the data values were equal, the <code>%eq%</code> operator returned TRUE, while the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
+<p>You can see some more examples of the <code>%eq%</code> operator in the help documentation, or in the <a href="libr-eq.html">Enhanced Equality</a> article.</p>
 </div>
 </div>
 <div id="next-steps" class="section level3">
@@ -330,6 +339,8 @@ cols(
 <li><a href="libr-management.html">Library Management</a></li>
 <li><a href="libr-datastep.html">Data Step Operations</a></li>
 <li><a href="libr-eq.html">Enhanced Equality</a></li>
+<li><a href="libr-example1.html">Complete Example 1</a></li>
+<li><a href="libr-example2.html">Complete Example 2</a></li>
 </ul>
 </div>
   </div>

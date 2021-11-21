@@ -332,6 +332,7 @@ Those articles include:
 * [Library Management](libr-management.html)
 * [Data Step Operations](libr-datastep.html)
 * [Enhanced Equality](libr-eq.html)
-
+* [Complete Example 1](libr-example1.html)
+* [Complete Example 2](libr-example2.html)
 
 
