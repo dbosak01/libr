@@ -308,3 +308,6 @@ And here is the output:
 <img src="../man/images/example1b.png"/>
 <img src="../man/images/example1c.png"/>
 
+
+Next: [Complete Example 2](libr-example2.html)
+

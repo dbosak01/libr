@@ -19,3 +19,5 @@ medium-sized data sets.  It is not recommended for big data, as big data
 requires very careful control over which data is or is not loaded into memory.
 The **libr** package, on the other hand, tends to load all data into memory 
 indiscriminately.
+
+Next: [Complete Example 1](libr-example1.html)

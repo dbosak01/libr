@@ -211,4 +211,20 @@ test_that("dictionary() function works as expected with user-defined format.", {
   
 })
 
+test_that("dictionary() function works with standard libname.", {
+  
+  
+  if (dev) {
+    libname(tst, file.path(base_path, "SDTM"), "csv")
+    
+    # Shouldn't get error here.
+    d <- dictionary(tst)
+    
+    
 
+  
+  } 
+  
+  expect_equal(TRUE, TRUE)
+  
+})

@@ -115,6 +115,8 @@ getDictionary <- function(x, dsnm) {
   
   for (nm in names(x)) {
     
+
+    
     cntr <- cntr + 1
     
     lbl <- attr(x[[nm]], "label")
@@ -136,7 +138,7 @@ getDictionary <- function(x, dsnm) {
     
     rw <- data.frame(Name = dsnm,
                      Column = nm,
-                     Class = class(x[[nm]]),
+                     Class = paste0(class(x[[nm]]), collapse = " "),
                      Label = ifelse(!is.null(lbl), lbl, as.character(NA)),
                      Description = ifelse(!is.null(desc), desc, as.character(NA)),
                      Format = ifelse(!is.null(fmt), fmt, NA),
@@ -152,6 +154,7 @@ getDictionary <- function(x, dsnm) {
       ret <- rbind(ret, rw)
     
   }
+  
   
   if (length(usr_wdth) == 0)
     ret[["Width"]] <- str_wdth
