@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 
 ```
+## Program
 
 Here is another example of a complete program that demonstrates several of the
 key functions in the **libr** package.
@@ -172,6 +173,7 @@ writeLines(readLines(lf, encoding = "UTF-8"))
 # file.show(res$file_path)
 
 ```
+## Log
 
 Here is the log from the above program:
 ```
@@ -369,6 +371,7 @@ Log End Time: 2021-11-20 23:16:08
 Log Elapsed Time: 0 00:00:09
 =========================================================================
 ```
+## Output
 
 And here is the output:
 
