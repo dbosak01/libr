@@ -1,3 +1,8 @@
+# libr 1.2.3
+* Added "Rdata" option to `libname()` function engines.
+* Added "label" parameter to `datastep()` function.
+* Added "format" parameter to `datastep()` function.
+
 # libr 1.2.2
 
 * Added FAQ and Complete Examples

@@ -35,7 +35,7 @@ e$env <- parent.frame()
 #' data of different types.  For example, there is an engine for Excel 
 #' files, and another engine for SAS® datasets.  The engines are identified
 #' by the extension of the file type they handle.  The available engines are 
-#' 'rds', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+#' 'rds', 'RData', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 #' Once an engine has been assigned to a library, all other read/write 
 #' operations will be performed by that engine.  
 #' 
@@ -57,6 +57,8 @@ e$env <- parent.frame()
 #' \item{\strong{rds}: For R data sets.  This engine is the default.  Because
 #' detailed data type and attribute information can be stored inside the rds
 #' file, the rds engine is the most reliable and easiest to use.}
+#' \item{\strong{RData}: Another R data storage format.  Like the 'rds' engine,
+#' this storage type retains column attributes and data types.}
 #' \item{\strong{csv}: For comma separated value files.  This engine assumes
 #' that the first row has column names, and that strings containing commas are 
 #' quoted.  Blank values and the string 'NA' will be interpreted as NA.
@@ -141,7 +143,8 @@ e$env <- parent.frame()
 #' engine will be used to import and export data.  The engine name 
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
-#' Valid values are 'rds', 'sas7bdat', 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
+#' Valid values are 'rds', 'RData', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
+#' 'dbf', and 'csv'. 
 #' @param read_only Whether the library should be created as read-only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing any data from memory to the file system.
@@ -243,7 +246,7 @@ libname <- function(name, directory_path, engine = "rds",
   if (length(engine) > 1)
     stop("engine parameter does not accept more than one value.")
   
-  if (!engine %in% c("rds", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+  if (!tolower(engine) %in% c("rds", "rdata", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
     stop(paste0("Invalid engine parameter value: ", engine))
   
   if (!is.null(import_specs)) {
@@ -279,7 +282,8 @@ libname <- function(name, directory_path, engine = "rds",
   
 
   # Get the file list according to the engine type
-  lst <- list.files(directory_path, pattern = paste0("\\.", engine, "$"))
+  lst <- list.files(directory_path, pattern = paste0("\\.", engine, "$"), 
+                    ignore.case = TRUE)
   
   if (!is.null(filter))
     lst <- dofilter(filter, lst, engine)
@@ -293,8 +297,10 @@ libname <- function(name, directory_path, engine = "rds",
       
       dat <- NULL
       
-      if (ext == "csv") {
-        message(paste0("$", nm))
+      if (tolower(ext) == "csv") {
+        
+        if (!quiet)
+          message(paste0("$", nm))
         
         if (is.null(import_specs)) {
           if (quiet)
@@ -318,16 +324,43 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- import_specs$trim_ws
             
-            dat <- read_csv(fp, 
+            dat <- suppressWarnings(read_csv(fp, 
                             col_types = spcs,
                             na = na,
-                            trim_ws = tws)
+                            trim_ws = tws))
+            
+            pb <- problems(dat)
+            
+            if (nrow(pb) > 0) {
+              pbmsg <- paste0("There were problems encountered reading in the '", 
+                              nm, "' data file. Run 'problems(", name_c, "$", 
+                              nm, ") to get ",
+                              "a table of these problems.")
+              
+              warning(pbmsg) 
+                    
+            }
+            
           }
         }
         
-      } else if (ext == "rds") {
+      } else if (tolower(ext) == "rds") {
         
         dat <- read_rds(fp)
+        if (!is.null(import_specs))
+          dat <- exec_spec(dat, import_specs, nm)
+        
+      } else if (tolower(ext) == "rdata") {
+        
+        # Create new environment
+        erdata <- new.env()
+        
+        # Load file into new environment
+        vrdata <- load(fp, envir = erdata)
+        
+        # Get file from environment into normal variable
+        dat <- erdata[[vrdata[1]]]
+        
         if (!is.null(import_specs))
           dat <- exec_spec(dat, import_specs, nm)
         
@@ -342,7 +375,7 @@ libname <- function(name, directory_path, engine = "rds",
           
         }
         
-      } else if (ext == "dbf") {
+      } else if (tolower(ext) == "dbf") {
         
         dat <- foreign::read.dbf(fp)
         if (!is_tibble(dat))
@@ -351,7 +384,7 @@ libname <- function(name, directory_path, engine = "rds",
         if (!is.null(import_specs))
           dat <- exec_spec(dat, import_specs, nm)
         
-      } else if (ext == "xpt") {
+      } else if (tolower(ext) == "xpt") {
         
         dat <- read_xpt(fp)
         if (!is.null(import_specs))
@@ -362,9 +395,10 @@ libname <- function(name, directory_path, engine = "rds",
           
         }
         
-      } else if (ext == "xlsx") {
+      } else if (tolower(ext) == "xlsx") {
         
-        message(paste0("$", nm))
+        if (!quiet)
+          message(paste0("$", nm))
         
         if (is.null(import_specs))
           dat <- read_xlsx(fp)
@@ -385,17 +419,30 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- import_specs$trim_ws
             
-            dat <- read_xlsx(fp, 
+            dat <- suppressWarnings(read_xlsx(fp, 
                              col_types = spcs, 
                              na = na, 
-                             trim_ws = tws)
+                             trim_ws = tws))
+            
+            pb <- problems(dat)
+            
+            if (nrow(pb) > 0) {
+              pbmsg <- paste0("There were problems encountered reading in the '", 
+                              nm, "' data file. Run 'problems(", name_c, "$", 
+                              nm, ") to get ",
+                              "a table of these problems.")
+              
+              warning(pbmsg) 
+              
+            }
           }
           
         }
         
-      } else if (ext == "xls") {
+      } else if (tolower(ext) == "xls") {
         
-        message(paste0("$", nm))
+        if (!quiet)
+          message(paste0("$", nm))
         
         if (is.null(import_specs))
           dat <- read_xls(fp)
@@ -416,10 +463,22 @@ libname <- function(name, directory_path, engine = "rds",
             if (is.null(tws))
               tws <- import_specs$trim_ws
             
-            dat <- read_xls(fp, 
+            dat <- suppressWarnings(read_xls(fp, 
                              col_types = spcs, 
                              na = na, 
-                             trim_ws = tws)
+                             trim_ws = tws))
+            
+            pb <- problems(dat)
+            
+            if (nrow(pb) > 0) {
+              pbmsg <- paste0("There were problems encountered reading in the '", 
+                              nm, "' data file. Run 'problems(", name_c, "$", 
+                              nm, ") to get ",
+                              "a table of these problems.")
+              
+              warning(pbmsg) 
+              
+            }
           }
           
         }

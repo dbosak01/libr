@@ -131,7 +131,7 @@ test_that("get_colspec_csv() works as expected.", {
 test_that("libname works on PE data for csv.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
-                                na = "NA"))
+                                na = ""))
   
   libname(dat, file.path(base_path, "PE"), "csv", import_specs = lst)
   
@@ -158,7 +158,7 @@ test_that("libname works on PE data for xlsx.", {
 test_that("libname works on PE data for xls.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
-                                na = "NA"))
+                                na = ""))
   
   
   libname(dat, file.path(base_path, "PE"), "xls", import_specs = lst)
@@ -188,12 +188,11 @@ test_that("writing xls changes to xlsx.", {
 test_that("libname works on SDTM data for csv.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
-                                na = "NA"))
+                                na = ""))
   
   
   libname(dat, file.path(base_path, "SDTM"), "csv", import_specs = lst)
   
-
   expect_equal(length(dat), 13)
   
 })

@@ -34,6 +34,7 @@
 #'   \item{\strong{n.}: Contains the row number.}
 #'   \item{\strong{first.}: Indicates the beginning of a by-group.}
 #'   \item{\strong{last.}: Indicates the end of a by-group.}
+#'   \item{\strong{output}: Specifies which rows to include in the output data}
 #' }
 #' Automatic variables will be dropped from the data frame at the end
 #' of the data step.  If you wish to keep the automatic variable values,
@@ -51,7 +52,11 @@
 #' 
 #' It should be mentioned  that the \code{dsattr} object is not required.  
 #' You can also set attributes with a name and a default value.  
-#' The default value can be any valid data value, such as a number or string.  
+#' The default value can be any valid data value, such as a number or string.
+#' 
+#' The label and format attributes may also be set with the 'label' and 
+#' 'format' parameters. These parameters accept a named list with the 
+#' labels or formats, and will be assigned to the output data frame.  
 #' 
 #' @section Optional Parameters:
 #' Optional parameters on the \code{datastep} allow you to shape 
@@ -102,6 +107,13 @@
 #' step arrays allow to you to perform row-wise calculations. 
 #' For instance, you can calculate 
 #' a sum or mean by row for the variables in your array.
+#' 
+#' @section Output variable:
+#' The datastep supports an `output` variable that allows you to
+#' control which rows are output from the `datastep()` function.  
+#' To use the output
+#' variable, simply set `output <- TRUE` for those rows you wish 
+#' retained on the resulting data.
 #' 
 #' @section Output Column Order:
 #' By default, the data step will retain the column order of any variables that
@@ -197,6 +209,9 @@
 #' is TRUE.  Turn the sort check off if you want to perform by-group 
 #' processing on unsorted data, or data that is not sorted according
 #' to the by-group.
+#' @param format A named list of formats to assign to the output data
+#' frame.
+#' @param label A named list of labels to assign to the output data frame.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @seealso \code{\link{libname}} function to create a data library, and
@@ -387,6 +402,22 @@
 #' # 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0
 #' # 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0
 #' # 8 df    Best   character Best Quarter NA          NA         2 NA          3     0
+#' 
+#' #' # Example #7: label parameter, format parameter, and output() function
+#' df <- datastep(mtcars, 
+#'                keep = c("cyl", "wt"), 
+#'                label = list(cyl = "Cylinders", wt = "Weight"), 
+#'                format = list(cyl = "%1.1f", wt = "%1.1f"), {
+#'                  
+#'   if (cyl == 8)
+#'     output <- TRUE
+#'                  
+#' })
+#' 
+#' df
+#' 
+#' dictionary(df)
+#' 
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
@@ -394,7 +425,9 @@ datastep <- function(data, steps, keep = NULL,
                      by = NULL, calculate = NULL,
                      retain = NULL, attrib = NULL,
                      arrays = NULL,
-                     sort_check = TRUE) {
+                     sort_check = TRUE,
+                     format = NULL,
+                     label = NULL) {
   
   if (!"data.frame" %in% class(data))
     stop("input data must be inherited from data.frame")
@@ -563,11 +596,16 @@ datastep <- function(data, steps, keep = NULL,
   ret <- bind_rows(ret, .id = "column_label")
   ret["column_label"] <- NULL
   
+  if ("output" %in% names(ret)) {
+    
+    ret$output <- ifelse(is.na(ret$output), FALSE, ret$output)
+    ret <- ret[ret$output == TRUE, ] 
+  }
   
   # Remove automatic variables
   ret["first."] <- NULL
   ret["last."] <- NULL
-
+  ret["output"] <- NULL
   
   # Perform drop operation
   if (!is.null(drop))
@@ -605,6 +643,14 @@ datastep <- function(data, steps, keep = NULL,
   if (!is.null(rename)) {
     nms <- names(ret)
     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
+  }
+  
+  if (!is.null(label)) {
+    ret <- assign_attributes(ret, label, "label")
+  }
+  
+  if (!is.null(format)) {
+    ret <- assign_attributes(ret, format, "format")
   }
   
   endcols <- ncol(ret)
@@ -649,3 +695,22 @@ copy_attributes <- function(df1, df2) {
   return(ret)
 }
 
+
+assign_attributes <- function(df, lst, attr) {
+  
+  nmsdf <- names(df)
+  nmslst <- names(lst)
+  
+  ret <- df
+  
+  for (nm in nmslst) {
+    
+    if (nm %in% nmsdf) { 
+    
+      attr(ret[[nm]], attr) <- lst[[nm]] 
+    }
+  }
+  
+  return(ret)
+  
+}

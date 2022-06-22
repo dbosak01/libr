@@ -526,4 +526,59 @@ test_that("datastep() works on a dataframe with a factor.", {
   expect_equal(class(dat2$Species), "factor")
   
 })
+
+test_that("assign_attributes() works as expected.", {
   
+  
+  dat <- mtcars
+  
+  lst <- list(mpg = "hello", cyl = "goodbye")
+  
+  dat2 <- assign_attributes(dat, lst, "label")
+  
+  
+  expect_equal(attr(dat2$mpg, "label"), "hello")
+  expect_equal(attr(dat2$cyl, "label"), "goodbye")
+})
+  
+test_that("label parameter on datastep works as expected.", {
+  
+  
+  dat <- mtcars
+  
+  lst <- list(mpg = "hello", cyl = "goodbye")
+  
+  dat2 <- datastep(dat, label = lst, {})
+    
+    
+
+  
+  expect_equal(attr(dat2$mpg, "label"), "hello")
+  expect_equal(attr(dat2$cyl, "label"), "goodbye")
+})
+
+
+test_that("format parameter on datastep works as expected.", {
+  
+  
+  dat <- mtcars
+  
+  lst <- list(mpg = "%1.1f", cyl = "%1.2f")
+  
+  dat2 <- datastep(dat, format = lst, {})
+  
+
+  expect_equal(attr(dat2$mpg, "format"), "%1.1f")
+  expect_equal(attr(dat2$cyl, "format"), "%1.2f")
+})
+
+test_that("output variable  on datastep works as expected.", {
+  
+  
+  dat <- datastep(mtcars, {if (cyl == 8) output = TRUE})
+  
+  
+  expect_equal("output" %in% names(dat), FALSE)
+  expect_equal(nrow(dat), 14)
+})
+

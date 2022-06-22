@@ -44,6 +44,18 @@ test_that("libname() function works as expected with rds", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
+test_that("libname() function works as expected with rdata", {
+  
+  
+  libname(dat, base_path, engine = "Rdata")
+  
+  expect_equal(class(dat)[[1]], "lib")
+  expect_equal(length(dat), 2)
+  expect_equal(nrow(dat[[1]]), 10)
+  expect_equal(ncol(dat[[1]]), 9)
+  expect_equal(nrow(dat[[2]]), 2)
+  expect_equal(ncol(dat[[2]]), 9)
+})
 
 
 test_that("libname() function works as expected with xls", {

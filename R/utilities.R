@@ -316,6 +316,15 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       write_rds(x, file_path)
       attr(x, "checksum") <- md5sum(file_path)
     }
+    
+  } else if (tolower(ext) == "rdata") {
+    
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
+        file.remove(file_path)
+      save(x, file = file_path)
+      attr(x, "checksum") <- md5sum(file_path)
+    }
 
   } else if (ext == "sas7bdat") {
     
