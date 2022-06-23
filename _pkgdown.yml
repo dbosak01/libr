@@ -25,6 +25,7 @@ reference:
   - lib_replace
   - lib_remove
   - lib_copy
+  - lib_export
   - lib_delete
   - lib_info
   - lib_path

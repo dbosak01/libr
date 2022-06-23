@@ -158,8 +158,9 @@ lib_export(libA, libB, "c:/mypath/mydata2", "csv")
 
 ```
 The above statements will take the SAS® datasets in the library "libA", 
-export them to CSV, and place the new CSV files in the directory 
-associated with the libname "libB".
+export them to CSV, place the new CSV files in the directory 
+"c:/mypath/mydata2", and assign a new libname "libB" to that directory.
+You now have two libnames, and can continue working with each as desired.
 
 [top](#top) 
 
