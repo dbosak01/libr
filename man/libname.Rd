@@ -36,7 +36,7 @@ it will be created by the \code{libname} function.}
 engine will be used to import and export data.  The engine name 
 corresponds to the standard file extension of the data file type. The
 default engine is 'rds'.
-Valid values are 'rds', 'RData', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
+Valid values are 'rds', 'Rdata', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
 'dbf', and 'csv'.}
 
 \item{read_only}{Whether the library should be created as read-only.
@@ -265,6 +265,7 @@ Other lib:
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_export}()},
 \code{\link{lib_info}()},
 \code{\link{lib_load}()},
 \code{\link{lib_path}()},

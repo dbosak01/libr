@@ -427,3 +427,51 @@ test_that("library parameter checks work as expected.", {
 
 })
 
+test_that("lib_export() function works as expected.", {
+  
+  libname(dat, base_path, engine = "csv")
+  
+  pth <- paste0(base_path, "2")
+  
+  lib_export(dat, dat2, pth, "rdata")
+  
+  expect_equal(length(dat2), 2)
+  
+  # Clean up
+  lib_delete(dat2)
+  
+  
+})
+
+test_that("lib_export() function works as expected with filter.", {
+  
+  libname(dat, base_path, engine = "csv")
+  
+  pth <- paste0(base_path, "2")
+  
+  lib_export(dat, dat2, pth, "rdata", filter = "*b")
+  
+  expect_equal(length(dat2), 1)
+  
+  # Clean up
+  lib_delete(dat2)
+  
+  
+})
+
+test_that("lib_export() function works as expected with standard_eval.", {
+  
+  libname(dat, base_path, engine = "csv")
+  
+  pth <- paste0(base_path, "2")
+  
+  lib_export(dat, "dat3", pth, "rdata", standard_eval = TRUE)
+  
+  expect_equal(length(dat3), 2)
+  
+  # Clean up
+  lib_delete(dat3)
+  
+  
+})
+

@@ -228,3 +228,20 @@ test_that("dictionary() function works with standard libname.", {
   expect_equal(TRUE, TRUE)
   
 })
+
+test_that("dictionary() function has no errors if data frame has no rows.", {
+  
+  crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
+  
+  attr(crs$name, "label") <- "Car Name"
+  attr(crs$name, "description") <- "Derived from rownames"
+  crs$type <- ifelse(crs$mpg > 20, "High", "Low")
+  attr(crs$mpg, "format") <- "%.1f"
+  
+  res <- dictionary(crs[0, ])
+  
+  expect_equal(nrow(res), 13)
+  
+})
+
+

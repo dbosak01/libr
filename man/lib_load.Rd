@@ -67,6 +67,7 @@ Other lib:
 \code{\link{lib_add}()},
 \code{\link{lib_copy}()},
 \code{\link{lib_delete}()},
+\code{\link{lib_export}()},
 \code{\link{lib_info}()},
 \code{\link{lib_path}()},
 \code{\link{lib_remove}()},

@@ -129,9 +129,15 @@ getDictionary <- function(x, dsnm) {
       fmt <- NA
     
     if (is.null(wdth)) {
-      str_wdth[cntr] <- ifelse(typeof(x[[nm]]) == "character", 
-             max(nchar(x[[nm]])),
-             NA) 
+      if (length(x[[nm]]) > 0) {
+        str_wdth[cntr] <- ifelse(typeof(x[[nm]]) == "character", 
+               max(nchar(x[[nm]])),
+               NA) 
+      } else {
+        
+        str_wdth[cntr] <- NA
+      }
+        
     } else {
       usr_wdth[cntr] <- wdth 
     }

@@ -2,6 +2,10 @@
 * Added "Rdata" option to `libname()` function engines.
 * Added "label" parameter to `datastep()` function.
 * Added "format" parameter to `datastep()` function.
+* Added `lib_export()` function to export a library to a different 
+directory and file format.
+* Fixed bug on `dictionary()` that was causing it to crash when there 
+were no rows on the input data frame.
 
 # libr 1.2.2
 

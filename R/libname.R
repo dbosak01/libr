@@ -143,7 +143,7 @@ e$env <- parent.frame()
 #' engine will be used to import and export data.  The engine name 
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
-#' Valid values are 'rds', 'RData', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
+#' Valid values are 'rds', 'Rdata', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
 #' 'dbf', and 'csv'. 
 #' @param read_only Whether the library should be created as read-only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
@@ -1297,7 +1297,7 @@ lib_sync <- function(x, name = NULL) {
 #' the workspace version will be considered the most current version, and
 #' that is the version that will be copied.  
 #' @param x The library to copy.  
-#' @param nm The unquoted variable name to hold the new library.
+#' @param nm The variable name to hold the new library.
 #' The parameter will assume non-standard
 #' (unquoted) evaluation unless the \code{standard_eval} parameter is set
 #' to TRUE.
@@ -1403,6 +1403,155 @@ lib_copy <- function(x, nm, directory_path, standard_eval = FALSE) {
   assign(newlib, cpy, envir = e$env)
   
   log_logr(paste0("lib_copy: copied data from library '", libnm, "' to '", newlib, "'"))
+  log_logr(cpy)
+  
+  return(cpy)
+}
+
+
+#' @title Export a Data Library
+#' @description The \code{lib_export} function exports a data library to
+#' another library with a different directory and file format.  The 
+#' function accepts a library to export, the new library name,
+#'  a destination path, and an engine name.  
+#' If the destination 
+#' path does not exist, the function will attempt to create it.  
+#' 
+#' Note that
+#' the export will result in the current data in memory written to the new
+#' destination directory.  If the library is loaded into the workspace, 
+#' the workspace version will be considered the most current version, and
+#' that is the version that will be exported.  
+#' @param x The library to export.
+#' @param nm The variable name to hold the new library.
+#' The parameter will assume non-standard
+#' (unquoted) evaluation unless the \code{standard_eval} parameter is set
+#' to TRUE.
+#' @param directory_path The path to export the library to.
+#' @param engine The name of the engine to use for the exported data.
+#' The engine name corresponds to the standard file extension 
+#' of the data file type. Valid values are 'rds', 'Rdata', 'sas7bdat', 
+#' 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
+#' @param filter A filter string to limit which datasets are exported. 
+#' The filter parameter accepts wildcards.
+#' @param standard_eval A TRUE or FALSE value which indicates whether to 
+#' use standard (quoted) or non-standard (unquoted) evaluation on the 
+#' \code{nm} parameter. Default is FALSE.  Use this parameter if you want to 
+#' pass the target library name in a variable.
+#' @return The newly exported library.
+#' @family lib
+#' @examples
+#' # Create temp directory
+#' tmp <- tempdir()
+#' 
+#' # Create library
+#' libname(dat1, tmp)
+#' 
+#' # Add dat to library
+#' lib_add(dat1, mtcars, iris)
+#' 
+#' # Export dat1 to dat2
+#' lib_export(dat1, dat2, file.path(tmp, "export"), "rdata")
+#' # library 'dat2': 2 items
+#' # - attributes: rdata not loaded
+#' # - path: C:\Users\User\AppData\Local\Temp\Rtmp0Sq3kt/export
+#' # - items:
+#' #     Name Extension Rows Cols   Size        LastModified
+#' # 1 mtcars     rdata   32   11 8.1 Kb 2022-06-23 00:10:52
+#' # 2   iris     rdata  150    5 8.1 Kb 2022-06-23 00:10:52
+#' 
+#' # Clean up
+#' lib_delete(dat1)
+#' lib_delete(dat2)
+#' @export
+lib_export <- function(x, nm, directory_path, engine, 
+                       filter = NULL, standard_eval = FALSE) {
+  
+  if (is.null(engine))
+    stop("engine parameter cannot be null")
+  
+  if (length(engine) > 1)
+    stop("engine parameter does not accept more than one value.")
+  
+  if (!tolower(engine) %in% c("rds", "rdata", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+    stop(paste0("Invalid engine parameter value: ", engine))
+  
+  if (all(class(x) == "character")) {
+    libnm <- x
+    x <- get(libnm, envir = e$env)
+  } else {
+    
+    # Get safe lib name
+    libnm <- paste(deparse(substitute(x, env = environment())), collapse = "") 
+  }
+  
+  if (all(class(x) != "lib"))
+    stop("Object must be a data library.")
+  
+  # Create target directory if it doesn't exist
+  if (!dir.exists(directory_path))
+    dir.create(directory_path)
+  
+  
+  # Sync with list if needed
+  if (attr(x, "loaded") == TRUE) {
+    
+    x <- lib_sync(x, name = libnm) 
+  }
+  
+  if (standard_eval) {
+    newlib <- nm
+  } else {
+    # Get safe name of new library
+    newlib <- paste(deparse(substitute(nm, env = environment())), collapse = "")
+  }
+  
+  # Get names from original library
+  nms <- names(x)
+  
+  # Get list of dataset names
+  if (!is.null(filter))
+    fltr <- dofilter(filter, nms)
+  else 
+    fltr <- nms
+  
+  # Copy lib
+  cpy <- x
+  
+  # Set attributes
+  attr(cpy, "name") <- newlib
+  attr(cpy, "path") <- directory_path
+  attr(cpy, "loaded") <- FALSE
+  attr(cpy, "engine") <- engine
+  
+  # Write out data
+  for (nm in nms) {
+    
+    if (nm %in% fltr) {
+      ext <- engine
+      
+      # Update attributes
+      attr(cpy[[nm]], "extension") <- ext
+      
+      # Construct path
+      fp <- file.path(directory_path, paste0(nm, ".", ext))
+      
+      # Write copied data to file system
+      cpy[[nm]] <- writeData(cpy[[nm]], ext, fp)  
+      
+    } else {
+      
+      cpy[[nm]] <- NULL 
+    }
+    
+    
+  }
+  
+  # Update environment
+  assign(newlib, cpy, envir = e$env)
+  
+  log_logr(paste0("lib_export: exported ", length(nms), 
+                  " datasets from library '", libnm, "' to '", newlib, "'"))
   log_logr(cpy)
   
   return(cpy)
