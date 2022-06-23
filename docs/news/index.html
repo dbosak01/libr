@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -161,13 +161,29 @@
       <small>Source: <a href='https://github.com/dbosak01/libr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="libr-123" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.3">
+<a href="#libr-123" class="anchor"></a>libr 1.2.3<small> Unreleased </small>
+</h1>
+<ul>
+<li>Added “Rdata” option to <code><a href="../reference/libname.html">libname()</a></code> function
+engines.</li>
+<li>Added “label” parameter to <code><a href="../reference/datastep.html">datastep()</a></code> function.</li>
+<li>Added “format” parameter to <code><a href="../reference/datastep.html">datastep()</a></code> function.</li>
+<li>Added <code><a href="../reference/lib_export.html">lib_export()</a></code> function to export a library to a
+different directory and file format.</li>
+<li>Fixed bug on <code><a href="../reference/dictionary.html">dictionary()</a></code> that was causing it to crash
+when there were no rows on the input data frame.</li>
+</ul>
+</div>
     <div id="libr-122" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.2">
 <a href="#libr-122" class="anchor"></a>libr 1.2.2<small> 2021-11-22 </small>
 </h1>
 <ul>
 <li>Added FAQ and Complete Examples</li>
-<li>Fixed bug on <code><a href="../reference/dictionary.html">dictionary()</a></code> when encountering datetime variable with multiple POSIX classes.</li>
+<li>Fixed bug on <code><a href="../reference/dictionary.html">dictionary()</a></code> when encountering datetime
+variable with multiple POSIX classes.</li>
 </ul>
 </div>
     <div id="libr-121" class="section level1">
@@ -176,8 +192,10 @@
 </h1>
 <ul>
 <li>Added covr and codecov</li>
-<li>Fixed bug on <code><a href="../reference/dictionary.html">dictionary()</a></code> function that wasn’t showing width attribute.</li>
-<li>Fixed bug on <code><a href="../reference/datastep.html">datastep()</a></code> when applying attributes to a calculated variable.</li>
+<li>Fixed bug on <code><a href="../reference/dictionary.html">dictionary()</a></code> function that wasn’t showing
+width attribute.</li>
+<li>Fixed bug on <code><a href="../reference/datastep.html">datastep()</a></code> when applying attributes to a
+calculated variable.</li>
 <li>Small documentation fixes.</li>
 </ul>
 </div>
@@ -188,12 +206,21 @@
 <ul>
 <li>Made package compatible to R version 3.6.</li>
 <li>Added GitHub actions to test previous versions of R.</li>
-<li>Increased performance of datastep() function generally. Benchmarks show about 40% improvement on average.</li>
-<li>Added <em>standard_eval</em> parameter to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_copy.html">lib_copy()</a></code> functions to allow user to pass library names as a variable.</li>
-<li>Added <em>quiet</em> parameter on <code><a href="../reference/libname.html">libname()</a></code> function to minimize console output if desired.</li>
-<li>Added <em>arrays</em> parameter and <code><a href="../reference/dsarray.html">dsarray()</a></code> class to handle data step arrays. This functionality allows iteration across a list of variables inside a <code><a href="../reference/datastep.html">datastep()</a></code>.</li>
-<li>Added <em>attributes</em> parameter and <code><a href="../reference/dsattr.html">dsattr()</a></code> class to handle data step attributes. This functionality allows the user to add attributes to datastep variables.</li>
-<li>Fixed bug in <code><a href="../reference/datastep.html">datastep()</a></code> where it was stripping column attributes on Base R data frames.</li>
+<li>Increased performance of datastep() function generally. Benchmarks
+show about 40% improvement on average.</li>
+<li>Added <em>standard_eval</em> parameter to <code><a href="../reference/libname.html">libname()</a></code> and
+<code><a href="../reference/lib_copy.html">lib_copy()</a></code> functions to allow user to pass library names as
+a variable.</li>
+<li>Added <em>quiet</em> parameter on <code><a href="../reference/libname.html">libname()</a></code> function to
+minimize console output if desired.</li>
+<li>Added <em>arrays</em> parameter and <code><a href="../reference/dsarray.html">dsarray()</a></code> class to
+handle data step arrays. This functionality allows iteration across a
+list of variables inside a <code><a href="../reference/datastep.html">datastep()</a></code>.</li>
+<li>Added <em>attributes</em> parameter and <code><a href="../reference/dsattr.html">dsattr()</a></code> class
+to handle data step attributes. This functionality allows the user to
+add attributes to datastep variables.</li>
+<li>Fixed bug in <code><a href="../reference/datastep.html">datastep()</a></code> where it was stripping column
+attributes on Base R data frames.</li>
 </ul>
 </div>
     <div id="libr-113" class="section level1">
@@ -201,7 +228,8 @@
 <a href="#libr-113" class="anchor"></a>libr 1.1.3<small> 2021-02-08 </small>
 </h1>
 <ul>
-<li>Fixed bug on datastep when data frame/tibble had a single column.</li>
+<li>Fixed bug on datastep when data frame/tibble had a single
+column.</li>
 </ul>
 </div>
     <div id="libr-111" class="section level1">
@@ -209,20 +237,30 @@
 <a href="#libr-111" class="anchor"></a>libr 1.1.1<small> 2021-01-06 </small>
 </h1>
 <ul>
-<li>Integrated libr with logr. All library functions will automatically provide logging entries if the autolog feature of the logr package is enabled.</li>
+<li>Integrated libr with logr. All library functions will automatically
+provide logging entries if the autolog feature of the logr package is
+enabled.</li>
 <li>Added pkgdown site.</li>
-<li>Added <em>filter</em> parameters to <code><a href="../reference/libname.html">libname()</a></code> and <code><a href="../reference/lib_load.html">lib_load()</a></code> functions. The filter parameter allows the user to specify which data from the library they want loaded into memory.</li>
-<li>Changed default “na” parameter on csv export to empty string instead of NA to accommodate import into SAS. SAS couldn’t deal with the NA strings.</li>
+<li>Added <em>filter</em> parameters to <code><a href="../reference/libname.html">libname()</a></code> and
+<code><a href="../reference/lib_load.html">lib_load()</a></code> functions. The filter parameter allows the user
+to specify which data from the library they want loaded into
+memory.</li>
+<li>Changed default “na” parameter on csv export to empty string instead
+of NA to accommodate import into SAS. SAS couldn’t deal with the NA
+strings.</li>
 <li>Fixed bug in dbf engine when outputting tibbles.</li>
-<li>Fixed bug in %eq% operator when comparing objects with different numbers of classes.</li>
-<li>Greatly improved performance of datastep, especially on grouped tibbles.</li>
+<li>Fixed bug in %eq% operator when comparing objects with different
+numbers of classes.</li>
+<li>Greatly improved performance of datastep, especially on grouped
+tibbles.</li>
 </ul>
 </div>
     <div id="libr-101" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.1">
 <a href="#libr-101" class="anchor"></a>libr 1.0.1<small> 2020-12-09 </small>
 </h1>
-<p>A package to create data libraries, data dictionaries, and the ability to perform a data step. The major functions are:</p>
+<p>A package to create data libraries, data dictionaries, and the
+ability to perform a data step. The major functions are:</p>
 <ul>
 <li>
 <code><a href="../reference/libname.html">libname()</a></code> function creates a data library</li>
@@ -231,18 +269,22 @@
 <li>
 <code><a href="../reference/datastep.html">datastep()</a></code> function steps through data row-by-row</li>
 <li>
-<code>%eq%</code> allows comparison of any two R objects without error</li>
+<code>%eq%</code> allows comparison of any two R objects without
+error</li>
 </ul>
-<p>The packages also contains a variety of functions to manipulate data libraries:</p>
+<p>The packages also contains a variety of functions to manipulate data
+libraries:</p>
 <ul>
 <li>
 <code><a href="../reference/lib_load.html">lib_load()</a></code>: Loads a library into the workspace</li>
 <li>
 <code><a href="../reference/lib_unload.html">lib_unload()</a></code>: Unloads a library from the workspace</li>
 <li>
-<code><a href="../reference/lib_sync.html">lib_sync()</a></code>: Synchronizes the workspace with the library list</li>
+<code><a href="../reference/lib_sync.html">lib_sync()</a></code>: Synchronizes the workspace with the library
+list</li>
 <li>
-<code><a href="../reference/lib_write.html">lib_write()</a></code>: Writes library data to the file system</li>
+<code><a href="../reference/lib_write.html">lib_write()</a></code>: Writes library data to the file
+system</li>
 <li>
 <code><a href="../reference/lib_add.html">lib_add()</a></code>: Adds data to a library</li>
 <li>
@@ -254,15 +296,19 @@
 <li>
 <code><a href="../reference/lib_delete.html">lib_delete()</a></code>: Deletes a data library</li>
 <li>
-<code><a href="../reference/lib_info.html">lib_info()</a></code>: Returns a data frame of information about the library</li>
+<code><a href="../reference/lib_info.html">lib_info()</a></code>: Returns a data frame of information about
+the library</li>
 <li>
 <code><a href="../reference/lib_path.html">lib_path()</a></code>: Returns the path of a data library</li>
 <li>
-<code><a href="../reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in bytes</li>
+<code><a href="../reference/lib_size.html">lib_size()</a></code>: Returns the size of the data library in
+bytes</li>
 <li>
-<code><a href="../reference/specs.html">specs()</a></code>: Create a collection of import specifications</li>
+<code><a href="../reference/specs.html">specs()</a></code>: Create a collection of import
+specifications</li>
 <li>
-<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import specification for a file</li>
+<code><a href="../reference/import_spec.html">import_spec()</a></code>: Define an import specification for a
+file</li>
 </ul>
 </div>
   </div>

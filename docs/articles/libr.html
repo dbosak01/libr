@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="libr_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="libr_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>libr</h1>
@@ -122,19 +122,26 @@
 
     
     
-<p>The <strong>libr</strong> package brings the concepts of data libraries, data dictionaries, and data steps to R.</p>
+<p>The <strong>libr</strong> package brings the concepts of data
+libraries, data dictionaries, and data steps to R.</p>
 <ul>
-<li>A <strong>data library</strong> is an object used to define and manage an entire directory of data files.<br>
+<li>A <strong>data library</strong> is an object used to define and
+manage an entire directory of data files.<br>
 </li>
-<li>A <strong>data dictionary</strong> is a data frame full of information about a data library, data frame, or tibble.</li>
-<li>A <strong>data step</strong> is a mechanism to perform row-by-row processing of data.</li>
+<li>A <strong>data dictionary</strong> is a data frame full of
+information about a data library, data frame, or tibble.</li>
+<li>A <strong>data step</strong> is a mechanism to perform row-by-row
+processing of data.</li>
 </ul>
-<p>These concepts have been available in SAS® software for decades. But they have not been available in R … until now!</p>
-<p>The <strong>libr</strong> package also includes an enhanced equality operator to make data comparisons more intuitive.</p>
+<p>These concepts have been available in SAS® software for decades. But
+they have not been available in R … until now!</p>
+<p>The <strong>libr</strong> package also includes an enhanced equality
+operator to make data comparisons more intuitive.</p>
 <div id="key-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#key-functions" class="anchor"></a>Key Functions</h3>
-<p>The above concepts are implemented in the <strong>libr</strong> package with four key functions. They are:</p>
+<p>The above concepts are implemented in the <strong>libr</strong>
+package with four key functions. They are:</p>
 <ul>
 <li>
 <code><a href="../reference/libname.html">libname()</a></code>: Creates a data library</li>
@@ -143,17 +150,25 @@
 <li>
 <code><a href="../reference/datastep.html">datastep()</a></code>: Performs row-by-row processing of data</li>
 <li>
-<code>%eq%</code>: An infix operator to check equality between objects</li>
+<code>%eq%</code>: An infix operator to check equality between
+objects</li>
 </ul>
 </div>
 <div id="how-to-use" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-to-use" class="anchor"></a>How to Use</h3>
-<p>Let’s look at some simple examples of each of the four functions above. These examples will be using some sample data. The sample data is included in the <strong>libr</strong> package, and also available for download <a href="https://github.com/dbosak01/libr/blob/master/inst/extdata/libr_data.zip">here</a>.</p>
+<p>Let’s look at some simple examples of each of the four functions
+above. These examples will be using some sample data. The sample data is
+included in the <strong>libr</strong> package, and also available for
+download <a href="https://github.com/dbosak01/libr/blob/master/inst/extdata/libr_data.zip">here</a>.</p>
 <div id="the-libname-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-libname-function" class="anchor"></a>The <code>libname()</code> Function</h4>
-<p>The <strong>libr</strong> <code><a href="../reference/libname.html">libname()</a></code> function is quite similar to the SAS® <code>libname</code> statement. The first parameter is the name of the library. The second parameter is a path to a directory the library will point to. The third parameter is the engine with which to read and write the data.</p>
+<p>The <strong>libr</strong> <code><a href="../reference/libname.html">libname()</a></code> function is quite
+similar to the SAS® <code>libname</code> statement. The first parameter
+is the name of the library. The second parameter is a path to a
+directory the library will point to. The third parameter is the engine
+with which to read and write the data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
 
@@ -162,7 +177,8 @@
 
 <span class="co"># Define data library</span>
 <span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">sdtm</span>, <span class="va">pkg</span>, <span class="st">"csv"</span><span class="op">)</span> </code></pre></div>
-<p>The <code><a href="../reference/libname.html">libname()</a></code> function above will send two types of information to the console:</p>
+<p>The <code><a href="../reference/libname.html">libname()</a></code> function above will send two types of
+information to the console:</p>
 <ul>
 <li>The column specifications for each data file imported</li>
 <li>A summary print-out of the library</li>
@@ -182,8 +198,12 @@
 7   SV       csv  685   10  69.9 Kb 2020-09-18 14:30:24
 8   VS       csv 3358   17   467 Kb 2020-09-18 14:30:24
 </code></pre>
-<p>The summary displays what type of library it is, where it is located, and what data (if any) is already in the library directory. In this case, there are eight ‘csv’ files available.</p>
-<p>For each of the eight files, the <code><a href="../reference/libname.html">libname()</a></code> function also displayed the column specifications used to import the data file. A column specification looks like this:</p>
+<p>The summary displays what type of library it is, where it is located,
+and what data (if any) is already in the library directory. In this
+case, there are eight ‘csv’ files available.</p>
+<p>For each of the eight files, the <code><a href="../reference/libname.html">libname()</a></code> function also
+displayed the column specifications used to import the data file. A
+column specification looks like this:</p>
 <pre><code>$VS
 
 -- Column specification ------------------------------------------
@@ -207,13 +227,31 @@ cols(
   VSDY = col_double()
 )
 </code></pre>
-<p>The column specification shows how the data was imported. Since ‘csv’ files do not contain well-defined data type information on each of the columns, the <code>libname</code> function has to guess at the data types. The column specification shows you what the guesses were. This is useful information. You should review these column specifications to see if the <code>libname</code> function guessed correctly. If it did not guess correctly, you can control the import data types by sending a <code><a href="../reference/specs.html">specs()</a></code> collection of <code><a href="../reference/import_spec.html">import_spec()</a></code> objects to the <code>import_specs</code> parameter on the <code><a href="../reference/libname.html">libname()</a></code> function. See the <code><a href="../reference/specs.html">specs()</a></code> documentation for an example and additional details.</p>
+<p>The column specification shows how the data was imported. Since ‘csv’
+files do not contain well-defined data type information on each of the
+columns, the <code>libname</code> function has to guess at the data
+types. The column specification shows you what the guesses were. This is
+useful information. You should review these column specifications to see
+if the <code>libname</code> function guessed correctly. If it did not
+guess correctly, you can control the import data types by sending a
+<code><a href="../reference/specs.html">specs()</a></code> collection of <code><a href="../reference/import_spec.html">import_spec()</a></code> objects to
+the <code>import_specs</code> parameter on the <code><a href="../reference/libname.html">libname()</a></code>
+function. See the <code><a href="../reference/specs.html">specs()</a></code> documentation for an example and
+additional details.</p>
 </div>
 <div id="the-lib_load-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-lib_load-function" class="anchor"></a>The <code>lib_load()</code> Function</h4>
-<p>Observe that there is difference between the SAS® <code>libname</code> statement and the <strong>libr</strong> <code><a href="../reference/libname.html">libname()</a></code> function. The difference is that after the SAS® <code>libname</code> statement is called, the data is immediately available to your code using two-level (&lt;library&gt;.&lt;dataset&gt;) syntax.</p>
-<p>With the <strong>libr</strong> function, on the other hand, the data is immediately available using list syntax on the library variable name. To get the two-level syntax, you first have to call the <code><a href="../reference/lib_load.html">lib_load()</a></code> function.</p>
+<p>Observe that there is difference between the SAS®
+<code>libname</code> statement and the <strong>libr</strong>
+<code><a href="../reference/libname.html">libname()</a></code> function. The difference is that after the SAS®
+<code>libname</code> statement is called, the data is immediately
+available to your code using two-level (&lt;library&gt;.&lt;dataset&gt;)
+syntax.</p>
+<p>With the <strong>libr</strong> function, on the other hand, the data
+is immediately available using list syntax on the library variable name.
+To get the two-level syntax, you first have to call the
+<code><a href="../reference/lib_load.html">lib_load()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">sdtm</span><span class="op">)</span>
@@ -230,9 +268,17 @@ cols(
 <span class="co"># 6   IE       csv    2   14    13 Kb 2020-09-18 14:30:23</span>
 <span class="co"># 7   SV       csv  685   10  69.9 Kb 2020-09-18 14:30:24</span>
 <span class="co"># 8   VS       csv 3358   17   467 Kb 2020-09-18 14:30:24</span></code></pre></div>
-<p>Notice on the console printout that the library is now “loaded”. That means the data has been loaded into the workspace, and is available using two-level syntax. If you are working in <strong>RStudio</strong>, the environment pane will now show all the datasets available in the library.</p>
+<p>Notice on the console printout that the library is now “loaded”. That
+means the data has been loaded into the workspace, and is available
+using two-level syntax. If you are working in <strong>RStudio</strong>,
+the environment pane will now show all the datasets available in the
+library.</p>
 <p><img src="../man/images/lib_load.png"></p>
-<p>At this point, you can work with your data very much the same way as you would in SAS®. You can pass these datasets into statistical functions, or manipulate them with <strong>dplyr</strong> functions. Note that you can also work with individual variables on the datasets using dollar sign (“$”) syntax.</p>
+<p>At this point, you can work with your data very much the same way as
+you would in SAS®. You can pass these datasets into statistical
+functions, or manipulate them with <strong>dplyr</strong> functions.
+Note that you can also work with individual variables on the datasets
+using dollar sign (“$”) syntax.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Get total number of records</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sdtm.DM</span><span class="op">)</span>
@@ -242,14 +288,26 @@ cols(
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">sdtm.DM</span><span class="op">$</span><span class="va">ARM</span><span class="op">)</span>
 <span class="co"># ARM A          ARM B          ARM C          ARM D SCREEN FAILURE </span>
 <span class="co"># 20             21             21             23              2 </span></code></pre></div>
-<p>The datasets will be available in the workspace for the length of your session. If you wish to unload them from the workspace, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code> function. See the <code><a href="../reference/lib_load.html">lib_load()</a></code> and <code><a href="../reference/lib_unload.html">lib_unload()</a></code> documentation for additional information on these functions.</p>
-<p>To see more examples of the <strong>libr</strong> data management functions, refer to the articles on <a href="libr-basics.html">Basic Library Operations</a> and <a href="libr-management.html">Library Management</a>.</p>
+<p>The datasets will be available in the workspace for the length of
+your session. If you wish to unload them from the workspace, call the
+<code><a href="../reference/lib_unload.html">lib_unload()</a></code> function. See the <code><a href="../reference/lib_load.html">lib_load()</a></code> and
+<code><a href="../reference/lib_unload.html">lib_unload()</a></code> documentation for additional information on
+these functions.</p>
+<p>To see more examples of the <strong>libr</strong> data management
+functions, refer to the articles on <a href="libr-basics.html">Basic
+Library Operations</a> and <a href="libr-management.html">Library
+Management</a>.</p>
 </div>
 <div id="the-dictionary-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-dictionary-function" class="anchor"></a>The <code>dictionary()</code> Function</h4>
-<p>Once you have a library defined, you may want to examine the column attributes for the datasets in that library. Examining those column attributes can be accomplished with the <code><a href="../reference/dictionary.html">dictionary()</a></code> function. The <code><a href="../reference/dictionary.html">dictionary()</a></code> function returns a tibble of information about the data in the library.</p>
-<p>Continuing from the example above, let’s look at the dictionary for the ‘sdtm’ library created previously.</p>
+<p>Once you have a library defined, you may want to examine the column
+attributes for the datasets in that library. Examining those column
+attributes can be accomplished with the <code><a href="../reference/dictionary.html">dictionary()</a></code>
+function. The <code><a href="../reference/dictionary.html">dictionary()</a></code> function returns a tibble of
+information about the data in the library.</p>
+<p>Continuing from the example above, let’s look at the dictionary for
+the ‘sdtm’ library created previously.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">sdtm</span><span class="op">)</span>
 <span class="co"># # A tibble: 130 x 10</span>
@@ -266,14 +324,26 @@ cols(
 <span class="co">#  9 AE    AEPTCD  numeric   NA    NA          NA        NA NA        150     0</span>
 <span class="co"># 10 AE    AEHLT   character NA    NA          NA        63 NA        150     0</span>
 <span class="co"># # ... with 120 more rows</span></code></pre></div>
-<p>The resulting dictionary table shows the name of the dataset, the column name, and some interesting attributes related to each column. As you can see, the <strong>libr</strong> dictionary table is overall quite similar to a SAS® dictionary table. See the <code><a href="../reference/dictionary.html">dictionary()</a></code> function documentation for more information.</p>
+<p>The resulting dictionary table shows the name of the dataset, the
+column name, and some interesting attributes related to each column. As
+you can see, the <strong>libr</strong> dictionary table is overall quite
+similar to a SAS® dictionary table. See the <code><a href="../reference/dictionary.html">dictionary()</a></code>
+function documentation for more information.</p>
 </div>
 </div>
 <div id="the-datastep-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-datastep-function" class="anchor"></a>The <code>datastep()</code> Function</h3>
-<p>People with experience in SAS® software know that it is sometimes advantageous to process row-by-row. In SAS®, row-by-row processing done with a data step. The data step is one of the most fundamental operations when working in SAS®.</p>
-<p>The <strong>libr</strong> package offers a <code><a href="../reference/datastep.html">datastep()</a></code> function that simulates this style of row-by-row processing. The function includes several of the most basic parameters available to the SAS® datastep: keep, drop, rename, retain, and by. Here is a simple example, again using the data from the library already defined above:</p>
+<p>People with experience in SAS® software know that it is sometimes
+advantageous to process row-by-row. In SAS®, row-by-row processing done
+with a data step. The data step is one of the most fundamental
+operations when working in SAS®.</p>
+<p>The <strong>libr</strong> package offers a <code><a href="../reference/datastep.html">datastep()</a></code>
+function that simulates this style of row-by-row processing. The
+function includes several of the most basic parameters available to the
+SAS® datastep: keep, drop, rename, retain, and by. Here is a simple
+example, again using the data from the library already defined
+above:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">age_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">sdtm.DM</span>, 
                        keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"AGE"</span>, <span class="st">"AGEG"</span><span class="op">)</span>, <span class="op">{</span> 
@@ -303,13 +373,39 @@ cols(
 <span class="co">#  9 ABC-01-113    74 60+     </span>
 <span class="co"># 10 ABC-01-114    72 60+     </span>
 <span class="co"># # ... with 77 more rows</span></code></pre></div>
-<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those variables specified on the <code>keep</code> parameter. The data step itself is passed within the curly braces. You can put any number of conditional statements and assignments inside the curly braces, just like a SAS® data step. Also like a SAS® data step, you do not need to ‘declare’ new variables. Any name not identified as an R function name is assumed to be a new variable, and will be created automatically on the input data.</p>
-<p>The datastep function also supports “first.” and “last.” functionality through use of the <code>by</code> parameter. See additional examples on the <code><a href="../reference/datastep.html">datastep()</a></code> help page and in the data step <a href="libr-datastep.html">article</a>.</p>
+<p>Notice that the <code><a href="../reference/datastep.html">datastep()</a></code> function kept only those
+variables specified on the <code>keep</code> parameter. The data step
+itself is passed within the curly braces. You can put any number of
+conditional statements and assignments inside the curly braces, just
+like a SAS® data step. Also like a SAS® data step, you do not need to
+‘declare’ new variables. Any name not identified as an R function name
+is assumed to be a new variable, and will be created automatically on
+the input data.</p>
+<p>The datastep function also supports “first.” and “last.”
+functionality through use of the <code>by</code> parameter. See
+additional examples on the <code><a href="../reference/datastep.html">datastep()</a></code> help page and in the
+data step <a href="libr-datastep.html">article</a>.</p>
 <div id="the-eq-function" class="section level4">
 <h4 class="hasAnchor">
 <a href="#the-eq-function" class="anchor"></a>The %eq% Function</h4>
-<p>In Base R, there are two comparison functions: The double-equal (==) infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness of the infix operator is that it will not test for NULL or NA values. The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare everything, including attributes assigned to the objects you are comparing. If there is even a small difference in one of these attributes, the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function will return FALSE. This behavior is inconvenient, especially when working with <strong>dplyr</strong> functions, as these functions assign many attributes to the datasets they are manipulating.</p>
-<p>The <code>%eq%</code> function contained in the <strong>libr</strong> packages attempts to provide a more intuitive comparison. The <code>%eq%</code> is an infix operator that will test for NA and NULL values, and will ignore attributes in any data comparison. These qualities make it more suitable for the types of comparisons normally encountered when working with data. The suitability of the <code>%eq%</code> operator can be illustrated by examining these methods side-by-side on the same input data.</p>
+<p>In Base R, there are two comparison functions: The double-equal (==)
+infix operator, and the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function. The weakness
+of the infix operator is that it will not test for NULL or NA values.
+The weakness of the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function is it will compare
+everything, including attributes assigned to the objects you are
+comparing. If there is even a small difference in one of these
+attributes, the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function will return FALSE.
+This behavior is inconvenient, especially when working with
+<strong>dplyr</strong> functions, as these functions assign many
+attributes to the datasets they are manipulating.</p>
+<p>The <code>%eq%</code> function contained in the <strong>libr</strong>
+packages attempts to provide a more intuitive comparison. The
+<code>%eq%</code> is an infix operator that will test for NA and NULL
+values, and will ignore attributes in any data comparison. These
+qualities make it more suitable for the types of comparisons normally
+encountered when working with data. The suitability of the
+<code>%eq%</code> operator can be illustrated by examining these methods
+side-by-side on the same input data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set up input data</span>
 <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>
@@ -326,14 +422,24 @@ cols(
 <span class="va">v1</span> <span class="op">==</span> <span class="va">v3</span>              <span class="co"># TRUE TRUE NA</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v3</span><span class="op">)</span>     <span class="co"># FALSE</span>
 <span class="va">v1</span> <span class="op"><a href="../reference/%eq%.html">%eq%</a></span> <span class="va">v3</span>            <span class="co"># FALSE</span></code></pre></div>
-<p>Note the different results returned by the three different comparison functions. The <code>%eq%</code> operator is similar to the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single TRUE or FALSE value. The difference is that it ignored the “label” attribute assigned to vector <em>v2</em>, and only looked at the data values. Since it saw all the data values were equal, the <code>%eq%</code> operator returned TRUE, while the <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
-<p>You can see some more examples of the <code>%eq%</code> operator in the help documentation, or in the <a href="libr-eq.html">Enhanced Equality</a> article.</p>
+<p>Note the different results returned by the three different comparison
+functions. The <code>%eq%</code> operator is similar to the
+<code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function in that it will always return a single
+TRUE or FALSE value. The difference is that it ignored the “label”
+attribute assigned to vector <em>v2</em>, and only looked at the data
+values. Since it saw all the data values were equal, the
+<code>%eq%</code> operator returned TRUE, while the
+<code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> function returned FALSE.</p>
+<p>You can see some more examples of the <code>%eq%</code> operator in
+the help documentation, or in the <a href="libr-eq.html">Enhanced
+Equality</a> article.</p>
 </div>
 </div>
 <div id="next-steps" class="section level3">
 <h3 class="hasAnchor">
 <a href="#next-steps" class="anchor"></a>Next Steps</h3>
-<p>For next steps, please review the examples provided in the vignette articles. Those articles include:</p>
+<p>For next steps, please review the examples provided in the vignette
+articles. Those articles include:</p>
 <ul>
 <li><a href="libr-basics.html">Basic Library Operations</a></li>
 <li><a href="libr-management.html">Library Management</a></li>

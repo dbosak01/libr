@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Delete a Data Library — lib_delete • libr</title>
+<title>Export a Data Library — lib_export • libr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,15 +48,18 @@
   
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Delete a Data Library — lib_delete" />
-<meta property="og:description" content="The lib_delete function deletes a data library from
-the file system and from memory.  All data files associated with the library
-and the specified engine will be deleted.
-If other files exist in the library directory, they will not be affected
-by the delete operation.
-The directory that contains the data will also
-not be affected by the delete operation.  To delete the data directory, 
-use the unlink function or other packaged functions." />
+<meta property="og:title" content="Export a Data Library — lib_export" />
+<meta property="og:description" content="The lib_export function exports a data library to
+another library with a different directory and file format.  The 
+function accepts a library to export, the new library name,
+ a destination path, and an engine name.  
+If the destination 
+path does not exist, the function will attempt to create it.
+Note that
+the export will result in the current data in memory written to the new
+destination directory.  If the library is loaded into the workspace, 
+the workspace version will be considered the most current version, and
+that is the version that will be exported." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -165,40 +168,76 @@ use the unlink function or other packaged functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Delete a Data Library</h1>
+    <h1>Export a Data Library</h1>
     <small class="dont-index">Source: <a href='https://github.com/dbosak01/libr/blob/master/R/libname.R'><code>R/libname.R</code></a></small>
-    <div class="hidden name"><code>lib_delete.Rd</code></div>
+    <div class="hidden name"><code>lib_export.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>lib_delete</code> function deletes a data library from
-the file system and from memory.  All data files associated with the library
-and the specified engine will be deleted.
-If other files exist in the library directory, they will not be affected
-by the delete operation.</p>
-<p>The directory that contains the data will also
-not be affected by the delete operation.  To delete the data directory, 
-use the <code><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></code> function or other packaged functions.</p>
+    <p>The <code>lib_export</code> function exports a data library to
+another library with a different directory and file format.  The 
+function accepts a library to export, the new library name,
+ a destination path, and an engine name.  
+If the destination 
+path does not exist, the function will attempt to create it.</p>
+<p>Note that
+the export will result in the current data in memory written to the new
+destination directory.  If the library is loaded into the workspace, 
+the workspace version will be considered the most current version, and
+that is the version that will be exported.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_delete</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>lib_export</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>nm</span>, <span class='va'>directory_path</span>, <span class='va'>engine</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span>, standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The data library to delete.</p></td>
+      <td><p>The library to export.</p></td>
+    </tr>
+    <tr>
+      <th>nm</th>
+      <td><p>The variable name to hold the new library.
+The parameter will assume non-standard
+(unquoted) evaluation unless the <code>standard_eval</code> parameter is set
+to TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>directory_path</th>
+      <td><p>The path to export the library to.</p></td>
+    </tr>
+    <tr>
+      <th>engine</th>
+      <td><p>The name of the engine to use for the exported data.
+The engine name corresponds to the standard file extension 
+of the data file type. Valid values are 'rds', 'Rdata', 'sas7bdat', 
+'xpt', 'xls', 'xlsx', 'dbf', and 'csv'.</p></td>
+    </tr>
+    <tr>
+      <th>filter</th>
+      <td><p>A filter string to limit which datasets are exported. 
+The filter parameter accepts wildcards.</p></td>
+    </tr>
+    <tr>
+      <th>standard_eval</th>
+      <td><p>A TRUE or FALSE value which indicates whether to 
+use standard (quoted) or non-standard (unquoted) evaluation on the 
+<code>nm</code> parameter. Default is FALSE.  Use this parameter if you want to 
+pass the target library name in a variable.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The newly exported library.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other lib: 
 <code><a href='is.lib.html'>is.lib</a>()</code>,
 <code><a href='lib_add.html'>lib_add</a>()</code>,
 <code><a href='lib_copy.html'>lib_copy</a>()</code>,
-<code><a href='lib_export.html'>lib_export</a>()</code>,
+<code><a href='lib_delete.html'>lib_delete</a>()</code>,
 <code><a href='lib_info.html'>lib_info</a>()</code>,
 <code><a href='lib_load.html'>lib_load</a>()</code>,
 <code><a href='lib_path.html'>lib_path</a>()</code>,
@@ -216,35 +255,24 @@ use the <code><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></code> fun
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
+<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>tmp</span><span class='op'>)</span>
 
-<span class='co'># Add data to library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span><span class='op'>)</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
+<span class='co'># Add dat to library</span>
+<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>mtcars</span>, <span class='va'>iris</span><span class='op'>)</span>
 
-<span class='co'># Load library</span>
-<span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine workspace</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "dat" "dat.iris" "dat.mtcars" "tmp"</span>
-
-<span class='co'># Examine library</span>
-<span class='va'>dat</span>
-<span class='co'># library 'dat': 2 items</span>
-<span class='co'># - attributes: not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
+<span class='co'># Export dat1 to dat2</span>
+<span class='fu'>lib_export</span><span class='op'>(</span><span class='va'>dat1</span>, <span class='va'>dat2</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"export"</span><span class='op'>)</span>, <span class='st'>"rdata"</span><span class='op'>)</span>
+<span class='co'># library 'dat2': 2 items</span>
+<span class='co'># - attributes: rdata not loaded</span>
+<span class='co'># - path: C:\Users\User\AppData\Local\Temp\Rtmp0Sq3kt/export</span>
 <span class='co'># - items:</span>
 <span class='co'>#     Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 21:18:17</span>
-<span class='co'># 2   iris       rds  150    5 7.5 Kb 2020-11-05 21:18:17</span>
+<span class='co'># 1 mtcars     rdata   32   11 8.1 Kb 2022-06-23 00:10:52</span>
+<span class='co'># 2   iris     rdata  150    5 8.1 Kb 2022-06-23 00:10:52</span>
 
-<span class='co'># Delete library</span>
-<span class='fu'>lib_delete</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'>#' # Examine workspace again</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "tmp"</span>
+<span class='co'># Clean up</span>
+<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>)</span>
+<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat2</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

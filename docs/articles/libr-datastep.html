@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="libr-datastep_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="libr-datastep_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Data Step Operations</h1>
@@ -122,7 +122,13 @@
 
     
     
-<p>Normally, R processes data column-by-column. The data step allows you to process data row-by-row. Row-by-row processing of data is useful when you have related columns, and wish to perform conditional logic on those columns. The <code><a href="../reference/datastep.html">datastep()</a></code> function allows you to realize this style of data processing. It is particularly advantageous when you wish to perform deeply nested conditional logic. It is also very useful for by-group processing.</p>
+<p>Normally, R processes data column-by-column. The data step allows you
+to process data row-by-row. Row-by-row processing of data is useful when
+you have related columns, and wish to perform conditional logic on those
+columns. The <code><a href="../reference/datastep.html">datastep()</a></code> function allows you to realize this
+style of data processing. It is particularly advantageous when you wish
+to perform deeply nested conditional logic. It is also very useful for
+by-group processing.</p>
 <div id="example-1-simple-data-step" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-1-simple-data-step" class="anchor"></a>Example 1: Simple Data Step</h4>
@@ -162,7 +168,12 @@
 <div id="keep-drop-and-rename" class="section level3">
 <h3 class="hasAnchor">
 <a href="#keep-drop-and-rename" class="anchor"></a>Keep, Drop, and Rename</h3>
-<p>The data step has parameters to perform basic shaping of the resulting data frame. These parameters are ‘keep’, ‘drop’, and ‘rename’. For example, the above data step could have been performed by sending all columns into the data step, and keeping only the desired columns. Using the <code>keep</code> parameter also allows you to order the resulting columns.</p>
+<p>The data step has parameters to perform basic shaping of the
+resulting data frame. These parameters are ‘keep’, ‘drop’, and ‘rename’.
+For example, the above data step could have been performed by sending
+all columns into the data step, and keeping only the desired columns.
+Using the <code>keep</code> parameter also allows you to order the
+resulting columns.</p>
 <div id="example-2-keeping-data-step-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-2-keeping-data-step-variables" class="anchor"></a>Example 2: Keeping Data Step Variables</h4>
@@ -202,7 +213,10 @@
 <div id="the-retain-parameter" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-retain-parameter" class="anchor"></a>The Retain Parameter</h3>
-<p>The retain parameter allows you to define variables that will be seeded with the value from the previous step. The retain option is useful for creating cumulative values or for performing conditions based on the value of the previous row.</p>
+<p>The retain parameter allows you to define variables that will be
+seeded with the value from the previous step. The retain option is
+useful for creating cumulative values or for performing conditions based
+on the value of the previous row.</p>
 <div id="example-3-drop-retain-and-rename-parameters" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-3-drop-retain-and-rename-parameters" class="anchor"></a>Example 3: Drop, Retain, and Rename Parameters</h4>
@@ -237,7 +251,15 @@
 <div id="by-group-processing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#by-group-processing" class="anchor"></a>By Group Processing</h3>
-<p>The <code><a href="../reference/datastep.html">datastep()</a></code> function also has the capabilities of performing by-group processing. A by-group is accomplished using the <code>by</code> parameter, and passing a vector of column names that define the group. Once a by-group is defined, the <code>first.</code> and <code>last.</code> automatic variables become active, which allow you to identify the boundaries between groups. Note that, by default, your data must be sorted properly before sending it into the data step. To turn the sort check off, set the <code>sort_check</code> parameter to FALSE.</p>
+<p>The <code><a href="../reference/datastep.html">datastep()</a></code> function also has the capabilities of
+performing by-group processing. A by-group is accomplished using the
+<code>by</code> parameter, and passing a vector of column names that
+define the group. Once a by-group is defined, the <code>first.</code>
+and <code>last.</code> automatic variables become active, which allow
+you to identify the boundaries between groups. Note that, by default,
+your data must be sorted properly before sending it into the data step.
+To turn the sort check off, set the <code>sort_check</code> parameter to
+FALSE.</p>
 <div id="example-4-by-groups" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-4-by-groups" class="anchor"></a>Example 4: By Groups</h4>
@@ -277,7 +299,14 @@
 <div id="using-summary-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-summary-functions" class="anchor"></a>Using Summary Functions</h3>
-<p>There may be times when you want to combine row-by-row conditional processing with column-by-column vector operations. For example, let’s say you want to calculate a mean and then perform conditional processing on that mean. This situation can be handled using the <code>calculate</code> parameter on the <code><a href="../reference/datastep.html">datastep()</a></code> function. The function will execute the <code>calculate</code> block first, add any assigned variables to the data frame, and then execute the data step. Below is an example of such a scenario:</p>
+<p>There may be times when you want to combine row-by-row conditional
+processing with column-by-column vector operations. For example, let’s
+say you want to calculate a mean and then perform conditional processing
+on that mean. This situation can be handled using the
+<code>calculate</code> parameter on the <code><a href="../reference/datastep.html">datastep()</a></code>
+function. The function will execute the <code>calculate</code> block
+first, add any assigned variables to the data frame, and then execute
+the data step. Below is an example of such a scenario:</p>
 <div id="example-5-calculate-block" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-5-calculate-block" class="anchor"></a>Example 5: Calculate Block</h4>
@@ -315,7 +344,14 @@
 <h3 class="hasAnchor">
 <a href="#data-steps-with-dplyr" class="anchor"></a>Data Steps with <code>dplyr</code>
 </h3>
-<p>Note that the <code><a href="../reference/datastep.html">datastep()</a></code> function is pipe-friendly, and can be combined with <strong>dplyr</strong> functions in a data pipeline. Also note that the <code><a href="../reference/datastep.html">datastep()</a></code> function will recognize any group attributes added by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> function. Therefore, within a <strong>dplyr</strong> pipeline, it is not necessary to use any <code>datastep</code> parameters. The following example recreates the above data frame from Example 5, but with a <strong>dplyr</strong> pipeline.</p>
+<p>Note that the <code><a href="../reference/datastep.html">datastep()</a></code> function is pipe-friendly, and
+can be combined with <strong>dplyr</strong> functions in a data
+pipeline. Also note that the <code><a href="../reference/datastep.html">datastep()</a></code> function will
+recognize any group attributes added by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>
+function. Therefore, within a <strong>dplyr</strong> pipeline, it is not
+necessary to use any <code>datastep</code> parameters. The following
+example recreates the above data frame from Example 5, but with a
+<strong>dplyr</strong> pipeline.</p>
 <div id="example-6-data-pipeline" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-6-data-pipeline" class="anchor"></a>Example 6: Data Pipeline</h4>
@@ -355,8 +391,15 @@
 <div id="data-attributes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-attributes" class="anchor"></a>Data Attributes</h3>
-<p>The <strong>libr</strong> package recognizes several useful data attributes that are not normally recognized by other R functions. For example, it is very convenient to assign <em>label</em> and <em>description</em> attributes to your columns, so other people can understand what data the columns contain.</p>
-<p>For this reason, the <code><a href="../reference/datastep.html">datastep()</a></code> function provides an <em>attrib</em> parameter that allows you to supply such attributes as part of a data step. Attributes are assigned with a named list and the <code><a href="../reference/dsattr.html">dsattr()</a></code> object.</p>
+<p>The <strong>libr</strong> package recognizes several useful data
+attributes that are not normally recognized by other R functions. For
+example, it is very convenient to assign <em>label</em> and
+<em>description</em> attributes to your columns, so other people can
+understand what data the columns contain.</p>
+<p>For this reason, the <code><a href="../reference/datastep.html">datastep()</a></code> function provides an
+<em>attrib</em> parameter that allows you to supply such attributes as
+part of a data step. Attributes are assigned with a named list and the
+<code><a href="../reference/dsattr.html">dsattr()</a></code> object.</p>
 <div id="example-7-attributes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-7-attributes" class="anchor"></a>Example 7: Attributes</h4>
@@ -391,10 +434,18 @@
 <div id="data-step-array" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-step-array" class="anchor"></a>Data Step Array</h3>
-<p>As mentioned previously, R typically operates in a column-wise manner. That is, R processes data column-by-column. But what if you need to get a sum or mean across a row?</p>
-<p>This situation is what led to the development of the <strong>data step array</strong>. The data step array allows you to define a list of columns and<br>
-iterate over the list inside a data step. Data step arrays are defined with the <em>arrays</em> parameter, which accepts a named list of <code><a href="../reference/dsarray.html">dsarray()</a></code> objects.</p>
-<p>To see the array in action, we’ll use the <em>AirPassengers</em> sample data. This data shows international airline passengers by month between 1949 and 1960. The data looks like this:</p>
+<p>As mentioned previously, R typically operates in a column-wise
+manner. That is, R processes data column-by-column. But what if you need
+to get a sum or mean across a row?</p>
+<p>This situation is what led to the development of the <strong>data
+step array</strong>. The data step array allows you to define a list of
+columns and<br>
+iterate over the list inside a data step. Data step arrays are defined
+with the <em>arrays</em> parameter, which accepts a named list of
+<code><a href="../reference/dsarray.html">dsarray()</a></code> objects.</p>
+<p>To see the array in action, we’ll use the <em>AirPassengers</em>
+sample data. This data shows international airline passengers by month
+between 1949 and 1960. The data looks like this:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AirPassengers</span>
 <span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</span>
@@ -410,7 +461,11 @@ iterate over the list inside a data step. Data step arrays are defined with the 
 <span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337</span>
 <span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405</span>
 <span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432</span></code></pre></div>
-<p>This example illustrates how to create row totals, row means, and find the top month using a data step array. The array has an indexer to extract values. You can use the indexer to extract a single value or a subset of values. An empty indexer will return all the values in the array.</p>
+<p>This example illustrates how to create row totals, row means, and
+find the top month using a data step array. The array has an indexer to
+extract values. You can use the indexer to extract a single value or a
+subset of values. An empty indexer will return all the values in the
+array.</p>
 <div id="example-8-using-a-data-step-array" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-8-using-a-data-step-array" class="anchor"></a>Example 8: Using a Data Step Array</h4>

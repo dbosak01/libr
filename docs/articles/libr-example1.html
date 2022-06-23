@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="libr-example1_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="libr-example1_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Complete Example 1</h1>
@@ -125,8 +125,18 @@
 <div id="program" class="section level2">
 <h2 class="hasAnchor">
 <a href="#program" class="anchor"></a>Program</h2>
-<p>The previous examples in the <strong>libr</strong> documentation were intentionally simplified to focus on the workings of a particular function. It is helpful, however, to also view <strong>libr</strong> functions in the context of a complete program. The following example shows a complete program. The example illustrates how <strong>libr</strong> functions work together, and interact with <strong>tidyverse</strong> and <strong>sassy</strong> functions to create a report.</p>
-<p>The data for this example has been included in the <strong>libr</strong> package as an external data file. It may be accessed using the <code><a href="https://rdrr.io/r/base/system.file.html">system.file()</a></code> function as shown below, or downloaded directly from the <strong>libr</strong> GitHub site <a href="https://raw.githubusercontent.com/dbosak01/libr/master/inst/extdata/DM.csv">here</a></p>
+<p>The previous examples in the <strong>libr</strong> documentation were
+intentionally simplified to focus on the workings of a particular
+function. It is helpful, however, to also view <strong>libr</strong>
+functions in the context of a complete program. The following example
+shows a complete program. The example illustrates how
+<strong>libr</strong> functions work together, and interact with
+<strong>tidyverse</strong> and <strong>sassy</strong> functions to
+create a report.</p>
+<p>The data for this example has been included in the
+<strong>libr</strong> package as an external data file. It may be
+accessed using the <code><a href="https://rdrr.io/r/base/system.file.html">system.file()</a></code> function as shown below,
+or downloaded directly from the <strong>libr</strong> GitHub site <a href="https://raw.githubusercontent.com/dbosak01/libr/master/inst/extdata/DM.csv">here</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-sassy.org">sassy</a></span><span class="op">)</span>

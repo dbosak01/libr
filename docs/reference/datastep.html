@@ -86,7 +86,7 @@ by-group processing, and perform row-wise or column-wise calculations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@ by-group processing, and perform row-wise or column-wise calculations." />
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -186,7 +186,9 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
   retain <span class='op'>=</span> <span class='cn'>NULL</span>,
   attrib <span class='op'>=</span> <span class='cn'>NULL</span>,
   arrays <span class='op'>=</span> <span class='cn'>NULL</span>,
-  sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>
+  sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  format <span class='op'>=</span> <span class='cn'>NULL</span>,
+  label <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -281,6 +283,15 @@ is TRUE.  Turn the sort check off if you want to perform by-group
 processing on unsorted data, or data that is not sorted according
 to the by-group.</p></td>
     </tr>
+    <tr>
+      <th>format</th>
+      <td><p>A named list of formats to assign to the output data
+frame.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>A named list of labels to assign to the output data frame.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -312,6 +323,7 @@ be accessed at any point within the data step:</p><ul>
 <li><p><strong>n.</strong>: Contains the row number.</p></li>
 <li><p><strong>first.</strong>: Indicates the beginning of a by-group.</p></li>
 <li><p><strong>last.</strong>: Indicates the end of a by-group.</p></li>
+<li><p><strong>output</strong>: Specifies which rows to include in the output data</p></li>
 </ul><p>Automatic variables will be dropped from the data frame at the end
 of the data step.  If you wish to keep the automatic variable values,
 assign the automatic variable to a new variable and keep that variable.</p>
@@ -330,6 +342,9 @@ see the <code><a href='dsattr.html'>dsattr</a></code> documentation.</p>
 <p>It should be mentioned  that the <code>dsattr</code> object is not required.  
 You can also set attributes with a name and a default value.  
 The default value can be any valid data value, such as a number or string.</p>
+<p>The label and format attributes may also be set with the 'label' and 
+'format' parameters. These parameters accept a named list with the 
+labels or formats, and will be assigned to the output data frame.</p>
     <h2 class="hasAnchor" id="optional-parameters"><a class="anchor" href="#optional-parameters"></a>Optional Parameters</h2>
 
     
@@ -378,6 +393,15 @@ a list of columns.  You can use a <code>for</code> loop to iterate over the
 step arrays allow to you to perform row-wise calculations. 
 For instance, you can calculate 
 a sum or mean by row for the variables in your array.</p>
+    <h2 class="hasAnchor" id="output-variable"><a class="anchor" href="#output-variable"></a>Output variable</h2>
+
+    
+
+<p>The datastep supports an `output` variable that allows you to
+control which rows are output from the `datastep()` function.  
+To use the output
+variable, simply set `output &lt;- TRUE` for those rows you wish 
+retained on the resulting data.</p>
     <h2 class="hasAnchor" id="output-column-order"><a class="anchor" href="#output-column-order"></a>Output Column Order</h2>
 
     
@@ -612,6 +636,22 @@ the <code><a href='dictionary.html'>dictionary</a></code> function to create a d
 <span class='co'># 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0</span>
 <span class='co'># 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0</span>
 <span class='co'># 8 df    Best   character Best Quarter NA          NA         2 NA          3     0</span>
+
+<span class='co'>#' # Example #7: label parameter, format parameter, and output() function</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span>, 
+               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"wt"</span><span class='op'>)</span>, 
+               label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cyl <span class='op'>=</span> <span class='st'>"Cylinders"</span>, wt <span class='op'>=</span> <span class='st'>"Weight"</span><span class='op'>)</span>, 
+               format <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cyl <span class='op'>=</span> <span class='st'>"%1.1f"</span>, wt <span class='op'>=</span> <span class='st'>"%1.1f"</span><span class='op'>)</span>, <span class='op'>{</span>
+                 
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>8</span><span class='op'>)</span>
+    <span class='va'>output</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
+                 
+<span class='op'>}</span><span class='op'>)</span>
+
+<span class='va'>df</span>
+
+<span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
+
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
   <a href="../articles/libr.html">Get started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="libr-basics_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="libr-basics_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Basic Library Operations</h1>
@@ -122,22 +122,52 @@
 
     
     
-<p>The main motivation for developing the <strong>libr</strong> package is to create and use data libraries and data dictionaries. These concepts are useful when dealing with sets of related data files. The <code><a href="../reference/libname.html">libname()</a></code> function allows you to define a library for an entire directory of data files. The library can then be manipulated as a whole using the <code>lib_*</code> functions in the <strong>libr</strong> package.</p>
+<p>The main motivation for developing the <strong>libr</strong> package
+is to create and use data libraries and data dictionaries. These
+concepts are useful when dealing with sets of related data files. The
+<code><a href="../reference/libname.html">libname()</a></code> function allows you to define a library for an
+entire directory of data files. The library can then be manipulated as a
+whole using the <code>lib_*</code> functions in the
+<strong>libr</strong> package.</p>
 <div id="basic-library-operations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#basic-library-operations" class="anchor"></a>Basic Library Operations</h3>
-<p>There are four main <strong>libr</strong> functions for creating and using a data library:</p>
+<p>There are four main <strong>libr</strong> functions for creating and
+using a data library:</p>
 <ul>
 <li><code><a href="../reference/libname.html">libname()</a></code></li>
 <li><code><a href="../reference/lib_load.html">lib_load()</a></code></li>
 <li><code><a href="../reference/lib_unload.html">lib_unload()</a></code></li>
 <li><code><a href="../reference/lib_write.html">lib_write()</a></code></li>
 </ul>
-<p>The <code><a href="../reference/libname.html">libname()</a></code> function creates a data library. The function has parameters for the library name and a directory to associate it with. If the directory has existing data files, those data files will be automatically loaded into the library. Once in the library, the data can be accessed using list syntax.</p>
-<p>You may create a data library for several different types of files: ‘rds’, ‘csv’, ‘xlsx’, ‘xls’, ‘sas7bdat’, ‘xpt’, and ‘dbf’. The type of library is defined using the <code>engine</code> parameter on the <code><a href="../reference/libname.html">libname()</a></code> function. The default data engine is ‘rds’. The data engines will attempt to identify the correct data type for each column of data. You may also control the data type of the columns using the <code>import_specs</code> parameter and the <code><a href="../reference/specs.html">specs()</a></code> and <code><a href="../reference/import_spec.html">import_spec()</a></code> functions.</p>
-<p>If you prefer to access the data via the workspace, call the <code><a href="../reference/lib_load.html">lib_load()</a></code> function on the library. This function will load the library data into the parent frame, where it can be accessed using a two-level (&lt;library&gt;.&lt;dataset&gt;) name.</p>
-<p>When you are done with the data, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code> function to remove the data from the parent frame and put it back in the library list. To write any added or modified data to disk, call the <code><a href="../reference/lib_write.html">lib_write()</a></code> function. The <code><a href="../reference/lib_write.html">lib_write()</a></code> function will only write data that has changed since the last write.</p>
-<p>The following example will illustrate some basic functionality of the <strong>libr</strong> package regarding the creation of libnames and use of dictionaries. The example first places some sample data in a temp directory for illustration purposes. Then the example creates a libname from the temp directory, loads it into memory, adds data to it, and then unloads and writes everything to disk:</p>
+<p>The <code><a href="../reference/libname.html">libname()</a></code> function creates a data library. The
+function has parameters for the library name and a directory to
+associate it with. If the directory has existing data files, those data
+files will be automatically loaded into the library. Once in the
+library, the data can be accessed using list syntax.</p>
+<p>You may create a data library for several different types of files:
+‘rds’, ‘csv’, ‘xlsx’, ‘xls’, ‘sas7bdat’, ‘xpt’, and ‘dbf’. The type of
+library is defined using the <code>engine</code> parameter on the
+<code><a href="../reference/libname.html">libname()</a></code> function. The default data engine is ‘rds’. The
+data engines will attempt to identify the correct data type for each
+column of data. You may also control the data type of the columns using
+the <code>import_specs</code> parameter and the <code><a href="../reference/specs.html">specs()</a></code> and
+<code><a href="../reference/import_spec.html">import_spec()</a></code> functions.</p>
+<p>If you prefer to access the data via the workspace, call the
+<code><a href="../reference/lib_load.html">lib_load()</a></code> function on the library. This function will load
+the library data into the parent frame, where it can be accessed using a
+two-level (&lt;library&gt;.&lt;dataset&gt;) name.</p>
+<p>When you are done with the data, call the <code><a href="../reference/lib_unload.html">lib_unload()</a></code>
+function to remove the data from the parent frame and put it back in the
+library list. To write any added or modified data to disk, call the
+<code><a href="../reference/lib_write.html">lib_write()</a></code> function. The <code><a href="../reference/lib_write.html">lib_write()</a></code> function
+will only write data that has changed since the last write.</p>
+<p>The following example will illustrate some basic functionality of the
+<strong>libr</strong> package regarding the creation of libnames and use
+of dictionaries. The example first places some sample data in a temp
+directory for illustration purposes. Then the example creates a libname
+from the temp directory, loads it into memory, adds data to it, and then
+unloads and writes everything to disk:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
 
