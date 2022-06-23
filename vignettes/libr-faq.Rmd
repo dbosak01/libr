@@ -81,7 +81,7 @@ support?
 
 
 **A:** The package supports the following data formats: csv, sas7bdat, 
-rds, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
+rds, Rdata, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
 and a short discussion of some details on each format.
 
 [top](#top) 
@@ -148,17 +148,18 @@ d <- dictionary(mylib)
 this data to another format (csv or Excel).  How can I do that with the **libr**
 package?
 
-**A:** What you can do is open two libnames, and copy data from one to another.
-Like this:
+**A:** The `lib_export()` function was designed for this purpose.  You can
+take an existing library and export the entire thing to another library 
+with a different file format.  Like this:
 ```{r eval=FALSE, echo=TRUE}
 libname(libA, "c:/mypath/mydata1", "sas7bdat")
-libname(libB, "c:/mypath/mydata2", "csv")
 
-lib_add(libB, libA$dat1, name = "dat1")
+lib_export(libA, libB, "c:/mypath/mydata2", "csv")
 
 ```
-The above statements will take the SAS® dataset "dat1", export it to CSV, and
-place the new CSV file in the directory associated with the libname "libB".
+The above statements will take the SAS® datasets in the library "libA", 
+export them to CSV, and place the new CSV files in the directory 
+associated with the libname "libB".
 
 [top](#top) 
 

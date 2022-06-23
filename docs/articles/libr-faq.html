@@ -186,9 +186,9 @@ remember to save them with:</p>
 <strong>libr</strong> package supports CSV and SAS dataset file formats.
 What other data formats does the package support?</p>
 <p><strong>A:</strong> The package supports the following data formats:
-csv, sas7bdat, rds, xls, xlsx, xpt, and dbf. The <code><a href="../reference/libname.html">libname()</a></code>
-help page has a full list, and a short discussion of some details on
-each format.</p>
+csv, sas7bdat, rds, Rdata, xls, xlsx, xpt, and dbf. The
+<code><a href="../reference/libname.html">libname()</a></code> help page has a full list, and a short discussion
+of some details on each format.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
@@ -243,16 +243,17 @@ print it, or even create a report from it. Here is an example:</p>
 <p><strong>Q:</strong> Let’s say I have some data in one format
 (sas7bdat), and want to export this data to another format (csv or
 Excel). How can I do that with the <strong>libr</strong> package?</p>
-<p><strong>A:</strong> What you can do is open two libnames, and copy
-data from one to another. Like this:</p>
+<p><strong>A:</strong> The <code><a href="../reference/lib_export.html">lib_export()</a></code> function was
+designed for this purpose. You can take an existing library and export
+the entire thing to another library with a different file format. Like
+this:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">libA</span>, <span class="st">"c:/mypath/mydata1"</span>, <span class="st">"sas7bdat"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">libB</span>, <span class="st">"c:/mypath/mydata2"</span>, <span class="st">"csv"</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/lib_add.html">lib_add</a></span><span class="op">(</span><span class="va">libB</span>, <span class="va">libA</span><span class="op">$</span><span class="va">dat1</span>, name <span class="op">=</span> <span class="st">"dat1"</span><span class="op">)</span></code></pre></div>
-<p>The above statements will take the SAS® dataset “dat1”, export it to
-CSV, and place the new CSV file in the directory associated with the
-libname “libB”.</p>
+<span class="fu"><a href="../reference/lib_export.html">lib_export</a></span><span class="op">(</span><span class="va">libA</span>, <span class="va">libB</span>, <span class="st">"c:/mypath/mydata2"</span>, <span class="st">"csv"</span><span class="op">)</span></code></pre></div>
+<p>The above statements will take the SAS® datasets in the library
+“libA”, export them to CSV, and place the new CSV files in the directory
+associated with the libname “libB”.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>

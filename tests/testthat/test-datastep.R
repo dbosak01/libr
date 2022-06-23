@@ -572,13 +572,13 @@ test_that("format parameter on datastep works as expected.", {
   expect_equal(attr(dat2$cyl, "format"), "%1.2f")
 })
 
-test_that("output variable  on datastep works as expected.", {
-  
-  
-  dat <- datastep(mtcars, {if (cyl == 8) output = TRUE})
-  
-  
-  expect_equal("output" %in% names(dat), FALSE)
-  expect_equal(nrow(dat), 14)
-})
+# test_that("output variable  on datastep works as expected.", {
+#   
+#   
+#   dat <- datastep(mtcars, {if (cyl == 8) output = TRUE})
+#   
+#   
+#   expect_equal("output" %in% names(dat), FALSE)
+#   expect_equal(nrow(dat), 14)
+# })
 

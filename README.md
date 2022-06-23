@@ -77,13 +77,6 @@ The **libr** package will then be ready to use! For examples and usage
 information, please visit the **libr** documentation site 
 [here](https://libr.r-sassy.org/articles/libr.html)
 
-### Development Version
-
-The **libr** package is under active development.  If you want the 
-latest development version, you can download it from [github](https://github.com)
-with the following command line:
-
-    devtools::install_github("https://github.com/dbosak01/libr")
     
 ### Getting Help
 

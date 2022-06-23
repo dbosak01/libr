@@ -129,7 +129,6 @@ be accessed at any point within the data step:
   \item{\strong{n.}: Contains the row number.}
   \item{\strong{first.}: Indicates the beginning of a by-group.}
   \item{\strong{last.}: Indicates the end of a by-group.}
-  \item{\strong{output}: Specifies which rows to include in the output data}
 }
 Automatic variables will be dropped from the data frame at the end
 of the data step.  If you wish to keep the automatic variable values,
@@ -208,15 +207,6 @@ a list of columns.  You can use a \code{for} loop to iterate over the
 step arrays allow to you to perform row-wise calculations. 
 For instance, you can calculate 
 a sum or mean by row for the variables in your array.
-}
-
-\section{Output variable}{
-
-The datastep supports an `output` variable that allows you to
-control which rows are output from the `datastep()` function.  
-To use the output
-variable, simply set `output <- TRUE` for those rows you wish 
-retained on the resulting data.
 }
 
 \section{Output Column Order}{
@@ -448,21 +438,6 @@ dictionary(df)
 # 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0
 # 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0
 # 8 df    Best   character Best Quarter NA          NA         2 NA          3     0
-
-#' # Example #7: label parameter, format parameter, and output() function
-df <- datastep(mtcars, 
-               keep = c("cyl", "wt"), 
-               label = list(cyl = "Cylinders", wt = "Weight"), 
-               format = list(cyl = "\%1.1f", wt = "\%1.1f"), {
-                 
-  if (cyl == 8)
-    output <- TRUE
-                 
-})
-
-df
-
-dictionary(df)
 
 }
 \seealso{

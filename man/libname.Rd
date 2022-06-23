@@ -126,7 +126,7 @@ Here is a complete list of available engines and some commentary about each:
 \item{\strong{rds}: For R data sets.  This engine is the default.  Because
 detailed data type and attribute information can be stored inside the rds
 file, the rds engine is the most reliable and easiest to use.}
-\item{\strong{RData}: Another R data storage format.  Like the 'rds' engine,
+\item{\strong{Rdata}: Another R data storage format.  Like the 'rds' engine,
 this storage type retains column attributes and data types.}
 \item{\strong{csv}: For comma separated value files.  This engine assumes
 that the first row has column names, and that strings containing commas are 

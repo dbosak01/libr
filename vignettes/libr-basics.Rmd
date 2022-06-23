@@ -35,7 +35,7 @@ has existing data files, those data files will be automatically loaded
 into the library.  Once in the library, the data can be accessed using list
 syntax.
 
-You may create a data library for several different types of files: 'rds', 
+You may create a data library for several different types of files: 'rds', 'Rdata',
 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.  The type of library is
 defined using the `engine` parameter on the `libname()` function.  The default
 data engine is 'rds'.  The data engines will attempt to identify the correct
