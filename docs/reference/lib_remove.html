@@ -171,7 +171,7 @@ data library, and deletes the source file for that data.  If the library
 is loaded, it will also remove that item from the workspace environment.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_remove</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>name</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>lib_remove</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>name</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,35 +210,34 @@ For more than one name, pass a vector of quoted names.</p></td>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Add data to the library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span>, <span class='va'>beaver1</span>, <span class='va'>iris</span><span class='op'>)</span>
-<span class='co'># library 'dat': 3 items</span>
-<span class='co'># - attributes: not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
-<span class='co'># - items:</span>
-<span class='co'>#      Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00</span>
-<span class='co'># 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04</span>
-<span class='co'># 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08</span>
-
-<span class='co'># Remove items from the library</span>
-<span class='fu'>lib_remove</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"beaver1"</span>, <span class='st'>"iris"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># library 'dat': 1 items</span>
-<span class='co'># - attributes: not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
-<span class='co'># - items:</span>
-<span class='co'>#     Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:40</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add data to the library</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>mtcars</span>, <span class='va'>beaver1</span>, <span class='va'>iris</span><span class='op'>)</span></span>
+<span><span class='co'># library 'dat': 3 items</span></span>
+<span><span class='co'># - attributes: not loaded</span></span>
+<span><span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span></span>
+<span><span class='co'># - items:</span></span>
+<span><span class='co'>#      Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1  mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:00</span></span>
+<span><span class='co'># 2 beaver1       rds  114    4 5.1 Kb 2020-11-05 19:32:04</span></span>
+<span><span class='co'># 3    iris       rds  150    5 7.5 Kb 2020-11-05 19:32:08</span></span>
+<span></span>
+<span><span class='co'># Remove items from the library</span></span>
+<span><span class='fu'>lib_remove</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"beaver1"</span>, <span class='st'>"iris"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='co'># library 'dat': 1 items</span></span>
+<span><span class='co'># - attributes: not loaded</span></span>
+<span><span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span></span>
+<span><span class='co'># - items:</span></span>
+<span><span class='co'>#     Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1 mtcars       rds   32   11 7.5 Kb 2020-11-05 19:32:40</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

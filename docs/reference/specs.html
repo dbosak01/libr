@@ -197,7 +197,7 @@ See the <code><a href='write.specs.html'>write.specs</a></code> and <code><a hre
 for additional information on saving specs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>specs</span><span class='op'>(</span><span class='va'>...</span>, na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"NA"</span><span class='op'>)</span>, trim_ws <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>specs</span><span class='op'>(</span><span class='va'>...</span>, na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"NA"</span><span class='op'>)</span>, trim_ws <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -246,83 +246,82 @@ import spec.</p>
 <code><a href='write.specs.html'>write.specs</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span>
-
-<span class='co'># Create temp path</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"mtcars.csv"</span><span class='op'>)</span>
-
-<span class='co'># Create data for illustration purposes</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>vehicle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span><span class='op'>)</span><span class='op'>]</span>,
-                 stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='co'># Kill rownames</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
-
-<span class='co'># Add some columns</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>, <span class='op'>{</span>
-
-        <span class='va'>recdt</span> <span class='op'>&lt;-</span> <span class='st'>"10JUN1974"</span>
-
-        <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span>
-          <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span>
-        <span class='kw'>else</span> 
-          <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
-      
-        <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>8</span><span class='op'>)</span>
-          <span class='va'>cyl8</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
-  <span class='op'>}</span><span class='op'>)</span>
-  
-<span class='va'>df</span>
-<span class='co'>#              vehicle  mpg cyl  disp     recdt mpgcat cyl8</span>
-<span class='co'># 1          Mazda RX4 21.0   6 160.0 10JUN1974   High   NA</span>
-<span class='co'># 2      Mazda RX4 Wag 21.0   6 160.0 10JUN1974   High   NA</span>
-<span class='co'># 3         Datsun 710 22.8   4 108.0 10JUN1974   High   NA</span>
-<span class='co'># 4     Hornet 4 Drive 21.4   6 258.0 10JUN1974   High   NA</span>
-<span class='co'># 5  Hornet Sportabout 18.7   8 360.0 10JUN1974    Low TRUE</span>
-<span class='co'># 6            Valiant 18.1   6 225.0 10JUN1974    Low   NA</span>
-<span class='co'># 7         Duster 360 14.3   8 360.0 10JUN1974    Low TRUE</span>
-<span class='co'># 8          Merc 240D 24.4   4 146.7 10JUN1974   High   NA</span>
-<span class='co'># 9           Merc 230 22.8   4 140.8 10JUN1974   High   NA</span>
-<span class='co'># 10          Merc 280 19.2   6 167.6 10JUN1974    Low   NA</span>
-
-<span class='co'># Save to temp directory for this example</span>
-<span class='fu'><a href='https://readr.tidyverse.org/reference/write_delim.html'>write_csv</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'>## Start Example ##</span>
-
-<span class='co'># Define import spec</span>
-<span class='va'>spcs</span> <span class='op'>&lt;-</span> <span class='fu'>specs</span><span class='op'>(</span>mtcars <span class='op'>=</span> <span class='fu'><a href='import_spec.html'>import_spec</a></span><span class='op'>(</span>vehicle <span class='op'>=</span> <span class='st'>"character"</span>,
-                                   cyl <span class='op'>=</span> <span class='st'>"integer"</span>,
-                                   recdt <span class='op'>=</span> <span class='st'>"date=%d%b%Y"</span>,
-                                   mpgcat <span class='op'>=</span> <span class='st'>"guess"</span>,
-                                   cyl8 <span class='op'>=</span> <span class='st'>"logical"</span><span class='op'>)</span><span class='op'>)</span>
-                                   
-<span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"csv"</span>, import_specs <span class='op'>=</span> <span class='va'>spcs</span><span class='op'>)</span>
-<span class='co'># $mtcars</span>
-<span class='co'># library 'dat': 1 items</span>
-<span class='co'># - attributes: csv not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span>
-<span class='co'># - items:</span>
-<span class='co'>#     Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1 mtcars       csv   10    7 9.3 Kb 2020-11-29 09:47:52</span>
-
-<span class='co'># View data types</span>
-<span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-<span class='co'># # A tibble: 7 x 10</span>
-<span class='co'>#   Name   Column  Class     Label Description Format Width Justify  Rows   NAs</span>
-<span class='co'>#   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class='co'># 1 mtcars vehicle character NA    NA          NA        17 NA         10     0</span>
-<span class='co'># 2 mtcars mpg     numeric   NA    NA          NA        NA NA         10     0</span>
-<span class='co'># 3 mtcars cyl     integer   NA    NA          NA        NA NA         10     0</span>
-<span class='co'># 4 mtcars disp    numeric   NA    NA          NA        NA NA         10     0</span>
-<span class='co'># 5 mtcars mpgcat  character NA    NA          NA         4 NA         10     0</span>
-<span class='co'># 6 mtcars recdt   Date      NA    NA          NA        NA NA         10     0</span>
-<span class='co'># 7 mtcars cyl8    logical   NA    NA          NA        NA NA         10     8</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create temp path</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"mtcars.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create data for illustration purposes</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>vehicle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span><span class='op'>)</span><span class='op'>]</span>,</span>
+<span>                 stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Kill rownames</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span></span>
+<span></span>
+<span><span class='co'># Add some columns</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>, <span class='op'>{</span></span>
+<span></span>
+<span>        <span class='va'>recdt</span> <span class='op'>&lt;-</span> <span class='st'>"10JUN1974"</span></span>
+<span></span>
+<span>        <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span></span>
+<span>          <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span></span>
+<span>        <span class='kw'>else</span> </span>
+<span>          <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span></span>
+<span>      </span>
+<span>        <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>8</span><span class='op'>)</span></span>
+<span>          <span class='va'>cyl8</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span></span>
+<span>  <span class='op'>}</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#              vehicle  mpg cyl  disp     recdt mpgcat cyl8</span></span>
+<span><span class='co'># 1          Mazda RX4 21.0   6 160.0 10JUN1974   High   NA</span></span>
+<span><span class='co'># 2      Mazda RX4 Wag 21.0   6 160.0 10JUN1974   High   NA</span></span>
+<span><span class='co'># 3         Datsun 710 22.8   4 108.0 10JUN1974   High   NA</span></span>
+<span><span class='co'># 4     Hornet 4 Drive 21.4   6 258.0 10JUN1974   High   NA</span></span>
+<span><span class='co'># 5  Hornet Sportabout 18.7   8 360.0 10JUN1974    Low TRUE</span></span>
+<span><span class='co'># 6            Valiant 18.1   6 225.0 10JUN1974    Low   NA</span></span>
+<span><span class='co'># 7         Duster 360 14.3   8 360.0 10JUN1974    Low TRUE</span></span>
+<span><span class='co'># 8          Merc 240D 24.4   4 146.7 10JUN1974   High   NA</span></span>
+<span><span class='co'># 9           Merc 230 22.8   4 140.8 10JUN1974   High   NA</span></span>
+<span><span class='co'># 10          Merc 280 19.2   6 167.6 10JUN1974    Low   NA</span></span>
+<span></span>
+<span><span class='co'># Save to temp directory for this example</span></span>
+<span><span class='fu'><a href='https://readr.tidyverse.org/reference/write_delim.html'>write_csv</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Start Example ##</span></span>
+<span></span>
+<span><span class='co'># Define import spec</span></span>
+<span><span class='va'>spcs</span> <span class='op'>&lt;-</span> <span class='fu'>specs</span><span class='op'>(</span>mtcars <span class='op'>=</span> <span class='fu'><a href='import_spec.html'>import_spec</a></span><span class='op'>(</span>vehicle <span class='op'>=</span> <span class='st'>"character"</span>,</span>
+<span>                                   cyl <span class='op'>=</span> <span class='st'>"integer"</span>,</span>
+<span>                                   recdt <span class='op'>=</span> <span class='st'>"date=%d%b%Y"</span>,</span>
+<span>                                   mpgcat <span class='op'>=</span> <span class='st'>"guess"</span>,</span>
+<span>                                   cyl8 <span class='op'>=</span> <span class='st'>"logical"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>                                   </span>
+<span><span class='co'># Create library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"csv"</span>, import_specs <span class='op'>=</span> <span class='va'>spcs</span><span class='op'>)</span></span>
+<span><span class='co'># $mtcars</span></span>
+<span><span class='co'># library 'dat': 1 items</span></span>
+<span><span class='co'># - attributes: csv not loaded</span></span>
+<span><span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
+<span><span class='co'># - items:</span></span>
+<span><span class='co'>#     Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1 mtcars       csv   10    7 9.3 Kb 2020-11-29 09:47:52</span></span>
+<span></span>
+<span><span class='co'># View data types</span></span>
+<span><span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span><span class='co'># # A tibble: 7 x 10</span></span>
+<span><span class='co'>#   Name   Column  Class     Label Description Format Width Justify  Rows   NAs</span></span>
+<span><span class='co'>#   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class='co'># 1 mtcars vehicle character NA    NA          NA        17 NA         10     0</span></span>
+<span><span class='co'># 2 mtcars mpg     numeric   NA    NA          NA        NA NA         10     0</span></span>
+<span><span class='co'># 3 mtcars cyl     integer   NA    NA          NA        NA NA         10     0</span></span>
+<span><span class='co'># 4 mtcars disp    numeric   NA    NA          NA        NA NA         10     0</span></span>
+<span><span class='co'># 5 mtcars mpgcat  character NA    NA          NA         4 NA         10     0</span></span>
+<span><span class='co'># 6 mtcars recdt   Date      NA    NA          NA        NA NA         10     0</span></span>
+<span><span class='co'># 7 mtcars cyl8    logical   NA    NA          NA        NA NA         10     8</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

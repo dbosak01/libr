@@ -171,8 +171,8 @@ data libraries.  The function prints the library in a summary manner.
 Use <code>verbose = TRUE</code> to print the library as a list.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for lib</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='co'># S3 method for lib</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -215,29 +215,28 @@ By default, the parameter is FALSE, meaning to print in summary style.</p></td>
 <code><a href='libname.html'>libname</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Create data library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Add data to library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span>, <span class='va'>ToothGrowth</span>, <span class='va'>PlantGrowth</span><span class='op'>)</span>
-
-<span class='co'># Print library summary </span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-<span class='co'># library 'dat': 3 items</span>
-<span class='co'># - attributes: not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span>
-<span class='co'># - items:</span>
-<span class='co'>#          Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1        iris       rds  150    5 7.8 Kb 2020-11-05 22:26:59</span>
-<span class='co'># 2 PlantGrowth       rds   30    2 2.5 Kb 2020-11-05 22:26:59</span>
-<span class='co'># 3 ToothGrowth       rds   60    3 3.4 Kb 2020-11-05 22:26:59</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create data library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add data to library</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span>, <span class='va'>ToothGrowth</span>, <span class='va'>PlantGrowth</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Print library summary </span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span><span class='co'># library 'dat': 3 items</span></span>
+<span><span class='co'># - attributes: not loaded</span></span>
+<span><span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpCSJ6Gc</span></span>
+<span><span class='co'># - items:</span></span>
+<span><span class='co'>#          Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1        iris       rds  150    5 7.8 Kb 2020-11-05 22:26:59</span></span>
+<span><span class='co'># 2 PlantGrowth       rds   30    2 2.5 Kb 2020-11-05 22:26:59</span></span>
+<span><span class='co'># 3 ToothGrowth       rds   60    3 3.4 Kb 2020-11-05 22:26:59</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

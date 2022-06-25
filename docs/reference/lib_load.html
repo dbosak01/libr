@@ -177,7 +177,7 @@ will be loaded with &lt;library&gt;.&lt;data set&gt; syntax.  Loading the data f
 into the environment makes them easy to access and use in your program.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_load</span><span class='op'>(</span><span class='va'>x</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>lib_load</span><span class='op'>(</span><span class='va'>x</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -220,38 +220,37 @@ to identify the missing portion. The match will be case-insensitive.</p></td>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Save some data to temp directory for illustration purposes</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"iris.rds"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>ToothGrowth</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"ToothGrowth.rds"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>PlantGrowth</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"PlantGrowth.rds"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Load library into workspace</span>
-<span class='fu'>lib_load</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine workspace</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span>
-
-<span class='co'># Use some data</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.PlantGrowth</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span>
-
-<span class='co'># Unload library</span>
-<span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine workspace again</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "dat" "tmp"</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Save some data to temp directory for illustration purposes</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"iris.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>ToothGrowth</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"ToothGrowth.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>PlantGrowth</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"PlantGrowth.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Load library into workspace</span></span>
+<span><span class='fu'>lib_load</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine workspace</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span></span>
+<span></span>
+<span><span class='co'># Use some data</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.PlantGrowth</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Unload library</span></span>
+<span><span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine workspace again</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'># [1] "dat" "tmp"</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

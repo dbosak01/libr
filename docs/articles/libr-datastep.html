@@ -134,36 +134,36 @@ by-group processing.</p>
 <a href="#example-1-simple-data-step" class="anchor"></a>Example 1: Simple Data Step</h4>
 <p>Here is an example of a simple data step:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Add some columns to mtcars using data step logic</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
-    <span class="kw">else</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
-      
-    <span class="va">recdt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1974-06-10"</span><span class="op">)</span>
-    
-    <span class="kw">if</span> <span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span><span class="op">)</span>
-      <span class="va">is8cyl</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-
-  <span class="op">}</span><span class="op">)</span>
-  
-<span class="co"># View results  </span>
-<span class="va">df</span>
-<span class="co">#                    mpg cyl  disp      recdt mpgcat is8cyl</span>
-<span class="co"># Mazda RX4         21.0   6 160.0 1974-06-10   High     NA</span>
-<span class="co"># Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA</span>
-<span class="co"># Datsun 710        22.8   4 108.0 1974-06-10   High     NA</span>
-<span class="co"># Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA</span>
-<span class="co"># Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE</span>
-<span class="co"># Valiant           18.1   6 225.0 1974-06-10    Low     NA</span>
-<span class="co"># Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE</span>
-<span class="co"># Merc 240D         24.4   4 146.7 1974-06-10   High     NA</span>
-<span class="co"># Merc 230          22.8   4 140.8 1974-06-10   High     NA</span>
-<span class="co"># Merc 280          19.2   6 167.6 1974-06-10    Low     NA</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add some columns to mtcars using data step logic</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span>      </span>
+<span>    <span class="va">recdt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1974-06-10"</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span><span class="op">)</span></span>
+<span>      <span class="va">is8cyl</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># View results  </span></span>
+<span><span class="va">df</span></span>
+<span><span class="co">#                    mpg cyl  disp      recdt mpgcat is8cyl</span></span>
+<span><span class="co"># Mazda RX4         21.0   6 160.0 1974-06-10   High     NA</span></span>
+<span><span class="co"># Mazda RX4 Wag     21.0   6 160.0 1974-06-10   High     NA</span></span>
+<span><span class="co"># Datsun 710        22.8   4 108.0 1974-06-10   High     NA</span></span>
+<span><span class="co"># Hornet 4 Drive    21.4   6 258.0 1974-06-10   High     NA</span></span>
+<span><span class="co"># Hornet Sportabout 18.7   8 360.0 1974-06-10    Low   TRUE</span></span>
+<span><span class="co"># Valiant           18.1   6 225.0 1974-06-10    Low     NA</span></span>
+<span><span class="co"># Duster 360        14.3   8 360.0 1974-06-10    Low   TRUE</span></span>
+<span><span class="co"># Merc 240D         24.4   4 146.7 1974-06-10   High     NA</span></span>
+<span><span class="co"># Merc 230          22.8   4 140.8 1974-06-10   High     NA</span></span>
+<span><span class="co"># Merc 280          19.2   6 167.6 1974-06-10    Low     NA</span></span></code></pre></div>
 </div>
 <div id="keep-drop-and-rename" class="section level3">
 <h3 class="hasAnchor">
@@ -178,36 +178,36 @@ resulting columns.</p>
 <h4 class="hasAnchor">
 <a href="#example-2-keeping-data-step-variables" class="anchor"></a>Example 2: Keeping Data Step Variables</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Keep and order output columns </span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, 
-  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"disp"</span>, <span class="st">"mpgcat"</span>, <span class="st">"recdt"</span><span class="op">)</span>, <span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
-    <span class="kw">else</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
-      
-    <span class="va">recdt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1974-06-10"</span><span class="op">)</span>
-    
-    <span class="kw">if</span> <span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span><span class="op">)</span>
-      <span class="va">is8cyl</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-
-  <span class="op">}</span><span class="op">)</span>
-  
-<span class="va">df</span>
-<span class="co">#                    mpg cyl  disp mpgcat      recdt</span>
-<span class="co"># Mazda RX4         21.0   6 160.0   High 1974-06-10</span>
-<span class="co"># Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10</span>
-<span class="co"># Datsun 710        22.8   4 108.0   High 1974-06-10</span>
-<span class="co"># Hornet 4 Drive    21.4   6 258.0   High 1974-06-10</span>
-<span class="co"># Hornet Sportabout 18.7   8 360.0    Low 1974-06-10</span>
-<span class="co"># Valiant           18.1   6 225.0    Low 1974-06-10</span>
-<span class="co"># Duster 360        14.3   8 360.0    Low 1974-06-10</span>
-<span class="co"># Merc 240D         24.4   4 146.7   High 1974-06-10</span>
-<span class="co"># Merc 230          22.8   4 140.8   High 1974-06-10</span>
-<span class="co"># Merc 280          19.2   6 167.6    Low 1974-06-10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Keep and order output columns </span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, </span>
+<span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"disp"</span>, <span class="st">"mpgcat"</span>, <span class="st">"recdt"</span><span class="op">)</span>, <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span>      </span>
+<span>    <span class="va">recdt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1974-06-10"</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span><span class="op">)</span></span>
+<span>      <span class="va">is8cyl</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">df</span></span>
+<span><span class="co">#                    mpg cyl  disp mpgcat      recdt</span></span>
+<span><span class="co"># Mazda RX4         21.0   6 160.0   High 1974-06-10</span></span>
+<span><span class="co"># Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10</span></span>
+<span><span class="co"># Datsun 710        22.8   4 108.0   High 1974-06-10</span></span>
+<span><span class="co"># Hornet 4 Drive    21.4   6 258.0   High 1974-06-10</span></span>
+<span><span class="co"># Hornet Sportabout 18.7   8 360.0    Low 1974-06-10</span></span>
+<span><span class="co"># Valiant           18.1   6 225.0    Low 1974-06-10</span></span>
+<span><span class="co"># Duster 360        14.3   8 360.0    Low 1974-06-10</span></span>
+<span><span class="co"># Merc 240D         24.4   4 146.7   High 1974-06-10</span></span>
+<span><span class="co"># Merc 230          22.8   4 140.8   High 1974-06-10</span></span>
+<span><span class="co"># Merc 280          19.2   6 167.6    Low 1974-06-10</span></span></code></pre></div>
 </div>
 </div>
 <div id="the-retain-parameter" class="section level3">
@@ -221,31 +221,31 @@ on the value of the previous row.</p>
 <h4 class="hasAnchor">
 <a href="#example-3-drop-retain-and-rename-parameters" class="anchor"></a>Example 3: Drop, Retain, and Rename Parameters</h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,
-               drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span>, <span class="st">"drat"</span>, <span class="st">"qsec"</span>,
-                        <span class="st">"vs"</span>, <span class="st">"am"</span>, <span class="st">"gear"</span>, <span class="st">"carb"</span><span class="op">)</span>,
-               retain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cumwt <span class="op">=</span> <span class="fl">0</span> <span class="op">)</span>,
-               rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="st">"MPG"</span>, cyl <span class="op">=</span> <span class="st">"Cylinders"</span>, wt <span class="op">=</span> <span class="st">"Wgt"</span>,
-                          cumwt <span class="op">=</span> <span class="st">"Cumulative Wgt"</span><span class="op">)</span>, <span class="op">{</span>
-
-  <span class="va">cumwt</span> <span class="op">&lt;-</span> <span class="va">cumwt</span> <span class="op">+</span> <span class="va">wt</span>
-
- <span class="op">}</span><span class="op">)</span>
-
-<span class="va">df</span>
-<span class="co">#                    MPG Cylinders   Wgt Cumulative Wgt</span>
-<span class="co"># Mazda RX4         21.0         6 2.620          2.620</span>
-<span class="co"># Mazda RX4 Wag     21.0         6 2.875          5.495</span>
-<span class="co"># Datsun 710        22.8         4 2.320          7.815</span>
-<span class="co"># Hornet 4 Drive    21.4         6 3.215         11.030</span>
-<span class="co"># Hornet Sportabout 18.7         8 3.440         14.470</span>
-<span class="co"># Valiant           18.1         6 3.460         17.930</span>
-<span class="co"># Duster 360        14.3         8 3.570         21.500</span>
-<span class="co"># Merc 240D         24.4         4 3.190         24.690</span>
-<span class="co"># Merc 230          22.8         4 3.150         27.840</span>
-<span class="co"># Merc 280          19.2         6 3.440         31.280</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,</span>
+<span>               drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"disp"</span>, <span class="st">"hp"</span>, <span class="st">"drat"</span>, <span class="st">"qsec"</span>,</span>
+<span>                        <span class="st">"vs"</span>, <span class="st">"am"</span>, <span class="st">"gear"</span>, <span class="st">"carb"</span><span class="op">)</span>,</span>
+<span>               retain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cumwt <span class="op">=</span> <span class="fl">0</span> <span class="op">)</span>,</span>
+<span>               rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="st">"MPG"</span>, cyl <span class="op">=</span> <span class="st">"Cylinders"</span>, wt <span class="op">=</span> <span class="st">"Wgt"</span>,</span>
+<span>                          cumwt <span class="op">=</span> <span class="st">"Cumulative Wgt"</span><span class="op">)</span>, <span class="op">{</span></span>
+<span></span>
+<span>  <span class="va">cumwt</span> <span class="op">&lt;-</span> <span class="va">cumwt</span> <span class="op">+</span> <span class="va">wt</span></span>
+<span></span>
+<span> <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span></span>
+<span><span class="co">#                    MPG Cylinders   Wgt Cumulative Wgt</span></span>
+<span><span class="co"># Mazda RX4         21.0         6 2.620          2.620</span></span>
+<span><span class="co"># Mazda RX4 Wag     21.0         6 2.875          5.495</span></span>
+<span><span class="co"># Datsun 710        22.8         4 2.320          7.815</span></span>
+<span><span class="co"># Hornet 4 Drive    21.4         6 3.215         11.030</span></span>
+<span><span class="co"># Hornet Sportabout 18.7         8 3.440         14.470</span></span>
+<span><span class="co"># Valiant           18.1         6 3.460         17.930</span></span>
+<span><span class="co"># Duster 360        14.3         8 3.570         21.500</span></span>
+<span><span class="co"># Merc 240D         24.4         4 3.190         24.690</span></span>
+<span><span class="co"># Merc 230          22.8         4 3.150         27.840</span></span>
+<span><span class="co"># Merc 280          19.2         6 3.440         31.280</span></span></code></pre></div>
 </div>
 </div>
 <div id="by-group-processing" class="section level3">
@@ -264,36 +264,36 @@ FALSE.</p>
 <h4 class="hasAnchor">
 <a href="#example-4-by-groups" class="anchor"></a>Example 4: By Groups</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Identify start and end of by-groups</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, 
-  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"grp"</span><span class="op">)</span>, 
-  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gear"</span><span class="op">)</span>, sort_check <span class="op">=</span> <span class="cn">FALSE</span>, <span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">first.</span> <span class="op">&amp;</span> <span class="va">last.</span><span class="op">)</span>
-      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"Start - End"</span>
-    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">first.</span><span class="op">)</span>
-      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"Start"</span>
-    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">last.</span><span class="op">)</span>
-      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"End"</span>
-    <span class="kw">else</span> 
-      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"-"</span>
-
-  <span class="op">}</span><span class="op">)</span>
-  
-<span class="va">df</span>
-<span class="co">#                    mpg cyl gear   grp</span>
-<span class="co"># Mazda RX4         21.0   6    4 Start</span>
-<span class="co"># Mazda RX4 Wag     21.0   6    4     -</span>
-<span class="co"># Datsun 710        22.8   4    4   End</span>
-<span class="co"># Hornet 4 Drive    21.4   6    3 Start</span>
-<span class="co"># Hornet Sportabout 18.7   8    3     -</span>
-<span class="co"># Valiant           18.1   6    3     -</span>
-<span class="co"># Duster 360        14.3   8    3   End</span>
-<span class="co"># Merc 240D         24.4   4    4 Start</span>
-<span class="co"># Merc 230          22.8   4    4     -</span>
-<span class="co"># Merc 280          19.2   6    4   End</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Identify start and end of by-groups</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, </span>
+<span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"grp"</span><span class="op">)</span>, </span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gear"</span><span class="op">)</span>, sort_check <span class="op">=</span> <span class="cn">FALSE</span>, <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">first.</span> <span class="op">&amp;</span> <span class="va">last.</span><span class="op">)</span></span>
+<span>      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"Start - End"</span></span>
+<span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">first.</span><span class="op">)</span></span>
+<span>      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"Start"</span></span>
+<span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">last.</span><span class="op">)</span></span>
+<span>      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"End"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">grp</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">df</span></span>
+<span><span class="co">#                    mpg cyl gear   grp</span></span>
+<span><span class="co"># Mazda RX4         21.0   6    4 Start</span></span>
+<span><span class="co"># Mazda RX4 Wag     21.0   6    4     -</span></span>
+<span><span class="co"># Datsun 710        22.8   4    4   End</span></span>
+<span><span class="co"># Hornet 4 Drive    21.4   6    3 Start</span></span>
+<span><span class="co"># Hornet Sportabout 18.7   8    3     -</span></span>
+<span><span class="co"># Valiant           18.1   6    3     -</span></span>
+<span><span class="co"># Duster 360        14.3   8    3   End</span></span>
+<span><span class="co"># Merc 240D         24.4   4    4 Start</span></span>
+<span><span class="co"># Merc 230          22.8   4    4     -</span></span>
+<span><span class="co"># Merc 280          19.2   6    4   End</span></span></code></pre></div>
 </div>
 </div>
 <div id="using-summary-functions" class="section level3">
@@ -311,33 +311,33 @@ the data step. Below is an example of such a scenario:</p>
 <h4 class="hasAnchor">
 <a href="#example-5-calculate-block" class="anchor"></a>Example 5: Calculate Block</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Categorize mpg as above or below the mean</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span>, 
-  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mean_mpg"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>, 
-  calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,
-  <span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span>
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
-    <span class="kw">else</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
-
-  <span class="op">}</span><span class="op">)</span>
-  
-<span class="va">df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>
-<span class="co">#                    mpg cyl mean_mpg mpgcat</span>
-<span class="co"># Mazda RX4         21.0   6 20.09062   High</span>
-<span class="co"># Mazda RX4 Wag     21.0   6 20.09062   High</span>
-<span class="co"># Datsun 710        22.8   4 20.09062   High</span>
-<span class="co"># Hornet 4 Drive    21.4   6 20.09062   High</span>
-<span class="co"># Hornet Sportabout 18.7   8 20.09062    Low</span>
-<span class="co"># Valiant           18.1   6 20.09062    Low</span>
-<span class="co"># Duster 360        14.3   8 20.09062    Low</span>
-<span class="co"># Merc 240D         24.4   4 20.09062   High</span>
-<span class="co"># Merc 230          22.8   4 20.09062   High</span>
-<span class="co"># Merc 280          19.2   6 20.09062    Low</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Categorize mpg as above or below the mean</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span>, </span>
+<span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mean_mpg"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>, </span>
+<span>  calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,</span>
+<span>  <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span></span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span></span>
+<span><span class="co">#                    mpg cyl mean_mpg mpgcat</span></span>
+<span><span class="co"># Mazda RX4         21.0   6 20.09062   High</span></span>
+<span><span class="co"># Mazda RX4 Wag     21.0   6 20.09062   High</span></span>
+<span><span class="co"># Datsun 710        22.8   4 20.09062   High</span></span>
+<span><span class="co"># Hornet 4 Drive    21.4   6 20.09062   High</span></span>
+<span><span class="co"># Hornet Sportabout 18.7   8 20.09062    Low</span></span>
+<span><span class="co"># Valiant           18.1   6 20.09062    Low</span></span>
+<span><span class="co"># Duster 360        14.3   8 20.09062    Low</span></span>
+<span><span class="co"># Merc 240D         24.4   4 20.09062   High</span></span>
+<span><span class="co"># Merc 230          22.8   4 20.09062   High</span></span>
+<span><span class="co"># Merc 280          19.2   6 20.09062    Low</span></span></code></pre></div>
 </div>
 </div>
 <div id="data-steps-with-dplyr" class="section level3">
@@ -356,36 +356,36 @@ example recreates the above data frame from Example 5, but with a
 <h4 class="hasAnchor">
 <a href="#example-6-data-pipeline" class="anchor"></a>Example 6: Data Pipeline</h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
-
-<span class="co"># Add datastep to dplyr pipeline</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span>
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
-    <span class="kw">else</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
-
-  <span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span>
-  
-<span class="va">df</span>
-<span class="co">#     mpg cyl gear mean_mpg mpgcat</span>
-<span class="co"># 1  21.0   6    4 20.09062   High</span>
-<span class="co"># 2  21.0   6    4 20.09062   High</span>
-<span class="co"># 3  22.8   4    4 20.09062   High</span>
-<span class="co"># 4  21.4   6    3 20.09062   High</span>
-<span class="co"># 5  18.7   8    3 20.09062    Low</span>
-<span class="co"># 6  18.1   6    3 20.09062    Low</span>
-<span class="co"># 7  14.3   8    3 20.09062    Low</span>
-<span class="co"># 8  24.4   4    4 20.09062   High</span>
-<span class="co"># 9  22.8   4    4 20.09062   High</span>
-<span class="co"># 10 19.2   6    4 20.09062    Low</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add datastep to dplyr pipeline</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span></span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">df</span></span>
+<span><span class="co">#     mpg cyl gear mean_mpg mpgcat</span></span>
+<span><span class="co"># 1  21.0   6    4 20.09062   High</span></span>
+<span><span class="co"># 2  21.0   6    4 20.09062   High</span></span>
+<span><span class="co"># 3  22.8   4    4 20.09062   High</span></span>
+<span><span class="co"># 4  21.4   6    3 20.09062   High</span></span>
+<span><span class="co"># 5  18.7   8    3 20.09062    Low</span></span>
+<span><span class="co"># 6  18.1   6    3 20.09062    Low</span></span>
+<span><span class="co"># 7  14.3   8    3 20.09062    Low</span></span>
+<span><span class="co"># 8  24.4   4    4 20.09062   High</span></span>
+<span><span class="co"># 9  22.8   4    4 20.09062   High</span></span>
+<span><span class="co"># 10 19.2   6    4 20.09062    Low</span></span></code></pre></div>
 </div>
 </div>
 <div id="data-attributes" class="section level3">
@@ -404,31 +404,31 @@ part of a data step. Attributes are assigned with a named list and the
 <h4 class="hasAnchor">
 <a href="#example-7-attributes" class="anchor"></a>Example 7: Attributes</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Assign label attributes to all columns</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, 
-               keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>,
-               calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,
-               attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Miles Per Gallon"</span><span class="op">)</span>,
-                             cyl <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Cylinders"</span><span class="op">)</span>,
-                             mpgcat <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Mileage Category"</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span>
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span>
-    <span class="kw">else</span> 
-      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span>
-
-  <span class="op">}</span><span class="op">)</span> 
-
-<span class="co"># View attributes in dictionary</span>
-<span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
-<span class="co"># # A tibble: 3 x 10</span>
-<span class="co">#   Name  Column Class     Label            Description Format Width Justify  Rows   NAs</span>
-<span class="co">#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class="co"># 1 df    mpg    numeric   Miles Per Gallon NA          NA        NA NA         10     0</span>
-<span class="co"># 2 df    cyl    numeric   Cylinders        NA          NA        NA NA         10     0</span>
-<span class="co"># 3 df    mpgcat character Mileage Category NA          NA         4 NA         10     0</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Assign label attributes to all columns</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, </span>
+<span>               keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>,</span>
+<span>               calculate <span class="op">=</span> <span class="op">{</span> <span class="va">mean_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">}</span>,</span>
+<span>               attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Miles Per Gallon"</span><span class="op">)</span>,</span>
+<span>                             cyl <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Cylinders"</span><span class="op">)</span>,</span>
+<span>                             mpgcat <span class="op">=</span> <span class="fu"><a href="../reference/dsattr.html">dsattr</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Mileage Category"</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="va">mean_mpg</span><span class="op">)</span></span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># View attributes in dictionary</span></span>
+<span><span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 3 x 10</span></span>
+<span><span class="co">#   Name  Column Class     Label            Description Format Width Justify  Rows   NAs</span></span>
+<span><span class="co">#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 df    mpg    numeric   Miles Per Gallon NA          NA        NA NA         10     0</span></span>
+<span><span class="co"># 2 df    cyl    numeric   Cylinders        NA          NA        NA NA         10     0</span></span>
+<span><span class="co"># 3 df    mpgcat character Mileage Category NA          NA         4 NA         10     0</span></span></code></pre></div>
 </div>
 </div>
 <div id="data-step-array" class="section level3">
@@ -447,20 +447,20 @@ with the <em>arrays</em> parameter, which accepts a named list of
 sample data. This data shows international airline passengers by month
 between 1949 and 1960. The data looks like this:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">AirPassengers</span>
-<span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</span>
-<span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118</span>
-<span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140</span>
-<span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166</span>
-<span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194</span>
-<span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201</span>
-<span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229</span>
-<span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278</span>
-<span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306</span>
-<span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336</span>
-<span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337</span>
-<span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405</span>
-<span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">AirPassengers</span></span>
+<span><span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</span></span>
+<span><span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118</span></span>
+<span><span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140</span></span>
+<span><span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166</span></span>
+<span><span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194</span></span>
+<span><span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201</span></span>
+<span><span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229</span></span>
+<span><span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278</span></span>
+<span><span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306</span></span>
+<span><span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336</span></span>
+<span><span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337</span></span>
+<span><span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405</span></span>
+<span><span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432</span></span></code></pre></div>
 <p>This example illustrates how to create row totals, row means, and
 find the top month using a data step array. The array has an indexer to
 extract values. You can use the indexer to extract a single value or a
@@ -470,45 +470,45 @@ array.</p>
 <h4 class="hasAnchor">
 <a href="#example-8-using-a-data-step-array" class="anchor"></a>Example 8: Using a Data Step Array</h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Create AirPassengers Data Frame</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">AirPassengers</span>, <span class="fl">12</span>,
-                    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">month.abb</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1949</span>, <span class="fl">1960</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, 
-                    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># Use datastep array to get year tot, mean, and top month</span>
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">df</span>,
-                arrays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>months <span class="op">=</span> <span class="fu"><a href="../reference/dsarray.html">dsarray</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-                attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Tot <span class="op">=</span> <span class="fl">0</span>, Mean <span class="op">=</span> <span class="fl">0</span>, Top <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,
-                drop <span class="op">=</span> <span class="st">"mth"</span>,
-                <span class="op">{</span>
-
-                  <span class="va">Tot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
-                  <span class="va">Mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
-
-                  <span class="kw">for</span> <span class="op">(</span><span class="va">mth</span> <span class="kw">in</span> <span class="va">months</span><span class="op">)</span> <span class="op">{</span>
-                    <span class="kw">if</span> <span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="va">mth</span><span class="op">]</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-                      <span class="va">Top</span> <span class="op">&lt;-</span> <span class="va">mth</span>
-                    <span class="op">}</span>
-                  <span class="op">}</span>
-                <span class="op">}</span><span class="op">)</span>
-
-
-<span class="va">dat</span>
-<span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  Tot     Mean Top</span>
-<span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118 1520 126.6667 Aug</span>
-<span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140 1676 139.6667 Aug</span>
-<span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166 2042 170.1667 Aug</span>
-<span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194 2364 197.0000 Aug</span>
-<span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201 2700 225.0000 Aug</span>
-<span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229 2867 238.9167 Jul</span>
-<span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278 3408 284.0000 Jul</span>
-<span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306 3939 328.2500 Jul</span>
-<span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336 4421 368.4167 Aug</span>
-<span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337 4572 381.0000 Aug</span>
-<span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405 5140 428.3333 Aug</span>
-<span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create AirPassengers Data Frame</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">AirPassengers</span>, <span class="fl">12</span>,</span>
+<span>                    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">month.abb</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1949</span>, <span class="fl">1960</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>                    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Use datastep array to get year tot, mean, and top month</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">df</span>,</span>
+<span>                arrays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>months <span class="op">=</span> <span class="fu"><a href="../reference/dsarray.html">dsarray</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                attrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Tot <span class="op">=</span> <span class="fl">0</span>, Mean <span class="op">=</span> <span class="fl">0</span>, Top <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                drop <span class="op">=</span> <span class="st">"mth"</span>,</span>
+<span>                <span class="op">{</span></span>
+<span></span>
+<span>                  <span class="va">Tot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
+<span>                  <span class="va">Mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span>                  <span class="kw">for</span> <span class="op">(</span><span class="va">mth</span> <span class="kw">in</span> <span class="va">months</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                    <span class="kw">if</span> <span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="va">mth</span><span class="op">]</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">months</span><span class="op">[</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                      <span class="va">Top</span> <span class="op">&lt;-</span> <span class="va">mth</span></span>
+<span>                    <span class="op">}</span></span>
+<span>                  <span class="op">}</span></span>
+<span>                <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">dat</span></span>
+<span><span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  Tot     Mean Top</span></span>
+<span><span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118 1520 126.6667 Aug</span></span>
+<span><span class="co"># 1950 115 126 141 135 125 149 170 170 158 133 114 140 1676 139.6667 Aug</span></span>
+<span><span class="co"># 1951 145 150 178 163 172 178 199 199 184 162 146 166 2042 170.1667 Aug</span></span>
+<span><span class="co"># 1952 171 180 193 181 183 218 230 242 209 191 172 194 2364 197.0000 Aug</span></span>
+<span><span class="co"># 1953 196 196 236 235 229 243 264 272 237 211 180 201 2700 225.0000 Aug</span></span>
+<span><span class="co"># 1954 204 188 235 227 234 264 302 293 259 229 203 229 2867 238.9167 Jul</span></span>
+<span><span class="co"># 1955 242 233 267 269 270 315 364 347 312 274 237 278 3408 284.0000 Jul</span></span>
+<span><span class="co"># 1956 284 277 317 313 318 374 413 405 355 306 271 306 3939 328.2500 Jul</span></span>
+<span><span class="co"># 1957 315 301 356 348 355 422 465 467 404 347 305 336 4421 368.4167 Aug</span></span>
+<span><span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337 4572 381.0000 Aug</span></span>
+<span><span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405 5140 428.3333 Aug</span></span>
+<span><span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul</span></span></code></pre></div>
 <p>Next: <a href="libr-eq.html">Enhanced Equality</a></p>
 </div>
 </div>

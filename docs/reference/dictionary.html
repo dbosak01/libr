@@ -199,7 +199,7 @@ information about the data.  The tibble will contain the following columns:</p><
 
     </div>
 
-    <pre class="usage"><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,34 +218,33 @@ dataset from within a <code><a href='datastep.html'>datastep</a></code>.  To ren
 see the <strong>fmtr</strong> package.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Add data to the library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>beaver1</span><span class='op'>)</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span>
-
-<span class='co'># Examine the dictionary for the library</span>
-<span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-<span class='co'># A tibble: 9 x 10</span>
-<span class='co'>#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs</span>
-<span class='co'>#   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;lgl&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class='co'># 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'># 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'># 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'># 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'># 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0</span>
-<span class='co'># 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0</span>
-<span class='co'># 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0</span>
-<span class='co'># 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0</span>
-<span class='co'># 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add data to the library</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>beaver1</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine the dictionary for the library</span></span>
+<span><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span><span class='co'># A tibble: 9 x 10</span></span>
+<span><span class='co'>#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs</span></span>
+<span><span class='co'>#   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;lgl&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class='co'># 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'># 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'># 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'># 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'># 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0</span></span>
+<span><span class='co'># 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0</span></span>
+<span><span class='co'># 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0</span></span>
+<span><span class='co'># 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0</span></span>
+<span><span class='co'># 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

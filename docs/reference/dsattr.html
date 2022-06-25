@@ -179,15 +179,15 @@ with <code>...</code>.</p>
 with those available on the <code><a href='dictionary.html'>dictionary</a></code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dsattr</span><span class='op'>(</span>
-  default <span class='op'>=</span> <span class='cn'>NA</span>,
-  label <span class='op'>=</span> <span class='cn'>NULL</span>,
-  description <span class='op'>=</span> <span class='cn'>NULL</span>,
-  width <span class='op'>=</span> <span class='cn'>NULL</span>,
-  format <span class='op'>=</span> <span class='cn'>NULL</span>,
-  justify <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>dsattr</span><span class='op'>(</span></span>
+<span>  default <span class='op'>=</span> <span class='cn'>NA</span>,</span>
+<span>  label <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  description <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  width <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  format <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  justify <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  <span class='va'>...</span></span>
+<span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -249,52 +249,51 @@ package for more information on formatting and rendering data frames.</p>
 <code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://libr.r-sassy.org'>libr</a></span><span class='op'>)</span>
-
-<span class='co'># Create small sample dataframe</span>
-<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>]</span>
-
-<span class='co'># Perform datastep and assign attributes</span>
-<span class='va'>dat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>dat</span>, 
-                 attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mpg <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Miles Per Gallon"</span><span class='op'>)</span>,
-                               cyl <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Cylinders"</span><span class='op'>)</span>,
-                               mpgcat <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Fuel Efficiency"</span><span class='op'>)</span><span class='op'>)</span>,
-                <span class='op'>{</span>
-                
-                  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span> 
-                    <span class='va'>mpgcat</span> <span class='op'>=</span> <span class='st'>"High"</span>
-                  <span class='kw'>else</span> 
-                    <span class='va'>mpgcat</span> <span class='op'>=</span> <span class='st'>"Low"</span>
-                
-                <span class='op'>}</span><span class='op'>)</span>
-
-<span class='co'># Print results                 </span>
-<span class='va'>dat1</span>
-<span class='co'>#                    mpg cyl mpgcat</span>
-<span class='co'># Mazda RX4         21.0   6   High</span>
-<span class='co'># Mazda RX4 Wag     21.0   6   High</span>
-<span class='co'># Datsun 710        22.8   4   High</span>
-<span class='co'># Hornet 4 Drive    21.4   6   High</span>
-<span class='co'># Hornet Sportabout 18.7   8    Low</span>
-<span class='co'># Valiant           18.1   6    Low</span>
-<span class='co'># Duster 360        14.3   8    Low</span>
-<span class='co'># Merc 240D         24.4   4   High</span>
-<span class='co'># Merc 230          22.8   4   High</span>
-<span class='co'># Merc 280          19.2   6    Low</span>
-                
-<span class='co'># Examine label attributes</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='st'>"label"</span><span class='op'>)</span> 
-<span class='co'># [1] "Miles Per Gallon"</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>cyl</span>, <span class='st'>"label"</span><span class='op'>)</span> 
-<span class='co'># [1] "Cylinders"</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>mpgcat</span>, <span class='st'>"label"</span><span class='op'>)</span>
-<span class='co'># [1] "Fuel Efficiency"</span>
-
-<span class='co'># See labels in viewer </span>
-<span class='co'># View(dat1)</span>
-</pre>
+    <pre class="examples"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://libr.r-sassy.org'>libr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create small sample dataframe</span></span>
+<span><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>]</span></span>
+<span></span>
+<span><span class='co'># Perform datastep and assign attributes</span></span>
+<span><span class='va'>dat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>dat</span>, </span>
+<span>                 attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mpg <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Miles Per Gallon"</span><span class='op'>)</span>,</span>
+<span>                               cyl <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Cylinders"</span><span class='op'>)</span>,</span>
+<span>                               mpgcat <span class='op'>=</span> <span class='fu'>dsattr</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Fuel Efficiency"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>                <span class='op'>{</span></span>
+<span>                </span>
+<span>                  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span> </span>
+<span>                    <span class='va'>mpgcat</span> <span class='op'>=</span> <span class='st'>"High"</span></span>
+<span>                  <span class='kw'>else</span> </span>
+<span>                    <span class='va'>mpgcat</span> <span class='op'>=</span> <span class='st'>"Low"</span></span>
+<span>                </span>
+<span>                <span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Print results                 </span></span>
+<span><span class='va'>dat1</span></span>
+<span><span class='co'>#                    mpg cyl mpgcat</span></span>
+<span><span class='co'># Mazda RX4         21.0   6   High</span></span>
+<span><span class='co'># Mazda RX4 Wag     21.0   6   High</span></span>
+<span><span class='co'># Datsun 710        22.8   4   High</span></span>
+<span><span class='co'># Hornet 4 Drive    21.4   6   High</span></span>
+<span><span class='co'># Hornet Sportabout 18.7   8    Low</span></span>
+<span><span class='co'># Valiant           18.1   6    Low</span></span>
+<span><span class='co'># Duster 360        14.3   8    Low</span></span>
+<span><span class='co'># Merc 240D         24.4   4   High</span></span>
+<span><span class='co'># Merc 230          22.8   4   High</span></span>
+<span><span class='co'># Merc 280          19.2   6    Low</span></span>
+<span>                </span>
+<span><span class='co'># Examine label attributes</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='st'>"label"</span><span class='op'>)</span> </span>
+<span><span class='co'># [1] "Miles Per Gallon"</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>cyl</span>, <span class='st'>"label"</span><span class='op'>)</span> </span>
+<span><span class='co'># [1] "Cylinders"</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>dat1</span><span class='op'>$</span><span class='va'>mpgcat</span>, <span class='st'>"label"</span><span class='op'>)</span></span>
+<span><span class='co'># [1] "Fuel Efficiency"</span></span>
+<span></span>
+<span><span class='co'># See labels in viewer </span></span>
+<span><span class='co'># View(dat1)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

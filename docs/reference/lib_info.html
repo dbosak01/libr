@@ -173,7 +173,7 @@ name, file extension, number of rows, number of columns, size in bytes,
 and the last modified date.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_info</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>lib_info</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,28 +207,27 @@ and the last modified date.</p>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Create data library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Add data to library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>trees</span>, <span class='va'>rock</span>, <span class='va'>beaver1</span><span class='op'>)</span>
-
-<span class='co'># Get library information</span>
-<span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>lib_info</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine info</span>
-<span class='va'>info</span>
-<span class='co'>#      Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1 beaver1       rds  114    4 5.3 Kb 2020-11-05 21:27:57</span>
-<span class='co'># 2   rocks       rds   48    4 3.1 Kb 2020-11-05 21:27:56</span>
-<span class='co'># 3   trees       rds   31    3 2.4 Kb 2020-11-05 21:27:56</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create data library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add data to library</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>trees</span>, <span class='va'>rock</span>, <span class='va'>beaver1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Get library information</span></span>
+<span><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>lib_info</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine info</span></span>
+<span><span class='va'>info</span></span>
+<span><span class='co'>#      Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1 beaver1       rds  114    4 5.3 Kb 2020-11-05 21:27:57</span></span>
+<span><span class='co'># 2   rocks       rds   48    4 3.1 Kb 2020-11-05 21:27:56</span></span>
+<span><span class='co'># 3   trees       rds   31    3 2.4 Kb 2020-11-05 21:27:56</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -169,7 +169,7 @@ data library has a class of &quot;lib&quot;." />
 data library has a class of "lib".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is.lib</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>is.lib</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,19 +204,18 @@ data library.</p>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create format catalog</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> 
-           
-<span class='co'># Test for "lib" class</span>
-<span class='fu'>is.lib</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span> 
-<span class='co'># [1] TRUE</span>
-
-<span class='fu'>is.lib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># [1] FALSE</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create format catalog</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> </span>
+<span>           </span>
+<span><span class='co'># Test for "lib" class</span></span>
+<span><span class='fu'>is.lib</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span> </span>
+<span><span class='co'># [1] TRUE</span></span>
+<span></span>
+<span><span class='fu'>is.lib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='co'># [1] FALSE</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

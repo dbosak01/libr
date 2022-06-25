@@ -175,21 +175,21 @@ contains parameters to drop, keep, or rename variables, perform
 by-group processing, and perform row-wise or column-wise calculations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>datastep</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  <span class='va'>steps</span>,
-  keep <span class='op'>=</span> <span class='cn'>NULL</span>,
-  drop <span class='op'>=</span> <span class='cn'>NULL</span>,
-  rename <span class='op'>=</span> <span class='cn'>NULL</span>,
-  by <span class='op'>=</span> <span class='cn'>NULL</span>,
-  calculate <span class='op'>=</span> <span class='cn'>NULL</span>,
-  retain <span class='op'>=</span> <span class='cn'>NULL</span>,
-  attrib <span class='op'>=</span> <span class='cn'>NULL</span>,
-  arrays <span class='op'>=</span> <span class='cn'>NULL</span>,
-  sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  format <span class='op'>=</span> <span class='cn'>NULL</span>,
-  label <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>datastep</span><span class='op'>(</span></span>
+<span>  <span class='va'>data</span>,</span>
+<span>  <span class='va'>steps</span>,</span>
+<span>  keep <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  drop <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  rename <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  by <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  calculate <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  retain <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  attrib <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  arrays <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span>  format <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  label <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -441,193 +441,192 @@ the <code><a href='dictionary.html'>dictionary</a></code> function to create a d
 <code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Example #1: Simple Data Step</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>, 
-               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"mpgcat"</span>, <span class='st'>"recdt"</span><span class='op'>)</span>, <span class='op'>{</span>
-                 
-  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span> 
-    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span>
-  <span class='kw'>else</span> 
-    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
-                 
-  <span class='va'>recdt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"1974-06-10"</span><span class='op'>)</span>
-                 
-  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>8</span><span class='op'>)</span>
-    <span class='va'>is8cyl</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
-                 
-<span class='op'>}</span><span class='op'>)</span>
-
-<span class='va'>df</span>
-<span class='co'>#                    mpg cyl  disp mpgcat      recdt</span>
-<span class='co'># Mazda RX4         21.0   6 160.0   High 1974-06-10</span>
-<span class='co'># Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10</span>
-<span class='co'># Datsun 710        22.8   4 108.0   High 1974-06-10</span>
-<span class='co'># Hornet 4 Drive    21.4   6 258.0   High 1974-06-10</span>
-<span class='co'># Hornet Sportabout 18.7   8 360.0    Low 1974-06-10</span>
-<span class='co'># Valiant           18.1   6 225.0    Low 1974-06-10</span>
-<span class='co'># Duster 360        14.3   8 360.0    Low 1974-06-10</span>
-<span class='co'># Merc 240D         24.4   4 146.7   High 1974-06-10</span>
-<span class='co'># Merc 230          22.8   4 140.8   High 1974-06-10</span>
-<span class='co'># Merc 280          19.2   6 167.6    Low 1974-06-10</span>
-
-<span class='co'># Example #2: By-group Processing</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>, 
-               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"gear"</span>, <span class='st'>"grp"</span><span class='op'>)</span>, 
-               by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gear"</span><span class='op'>)</span>, sort_check <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='op'>{</span>
-                 
-  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>first.</span><span class='op'>)</span>
-    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"Start"</span>
-  <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>last.</span><span class='op'>)</span>
-    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"End"</span>
-  <span class='kw'>else</span> 
-    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"-"</span>
-                 
-<span class='op'>}</span><span class='op'>)</span>
-
-<span class='va'>df</span>
-<span class='co'>#                    mpg cyl gear   grp</span>
-<span class='co'># Mazda RX4         21.0   6    4 Start</span>
-<span class='co'># Mazda RX4 Wag     21.0   6    4     -</span>
-<span class='co'># Datsun 710        22.8   4    4   End</span>
-<span class='co'># Hornet 4 Drive    21.4   6    3 Start</span>
-<span class='co'># Hornet Sportabout 18.7   8    3     -</span>
-<span class='co'># Valiant           18.1   6    3     -</span>
-<span class='co'># Duster 360        14.3   8    3   End</span>
-<span class='co'># Merc 240D         24.4   4    4 Start</span>
-<span class='co'># Merc 230          22.8   4    4     -</span>
-<span class='co'># Merc 280          19.2   6    4   End </span>
-
-<span class='co'># Example #3: Calculate Block</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span>, 
-               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"mean_mpg"</span>, <span class='st'>"mpgcat"</span><span class='op'>)</span>, 
-               calculate <span class='op'>=</span> <span class='op'>{</span> <span class='va'>mean_mpg</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span> <span class='op'>}</span>, <span class='op'>{</span>
-                 
-  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span>
-    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span>
-  <span class='kw'>else</span> 
-    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
-                 
-<span class='op'>}</span><span class='op'>)</span>
-
-<span class='va'>df</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>
-<span class='co'>#                    mpg cyl mean_mpg mpgcat</span>
-<span class='co'># Mazda RX4         21.0   6 20.09062   High</span>
-<span class='co'># Mazda RX4 Wag     21.0   6 20.09062   High</span>
-<span class='co'># Datsun 710        22.8   4 20.09062   High</span>
-<span class='co'># Hornet 4 Drive    21.4   6 20.09062   High</span>
-<span class='co'># Hornet Sportabout 18.7   8 20.09062    Low</span>
-<span class='co'># Valiant           18.1   6 20.09062    Low</span>
-<span class='co'># Duster 360        14.3   8 20.09062    Low</span>
-<span class='co'># Merc 240D         24.4   4 20.09062   High</span>
-<span class='co'># Merc 230          22.8   4 20.09062   High</span>
-<span class='co'># Merc 280          19.2   6 20.09062    Low</span>
-
-<span class='co'># Example #4: Data pipeline</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
-
-<span class='co'># Add datastep to dplyr pipeline</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'>datastep</span><span class='op'>(</span><span class='op'>{</span>
-    
-    <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span>
-      <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span>
-    <span class='kw'>else</span> 
-      <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span>
-    
-  <span class='op'>}</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span>
-
-<span class='va'>df</span>
-<span class='co'>#     mpg cyl gear mean_mpg mpgcat</span>
-<span class='co'># 1  21.0   6    4 20.09062   High</span>
-<span class='co'># 2  21.0   6    4 20.09062   High</span>
-<span class='co'># 3  22.8   4    4 20.09062   High</span>
-<span class='co'># 4  21.4   6    3 20.09062   High</span>
-<span class='co'># 5  18.7   8    3 20.09062    Low</span>
-<span class='co'># 6  18.1   6    3 20.09062    Low</span>
-<span class='co'># 7  14.3   8    3 20.09062    Low</span>
-<span class='co'># 8  24.4   4    4 20.09062   High</span>
-<span class='co'># 9  22.8   4    4 20.09062   High</span>
-<span class='co'># 10 19.2   6    4 20.09062    Low</span>
-
-<span class='co'># Example #5: Drop, Retain and Rename</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>, 
-               drop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span>, 
-                        <span class='st'>"vs"</span>, <span class='st'>"am"</span>, <span class='st'>"gear"</span>, <span class='st'>"carb"</span><span class='op'>)</span>, 
-               retain <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cumwt <span class='op'>=</span> <span class='fl'>0</span> <span class='op'>)</span>,
-               rename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mpg <span class='op'>=</span> <span class='st'>"MPG"</span>, cyl <span class='op'>=</span> <span class='st'>"Cylinders"</span>, wt <span class='op'>=</span> <span class='st'>"Wgt"</span>, 
-                          cumwt <span class='op'>=</span> <span class='st'>"Cumulative Wgt"</span><span class='op'>)</span>, <span class='op'>{</span>
-                 
-  <span class='va'>cumwt</span> <span class='op'>&lt;-</span> <span class='va'>cumwt</span> <span class='op'>+</span> <span class='va'>wt</span>
-                 
-<span class='op'>}</span><span class='op'>)</span>
-
-<span class='va'>df</span>
-<span class='co'>#                    MPG Cylinders   Wgt Cumulative Wgt</span>
-<span class='co'># Mazda RX4         21.0         6 2.620          2.620</span>
-<span class='co'># Mazda RX4 Wag     21.0         6 2.875          5.495</span>
-<span class='co'># Datsun 710        22.8         4 2.320          7.815</span>
-<span class='co'># Hornet 4 Drive    21.4         6 3.215         11.030</span>
-<span class='co'># Hornet Sportabout 18.7         8 3.440         14.470</span>
-<span class='co'># Valiant           18.1         6 3.460         17.930</span>
-<span class='co'># Duster 360        14.3         8 3.570         21.500</span>
-<span class='co'># Merc 240D         24.4         4 3.190         24.690</span>
-<span class='co'># Merc 230          22.8         4 3.150         27.840</span>
-<span class='co'># Merc 280          19.2         6 3.440         31.280</span>
-
-<span class='co'># Example #6: Attributes and Arrays</span>
-
-<span class='co'># Create sample data</span>
-<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'
-   Year  Q1   Q2  Q3  Q4
-   2000 125  137 152 140
-   2001 132  145 138  87
-   2002 101  104 115 121'</span><span class='op'>)</span>
- 
-<span class='co'># Use attrib list to control column order and add labels</span>
-<span class='co'># Use array to calculate row sums and means, and get best quarter</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>,
-               attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Tot <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Total"</span><span class='op'>)</span>,
-                             Avg <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Average"</span><span class='op'>)</span>,
-                             Best <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Best Quarter"</span><span class='op'>)</span><span class='op'>)</span>,
-               arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>qtrs <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span><span class='op'>)</span><span class='op'>)</span>,
-               drop <span class='op'>=</span> <span class='st'>"q"</span>,
-               steps <span class='op'>=</span> <span class='op'>{</span>
-               
-                 <span class='co'># Empty brackets return all array values</span>
-                 <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
-                 <span class='va'>Avg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
-                 
-                 <span class='co'># Iterate to find best quarter</span>
-                 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>q</span> <span class='kw'>in</span> <span class='va'>qtrs</span><span class='op'>)</span> <span class='op'>{</span>
-                   <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='va'>q</span><span class='op'>]</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-                     <span class='va'>Best</span> <span class='op'>&lt;-</span> <span class='va'>q</span>
-                 <span class='op'>}</span>
-               <span class='op'>}</span><span class='op'>)</span>
-               
-<span class='va'>df</span>
-<span class='co'>#   Year  Q1  Q2  Q3  Q4 Tot    Avg Best</span>
-<span class='co'># 1 2000 125 137 152 140 554 138.50   Q3</span>
-<span class='co'># 2 2001 132 145 138  87 502 125.50   Q2</span>
-<span class='co'># 3 2002 101 104 115 121 441 110.25   Q4</span>
-
-<span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
-<span class='co'>#   A tibble: 8 x 10</span>
-<span class='co'>#   Name  Column Class     Label        Description Format Width Justify  Rows   NAs</span>
-<span class='co'>#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class='co'># 1 df    Year   integer   NA           NA          NA        NA NA          3     0</span>
-<span class='co'># 2 df    Q1     integer   NA           NA          NA        NA NA          3     0</span>
-<span class='co'># 3 df    Q2     integer   NA           NA          NA        NA NA          3     0</span>
-<span class='co'># 4 df    Q3     integer   NA           NA          NA        NA NA          3     0</span>
-<span class='co'># 5 df    Q4     integer   NA           NA          NA        NA NA          3     0</span>
-<span class='co'># 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0</span>
-<span class='co'># 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0</span>
-<span class='co'># 8 df    Best   character Best Quarter NA          NA         2 NA          3     0</span>
-
-</pre>
+    <pre class="examples"><span><span class='co'># Example #1: Simple Data Step</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"mpgcat"</span>, <span class='st'>"recdt"</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='fl'>20</span><span class='op'>)</span> </span>
+<span>    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span></span>
+<span>  <span class='kw'>else</span> </span>
+<span>    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span></span>
+<span>                 </span>
+<span>  <span class='va'>recdt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"1974-06-10"</span><span class='op'>)</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>8</span><span class='op'>)</span></span>
+<span>    <span class='va'>is8cyl</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#                    mpg cyl  disp mpgcat      recdt</span></span>
+<span><span class='co'># Mazda RX4         21.0   6 160.0   High 1974-06-10</span></span>
+<span><span class='co'># Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10</span></span>
+<span><span class='co'># Datsun 710        22.8   4 108.0   High 1974-06-10</span></span>
+<span><span class='co'># Hornet 4 Drive    21.4   6 258.0   High 1974-06-10</span></span>
+<span><span class='co'># Hornet Sportabout 18.7   8 360.0    Low 1974-06-10</span></span>
+<span><span class='co'># Valiant           18.1   6 225.0    Low 1974-06-10</span></span>
+<span><span class='co'># Duster 360        14.3   8 360.0    Low 1974-06-10</span></span>
+<span><span class='co'># Merc 240D         24.4   4 146.7   High 1974-06-10</span></span>
+<span><span class='co'># Merc 230          22.8   4 140.8   High 1974-06-10</span></span>
+<span><span class='co'># Merc 280          19.2   6 167.6    Low 1974-06-10</span></span>
+<span></span>
+<span><span class='co'># Example #2: By-group Processing</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"gear"</span>, <span class='st'>"grp"</span><span class='op'>)</span>, </span>
+<span>               by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gear"</span><span class='op'>)</span>, sort_check <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>first.</span><span class='op'>)</span></span>
+<span>    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"Start"</span></span>
+<span>  <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>(</span><span class='va'>last.</span><span class='op'>)</span></span>
+<span>    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"End"</span></span>
+<span>  <span class='kw'>else</span> </span>
+<span>    <span class='va'>grp</span> <span class='op'>&lt;-</span> <span class='st'>"-"</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#                    mpg cyl gear   grp</span></span>
+<span><span class='co'># Mazda RX4         21.0   6    4 Start</span></span>
+<span><span class='co'># Mazda RX4 Wag     21.0   6    4     -</span></span>
+<span><span class='co'># Datsun 710        22.8   4    4   End</span></span>
+<span><span class='co'># Hornet 4 Drive    21.4   6    3 Start</span></span>
+<span><span class='co'># Hornet Sportabout 18.7   8    3     -</span></span>
+<span><span class='co'># Valiant           18.1   6    3     -</span></span>
+<span><span class='co'># Duster 360        14.3   8    3   End</span></span>
+<span><span class='co'># Merc 240D         24.4   4    4 Start</span></span>
+<span><span class='co'># Merc 230          22.8   4    4     -</span></span>
+<span><span class='co'># Merc 280          19.2   6    4   End </span></span>
+<span></span>
+<span><span class='co'># Example #3: Calculate Block</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"mean_mpg"</span>, <span class='st'>"mpgcat"</span><span class='op'>)</span>, </span>
+<span>               calculate <span class='op'>=</span> <span class='op'>{</span> <span class='va'>mean_mpg</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span> <span class='op'>}</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span></span>
+<span>    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span></span>
+<span>  <span class='kw'>else</span> </span>
+<span>    <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span></span>
+<span><span class='co'>#                    mpg cyl mean_mpg mpgcat</span></span>
+<span><span class='co'># Mazda RX4         21.0   6 20.09062   High</span></span>
+<span><span class='co'># Mazda RX4 Wag     21.0   6 20.09062   High</span></span>
+<span><span class='co'># Datsun 710        22.8   4 20.09062   High</span></span>
+<span><span class='co'># Hornet 4 Drive    21.4   6 20.09062   High</span></span>
+<span><span class='co'># Hornet Sportabout 18.7   8 20.09062    Low</span></span>
+<span><span class='co'># Valiant           18.1   6 20.09062    Low</span></span>
+<span><span class='co'># Duster 360        14.3   8 20.09062    Low</span></span>
+<span><span class='co'># Merc 240D         24.4   4 20.09062   High</span></span>
+<span><span class='co'># Merc 230          22.8   4 20.09062   High</span></span>
+<span><span class='co'># Merc 280          19.2   6 20.09062    Low</span></span>
+<span></span>
+<span><span class='co'># Example #4: Data pipeline</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add datastep to dplyr pipeline</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>mean_mpg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>datastep</span><span class='op'>(</span><span class='op'>{</span></span>
+<span>    </span>
+<span>    <span class='kw'>if</span> <span class='op'>(</span><span class='va'>mpg</span> <span class='op'>&gt;=</span> <span class='va'>mean_mpg</span><span class='op'>)</span></span>
+<span>      <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"High"</span></span>
+<span>    <span class='kw'>else</span> </span>
+<span>      <span class='va'>mpgcat</span> <span class='op'>&lt;-</span> <span class='st'>"Low"</span></span>
+<span>    </span>
+<span>  <span class='op'>}</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#     mpg cyl gear mean_mpg mpgcat</span></span>
+<span><span class='co'># 1  21.0   6    4 20.09062   High</span></span>
+<span><span class='co'># 2  21.0   6    4 20.09062   High</span></span>
+<span><span class='co'># 3  22.8   4    4 20.09062   High</span></span>
+<span><span class='co'># 4  21.4   6    3 20.09062   High</span></span>
+<span><span class='co'># 5  18.7   8    3 20.09062    Low</span></span>
+<span><span class='co'># 6  18.1   6    3 20.09062    Low</span></span>
+<span><span class='co'># 7  14.3   8    3 20.09062    Low</span></span>
+<span><span class='co'># 8  24.4   4    4 20.09062   High</span></span>
+<span><span class='co'># 9  22.8   4    4 20.09062   High</span></span>
+<span><span class='co'># 10 19.2   6    4 20.09062    Low</span></span>
+<span></span>
+<span><span class='co'># Example #5: Drop, Retain and Rename</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>, </span>
+<span>               drop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span>, </span>
+<span>                        <span class='st'>"vs"</span>, <span class='st'>"am"</span>, <span class='st'>"gear"</span>, <span class='st'>"carb"</span><span class='op'>)</span>, </span>
+<span>               retain <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>cumwt <span class='op'>=</span> <span class='fl'>0</span> <span class='op'>)</span>,</span>
+<span>               rename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>mpg <span class='op'>=</span> <span class='st'>"MPG"</span>, cyl <span class='op'>=</span> <span class='st'>"Cylinders"</span>, wt <span class='op'>=</span> <span class='st'>"Wgt"</span>, </span>
+<span>                          cumwt <span class='op'>=</span> <span class='st'>"Cumulative Wgt"</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='va'>cumwt</span> <span class='op'>&lt;-</span> <span class='va'>cumwt</span> <span class='op'>+</span> <span class='va'>wt</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#                    MPG Cylinders   Wgt Cumulative Wgt</span></span>
+<span><span class='co'># Mazda RX4         21.0         6 2.620          2.620</span></span>
+<span><span class='co'># Mazda RX4 Wag     21.0         6 2.875          5.495</span></span>
+<span><span class='co'># Datsun 710        22.8         4 2.320          7.815</span></span>
+<span><span class='co'># Hornet 4 Drive    21.4         6 3.215         11.030</span></span>
+<span><span class='co'># Hornet Sportabout 18.7         8 3.440         14.470</span></span>
+<span><span class='co'># Valiant           18.1         6 3.460         17.930</span></span>
+<span><span class='co'># Duster 360        14.3         8 3.570         21.500</span></span>
+<span><span class='co'># Merc 240D         24.4         4 3.190         24.690</span></span>
+<span><span class='co'># Merc 230          22.8         4 3.150         27.840</span></span>
+<span><span class='co'># Merc 280          19.2         6 3.440         31.280</span></span>
+<span></span>
+<span><span class='co'># Example #6: Attributes and Arrays</span></span>
+<span></span>
+<span><span class='co'># Create sample data</span></span>
+<span><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'</span></span>
+<span><span class='st'>   Year  Q1   Q2  Q3  Q4</span></span>
+<span><span class='st'>   2000 125  137 152 140</span></span>
+<span><span class='st'>   2001 132  145 138  87</span></span>
+<span><span class='st'>   2002 101  104 115 121'</span><span class='op'>)</span></span>
+<span> </span>
+<span><span class='co'># Use attrib list to control column order and add labels</span></span>
+<span><span class='co'># Use array to calculate row sums and means, and get best quarter</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>,</span>
+<span>               attrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Tot <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Total"</span><span class='op'>)</span>,</span>
+<span>                             Avg <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Year Average"</span><span class='op'>)</span>,</span>
+<span>                             Best <span class='op'>=</span> <span class='fu'><a href='dsattr.html'>dsattr</a></span><span class='op'>(</span><span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"Best Quarter"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>               arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>qtrs <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>               drop <span class='op'>=</span> <span class='st'>"q"</span>,</span>
+<span>               steps <span class='op'>=</span> <span class='op'>{</span></span>
+<span>               </span>
+<span>                 <span class='co'># Empty brackets return all array values</span></span>
+<span>                 <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span></span>
+<span>                 <span class='va'>Avg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span></span>
+<span>                 </span>
+<span>                 <span class='co'># Iterate to find best quarter</span></span>
+<span>                 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>q</span> <span class='kw'>in</span> <span class='va'>qtrs</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>                   <span class='kw'>if</span> <span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='va'>q</span><span class='op'>]</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>qtrs</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>                     <span class='va'>Best</span> <span class='op'>&lt;-</span> <span class='va'>q</span></span>
+<span>                 <span class='op'>}</span></span>
+<span>               <span class='op'>}</span><span class='op'>)</span></span>
+<span>               </span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#   Year  Q1  Q2  Q3  Q4 Tot    Avg Best</span></span>
+<span><span class='co'># 1 2000 125 137 152 140 554 138.50   Q3</span></span>
+<span><span class='co'># 2 2001 132 145 138  87 502 125.50   Q2</span></span>
+<span><span class='co'># 3 2002 101 104 115 121 441 110.25   Q4</span></span>
+<span></span>
+<span><span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span></span>
+<span><span class='co'>#   A tibble: 8 x 10</span></span>
+<span><span class='co'>#   Name  Column Class     Label        Description Format Width Justify  Rows   NAs</span></span>
+<span><span class='co'>#   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class='co'># 1 df    Year   integer   NA           NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 2 df    Q1     integer   NA           NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 3 df    Q2     integer   NA           NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 4 df    Q3     integer   NA           NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 5 df    Q4     integer   NA           NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0</span></span>
+<span><span class='co'># 8 df    Best   character Best Quarter NA          NA         2 NA          3     0</span></span>
+<span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -131,133 +131,133 @@ then proceeds to copy it to another library and perform some
 manipulation of the data in the libraries. The example ends by looking
 at some of the metadata available for libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span>
-
-<span class="co"># Create temp directory</span>
-<span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Create libraries</span>
-<span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">tmp</span><span class="op">)</span>
-
-<span class="co"># Add data to library and adjust names</span>
-<span class="fu"><a href="../reference/lib_add.html">lib_add</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">state.name</span>, <span class="va">state.area</span>, <span class="va">state.region</span>, <span class="va">state.abb</span>,
-        name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># # library 's1': 4 items</span>
-<span class="co"># - attributes: rds not loaded</span>
-<span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span>
-<span class="co"># - items:</span>
-<span class="co">#     Name Extension Rows Cols   Size        LastModified</span>
-<span class="co"># 1   name       rds   50    1 4.4 Kb 2020-11-29 17:00:28</span>
-<span class="co"># 2   area       rds   50    1 1.4 Kb 2020-11-29 17:00:28</span>
-<span class="co"># 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28</span>
-<span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28</span>
-
-<span class="co"># Copy library to backup location</span>
-<span class="fu"><a href="../reference/lib_copy.html">lib_copy</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"orig"</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># # library 's2': 4 items</span>
-<span class="co"># - attributes: rds not loaded</span>
-<span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig</span>
-<span class="co"># - items:</span>
-<span class="co">#     Name Extension Rows Cols   Size        LastModified</span>
-<span class="co"># 1   name       rds   50    1 4.4 Kb 2020-11-29 17:01:17</span>
-<span class="co"># 2   area       rds   50    1 1.4 Kb 2020-11-29 17:01:17</span>
-<span class="co"># 3 region       rds   50    1 1.9 Kb 2020-11-29 17:01:17</span>
-<span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17</span>
-
-<span class="co"># Remove data from library 1</span>
-<span class="fu"><a href="../reference/lib_remove.html">lib_remove</a></span><span class="op">(</span><span class="va">s1</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># # library 's1': 0 items</span>
-<span class="co"># - attributes: rds not loaded</span>
-<span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span>
-<span class="co"># NULL</span>
-
-<span class="co"># Load library 1 into memory</span>
-<span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-
-<span class="va">s1.combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">s2.name</span>, abb <span class="op">=</span> <span class="va">s2.abb</span>, 
-                          area <span class="op">=</span> <span class="va">s2.area</span>, region <span class="op">=</span> <span class="va">s2.region</span>, 
-                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">s1.east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"Northeast"</span><span class="op">)</span>
-<span class="va">s1.west</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"West"</span><span class="op">)</span>
-<span class="va">s1.north</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"North Central"</span><span class="op">)</span>
-<span class="va">s1.south</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"South"</span><span class="op">)</span>
-
-<span class="co"># Sync workspace with library list</span>
-<span class="fu"><a href="../reference/lib_sync.html">lib_sync</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co"># # library 's1': 5 items</span>
-<span class="co"># - attributes: rds loaded</span>
-<span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span>
-<span class="co"># - items:</span>
-<span class="co">#       Name Extension Rows Cols    Size LastModified</span>
-<span class="co"># 1 combined        NA   50    4 12.7 Kb         &lt;NA&gt;</span>
-<span class="co"># 2     east        NA    9    4  3.2 Kb         &lt;NA&gt;</span>
-<span class="co"># 3    north        NA   12    4  3.5 Kb         &lt;NA&gt;</span>
-<span class="co"># 4    south        NA   16    4    4 Kb         &lt;NA&gt;</span>
-<span class="co"># 5     west        NA   13    4  3.6 Kb         &lt;NA&gt;</span>
-
-<span class="co"># Save library 1 to disk</span>
-<span class="fu"><a href="../reference/lib_write.html">lib_write</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co"># # library 's1': 5 items</span>
-<span class="co"># - attributes: rds loaded</span>
-<span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span>
-<span class="co"># - items:</span>
-<span class="co">#       Name Extension Rows Cols    Size        LastModified</span>
-<span class="co"># 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40</span>
-
-<span class="co"># View path</span>
-<span class="fu"><a href="../reference/lib_path.html">lib_path</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co"># [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpqAMV6L"</span>
-
-<span class="co"># View size</span>
-<span class="fu"><a href="../reference/lib_size.html">lib_size</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co"># [1] 7175</span>
-
-<span class="co"># View info</span>
-<span class="fu"><a href="../reference/lib_info.html">lib_info</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co">#       Name Extension Rows Cols    Size        LastModified</span>
-<span class="co"># 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40</span>
-<span class="co"># 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40</span>
-
-<span class="co"># Display dictionary</span>
-<span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="co"># # A tibble: 20 x 10</span>
-<span class="co">#    Name     Column Class     Label Description Format Width Justify  Rows   NAs</span>
-<span class="co">#    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class="co">#  1 combined name   character NA    NA          NA        14 NA         50     0</span>
-<span class="co">#  2 combined abb    character NA    NA          NA         2 NA         50     0</span>
-<span class="co">#  3 combined area   numeric   NA    NA          NA        NA NA         50     0</span>
-<span class="co">#  4 combined region factor    NA    NA          NA        NA NA         50     0</span>
-<span class="co">#  5 east     name   character NA    NA          NA        13 NA          9     0</span>
-<span class="co">#  6 east     abb    character NA    NA          NA         2 NA          9     0</span>
-<span class="co">#  7 east     area   numeric   NA    NA          NA        NA NA          9     0</span>
-<span class="co">#  8 east     region factor    NA    NA          NA        NA NA          9     0</span>
-<span class="co">#  9 north    name   character NA    NA          NA        12 NA         12     0</span>
-<span class="co"># 10 north    abb    character NA    NA          NA         2 NA         12     0</span>
-<span class="co"># 11 north    area   numeric   NA    NA          NA        NA NA         12     0</span>
-<span class="co"># 12 north    region factor    NA    NA          NA        NA NA         12     0</span>
-<span class="co"># 13 south    name   character NA    NA          NA        14 NA         16     0</span>
-<span class="co"># 14 south    abb    character NA    NA          NA         2 NA         16     0</span>
-<span class="co"># 15 south    area   numeric   NA    NA          NA        NA NA         16     0</span>
-<span class="co"># 16 south    region factor    NA    NA          NA        NA NA         16     0</span>
-<span class="co"># 17 west     name   character NA    NA          NA        10 NA         13     0</span>
-<span class="co"># 18 west     abb    character NA    NA          NA         2 NA         13     0</span>
-<span class="co"># 19 west     area   numeric   NA    NA          NA        NA NA         13     0</span>
-<span class="co"># 20 west     region factor    NA    NA          NA        NA NA         13     0</span>
-
-<span class="co"># Unload library 1</span>
-<span class="fu"><a href="../reference/lib_unload.html">lib_unload</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-
-<span class="co"># Clean up</span>
-<span class="fu"><a href="../reference/lib_delete.html">lib_delete</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span>
-<span class="fu"><a href="../reference/lib_delete.html">lib_delete</a></span><span class="op">(</span><span class="va">s2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create temp directory</span></span>
+<span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create libraries</span></span>
+<span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">tmp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add data to library and adjust names</span></span>
+<span><span class="fu"><a href="../reference/lib_add.html">lib_add</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">state.name</span>, <span class="va">state.area</span>, <span class="va">state.region</span>, <span class="va">state.abb</span>,</span>
+<span>        name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># # library 's1': 4 items</span></span>
+<span><span class="co"># - attributes: rds not loaded</span></span>
+<span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
+<span><span class="co"># - items:</span></span>
+<span><span class="co">#     Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class="co"># 1   name       rds   50    1 4.4 Kb 2020-11-29 17:00:28</span></span>
+<span><span class="co"># 2   area       rds   50    1 1.4 Kb 2020-11-29 17:00:28</span></span>
+<span><span class="co"># 3 region       rds   50    1 1.9 Kb 2020-11-29 17:00:28</span></span>
+<span><span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28</span></span>
+<span></span>
+<span><span class="co"># Copy library to backup location</span></span>
+<span><span class="fu"><a href="../reference/lib_copy.html">lib_copy</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"orig"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># # library 's2': 4 items</span></span>
+<span><span class="co"># - attributes: rds not loaded</span></span>
+<span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig</span></span>
+<span><span class="co"># - items:</span></span>
+<span><span class="co">#     Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class="co"># 1   name       rds   50    1 4.4 Kb 2020-11-29 17:01:17</span></span>
+<span><span class="co"># 2   area       rds   50    1 1.4 Kb 2020-11-29 17:01:17</span></span>
+<span><span class="co"># 3 region       rds   50    1 1.9 Kb 2020-11-29 17:01:17</span></span>
+<span><span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17</span></span>
+<span></span>
+<span><span class="co"># Remove data from library 1</span></span>
+<span><span class="fu"><a href="../reference/lib_remove.html">lib_remove</a></span><span class="op">(</span><span class="va">s1</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># # library 's1': 0 items</span></span>
+<span><span class="co"># - attributes: rds not loaded</span></span>
+<span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
+<span><span class="co"># NULL</span></span>
+<span></span>
+<span><span class="co"># Load library 1 into memory</span></span>
+<span><span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">s1.combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">s2.name</span>, abb <span class="op">=</span> <span class="va">s2.abb</span>, </span>
+<span>                          area <span class="op">=</span> <span class="va">s2.area</span>, region <span class="op">=</span> <span class="va">s2.region</span>, </span>
+<span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">s1.east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"Northeast"</span><span class="op">)</span></span>
+<span><span class="va">s1.west</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"West"</span><span class="op">)</span></span>
+<span><span class="va">s1.north</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"North Central"</span><span class="op">)</span></span>
+<span><span class="va">s1.south</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"South"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Sync workspace with library list</span></span>
+<span><span class="fu"><a href="../reference/lib_sync.html">lib_sync</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co"># # library 's1': 5 items</span></span>
+<span><span class="co"># - attributes: rds loaded</span></span>
+<span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
+<span><span class="co"># - items:</span></span>
+<span><span class="co">#       Name Extension Rows Cols    Size LastModified</span></span>
+<span><span class="co"># 1 combined        NA   50    4 12.7 Kb         &lt;NA&gt;</span></span>
+<span><span class="co"># 2     east        NA    9    4  3.2 Kb         &lt;NA&gt;</span></span>
+<span><span class="co"># 3    north        NA   12    4  3.5 Kb         &lt;NA&gt;</span></span>
+<span><span class="co"># 4    south        NA   16    4    4 Kb         &lt;NA&gt;</span></span>
+<span><span class="co"># 5     west        NA   13    4  3.6 Kb         &lt;NA&gt;</span></span>
+<span></span>
+<span><span class="co"># Save library 1 to disk</span></span>
+<span><span class="fu"><a href="../reference/lib_write.html">lib_write</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co"># # library 's1': 5 items</span></span>
+<span><span class="co"># - attributes: rds loaded</span></span>
+<span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
+<span><span class="co"># - items:</span></span>
+<span><span class="co">#       Name Extension Rows Cols    Size        LastModified</span></span>
+<span><span class="co"># 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40</span></span>
+<span></span>
+<span><span class="co"># View path</span></span>
+<span><span class="fu"><a href="../reference/lib_path.html">lib_path</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co"># [1] "C:\\Users\\User\\AppData\\Local\\Temp\\RtmpqAMV6L"</span></span>
+<span></span>
+<span><span class="co"># View size</span></span>
+<span><span class="fu"><a href="../reference/lib_size.html">lib_size</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co"># [1] 7175</span></span>
+<span></span>
+<span><span class="co"># View info</span></span>
+<span><span class="fu"><a href="../reference/lib_info.html">lib_info</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co">#       Name Extension Rows Cols    Size        LastModified</span></span>
+<span><span class="co"># 1 combined       rds   50    4 13.4 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 2     east       rds    9    4    4 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 3    north       rds   12    4  4.3 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 4    south       rds   16    4  4.8 Kb 2020-11-29 17:03:40</span></span>
+<span><span class="co"># 5     west       rds   13    4  4.4 Kb 2020-11-29 17:03:40</span></span>
+<span></span>
+<span><span class="co"># Display dictionary</span></span>
+<span><span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 20 x 10</span></span>
+<span><span class="co">#    Name     Column Class     Label Description Format Width Justify  Rows   NAs</span></span>
+<span><span class="co">#    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#  1 combined name   character NA    NA          NA        14 NA         50     0</span></span>
+<span><span class="co">#  2 combined abb    character NA    NA          NA         2 NA         50     0</span></span>
+<span><span class="co">#  3 combined area   numeric   NA    NA          NA        NA NA         50     0</span></span>
+<span><span class="co">#  4 combined region factor    NA    NA          NA        NA NA         50     0</span></span>
+<span><span class="co">#  5 east     name   character NA    NA          NA        13 NA          9     0</span></span>
+<span><span class="co">#  6 east     abb    character NA    NA          NA         2 NA          9     0</span></span>
+<span><span class="co">#  7 east     area   numeric   NA    NA          NA        NA NA          9     0</span></span>
+<span><span class="co">#  8 east     region factor    NA    NA          NA        NA NA          9     0</span></span>
+<span><span class="co">#  9 north    name   character NA    NA          NA        12 NA         12     0</span></span>
+<span><span class="co"># 10 north    abb    character NA    NA          NA         2 NA         12     0</span></span>
+<span><span class="co"># 11 north    area   numeric   NA    NA          NA        NA NA         12     0</span></span>
+<span><span class="co"># 12 north    region factor    NA    NA          NA        NA NA         12     0</span></span>
+<span><span class="co"># 13 south    name   character NA    NA          NA        14 NA         16     0</span></span>
+<span><span class="co"># 14 south    abb    character NA    NA          NA         2 NA         16     0</span></span>
+<span><span class="co"># 15 south    area   numeric   NA    NA          NA        NA NA         16     0</span></span>
+<span><span class="co"># 16 south    region factor    NA    NA          NA        NA NA         16     0</span></span>
+<span><span class="co"># 17 west     name   character NA    NA          NA        10 NA         13     0</span></span>
+<span><span class="co"># 18 west     abb    character NA    NA          NA         2 NA         13     0</span></span>
+<span><span class="co"># 19 west     area   numeric   NA    NA          NA        NA NA         13     0</span></span>
+<span><span class="co"># 20 west     region factor    NA    NA          NA        NA NA         13     0</span></span>
+<span></span>
+<span><span class="co"># Unload library 1</span></span>
+<span><span class="fu"><a href="../reference/lib_unload.html">lib_unload</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Clean up</span></span>
+<span><span class="fu"><a href="../reference/lib_delete.html">lib_delete</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/lib_delete.html">lib_delete</a></span><span class="op">(</span><span class="va">s2</span><span class="op">)</span></span></code></pre></div>
 <p>Next: <a href="libr-datastep.html">Data Step Operations</a></p>
   </div>
 

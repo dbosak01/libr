@@ -179,17 +179,17 @@ package contains additional functions to add and remove data from the library,
 copy the library, and write any changed data to the file system.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>libname</span><span class='op'>(</span>
-  <span class='va'>name</span>,
-  <span class='va'>directory_path</span>,
-  engine <span class='op'>=</span> <span class='st'>"rds"</span>,
-  read_only <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
-  import_specs <span class='op'>=</span> <span class='cn'>NULL</span>,
-  filter <span class='op'>=</span> <span class='cn'>NULL</span>,
-  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>libname</span><span class='op'>(</span></span>
+<span>  <span class='va'>name</span>,</span>
+<span>  <span class='va'>directory_path</span>,</span>
+<span>  engine <span class='op'>=</span> <span class='st'>"rds"</span>,</span>
+<span>  read_only <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>  env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>  import_specs <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  filter <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>  quiet <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -407,59 +407,58 @@ and <code><a href='datastep.html'>datastep</a></code> to perform a data step.</p
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Save some data to temp directory</span>
-<span class='co'># for illustration purposes</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>trees</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"trees.rds"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>rock</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"rocks.rds"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>beaver1</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"beaver1.rds"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Create data library</span>
-<span class='fu'>libname</span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-<span class='co'># # library 'dat': 3 items</span>
-<span class='co'># - attributes: rds not loaded</span>
-<span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpklJcfl</span>
-<span class='co'># - items:</span>
-<span class='co'>#      Name Extension Rows Cols   Size        LastModified</span>
-<span class='co'># 1 beaver1       rds  114    4 5.9 Kb 2020-12-06 15:21:30</span>
-<span class='co'># 2   rocks       rds   48    4 3.6 Kb 2020-12-06 15:21:30</span>
-<span class='co'># 3   trees       rds   31    3 2.9 Kb 2020-12-06 15:21:30</span>
-
-<span class='co'># Print dictionary for library</span>
-<span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-<span class='co'># A tibble: 11 x 10</span>
-<span class='co'>#    Name    Column Class   Label Description Format Width Justify  Rows   NAs</span>
-<span class='co'>#    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span>
-<span class='co'>#  1 beaver1 day    numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'>#  2 beaver1 time   numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'>#  3 beaver1 temp   numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'>#  4 beaver1 activ  numeric NA    NA          NA     NA    NA        114     0</span>
-<span class='co'>#  5 rocks   area   integer NA    NA          NA     NA    NA         48     0</span>
-<span class='co'>#  6 rocks   peri   numeric NA    NA          NA     NA    NA         48     0</span>
-<span class='co'>#  7 rocks   shape  numeric NA    NA          NA     NA    NA         48     0</span>
-<span class='co'>#  8 rocks   perm   numeric NA    NA          NA     NA    NA         48     0</span>
-<span class='co'>#  9 trees   Girth  numeric NA    NA          NA     NA    NA         31     0</span>
-<span class='co'># 10 trees   Height numeric NA    NA          NA     NA    NA         31     0</span>
-<span class='co'># 11 trees   Volume numeric NA    NA          NA     NA    NA         31     0</span>
-
-<span class='co'># Load library into workspace </span>
-<span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Print summaries for each data frame</span>
-<span class='co'># Note that once loaded into the workspace, </span>
-<span class='co'># data can be accessed using two-level syntax.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.rocks</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.trees</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.beaver1</span><span class='op'>)</span>
-
-<span class='co'>#Unload from workspace</span>
-<span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Save some data to temp directory</span></span>
+<span><span class='co'># for illustration purposes</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>trees</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"trees.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>rock</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"rocks.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>beaver1</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>"beaver1.rds"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create data library</span></span>
+<span><span class='fu'>libname</span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span><span class='co'># # library 'dat': 3 items</span></span>
+<span><span class='co'># - attributes: rds not loaded</span></span>
+<span><span class='co'># - path: C:\Users\User\AppData\Local\Temp\RtmpklJcfl</span></span>
+<span><span class='co'># - items:</span></span>
+<span><span class='co'>#      Name Extension Rows Cols   Size        LastModified</span></span>
+<span><span class='co'># 1 beaver1       rds  114    4 5.9 Kb 2020-12-06 15:21:30</span></span>
+<span><span class='co'># 2   rocks       rds   48    4 3.6 Kb 2020-12-06 15:21:30</span></span>
+<span><span class='co'># 3   trees       rds   31    3 2.9 Kb 2020-12-06 15:21:30</span></span>
+<span></span>
+<span><span class='co'># Print dictionary for library</span></span>
+<span><span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span><span class='co'># A tibble: 11 x 10</span></span>
+<span><span class='co'>#    Name    Column Class   Label Description Format Width Justify  Rows   NAs</span></span>
+<span><span class='co'>#    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class='co'>#  1 beaver1 day    numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'>#  2 beaver1 time   numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'>#  3 beaver1 temp   numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'>#  4 beaver1 activ  numeric NA    NA          NA     NA    NA        114     0</span></span>
+<span><span class='co'>#  5 rocks   area   integer NA    NA          NA     NA    NA         48     0</span></span>
+<span><span class='co'>#  6 rocks   peri   numeric NA    NA          NA     NA    NA         48     0</span></span>
+<span><span class='co'>#  7 rocks   shape  numeric NA    NA          NA     NA    NA         48     0</span></span>
+<span><span class='co'>#  8 rocks   perm   numeric NA    NA          NA     NA    NA         48     0</span></span>
+<span><span class='co'>#  9 trees   Girth  numeric NA    NA          NA     NA    NA         31     0</span></span>
+<span><span class='co'># 10 trees   Height numeric NA    NA          NA     NA    NA         31     0</span></span>
+<span><span class='co'># 11 trees   Volume numeric NA    NA          NA     NA    NA         31     0</span></span>
+<span></span>
+<span><span class='co'># Load library into workspace </span></span>
+<span><span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Print summaries for each data frame</span></span>
+<span><span class='co'># Note that once loaded into the workspace, </span></span>
+<span><span class='co'># data can be accessed using two-level syntax.</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.rocks</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.trees</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.beaver1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#Unload from workspace</span></span>
+<span><span class='fu'><a href='lib_unload.html'>lib_unload</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -177,7 +177,7 @@ data in working memory with the data stored in the library list, as these
 two instances can become out of sync if you change the data in working memory.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lib_unload</span><span class='op'>(</span><span class='va'>x</span>, sync <span class='op'>=</span> <span class='cn'>TRUE</span>, name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>lib_unload</span><span class='op'>(</span><span class='va'>x</span>, sync <span class='op'>=</span> <span class='cn'>TRUE</span>, name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,36 +223,35 @@ than the variable name.  Used internally.</p></td>
 <code><a href='print.lib.html'>print.lib</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Create temp directory</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Create library</span>
-<span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span>
-
-<span class='co'># Add data to library</span>
-<span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span>, <span class='va'>ToothGrowth</span>, <span class='va'>PlantGrowth</span><span class='op'>)</span>
-
-<span class='co'># Load library into workspace</span>
-<span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine workspace</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span>
-
-<span class='co'># Use some data</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.PlantGrowth</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span>
-
-<span class='co'># Unload library</span>
-<span class='fu'>lib_unload</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-
-<span class='co'># Examine workspace again</span>
-<span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># [1] "dat" "tmp"</span>
-
-<span class='co'># Clean up</span>
-<span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
-</pre>
+    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
+<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create library</span></span>
+<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Add data to library</span></span>
+<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span>, <span class='va'>ToothGrowth</span>, <span class='va'>PlantGrowth</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Load library into workspace</span></span>
+<span><span class='fu'><a href='lib_load.html'>lib_load</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine workspace</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'># [1] "dat" "dat.iris" "dat.PlantGrowth" "dat.ToothGrowth" "tmp"</span></span>
+<span></span>
+<span><span class='co'># Use some data</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.PlantGrowth</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dat.ToothGrowth</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Unload library</span></span>
+<span><span class='fu'>lib_unload</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Examine workspace again</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'># [1] "dat" "tmp"</span></span>
+<span></span>
+<span><span class='co'># Clean up</span></span>
+<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

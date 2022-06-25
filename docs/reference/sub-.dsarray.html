@@ -210,52 +210,51 @@ be returned.</p>
 <code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://libr.r-sassy.org'>libr</a></span><span class='op'>)</span>
-
-<span class='co'># Create AirPassengers Data Frame</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>AirPassengers</span>, <span class='fl'>12</span>, 
-                    dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>month.abb</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1949</span>, <span class='fl'>1960</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, 
-                    stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='co'># Use datastep array to get sums by quarter</span>
-<span class='co'># Examine different ways of referencing data inside datastep</span>
-<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>df</span>,
-                keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span>, <span class='st'>"Tot"</span><span class='op'>)</span>,
-                arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>months <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-                <span class='op'>{</span>
-                
-                   <span class='co'># Reference by column name</span>
-                   <span class='va'>Q1</span> <span class='op'>&lt;-</span> <span class='va'>Jan</span> <span class='op'>+</span> <span class='va'>Feb</span> <span class='op'>+</span> <span class='va'>Mar</span>
-                   
-                   <span class='co'># Reference by array positions</span>
-                   <span class='va'>Q2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span>
-                   
-                   <span class='co'># Reference by array names</span>
-                   <span class='va'>Q3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Jul"</span>, <span class='st'>"Aug"</span>, <span class='st'>"Sep"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
-                   
-                   <span class='co'># Reference by row position</span>
-                   <span class='va'>Q4</span> <span class='op'>&lt;-</span> <span class='va'>rw</span><span class='op'>$</span><span class='va'>Oct</span> <span class='op'>+</span> <span class='va'>rw</span><span class='op'>[[</span><span class='st'>"Nov"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>rw</span><span class='op'>[[</span><span class='fl'>12</span><span class='op'>]</span><span class='op'>]</span>
-                   
-                   <span class='co'># Empty indexer returns all column values in array</span>
-                   <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span>
-                  
-                <span class='op'>}</span><span class='op'>)</span>
-
-<span class='va'>dat</span>
-<span class='co'>#        Q1   Q2   Q3   Q4  Tot</span>
-<span class='co'># 1949  362  385  432  341 1520</span>
-<span class='co'># 1950  382  409  498  387 1676</span>
-<span class='co'># 1951  473  513  582  474 2042</span>
-<span class='co'># 1952  544  582  681  557 2364</span>
-<span class='co'># 1953  628  707  773  592 2700</span>
-<span class='co'># 1954  627  725  854  661 2867</span>
-<span class='co'># 1955  742  854 1023  789 3408</span>
-<span class='co'># 1956  878 1005 1173  883 3939</span>
-<span class='co'># 1957  972 1125 1336  988 4421</span>
-<span class='co'># 1958 1020 1146 1400 1006 4572</span>
-<span class='co'># 1959 1108 1288 1570 1174 5140</span>
-<span class='co'># 1960 1227 1468 1736 1283 5714</span>
-</pre>
+    <pre class="examples"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://libr.r-sassy.org'>libr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Create AirPassengers Data Frame</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>AirPassengers</span>, <span class='fl'>12</span>, </span>
+<span>                    dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>month.abb</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1949</span>, <span class='fl'>1960</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>                    stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Use datastep array to get sums by quarter</span></span>
+<span><span class='co'># Examine different ways of referencing data inside datastep</span></span>
+<span><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>df</span>,</span>
+<span>                keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Q1"</span>, <span class='st'>"Q2"</span>, <span class='st'>"Q3"</span>, <span class='st'>"Q4"</span>, <span class='st'>"Tot"</span><span class='op'>)</span>,</span>
+<span>                arrays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>months <span class='op'>=</span> <span class='fu'><a href='dsarray.html'>dsarray</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>                <span class='op'>{</span></span>
+<span>                </span>
+<span>                   <span class='co'># Reference by column name</span></span>
+<span>                   <span class='va'>Q1</span> <span class='op'>&lt;-</span> <span class='va'>Jan</span> <span class='op'>+</span> <span class='va'>Feb</span> <span class='op'>+</span> <span class='va'>Mar</span></span>
+<span>                   </span>
+<span>                   <span class='co'># Reference by array positions</span></span>
+<span>                   <span class='va'>Q2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span></span>
+<span>                   </span>
+<span>                   <span class='co'># Reference by array names</span></span>
+<span>                   <span class='va'>Q3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Jul"</span>, <span class='st'>"Aug"</span>, <span class='st'>"Sep"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span></span>
+<span>                   </span>
+<span>                   <span class='co'># Reference by row position</span></span>
+<span>                   <span class='va'>Q4</span> <span class='op'>&lt;-</span> <span class='va'>rw</span><span class='op'>$</span><span class='va'>Oct</span> <span class='op'>+</span> <span class='va'>rw</span><span class='op'>[[</span><span class='st'>"Nov"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>rw</span><span class='op'>[[</span><span class='fl'>12</span><span class='op'>]</span><span class='op'>]</span></span>
+<span>                   </span>
+<span>                   <span class='co'># Empty indexer returns all column values in array</span></span>
+<span>                   <span class='va'>Tot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>months</span><span class='op'>[</span><span class='op'>]</span><span class='op'>)</span></span>
+<span>                  </span>
+<span>                <span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>dat</span></span>
+<span><span class='co'>#        Q1   Q2   Q3   Q4  Tot</span></span>
+<span><span class='co'># 1949  362  385  432  341 1520</span></span>
+<span><span class='co'># 1950  382  409  498  387 1676</span></span>
+<span><span class='co'># 1951  473  513  582  474 2042</span></span>
+<span><span class='co'># 1952  544  582  681  557 2364</span></span>
+<span><span class='co'># 1953  628  707  773  592 2700</span></span>
+<span><span class='co'># 1954  627  725  854  661 2867</span></span>
+<span><span class='co'># 1955  742  854 1023  789 3408</span></span>
+<span><span class='co'># 1956  878 1005 1173  883 3939</span></span>
+<span><span class='co'># 1957  972 1125 1336  988 4421</span></span>
+<span><span class='co'># 1958 1020 1146 1400 1006 4572</span></span>
+<span><span class='co'># 1959 1108 1288 1570 1174 5140</span></span>
+<span><span class='co'># 1960 1227 1468 1736 1283 5714</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
