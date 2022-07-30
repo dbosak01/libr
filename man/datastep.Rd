@@ -88,8 +88,8 @@ is TRUE.  Turn the sort check off if you want to perform by-group
 processing on unsorted data, or data that is not sorted according
 to the by-group.}
 
-\item{format}{A named list of formats to assign to the output data
-frame.}
+\item{format}{A named list of formats to assign to the data
+frame.  Formats will be assigned both before and after the datastep.}
 
 \item{label}{A named list of labels to assign to the output data frame.}
 }

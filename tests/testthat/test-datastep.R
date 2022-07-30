@@ -572,6 +572,32 @@ test_that("format parameter on datastep works as expected.", {
   expect_equal(attr(dat2$cyl, "format"), "%1.2f")
 })
 
+test_that("Attributes on datastep input is retained inside datastep.", {
+  
+  library(common)
+  
+  dat <- mtcars
+  
+  labels(dat) <- list(mpg = "here", cyl = "there")
+  
+  attr(dat$mpg, "label")
+  
+  dat2 <- datastep(dat, format = list(cyl = "%1.1f"), {
+    
+    mpgf <- attr(mpg, "label")
+    mpgf2 <- "Hello"
+    cylf <- attr(cyl, "format")
+  })
+  
+  dat2
+  
+  expect_equal("mpgf" %in% names(dat2), TRUE)
+  expect_equal(dat2[1, "mpgf"], "here")
+  expect_equal("cylf" %in% names(dat2), TRUE)
+  expect_equal(dat2[1, "cylf"], "%1.1f")
+  
+})
+
 # test_that("output variable  on datastep works as expected.", {
 #   
 #   

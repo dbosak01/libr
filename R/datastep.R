@@ -201,8 +201,8 @@
 #' is TRUE.  Turn the sort check off if you want to perform by-group 
 #' processing on unsorted data, or data that is not sorted according
 #' to the by-group.
-#' @param format A named list of formats to assign to the output data
-#' frame.
+#' @param format A named list of formats to assign to the data
+#' frame.  Formats will be assigned both before and after the datastep.
 #' @param label A named list of labels to assign to the output data frame.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
@@ -501,17 +501,23 @@ datastep <- function(data, steps, keep = NULL,
   }
   
   # Save off any attributes
-  if (ncol(data) > 1) {
-    # Deal with 1 column situation
-    data_attributes <- data[1, ]
-  } else {
-    data_attributes <- data.frame(data[1, ], stringsAsFactors = FALSE)
-    names(data_attributes) <- names(data)
-  }
+  # if (ncol(data) > 1) {
+  #   # Deal with 1 column situation
+  #   data_attributes <- data[1, ]
+  # } else {
+  #   data_attributes <- data.frame(data[1, ], stringsAsFactors = FALSE)
+  #   names(data_attributes) <- names(data)
+  # }
+  
+  data_attributes <- data[1, , drop = FALSE]
+  
   # Tibble subset will keep attributes, but data.frame will not
   if (!"tbl_df" %in% class(data)) {
     data_attributes <- copy_attributes(data, data_attributes)
     
+  }
+  if (!is.null(format)) {
+    data_attributes <- assign_attributes(data_attributes, format, "format")
   }
   
   # For some reason the grouped tibble kills performance.
@@ -531,13 +537,17 @@ datastep <- function(data, steps, keep = NULL,
   for (n. in seq_len(rowcount)) {
     
     # If one column, subset comes back with a vector
-    if (ncol(data) > 1)
-      rw <- data[n., ]
-    else {
-      rw <- data.frame(data[n., ], stringsAsFactors = FALSE)
-      names(rw) <- names(data)
-    }
+    # if (ncol(data) > 1)
+    #   rw <- data[n., ]
+    # else {
+    #   rw <- data.frame(data[n., ], stringsAsFactors = FALSE)
+    #   names(rw) <- names(data)
+    # }
+    # Subset by row
+    rw <- data[n., , drop = FALSE]
     
+    # Put back any attributes dropped during row subset
+    rw <- copy_attributes(data_attributes, rw)
     
     
     

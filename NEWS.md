@@ -1,3 +1,7 @@
+# libr 1.2.4
+* Apply "format" parameter on datastep to both input and output dataset.
+
+
 # libr 1.2.3
 * Added "Rdata" option to `libname()` function engines.
 * Added "label" parameter to `datastep()` function.

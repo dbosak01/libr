@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Libraries, Data Dictionaries, and a Data Step for R
-Version: 1.2.3
+Version: 1.2.4
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,
@@ -25,7 +25,8 @@ Suggests:
     utils,
     logr,
     covr,
-    fmtr
+    fmtr,
+    common
 Imports: 
     readr,
     readxl,
