@@ -1,4 +1,4 @@
-# libr 1.2.4
+# libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has
 been moved to the **common** package.  A dependency on **common** has 
 been added to the **libr** package so that the `%eq%` operator

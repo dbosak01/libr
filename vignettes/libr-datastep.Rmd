@@ -379,6 +379,6 @@ dat
 # 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul
 
 ```
-Next: [Enhanced Equality](libr-eq.html)
+Next: [Disclaimer](libr-disclaimer.html)
 
 
