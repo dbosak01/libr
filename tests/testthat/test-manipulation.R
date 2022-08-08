@@ -627,28 +627,6 @@ test_that("Read existing xpt files.", {
 })
 
 
-# test_that("Write csv files with NA values.", {
-#
-#   tmp <- tempdir()
-#
-#   libname(dat, base_path, "xpt")
-#
-#   libname(dat2, tmp, "csv")
-#
-#   lib_add(dat2, dat$adae, dat$adsl, name = c("adae", "adsl"))
-#
-#   libname(dat3, tmp, "csv")
-#
-#   expect_equal(length(dat3), 2)
-#
-#   expect_equal(nrow(dat$adae), nrow(dat3$adae))
-#   expect_equal(nrow(dat$adsl), nrow(dat3$adsl))
-#  # expect_equal(dat$adsl %eq% dat3$adsl, TRUE)
-#
-#   lib_delete(dat2)
-#   lib_delete(dat3)
-#
-# })
 
 test_that("dbf engine works as expected.", {
 

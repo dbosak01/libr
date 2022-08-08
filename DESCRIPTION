@@ -15,7 +15,8 @@ License: CC0
 Encoding: UTF-8
 URL: https://libr.r-sassy.org
 BugReports: https://github.com/dbosak01/libr/issues
-Depends: R (>= 3.6.0)
+Depends: R (>= 3.6.0),
+    common
 Suggests: 
     testthat,
     knitr,
@@ -25,8 +26,7 @@ Suggests:
     utils,
     logr,
     covr,
-    fmtr,
-    common
+    fmtr
 Imports: 
     readr,
     readxl,

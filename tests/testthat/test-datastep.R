@@ -315,6 +315,7 @@ test_that("Rename works as expected", {
 test_that("datastep() attributes on data are maintained.", {
   
   library(dplyr)
+  library(common)
 
   
   libname(dat, file.path(base_path, "SDTM"), "sas7bdat")

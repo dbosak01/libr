@@ -1,17 +1,16 @@
-pandoc: 2.17.1.1
+pandoc: '2.18'
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   libr-basics: libr-basics.html
   libr-datastep: libr-datastep.html
   libr-disclaimer: libr-disclaimer.html
-  libr-eq: libr-eq.html
   libr-example1: libr-example1.html
   libr-example2: libr-example2.html
   libr-faq: libr-faq.html
   libr-management: libr-management.html
   libr: libr.html
-last_built: 2022-06-25T12:58Z
+last_built: 2022-08-08T04:42Z
 urls:
   reference: https://libr.r-sassy.org/reference
   article: https://libr.r-sassy.org/articles

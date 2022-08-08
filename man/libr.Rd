@@ -17,8 +17,6 @@ The functions contained in the \strong{libr} package are as follows:
   \item{\code{\link{libname}}: Creates a data library}
   \item{\code{\link{dictionary}}: Creates a data dictionary}
   \item{\code{\link{datastep}}: Perform row-by-row processing of data}
-  \item{\code{\link{\%eq\%}}: An infix operator to check equality between 
-  objects}
   \item{\code{\link{lib_load}}: Loads a library into the workspace}
   \item{\code{\link{lib_unload}}: Unloads a library from the workspace}
   \item{\code{\link{lib_sync}}: Synchronizes the workspace with the library 

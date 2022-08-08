@@ -24,6 +24,7 @@ key functions in the **libr** package.
 ```{r eval=FALSE, echo=TRUE}
 library(tidyverse)
 library(sassy)
+library(common)
 
 options("logr.autolog" = TRUE,
         "logr.notes" = FALSE)

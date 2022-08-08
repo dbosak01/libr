@@ -37,7 +37,6 @@ functions. They are:
 * `libname()`: Creates a data library
 * `dictionary()`: Creates a data dictionary 
 * `datastep()`: Performs row-by-row processing of data
-* `%eq%`: An infix operator to check equality between objects
 
 ### How to Use
 Let's look at some simple examples of each of the four functions above.  These
@@ -275,53 +274,6 @@ The datastep function also supports "first." and "last." functionality through
 use of the `by` parameter.  See additional examples on the `datastep()`
 help page and in the data step [article](libr-datastep.html).
 
-#### The \%eq\% Function
-In Base R, there are two comparison functions:  The double-equal (==) infix 
-operator, and the `identical()` function.  The weakness of the infix operator
-is that it will not test for NULL or NA values.  The weakness of the 
-`identical()` function is it will compare
-everything, including attributes assigned to the objects you are comparing. 
-If there is even a small difference in one of these attributes, the 
-`identical()` function will return FALSE.  This behavior is inconvenient, 
-especially when working with **dplyr** functions, as these functions
-assign many attributes to the datasets they are manipulating.
-
-The `%eq%` function contained in the **libr** packages attempts to provide
-a more intuitive comparison.  The `%eq%` is an infix operator that will
-test for NA and NULL values, and will ignore attributes in any data comparison.
-These qualities make it more suitable for the types of comparisons normally
-encountered when working with data.  The suitability of the `%eq%` operator
-can be illustrated by examining these methods side-by-side on the same
-input data.
-```{r eval=FALSE, echo=TRUE}
-# Set up input data
-v1 <- c(1, 2, 3)
-v2 <- c(1, 2, 3)
-attr(v2, "label") <- "My Label"
-v3 <- c(1, 2, NA)
-
-# Comparing "equal" vectors
-v1 == v2              # TRUE TRUE TRUE
-identical(v1, v2)     # FALSE
-v1 %eq% v2            # TRUE
-
-# Comparing "unequal" vectors
-v1 == v3              # TRUE TRUE NA
-identical(v1, v3)     # FALSE
-v1 %eq% v3            # FALSE
-
-```
-
-Note the different results returned by the three different comparison 
-functions. The `%eq%` operator is similar to the `identical()` function 
-in that it will always return a single TRUE or FALSE value.  The difference
-is that it ignored the "label" attribute assigned to vector *v2*, and only
-looked at the data values. Since it saw all the data values were equal,
-the `%eq%` operator returned TRUE, while the `identical()` function
-returned FALSE. 
-
-You can see some more examples of the `%eq%` operator in the help 
-documentation, or in the [Enhanced Equality](libr-eq.html) article.
 
 ### Next Steps 
 
@@ -331,7 +283,6 @@ Those articles include:
 * [Basic Library Operations](libr-basics.html)
 * [Library Management](libr-management.html)
 * [Data Step Operations](libr-datastep.html)
-* [Enhanced Equality](libr-eq.html)
 * [Complete Example 1](libr-example1.html)
 * [Complete Example 2](libr-example2.html)
 

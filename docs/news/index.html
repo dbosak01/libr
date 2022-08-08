@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -114,9 +114,6 @@
     </li>
     <li>
       <a href="../articles/libr-datastep.html">Data Step Operations</a>
-    </li>
-    <li>
-      <a href="../articles/libr-eq.html">Enhanced Equality</a>
     </li>
     <li>
       <a href="../articles/libr-disclaimer.html">Disclaimer</a>
@@ -161,6 +158,22 @@
       <small>Source: <a href='https://github.com/dbosak01/libr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="libr-124" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.4">
+<a href="#libr-124" class="anchor"></a>libr 1.2.4<small> Unreleased </small>
+</h1>
+<ul>
+<li>BREAKING CHANGE: Removed the <code>%eq%</code> operator from this
+package, as it has been moved to the <strong>common</strong> package. A
+dependency on <strong>common</strong> has been added to the
+<strong>libr</strong> package so that the <code>%eq%</code> operator
+will be loaded and available. However, it is still possible some changes
+may be required to make the new location for the <code>%eq%</code>
+operator work properly.</li>
+<li>Apply “format” parameter on <code><a href="../reference/datastep.html">datastep()</a></code> to both input
+and output dataset.</li>
+</ul>
+</div>
     <div id="libr-123" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.3">
 <a href="#libr-123" class="anchor"></a>libr 1.2.3<small> 2022-06-23 </small>

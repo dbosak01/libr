@@ -1,5 +1,10 @@
 # libr 1.2.4
-* Apply "format" parameter on datastep to both input and output dataset.
+* BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has
+been moved to the **common** package.  A dependency on **common** has 
+been added to the **libr** package so that the `%eq%` operator
+will be loaded and available.  However, it is still possible some changes
+may be required to make the new location for the `%eq%` operator work properly.
+* Apply "format" parameter on `datastep()` to both input and output dataset.
 
 
 # libr 1.2.3

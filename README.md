@@ -38,23 +38,14 @@ perform complex conditional processing across them.  It is also very convenient
 when you have grouped data, and want to perform conditional processing
 within a group.
 
-4. **Comparison Operator**: Once you are comparing two
-columns of data, you run into the next inconvenience: the R comparison operator
-(==).  This operator is highly susceptible to crashing.  All you need is
-one NA value in one of the columns, and the comparison will crash. Since
-NA values are so frequently encountered in data, it would convenient if
-there were an infix operator that didn't crash when it encountered an
-aberrant value.  
-
 ### Solution
 
 The **libr** package was developed to address all of the above problems. It does so
-by introducing four concepts:
+by introducing three concepts:
 
 * Data Libraries
 * Data Dictionaries
 * A Data Step
-* An Enhanced Equality Operator
 
 By introducing these concepts, the **libr** package makes working with
 data in R much easier and faster.  The **libr** package can greatly simplify

@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -75,9 +75,6 @@
     </li>
     <li>
       <a href="articles/libr-datastep.html">Data Step Operations</a>
-    </li>
-    <li>
-      <a href="articles/libr-eq.html">Enhanced Equality</a>
     </li>
     <li>
       <a href="articles/libr-disclaimer.html">Disclaimer</a>
@@ -149,24 +146,16 @@ process data row-by-row. Row-by-row processing is useful when you have
 many related columns, and want to perform complex conditional processing
 across them. It is also very convenient when you have grouped data, and
 want to perform conditional processing within a group.</p></li>
-<li><p><strong>Comparison Operator</strong>: Once you are comparing two
-columns of data, you run into the next inconvenience: the R comparison
-operator (==). This operator is highly susceptible to crashing. All you
-need is one NA value in one of the columns, and the comparison will
-crash. Since NA values are so frequently encountered in data, it would
-convenient if there were an infix operator that didn’t crash when it
-encountered an aberrant value.</p></li>
 </ol>
 <div id="solution" class="section level3">
 <h3 class="hasAnchor">
 <a href="#solution" class="anchor"></a>Solution</h3>
 <p>The <strong>libr</strong> package was developed to address all of the
-above problems. It does so by introducing four concepts:</p>
+above problems. It does so by introducing three concepts:</p>
 <ul>
 <li>Data Libraries</li>
 <li>Data Dictionaries</li>
 <li>A Data Step</li>
-<li>An Enhanced Equality Operator</li>
 </ul>
 <p>By introducing these concepts, the <strong>libr</strong> package
 makes working with data in R much easier and faster. The
