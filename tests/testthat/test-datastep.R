@@ -599,6 +599,103 @@ test_that("Attributes on datastep input is retained inside datastep.", {
   
 })
 
+test_that("date variables are retained as dates.", {
+  
+  
+  ind <- mtcars
+  ind$mydate <- Sys.Date()
+  
+  df <- datastep(ind, {
+
+    if (mpg >= 20)
+      mpgcat <- "High"
+    else
+      mpgcat <- "Low"
+
+    recdt <- as.Date("1974-06-10")
+
+    if (cyl == 8)
+      is8cyl <- TRUE
+    else
+      is8cyl <- FALSE
+
+  })
+  
+
+  df
+
+  
+  a1 <- attributes(df$recdt)
+  a2 <- attributes(df$mydate)
+
+  
+  expect_equal(a1$class, "Date") 
+  expect_equal(a2$class, "Date") 
+    
+})
+
+
+test_that("where clause works.", {
+  
+  df <- datastep(mtcars,
+                 where = expression(cyl == 8),
+                  {
+                   
+                   if (mpg >= 20)
+                     mpgcat <- "High"
+                   else
+                     mpgcat <- "Low"
+                   
+                   recdt <- as.Date("1974-06-10")
+                   
+                   if (cyl == 8)
+                     is8cyl <- TRUE
+                   else
+                     is8cyl <- FALSE
+                   
+                 })
+  
+  df
+  
+  expect_equal(mean(df$cyl), 8)
+  
+})
+
+
+test_that("attributes are retained with keep statement.", {
+  
+  
+  ind <- mtcars
+  ind$mydate <- Sys.Date()
+  
+  df <- datastep(ind, 
+                 format = list(cyl = "%.1f", 
+                               mydate = "%b %m %Y", 
+                               recdt = "%b %m %y"),
+                 keep = c("mpg", "cyl", "recdt", "mydate"), {
+    
+
+    recdt <- as.Date("1974-06-10")
+    
+    
+  })
+  
+  df
+  
+  a1 <- attributes(df$recdt)
+  a2 <- attributes(df$mydate)
+  a3 <- attributes(df$cyl)
+  
+  
+  expect_equal(a1$class, "Date") 
+  expect_equal(a2$class, "Date") 
+  expect_equal(a1$format,  "%b %m %y") 
+  expect_equal(a2$format, "%b %m %Y") 
+  expect_equal(a3$format, "%.1f")
+  
+})
+
+
 # test_that("output variable  on datastep works as expected.", {
 #   
 #   

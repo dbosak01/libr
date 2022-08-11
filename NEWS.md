@@ -1,3 +1,7 @@
+# libr 1.2.6
+* Fixed bug on datastep that sometimes was causing variables to lose their attributes.
+* Added "where" parameter to datastep.
+
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has
 been moved to the **common** package.  A dependency on **common** has 

@@ -204,6 +204,9 @@
 #' @param format A named list of formats to assign to the data
 #' frame.  Formats will be assigned both before and after the datastep.
 #' @param label A named list of labels to assign to the output data frame.
+#' @param where An expression to filter the output dataset.  The where
+#' clause will be applied prior to any drop, keep, or rename statement.
+#' Use the \code{expression} function to assign the where clause.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @seealso \code{\link{libname}} function to create a data library, and
@@ -211,7 +214,7 @@
 #' @examples 
 #' # Example #1: Simple Data Step
 #' df <- datastep(mtcars[1:10,], 
-#'                keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
+#'                keep = c("mpg", "cyl", "disp", "mpgcat", "recdt", "is8cyl"), {
 #'                  
 #'   if (mpg >= 20) 
 #'     mpgcat <- "High"
@@ -222,6 +225,8 @@
 #'                  
 #'   if (cyl == 8)
 #'     is8cyl <- TRUE
+#'   else 
+#'     is8cyl <- FALSE
 #'                  
 #' })
 #' 
@@ -404,7 +409,8 @@ datastep <- function(data, steps, keep = NULL,
                      arrays = NULL,
                      sort_check = TRUE,
                      format = NULL,
-                     label = NULL) {
+                     label = NULL,
+                     where = NULL) {
   
   if (!"data.frame" %in% class(data))
     stop("input data must be inherited from data.frame")
@@ -589,6 +595,10 @@ datastep <- function(data, steps, keep = NULL,
   #   ret <- ret[ret$output == TRUE, ] 
   # }
   
+  if (!is.null(where)) {
+    ret <- subset(ret, eval(where))
+  }
+  
   # Remove automatic variables
   ret["first."] <- NULL
   ret["last."] <- NULL
@@ -667,8 +677,10 @@ copy_attributes <- function(df1, df2) {
   ret <- df2
   
   for (nm in names(df2)) {
-    
-    attributes(ret[[nm]]) <- attributes(df1[[nm]])
+
+    att <- attributes(df1[[nm]])
+    if (!is.null(att))
+      attributes(ret[[nm]]) <- att
     
     # col <- df1[[nm]]
     # for (at in names(attributes(col))) {

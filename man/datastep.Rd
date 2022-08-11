@@ -17,7 +17,8 @@ datastep(
   arrays = NULL,
   sort_check = TRUE,
   format = NULL,
-  label = NULL
+  label = NULL,
+  where = NULL
 )
 }
 \arguments{
@@ -92,6 +93,10 @@ to the by-group.}
 frame.  Formats will be assigned both before and after the datastep.}
 
 \item{label}{A named list of labels to assign to the output data frame.}
+
+\item{where}{An expression to filter the output dataset.  The where
+clause will be applied prior to any drop, keep, or rename statement.
+Use the \code{expression} function to assign the where clause.}
 }
 \value{
 The processed data frame, tibble, or data table.
@@ -255,7 +260,7 @@ built-in restriction on the number of rows, performance of the
 \examples{
 # Example #1: Simple Data Step
 df <- datastep(mtcars[1:10,], 
-               keep = c("mpg", "cyl", "disp", "mpgcat", "recdt"), {
+               keep = c("mpg", "cyl", "disp", "mpgcat", "recdt", "is8cyl"), {
                  
   if (mpg >= 20) 
     mpgcat <- "High"
@@ -266,6 +271,8 @@ df <- datastep(mtcars[1:10,],
                  
   if (cyl == 8)
     is8cyl <- TRUE
+  else 
+    is8cyl <- FALSE
                  
 })
 
