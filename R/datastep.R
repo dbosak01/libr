@@ -595,8 +595,10 @@ datastep <- function(data, steps, keep = NULL,
   #   ret <- ret[ret$output == TRUE, ] 
   # }
   
+  # Where Before
   if (!is.null(where)) {
-    ret <- subset(ret, eval(where))
+    ret <- tryCatch({subset(ret, eval(where))},
+                    error = function(cond){ret})
   }
   
   # Remove automatic variables
@@ -606,11 +608,11 @@ datastep <- function(data, steps, keep = NULL,
   
   # Perform drop operation
   if (!is.null(drop))
-    ret <- ret[ , !names(ret) %in% drop]
+    ret <- ret[ , !names(ret) %in% drop, drop = FALSE]
   
   # Perform keep operation
   if (!is.null(keep)) {
-    ret <- ret[ , keep]
+    ret <- ret[ , keep, drop = FALSE]
   }
   
   
@@ -642,13 +644,24 @@ datastep <- function(data, steps, keep = NULL,
     names(ret) <- ifelse(nms %in% names(rename), rename, nms)
   }
   
+  # Where After
+  if (!is.null(where)) {
+    ret <- tryCatch({subset(ret, eval(where))},
+                    error = function(cond){ret})
+  }
+  
+  # Labels
   if (!is.null(label)) {
     ret <- assign_attributes(ret, label, "label")
   }
   
+  # Formatting
   if (!is.null(format)) {
     ret <- assign_attributes(ret, format, "format")
   }
+  
+  # Clear out rownames
+  rownames(ret) <- NULL
   
   endcols <- ncol(ret)
   if (startcols > endcols)

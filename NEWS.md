@@ -1,6 +1,9 @@
 # libr 1.2.6
 * Fixed bug on datastep that sometimes was causing variables to lose their attributes.
 * Added "where" parameter to datastep.
+* Fix bug on datastep that was causing a single variable dataframe to be returned
+as a vector.
+* Cleared rownames on datastep exit.
 
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has

@@ -695,6 +695,21 @@ test_that("attributes are retained with keep statement.", {
   
 })
 
+test_that("datastep() keep parameter with one variable works.", {
+  
+  libname(dat, base_path, "csv")
+  
+  lib_load(dat)
+  
+  d1 <- datastep(dat.demo_studya, keep = c("study"), {})
+  
+  d1
+  
+  expect_equal("data.frame" %in% class(d1), TRUE)
+  expect_equal(names(d1), c("study"))
+  
+  
+})
 
 # test_that("output variable  on datastep works as expected.", {
 #   
