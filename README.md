@@ -10,7 +10,7 @@
 <!-- badges: end -->
   
 # Introduction to **libr** 
-<img src="./man/images/libr_blue.png" align="left" height="138" style="margin-right: 20px"/>
+<img src="./man/images/libr_new.png" align="left" height="138" style="margin-right: 20px"/>
 
 R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:

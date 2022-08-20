@@ -4,6 +4,7 @@
 * Fix bug on datastep that was causing a single variable dataframe to be returned
 as a vector.
 * Cleared rownames on datastep exit.
+* Updated logo.
 
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has
