@@ -891,6 +891,9 @@ test_that("ds36: output works with empty dataset.", {
     
   })
   
+  print(d1)
+  print(attributes(d1))
+  print(attributes(d1$fork))
   d1
   
   expect_equal(nrow(d1), 2)
