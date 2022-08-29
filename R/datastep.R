@@ -1,4 +1,5 @@
-
+# Set up environment for shared variables
+e <- new.env(parent = emptyenv())
 
 # Datastep Definition -----------------------------------------------------
 
@@ -434,6 +435,20 @@ datastep <- function(data, steps, keep = NULL,
     
   }
   
+  # Deal with single value unquoted parameter values
+  oby <- deparse(substitute(by, env = environment()))
+  by <- tryCatch({if (typeof(by) %in% c("character", "NULL")) by else oby},
+                 error = function(cond) {oby})
+  
+  odrop <- deparse(substitute(drop, env = environment()))
+  drop <- tryCatch({if (typeof(drop) %in% c("character", "NULL")) drop else odrop},
+                 error = function(cond) {odrop})
+  
+  okeep <- deparse(substitute(keep, env = environment()))
+  keep <- tryCatch({if (typeof(keep) %in% c("character", "NULL")) keep else okeep},
+                 error = function(cond) {okeep})
+  
+  
   # Capture number of starting columns
   startcols <- ncol(data)
   
@@ -580,8 +595,14 @@ datastep <- function(data, steps, keep = NULL,
       }
     }
     
+    e$delete <- FALSE
+    
     # Evaluate the code for the row
-    ret[[n.]]  <- within(rw, eval(code), keepAttrs = TRUE)
+    trw <-  within(rw, eval(code), keepAttrs = TRUE)
+    
+    trw[["..delete"]] <- e$delete
+    
+    ret[[n.]]  <-trw
     
   }
   
@@ -595,6 +616,10 @@ datastep <- function(data, steps, keep = NULL,
   #   ret <- ret[ret$output == TRUE, ] 
   # }
   
+  # Delete
+  ret <- tryCatch({subset(ret, ret[["..delete"]] == FALSE)},
+                  error = function(cond){ret})
+  
   # Where Before
   if (!is.null(where)) {
     ret <- tryCatch({subset(ret, eval(where))},
@@ -605,6 +630,7 @@ datastep <- function(data, steps, keep = NULL,
   ret["first."] <- NULL
   ret["last."] <- NULL
   ret["output"] <- NULL
+  ret["..delete"] <- NULL
   
   # Perform drop operation
   if (!is.null(drop))
@@ -679,8 +705,49 @@ datastep <- function(data, steps, keep = NULL,
 
 
 
+#' @title Removes an observation from a datastep
+#' @description The \code{delete} function will remove an observation
+#' from the output of a datastep.  The function takes no parameters.  To use 
+#' the function, simply call it on the rows you want to delete.  Typically
+#' it is called within a conditional.
+#' @return Observation is marked with a delete flag.  No return value.
+#' @export
+#'
+#' @seealso The \code{\link{datastep}} function.
+#' @examples
+#' #' # Remove all cars that are not 4 cylinder
+#' df <- datastep(mtcars, 
+#'                keep = c("mpg", "cyl", "disp"), {
+#'                  
+#'   if (cyl != 4)
+#'     delete()
+#'                  
+#' })
+#' 
+#' df
+#' #     mpg cyl  disp
+#' # 1  22.8   4 108.0
+#' # 2  24.4   4 146.7
+#' # 3  22.8   4 140.8
+#' # 4  32.4   4  78.7
+#' # 5  30.4   4  75.7
+#' # 6  33.9   4  71.1
+#' # 7  21.5   4 120.1
+#' # 8  27.3   4  79.0
+#' # 9  26.0   4 120.3
+#' # 10 30.4   4  95.1
+#' # 11 21.4   4 121.0
+delete <- function() {
+  
+  
+  e$delete <- TRUE
+  
+}
+
+
 
 # Utilities ---------------------------------------------------------------
+
 
 
 

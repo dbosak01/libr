@@ -721,3 +721,62 @@ test_that("datastep() keep parameter with one variable works.", {
 #   expect_equal(nrow(dat), 14)
 # })
 
+
+test_that("Single value NSE works on datastep().", {
+  
+  
+  d1 <- datastep(mtcars, 
+                 drop = am, 
+                 keep = v(mpg, cyl, disp, cylgrp),
+                 by = cyl, 
+                 sort_check = FALSE, {
+    
+    if (first.)
+      cylgrp <- "begin"
+    else
+      cylgrp <- "-"
+    
+  })
+  
+  d1
+  
+  expect_equal(ncol(d1), 4)
+  
+  
+  d2 <- datastep(d1, keep = cylgrp, {})
+  
+  expect_equal(ncol(d2), 1)
+  
+})
+
+test_that("Delete function works on datastep().", {
+  
+  
+  d1 <- datastep(mtcars, 
+                 keep = v(mpg, cyl, disp, cylgrp),
+                 by = cyl, 
+                 sort_check = FALSE, {
+                   
+                   if (first.)
+                     cylgrp <- "begin"
+                   else
+                     delete() 
+                   
+                 })
+  
+  d1
+  
+  expect_equal(ncol(d1), 4)
+  expect_equal(nrow(d1), 16)
+  
+  # Should get no errors
+  d2 <- datastep(mtcars, 
+                 {delete()})
+  
+  d2
+  
+  expect_equal(nrow(d2), 0)
+  expect_equal(ncol(d2), 11)
+  
+})
+

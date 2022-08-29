@@ -7,6 +7,8 @@ as a vector.
 * Updated logo.
 * Added "MaxChar" column to dictionary.
 * Added "rda" engine to libname.
+* Allowed single value NSE on drop, keep, and by parameter of `datastep()`.
+For multiple values, use `v()` function.
 
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has

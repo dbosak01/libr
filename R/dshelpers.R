@@ -36,6 +36,8 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     
   }
   
+  df[["..delete"]] <- FALSE
+  
   
   return(df)
   

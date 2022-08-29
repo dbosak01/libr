@@ -47,6 +47,8 @@ reference:
   - dsarray
   - "[.dsarray"
   - length.dsarray
+  - delete
+  
 - title: Other Functions
   desc: Other useful functions in the libr package.
   contents:
