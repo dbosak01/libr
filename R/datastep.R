@@ -459,6 +459,11 @@ datastep <- function(data, steps, keep = NULL,
   # Determine if there is an output function
   hout <- has_output(deparse(code))
   
+  # Give warning if there are no rows and no output()
+  if (hout == FALSE & nrow(data) == 0) {
+    warning("Input dataset has no rows.") 
+  }
+  
   # Clear output list
   e$output <- list()
   
@@ -549,6 +554,12 @@ datastep <- function(data, steps, keep = NULL,
   # data.table is not that bad, but data.frame is better.
   if (any("data.table" == class(data)))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
+  
+  # Strip any crazy classes, as they can mess up datastep functions
+  data_classes <- class(data)
+  if (any(!class(data) %in% c("data.frame", "list"))) {
+    data <- as.data.frame(unclass(data), stringsAsFactors = FALSE) 
+  }
   
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
@@ -657,6 +668,12 @@ datastep <- function(data, steps, keep = NULL,
   # Convert back to tibble if original was a tibble
   if ("data.table" %in% orig_class & !"data.table" %in% class(ret)) {
     ret <- data.table::as.data.table(ret)
+  }
+  
+  # Restore any stripped classes
+  if (any(!data_classes %in% class(ret))) {
+    
+    class(ret) <- data_classes
   }
   
   # Restore attributes from original data 
@@ -838,15 +855,16 @@ delete <- function() {
 #' # 2    2  Two
 output <- function() {
   
+  #browser()
   # Parent frame hold row
   pf <- parent.frame()
   
   # Convert to list so it can be converted to a data frame
-  lst <- as.list(pf)
-  lst[["..delete"]] <- pf$..delete
+  nlst <- as.list(pf)
+  nlst[["..delete"]] <- pf$..delete
   
   # Convert to data frame and append to output list
-  e$output[[length(e$output) + 1]] <- as.data.frame(lst)
+  e$output[[length(e$output) + 1]] <- as.data.frame(nlst)
 
   
 }
@@ -880,10 +898,10 @@ copy_attributes <- function(df1, df2) {
 }
 
 
-assign_attributes <- function(df, lst, attr) {
+assign_attributes <- function(df, alst, attr) {
   
   nmsdf <- names(df)
-  nmslst <- names(lst)
+  nmslst <- names(alst)
   
   ret <- df
   
@@ -891,7 +909,7 @@ assign_attributes <- function(df, lst, attr) {
     
     if (nm %in% nmsdf) { 
     
-      attr(ret[[nm]], attr) <- lst[[nm]] 
+      attr(ret[[nm]], attr) <- alst[[nm]] 
     }
   }
   

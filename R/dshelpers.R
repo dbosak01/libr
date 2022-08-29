@@ -42,13 +42,20 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     df[["..delete"]] <- FALSE
   else {
     
-    tmp <- data.frame("..delete" = FALSE, stringsAsFactors = FALSE)
+
     
-    if (ncol(df) == 0)
-      df <- tmp
-    else {
+    if (ncol(df) == 0) {
+      df <- data.frame("..delete" = FALSE, stringsAsFactors = FALSE)
+    } else {
+      nms <- names(df)
       
-      df <- cbind(df, tmp) # fix
+      nlst <- list()
+      for (nm in nms){
+       nlst[[nm]] <- NA 
+      }
+      
+      nlst[["..delete"]] <- FALSE
+      df <- as.data.frame(nlst, row.names = NULL, stringsAsFactors = FALSE)
       
     }
     

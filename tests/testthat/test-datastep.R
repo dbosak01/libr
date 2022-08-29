@@ -891,9 +891,9 @@ test_that("ds36: output works with empty dataset.", {
     
   })
   
-  print(d1)
-  print(attributes(d1))
-  print(attributes(d1$fork))
+  # print(d1)
+  # print(attributes(d1))
+  # print(attributes(d1$fork))
   d1
   
   expect_equal(nrow(d1), 2)
@@ -906,4 +906,96 @@ test_that("ds36: output works with empty dataset.", {
   #   expect_equal(d1[[2, 2]], "two")
     
 })
+
+
+test_that("ds37: datastep strips and restores extra classes.", {
+  
+  d2 <- mtcars
+  
+  class(d2) <- c("fork", class(d2))
+  
+  d1 <- datastep(d2, 
+                 {
+                   
+                   
+                   if (cyl == 4) {
+                     delete()
+                     
+                   }
+
+                   
+                 })
+  
+  d1
+  
+  class(d1)
+  
+  expect_equal(class(d1), c("fork", "data.frame"))
+  
+})
+
+test_that("ds38: no row data frame works with output.", {
+  
+  
+  d1 <- subset(mtcars, mtcars$cyl == 10)
+  
+  d2 <- datastep(d1, {
+    
+    bork <- 1
+    fork <- "one"
+    output()
+    
+    bork <- 2
+    fork <- "two"
+    output()
+    
+  })
+  
+  d2
+  
+  expect_equal(nrow(d2), 2)
+  expect_equal(ncol(d2), 13)
+  
+})
+
+test_that("ds39: no row warning works.", {
+  
+  
+  d1 <- subset(mtcars, mtcars$cyl == 10)
+  
+  expect_warning(datastep(d1, {
+    
+    bork <- 1
+
+  }))
+  
+
+  
+})
+
+# test_that("ds40: output works in loop", {
+#   
+#   
+#   dslst <- list("mtcars" = mtcars, "beaver1" = beaver1, "iris" = iris)
+#   
+#   # Create metadata 
+#   res3 <- datastep(data.frame(), {
+#     
+#     
+#     for (name in names(dslst)) {
+#       rows <- nrow(dslst[[name]])
+#       cols <- ncol(dslst[[name]])             
+#       output()
+#     }
+#     
+#     
+#   })
+#   
+#   
+#   res3
+#   
+#   expect_equal(nrow(res3), 3)
+#   expect_equal(ncol(res3), 3)
+#   
+# })
 

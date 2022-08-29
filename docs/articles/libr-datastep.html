@@ -506,8 +506,110 @@ array.</p>
 <span><span class="co"># 1958 340 318 362 348 363 435 491 505 404 359 310 337 4572 381.0000 Aug</span></span>
 <span><span class="co"># 1959 360 342 406 396 420 472 548 559 463 407 362 405 5140 428.3333 Aug</span></span>
 <span><span class="co"># 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul</span></span></code></pre></div>
-<p>Next: <a href="libr-disclaimer.html">Disclaimer</a></p>
+<p>In the example above, the “Tot”, “Mean”, and “Top” columns were all
+calculated using the datastep array. These types of row-wise statistics
+are hard to calculate otherwise.</p>
 </div>
+</div>
+<div id="filtering-and-duplicating-rows" class="section level3">
+<h3 class="hasAnchor">
+<a href="#filtering-and-duplicating-rows" class="anchor"></a>Filtering and Duplicating Rows</h3>
+<p>The datastep provides different ways to control which rows are
+output.</p>
+<p>Firstly, the function has a <code>where</code> parameter to pass a
+filter expression to the datastep. The where clause will be executed at
+the end of datastep processing. Pass in the where clause using the
+<code><a href="https://rdrr.io/r/base/expression.html">expression()</a></code> function. Like so:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Prepare sample data</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">HairEyeColor</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Filter for black hair and blue eyes</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">dat</span>, </span>
+<span>                where <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">Hair</span> <span class="op">==</span> <span class="st">"Black"</span> <span class="op">&amp;</span> <span class="va">Eye</span> <span class="op">==</span> <span class="st">"Blue"</span><span class="op">)</span>, </span>
+<span>                <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#    Hair  Eye    Sex Freq</span></span>
+<span><span class="co"># 1 Black Blue   Male   11</span></span>
+<span><span class="co"># 2 Black Blue Female    9</span></span></code></pre></div>
+<p>The datastep also recognizes the <code><a href="../reference/delete.html">delete()</a></code> and
+<code><a href="../reference/output.html">output()</a></code> functions to remove or duplicate rows from inside
+the datastep. These functions give you conditional control over which
+rows are output.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Delete rows with frequencies less than 25</span></span>
+<span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">dat</span>, <span class="op">{</span></span>
+<span>  </span>
+<span>         <span class="kw">if</span> <span class="op">(</span><span class="va">Freq</span> <span class="op">&lt;</span> <span class="fl">25</span><span class="op">)</span></span>
+<span>           <span class="fu"><a href="../reference/delete.html">delete</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span>
+<span>       <span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">res1</span></span>
+<span><span class="co">#     Hair   Eye    Sex Freq</span></span>
+<span><span class="co"># 1  Black Brown   Male   32</span></span>
+<span><span class="co"># 2  Brown Brown   Male   53</span></span>
+<span><span class="co"># 3  Brown  Blue   Male   50</span></span>
+<span><span class="co"># 4  Blond  Blue   Male   30</span></span>
+<span><span class="co"># 5  Brown Hazel   Male   25</span></span>
+<span><span class="co"># 6  Black Brown Female   36</span></span>
+<span><span class="co"># 7  Brown Brown Female   66</span></span>
+<span><span class="co"># 8  Brown  Blue Female   34</span></span>
+<span><span class="co"># 9  Blond  Blue Female   64</span></span>
+<span><span class="co"># 10 Brown Hazel Female   29</span></span>
+<span></span>
+<span><span class="co"># Only output rows for brown-eyes and frequencies over 25</span></span>
+<span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">dat</span>, <span class="op">{</span></span>
+<span>          </span>
+<span>          <span class="kw">if</span> <span class="op">(</span><span class="va">Eye</span> <span class="op">==</span> <span class="st">"Brown"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>            <span class="kw">if</span> <span class="op">(</span><span class="va">Freq</span> <span class="op">&gt;=</span> <span class="fl">25</span><span class="op">)</span> <span class="op">{</span></span>
+<span>              </span>
+<span>              <span class="fu"><a href="../reference/output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>              </span>
+<span>            <span class="op">}</span></span>
+<span>          <span class="op">}</span></span>
+<span>  </span>
+<span>        <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res2</span></span>
+<span><span class="co">#    Hair   Eye    Sex Freq</span></span>
+<span><span class="co"># 1 Black Brown   Male   32</span></span>
+<span><span class="co"># 2 Brown Brown   Male   53</span></span>
+<span><span class="co"># 3 Black Brown Female   36</span></span>
+<span><span class="co"># 4 Brown Brown Female   66</span></span></code></pre></div>
+<p>You can also use the <code><a href="../reference/output.html">output()</a></code> function to create
+datasets from scratch, just like in SAS®. To create a dataset from
+scratch, simply pass in an empty data frame and output the desired
+values.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create metadata </span></span>
+<span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">{</span></span>
+<span>  </span>
+<span>  </span>
+<span>          <span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"mtcars"</span></span>
+<span>          <span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span>          <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span>          <span class="fu"><a href="../reference/output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>          </span>
+<span>          <span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"iris"</span></span>
+<span>          <span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span>          <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span>          <span class="fu"><a href="../reference/output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>          <span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"beaver1"</span></span>
+<span>          <span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">beaver1</span><span class="op">)</span></span>
+<span>          <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">beaver1</span><span class="op">)</span></span>
+<span>          <span class="fu"><a href="../reference/output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>          </span>
+<span>  </span>
+<span>        <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res3</span></span>
+<span><span class="co">#      name rows cols</span></span>
+<span><span class="co"># 1  mtcars   32   11</span></span>
+<span><span class="co"># 2    iris  150    5</span></span>
+<span><span class="co"># 3 beaver1  114    4</span></span></code></pre></div>
+<p>Next: <a href="libr-disclaimer.html">Disclaimer</a></p>
 </div>
   </div>
 

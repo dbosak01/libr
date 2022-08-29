@@ -379,6 +379,114 @@ dat
 # 1960 417 391 419 461 472 535 622 606 508 461 390 432 5714 476.1667 Jul
 
 ```
+In the example above, the "Tot", "Mean", and "Top" columns were all calculated
+using the datastep array.  These types of row-wise statistics are hard 
+to calculate otherwise.
+
+### Filtering and Duplicating Rows
+The datastep provides different ways to control which rows are output.
+
+Firstly, the function has a `where` parameter to pass a filter expression to
+the datastep.  The where clause will be executed at the end of datastep
+processing.  Pass in the where clause 
+using the `expression()` function.  Like so:
+```{r eval=FALSE, echo=TRUE}
+# Prepare sample data
+dat <- as.data.frame(HairEyeColor)
+
+# Filter for black hair and blue eyes
+res <- datastep(dat, 
+                where = expression(Hair == "Black" & Eye == "Blue"), 
+                {})
+
+res
+#    Hair  Eye    Sex Freq
+# 1 Black Blue   Male   11
+# 2 Black Blue Female    9
+
+```
+
+The datastep also recognizes the `delete()` and `output()` functions to
+remove or duplicate rows from inside the datastep.  These functions give
+you conditional control over which rows are output.
+```{r eval=FALSE, echo=TRUE}
+# Delete rows with frequencies less than 25
+res1 <- datastep(dat, {
+  
+         if (Freq < 25)
+           delete()
+  
+       })
+res1
+#     Hair   Eye    Sex Freq
+# 1  Black Brown   Male   32
+# 2  Brown Brown   Male   53
+# 3  Brown  Blue   Male   50
+# 4  Blond  Blue   Male   30
+# 5  Brown Hazel   Male   25
+# 6  Black Brown Female   36
+# 7  Brown Brown Female   66
+# 8  Brown  Blue Female   34
+# 9  Blond  Blue Female   64
+# 10 Brown Hazel Female   29
+
+# Only output rows for brown-eyes and frequencies over 25
+res2 <- datastep(dat, {
+          
+          if (Eye == "Brown") {
+            if (Freq >= 25) {
+              
+              output()
+              
+            }
+          }
+  
+        })
+
+res2
+#    Hair   Eye    Sex Freq
+# 1 Black Brown   Male   32
+# 2 Brown Brown   Male   53
+# 3 Black Brown Female   36
+# 4 Brown Brown Female   66
+
+```
+You can also use the `output()` function to create 
+datasets from scratch, just like in SAS®.  To create a dataset from 
+scratch, simply pass in an empty data frame and output the desired values.
+```{r eval=FALSE, echo=TRUE}
+# Create metadata 
+res3 <- datastep(data.frame(), {
+  
+  
+          name <- "mtcars"
+          rows <- nrow(mtcars)
+          cols <- ncol(mtcars)
+          output()
+          
+          name <- "iris"
+          rows <- nrow(iris)
+          cols <- ncol(iris)
+          output()
+
+
+          name <- "beaver1"
+          rows <- nrow(beaver1)
+          cols <- ncol(beaver1)
+          output()
+          
+  
+        })
+
+res3
+#      name rows cols
+# 1  mtcars   32   11
+# 2    iris  150    5
+# 3 beaver1  114    4
+
+```
+
+
 Next: [Disclaimer](libr-disclaimer.html)
 
 
