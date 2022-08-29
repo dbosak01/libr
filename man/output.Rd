@@ -76,7 +76,7 @@ df
 # 14   Ferrari Dino 19.7   6 145.0   2
 
 # Example 3: Create data frame using output() functions
-df <- datastep(data.frame(stringsAsFactors = FALSE), {
+df <- datastep(data.frame(), {
 
   # Row 1
   COL1 <- 1
