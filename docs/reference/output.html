@@ -207,8 +207,13 @@ in that you can output multiple rows for the same input observation.</p>
 <span><span class='co'># 11 21.4   4 121.0</span></span>
 <span></span>
 <span><span class='co'># Example 2: Output two rows for each 6 cylinder car</span></span>
-<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>mtcars</span>, </span>
-<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"seq"</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span></span>
+<span><span class='co'># Prepare sample data</span></span>
+<span><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>, <span class='va'>mtcars</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Perform datastep</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>dat</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"name"</span>, <span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"seq"</span><span class='op'>)</span>, <span class='op'>{</span></span>
 <span>                 </span>
 <span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span>    <span class='va'>seq</span> <span class='op'>&lt;-</span> <span class='fl'>1</span></span>
@@ -220,21 +225,41 @@ in that you can output multiple rows for the same input observation.</p>
 <span><span class='op'>}</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>df</span></span>
-<span><span class='co'>#     mpg cyl  disp seq</span></span>
-<span><span class='co'># 1  21.0   6 160.0   1</span></span>
-<span><span class='co'># 2  21.0   6 160.0   2</span></span>
-<span><span class='co'># 3  21.0   6 160.0   1</span></span>
-<span><span class='co'># 4  21.0   6 160.0   2</span></span>
-<span><span class='co'># 5  21.4   6 258.0   1</span></span>
-<span><span class='co'># 6  21.4   6 258.0   2</span></span>
-<span><span class='co'># 7  18.1   6 225.0   1</span></span>
-<span><span class='co'># 8  18.1   6 225.0   2</span></span>
-<span><span class='co'># 9  19.2   6 167.6   1</span></span>
-<span><span class='co'># 10 19.2   6 167.6   2</span></span>
-<span><span class='co'># 11 17.8   6 167.6   1</span></span>
-<span><span class='co'># 12 17.8   6 167.6   2</span></span>
-<span><span class='co'># 13 19.7   6 145.0   1</span></span>
-<span><span class='co'># 14 19.7   6 145.0   2</span></span></pre>
+<span><span class='co'>#              name  mpg cyl  disp seq</span></span>
+<span><span class='co'># 1       Mazda RX4 21.0   6 160.0   1</span></span>
+<span><span class='co'># 2       Mazda RX4 21.0   6 160.0   2</span></span>
+<span><span class='co'># 3   Mazda RX4 Wag 21.0   6 160.0   1</span></span>
+<span><span class='co'># 4   Mazda RX4 Wag 21.0   6 160.0   2</span></span>
+<span><span class='co'># 5  Hornet 4 Drive 21.4   6 258.0   1</span></span>
+<span><span class='co'># 6  Hornet 4 Drive 21.4   6 258.0   2</span></span>
+<span><span class='co'># 7         Valiant 18.1   6 225.0   1</span></span>
+<span><span class='co'># 8         Valiant 18.1   6 225.0   2</span></span>
+<span><span class='co'># 9        Merc 280 19.2   6 167.6   1</span></span>
+<span><span class='co'># 10       Merc 280 19.2   6 167.6   2</span></span>
+<span><span class='co'># 11      Merc 280C 17.8   6 167.6   1</span></span>
+<span><span class='co'># 12      Merc 280C 17.8   6 167.6   2</span></span>
+<span><span class='co'># 13   Ferrari Dino 19.7   6 145.0   1</span></span>
+<span><span class='co'># 14   Ferrari Dino 19.7   6 145.0   2</span></span>
+<span></span>
+<span><span class='co'># Example 3: Create data frame using output() functions</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span></span>
+<span>  <span class='co'># Row 1</span></span>
+<span>  <span class='va'>COL1</span> <span class='op'>&lt;-</span> <span class='fl'>1</span></span>
+<span>  <span class='va'>COL2</span> <span class='op'>&lt;-</span> <span class='st'>"One"</span></span>
+<span>  <span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='co'># Row 2</span></span>
+<span>  <span class='va'>COL1</span> <span class='op'>&lt;-</span> <span class='fl'>2</span></span>
+<span>  <span class='va'>COL2</span> <span class='op'>&lt;-</span> <span class='st'>"Two"</span></span>
+<span>  <span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#   COL1 COL2</span></span>
+<span><span class='co'># 1    1  One</span></span>
+<span><span class='co'># 2    2  Two</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

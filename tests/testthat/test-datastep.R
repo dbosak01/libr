@@ -879,7 +879,7 @@ test_that("ds35: delete and output can be used together.", {
 
 test_that("ds36: output works with empty dataset.", {
   
-  d1 <- datastep(data.frame(), {
+  d1 <- datastep(data.frame(stringsAsFactors = FALSE), {
     
     bork <- 1
     fork <- "one"

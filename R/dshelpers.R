@@ -42,7 +42,7 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     df[["..delete"]] <- FALSE
   else {
     
-    tmp <- data.frame("..delete" = FALSE)
+    tmp <- data.frame("..delete" = FALSE, stringsAsFactors = FALSE)
     
     if (ncol(df) == 0)
       df <- tmp

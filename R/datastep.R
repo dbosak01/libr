@@ -529,14 +529,6 @@ datastep <- function(data, steps, keep = NULL,
   }
   
   # Save off any attributes
-  # if (ncol(data) > 1) {
-  #   # Deal with 1 column situation
-  #   data_attributes <- data[1, ]
-  # } else {
-  #   data_attributes <- data.frame(data[1, ], stringsAsFactors = FALSE)
-  #   names(data_attributes) <- names(data)
-  # }
-  
   data_attributes <- data[1, , drop = FALSE]
   
   # Tibble subset will keep attributes, but data.frame will not
@@ -791,8 +783,13 @@ delete <- function() {
 #' # 11 21.4   4 121.0
 #' 
 #' # Example 2: Output two rows for each 6 cylinder car
-#' df <- datastep(mtcars, 
-#'                keep = c("mpg", "cyl", "disp", "seq"), {
+#' 
+#' # Prepare sample data
+#' dat <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
+#' 
+#' # Perform datastep
+#' df <- datastep(dat, 
+#'                keep = c("name", "mpg", "cyl", "disp", "seq"), {
 #'                  
 #'   if (cyl == 6) {
 #'     seq <- 1
@@ -804,21 +801,41 @@ delete <- function() {
 #' })
 #' 
 #' df
-#' #     mpg cyl  disp seq
-#' # 1  21.0   6 160.0   1
-#' # 2  21.0   6 160.0   2
-#' # 3  21.0   6 160.0   1
-#' # 4  21.0   6 160.0   2
-#' # 5  21.4   6 258.0   1
-#' # 6  21.4   6 258.0   2
-#' # 7  18.1   6 225.0   1
-#' # 8  18.1   6 225.0   2
-#' # 9  19.2   6 167.6   1
-#' # 10 19.2   6 167.6   2
-#' # 11 17.8   6 167.6   1
-#' # 12 17.8   6 167.6   2
-#' # 13 19.7   6 145.0   1
-#' # 14 19.7   6 145.0   2
+#' #              name  mpg cyl  disp seq
+#' # 1       Mazda RX4 21.0   6 160.0   1
+#' # 2       Mazda RX4 21.0   6 160.0   2
+#' # 3   Mazda RX4 Wag 21.0   6 160.0   1
+#' # 4   Mazda RX4 Wag 21.0   6 160.0   2
+#' # 5  Hornet 4 Drive 21.4   6 258.0   1
+#' # 6  Hornet 4 Drive 21.4   6 258.0   2
+#' # 7         Valiant 18.1   6 225.0   1
+#' # 8         Valiant 18.1   6 225.0   2
+#' # 9        Merc 280 19.2   6 167.6   1
+#' # 10       Merc 280 19.2   6 167.6   2
+#' # 11      Merc 280C 17.8   6 167.6   1
+#' # 12      Merc 280C 17.8   6 167.6   2
+#' # 13   Ferrari Dino 19.7   6 145.0   1
+#' # 14   Ferrari Dino 19.7   6 145.0   2
+#' 
+#' # Example 3: Create data frame using output() functions
+#' df <- datastep(data.frame(stringsAsFactors = FALSE), {
+#' 
+#'   # Row 1
+#'   COL1 <- 1
+#'   COL2 <- "One"
+#'   output()
+#'   
+#'   # Row 2
+#'   COL1 <- 2
+#'   COL2 <- "Two"
+#'   output()
+#' 
+#' })
+#' 
+#' df
+#' #   COL1 COL2
+#' # 1    1  One
+#' # 2    2  Two
 output <- function() {
   
   # Parent frame hold row
