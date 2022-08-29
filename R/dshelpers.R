@@ -31,12 +31,31 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
   
   } else {
     
-    df["first."] <- c(TRUE, rep(FALSE, times = nrow(df) - 1))
-    df["last."] <- c(rep(FALSE, times = nrow(df) - 1), TRUE)
+    if (nrow(df) > 0) {
+      df["first."] <- c(TRUE, rep(FALSE, times = nrow(df) - 1))
+      df["last."] <- c(rep(FALSE, times = nrow(df) - 1), TRUE)
+    }
     
   }
   
-  df[["..delete"]] <- FALSE
+  if (nrow(df) > 0)
+    df[["..delete"]] <- FALSE
+  else {
+    
+    tmp <- data.frame("..delete" = FALSE)
+    
+    if (ncol(df) == 0)
+      df <- tmp
+    else {
+      
+      df <- cbind(df, tmp) # fix
+      
+    }
+    
+
+    
+    
+  }
   
   
   return(df)

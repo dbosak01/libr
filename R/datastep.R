@@ -1,5 +1,6 @@
 # Set up environment for shared variables
 e <- new.env(parent = emptyenv())
+e$output <- list()
 
 # Datastep Definition -----------------------------------------------------
 
@@ -455,6 +456,12 @@ datastep <- function(data, steps, keep = NULL,
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
   
+  # Determine if there is an output function
+  hout <- has_output(deparse(code))
+  
+  # Clear output list
+  e$output <- list()
+  
   # Put aggregate functions in a variable 
   agg <- substitute(calculate, env = environment())
   
@@ -554,16 +561,14 @@ datastep <- function(data, steps, keep = NULL,
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
   
+  # Increase rowcount if needed
+  if (nrow(data) > rowcount) {
+    rowcount <- nrow(data)
+  }
+  
   # Step through row by row
   for (n. in seq_len(rowcount)) {
     
-    # If one column, subset comes back with a vector
-    # if (ncol(data) > 1)
-    #   rw <- data[n., ]
-    # else {
-    #   rw <- data.frame(data[n., ], stringsAsFactors = FALSE)
-    #   names(rw) <- names(data)
-    # }
     # Subset by row
     rw <- data[n., , drop = FALSE]
     
@@ -595,30 +600,28 @@ datastep <- function(data, steps, keep = NULL,
       }
     }
     
-    e$delete <- FALSE
     
     # Evaluate the code for the row
-    trw <-  within(rw, eval(code), keepAttrs = TRUE)
+    ret[[n.]]  <-  within(rw, eval(code), keepAttrs = TRUE)
     
-    trw[["..delete"]] <- e$delete
-    
-    ret[[n.]]  <-trw
-    
+
   }
   
   # Bind all rows
-  ret <- bind_rows(ret, .id = "column_label")
+  if (hout) {
+    ret <- bind_rows(e$output, .id = "column_label")
+    
+  } else {
+    ret <- bind_rows(ret, .id = "column_label")
+  }
   ret["column_label"] <- NULL
   
-  # if ("output" %in% names(ret)) {
-  #   
-  #   ret$output <- ifelse(is.na(ret$output), FALSE, ret$output)
-  #   ret <- ret[ret$output == TRUE, ] 
-  # }
   
   # Delete
-  ret <- tryCatch({subset(ret, ret[["..delete"]] == FALSE)},
-                  error = function(cond){ret})
+  if ("..delete" %in% names(ret)) {
+    ret <- tryCatch({subset(ret, ret[["..delete"]] == FALSE)},
+                    error = function(cond){ret})
+  }
   
   # Where Before
   if (!is.null(where)) {
@@ -626,10 +629,14 @@ datastep <- function(data, steps, keep = NULL,
                     error = function(cond){ret})
   }
   
+  # Improve column order
+  rtnms <- rev(names(ret))
+  orgnms <- names(data)
+  ret <- ret[ ,c(orgnms, rtnms[!rtnms %in% orgnms])]
+  
   # Remove automatic variables
   ret["first."] <- NULL
   ret["last."] <- NULL
-  ret["output"] <- NULL
   ret["..delete"] <- NULL
   
   # Perform drop operation
@@ -739,12 +746,93 @@ datastep <- function(data, steps, keep = NULL,
 #' # 11 21.4   4 121.0
 delete <- function() {
   
+  # Parent frame hold environment with ds row
+  pf <- parent.frame()
   
-  e$delete <- TRUE
+  # Set by reference
+  pf$..delete <- TRUE
+  
   
 }
 
 
+#' @title Outputs an observation from a datastep
+#' @description The \code{output} function will output an observation
+#' from a datastep.  The function takes no parameters.  To use 
+#' the function, simply call it on the rows you want to output.  Typically
+#' it is called within a conditional.  The output function is interesting
+#' in that you can output multiple rows for the same input observation.
+#' @return Observation is marked with a output flag.  No return value.
+#' @export
+#'
+#' @seealso The \code{\link{datastep}} function.
+#' @examples
+#' #' # Example 1: Output all cars that are 4 cylinder 
+#' df <- datastep(mtcars, 
+#'                keep = c("mpg", "cyl", "disp"), {
+#'                  
+#'   if (cyl == 4)
+#'     output()
+#'                  
+#' })
+#' 
+#' df
+#' #     mpg cyl  disp
+#' # 1  22.8   4 108.0
+#' # 2  24.4   4 146.7
+#' # 3  22.8   4 140.8
+#' # 4  32.4   4  78.7
+#' # 5  30.4   4  75.7
+#' # 6  33.9   4  71.1
+#' # 7  21.5   4 120.1
+#' # 8  27.3   4  79.0
+#' # 9  26.0   4 120.3
+#' # 10 30.4   4  95.1
+#' # 11 21.4   4 121.0
+#' 
+#' # Example 2: Output two rows for each 6 cylinder car
+#' df <- datastep(mtcars, 
+#'                keep = c("mpg", "cyl", "disp", "seq"), {
+#'                  
+#'   if (cyl == 6) {
+#'     seq <- 1
+#'     output()
+#'     seq <- 2
+#'     output()
+#'   }
+#'                  
+#' })
+#' 
+#' df
+#' #     mpg cyl  disp seq
+#' # 1  21.0   6 160.0   1
+#' # 2  21.0   6 160.0   2
+#' # 3  21.0   6 160.0   1
+#' # 4  21.0   6 160.0   2
+#' # 5  21.4   6 258.0   1
+#' # 6  21.4   6 258.0   2
+#' # 7  18.1   6 225.0   1
+#' # 8  18.1   6 225.0   2
+#' # 9  19.2   6 167.6   1
+#' # 10 19.2   6 167.6   2
+#' # 11 17.8   6 167.6   1
+#' # 12 17.8   6 167.6   2
+#' # 13 19.7   6 145.0   1
+#' # 14 19.7   6 145.0   2
+output <- function() {
+  
+  # Parent frame hold row
+  pf <- parent.frame()
+  
+  # Convert to list so it can be converted to a data frame
+  lst <- as.list(pf)
+  lst[["..delete"]] <- pf$..delete
+  
+  # Convert to data frame and append to output list
+  e$output[[length(e$output) + 1]] <- as.data.frame(lst)
+
+  
+}
 
 # Utilities ---------------------------------------------------------------
 
@@ -792,4 +880,18 @@ assign_attributes <- function(df, lst, attr) {
   
   return(ret)
   
+}
+
+has_output <- function(codestr) {
+ 
+  
+  ret <- FALSE
+  
+  opos <- grepl("output()", codestr, fixed = TRUE)
+  
+  if (any(opos == TRUE))
+    ret <- TRUE
+  
+  return(ret)
+
 }

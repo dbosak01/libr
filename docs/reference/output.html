@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a Data Dictionary — dictionary • libr</title>
+<title>Outputs an observation from a datastep — output • libr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,25 +48,12 @@
   
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Create a Data Dictionary — dictionary" />
-<meta property="og:description" content="A function to create a data dictionary for a data frame,
-a tibble, or a data library.  The function will generate a tibble of 
-information about the data.  The tibble will contain the following columns:
-Name: The name of the data object.
-Column: The name of the column.
-Class: The class of the column.
-Label: The value of the label attribute.
-Description: A description applied to this column.
-Format: The value of the format attribute.
-Width: The value of the width attribute if any have been
-  assigned.
-Justify: The justification or alignment attribute value.
-Rows: The number of data rows.
-NAs: The number of NA values in this column.
-MaxChar: The maximum character length of the
-   values in this column with no padding.
-
-" />
+<meta property="og:title" content="Outputs an observation from a datastep — output" />
+<meta property="og:description" content="The output function will output an observation
+from a datastep.  The function takes no parameters.  To use 
+the function, simply call it on the rows you want to output.  Typically
+it is called within a conditional.  The output function is interesting
+in that you can output multiple rows for the same input observation." />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
 
 
@@ -172,78 +159,82 @@ MaxChar: The maximum character length of the
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a Data Dictionary</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dbosak01/libr/blob/master/R/dictionary.R'><code>R/dictionary.R</code></a></small>
-    <div class="hidden name"><code>dictionary.Rd</code></div>
+    <h1>Outputs an observation from a datastep</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dbosak01/libr/blob/master/R/datastep.R'><code>R/datastep.R</code></a></small>
+    <div class="hidden name"><code>output.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A function to create a data dictionary for a data frame,
-a tibble, or a data library.  The function will generate a tibble of 
-information about the data.  The tibble will contain the following columns:</p><ul>
-<li><p><strong>Name:</strong> The name of the data object.</p></li>
-<li><p><strong>Column:</strong> The name of the column.</p></li>
-<li><p><strong>Class:</strong> The class of the column.</p></li>
-<li><p><strong>Label:</strong> The value of the label attribute.</p></li>
-<li><p><strong>Description:</strong> A description applied to this column.</p></li>
-<li><p><strong>Format:</strong> The value of the format attribute.</p></li>
-<li><p><strong>Width:</strong> The value of the width attribute if any have been
-  assigned.</p></li>
-<li><p><strong>Justify:</strong> The justification or alignment attribute value.</p></li>
-<li><p><strong>Rows:</strong> The number of data rows.</p></li>
-<li><p><strong>NAs:</strong> The number of NA values in this column.</p></li>
-<li><p><strong>MaxChar:</strong> The maximum character length of the
-   values in this column with no padding.</p></li>
-</ul>
-
+    <p>The <code>output</code> function will output an observation
+from a datastep.  The function takes no parameters.  To use 
+the function, simply call it on the rows you want to output.  Typically
+it is called within a conditional.  The output function is interesting
+in that you can output multiple rows for the same input observation.</p>
     </div>
 
-    <pre class="usage"><span><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>The input library, data frame, or tibble.</p></td>
-    </tr>
-    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Observation is marked with a output flag.  No return value.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='libname.html'>libname</a></code> to create a data library.  Also 
-see the <code><a href='dsattr.html'>dsattr</a></code> function to set attributes for your 
-dataset from within a <code><a href='datastep.html'>datastep</a></code>.  To render attributes, 
-see the <strong>fmtr</strong> package.</p></div>
+    <div class='dont-index'><p>The <code><a href='datastep.html'>datastep</a></code> function.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span><span class='co'># Create temp directory</span></span>
-<span><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span><span class='co'>#' # Example 1: Output all cars that are 4 cylinder </span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>mtcars</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>4</span><span class='op'>)</span></span>
+<span>    <span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'># Create library</span></span>
-<span><span class='fu'><a href='libname.html'>libname</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>tmp</span><span class='op'>)</span></span>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#     mpg cyl  disp</span></span>
+<span><span class='co'># 1  22.8   4 108.0</span></span>
+<span><span class='co'># 2  24.4   4 146.7</span></span>
+<span><span class='co'># 3  22.8   4 140.8</span></span>
+<span><span class='co'># 4  32.4   4  78.7</span></span>
+<span><span class='co'># 5  30.4   4  75.7</span></span>
+<span><span class='co'># 6  33.9   4  71.1</span></span>
+<span><span class='co'># 7  21.5   4 120.1</span></span>
+<span><span class='co'># 8  27.3   4  79.0</span></span>
+<span><span class='co'># 9  26.0   4 120.3</span></span>
+<span><span class='co'># 10 30.4   4  95.1</span></span>
+<span><span class='co'># 11 21.4   4 121.0</span></span>
 <span></span>
-<span><span class='co'># Add data to the library</span></span>
-<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>beaver1</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='lib_add.html'>lib_add</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>iris</span><span class='op'>)</span></span>
+<span><span class='co'># Example 2: Output two rows for each 6 cylinder car</span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='datastep.html'>datastep</a></span><span class='op'>(</span><span class='va'>mtcars</span>, </span>
+<span>               keep <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mpg"</span>, <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"seq"</span><span class='op'>)</span>, <span class='op'>{</span></span>
+<span>                 </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>    <span class='va'>seq</span> <span class='op'>&lt;-</span> <span class='fl'>1</span></span>
+<span>    <span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span>
+<span>    <span class='va'>seq</span> <span class='op'>&lt;-</span> <span class='fl'>2</span></span>
+<span>    <span class='fu'>output</span><span class='op'>(</span><span class='op'>)</span></span>
+<span>  <span class='op'>}</span></span>
+<span>                 </span>
+<span><span class='op'>}</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'># Examine the dictionary for the library</span></span>
-<span><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
-<span><span class='co'># A tibble: 9 x 10</span></span>
-<span><span class='co'>#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs MaxChar</span></span>
-<span><span class='co'>#   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;lgl&gt;   &lt;int&gt; &lt;int&gt;   &lt;int&gt;</span></span>
-<span><span class='co'># 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0       3</span></span>
-<span><span class='co'># 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0       4</span></span>
-<span><span class='co'># 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0       5</span></span>
-<span><span class='co'># 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0       1</span></span>
-<span><span class='co'># 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0       3</span></span>
-<span><span class='co'># 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0       3</span></span>
-<span><span class='co'># 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0       3</span></span>
-<span><span class='co'># 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0       3</span></span>
-<span><span class='co'># 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0      10</span></span>
-<span></span>
-<span><span class='co'># Clean up</span></span>
-<span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
+<span><span class='va'>df</span></span>
+<span><span class='co'>#     mpg cyl  disp seq</span></span>
+<span><span class='co'># 1  21.0   6 160.0   1</span></span>
+<span><span class='co'># 2  21.0   6 160.0   2</span></span>
+<span><span class='co'># 3  21.0   6 160.0   1</span></span>
+<span><span class='co'># 4  21.0   6 160.0   2</span></span>
+<span><span class='co'># 5  21.4   6 258.0   1</span></span>
+<span><span class='co'># 6  21.4   6 258.0   2</span></span>
+<span><span class='co'># 7  18.1   6 225.0   1</span></span>
+<span><span class='co'># 8  18.1   6 225.0   2</span></span>
+<span><span class='co'># 9  19.2   6 167.6   1</span></span>
+<span><span class='co'># 10 19.2   6 167.6   2</span></span>
+<span><span class='co'># 11 17.8   6 167.6   1</span></span>
+<span><span class='co'># 12 17.8   6 167.6   2</span></span>
+<span><span class='co'># 13 19.7   6 145.0   1</span></span>
+<span><span class='co'># 14 19.7   6 145.0   2</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

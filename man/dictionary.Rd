@@ -21,14 +21,12 @@ information about the data.  The tibble will contain the following columns:
   \item{\strong{Description:} A description applied to this column.}
   \item{\strong{Format:} The value of the format attribute.}
   \item{\strong{Width:} The value of the width attribute if any have been
-  assigned.  If no width attributes have been assigned, 
-  the max character width.}
+  assigned.}
   \item{\strong{Justify:} The justification or alignment attribute value.}
   \item{\strong{Rows:} The number of data rows.}
   \item{\strong{NAs:} The number of NA values in this column.}
   \item{\strong{MaxChar:} The maximum character length of the
-   values in this column.  The MaxChar may be different from the user-defined 
-   'width' setting.}
+   values in this column with no padding.}
 }
 }
 \examples{

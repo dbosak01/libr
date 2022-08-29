@@ -5,7 +5,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 base_path <- "./data"
 
 
-test_that("datastep() function works as expected with mtcars.", {
+test_that("ds1: datastep() function works as expected with mtcars.", {
 
 
   d1 <- datastep(mtcars, {
@@ -25,7 +25,7 @@ test_that("datastep() function works as expected with mtcars.", {
 
 
 
-test_that("datastep() function works as expected with demo_studya.", {
+test_that("ds2: datastep() function works as expected with demo_studya.", {
 
 
   libname(dat, base_path, "csv")
@@ -50,7 +50,7 @@ test_that("datastep() function works as expected with demo_studya.", {
 })
 
 
-test_that("datastep() keep parameter works as expected.", {
+test_that("ds3: datastep() keep parameter works as expected.", {
 
   libname(dat, base_path, "csv")
 
@@ -74,7 +74,7 @@ test_that("datastep() keep parameter works as expected.", {
 
 })
 
-test_that("datastep() drop parameter works as expected.", {
+test_that("ds4: datastep() drop parameter works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -95,12 +95,12 @@ test_that("datastep() drop parameter works as expected.", {
   d1
 
   expect_equal(names(d1), c("study", "inv", "patient", "race",
-                            "dob", "treatment", "sexc", "usubjid"))
+                            "dob", "treatment", "usubjid", "sexc"))
 
 })
 
 
-test_that("datastep() by parameter first and last works as expected.", {
+test_that("ds5: datastep() by parameter first and last works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -122,7 +122,7 @@ test_that("datastep() by parameter first and last works as expected.", {
 })
 
 
-test_that("datastep() summary functions works as expected.", {
+test_that("ds6: datastep() summary functions works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -146,7 +146,7 @@ test_that("datastep() summary functions works as expected.", {
 
 })
 
-test_that("datastep() calculate parameter works as expected.", {
+test_that("ds7: datastep() calculate parameter works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -172,7 +172,7 @@ test_that("datastep() calculate parameter works as expected.", {
 
 })
 
-test_that("datastep() auto-group-by works as expected.", {
+test_that("ds8: datastep() auto-group-by works as expected.", {
 
   if (TRUE) {
     libname(dat, base_path, "rds")
@@ -199,7 +199,7 @@ test_that("datastep() auto-group-by works as expected.", {
     expect_equal(TRUE, TRUE)
 })
 
-test_that("datastep() by parameter sort check works as expected.", {
+test_that("ds9: datastep() by parameter sort check works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -237,7 +237,7 @@ test_that("datastep() by parameter sort check works as expected.", {
 })
 
 
-test_that("datastep() retain parameter works as expected.", {
+test_that("ds10: datastep() retain parameter works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -264,14 +264,14 @@ test_that("datastep() retain parameter works as expected.", {
   expect_equal(d1$bork[10], "end")
 })
 
-test_that("datastep() retain class check works as expected", {
+test_that("ds11: datastep() retain class check works as expected", {
 
 
   expect_error(datastep(mtcars, retain = c(fork = 0), {fork <- fork + 1}))
 
 })
 
-test_that("datastep() array class check works as expected", {
+test_that("ds12: datastep() array class check works as expected", {
   
   
   expect_error(datastep(mtcars, array = c(fork = 0), {fork <- fork + 1}))
@@ -279,7 +279,7 @@ test_that("datastep() array class check works as expected", {
 })
 
 
-test_that("datastep() attrib class check works as expected", {
+test_that("ds13: datastep() attrib class check works as expected", {
   
   
   expect_error(datastep(mtcars, attrib = c(fork = 0), {fork <- fork + 1}))
@@ -288,7 +288,7 @@ test_that("datastep() attrib class check works as expected", {
 
 
 
-test_that("Rename works as expected", {
+test_that("ds14: Rename works as expected", {
 
   df <- datastep(mtcars[1:10, ],
     drop = c("disp", "hp", "drat", "qsec",
@@ -312,7 +312,7 @@ test_that("Rename works as expected", {
 
 
 
-test_that("datastep() attributes on data are maintained.", {
+test_that("ds15: datastep() attributes on data are maintained.", {
   
   library(dplyr)
   library(common)
@@ -364,7 +364,7 @@ test_that("datastep() attributes on data are maintained.", {
   
 })
 
-test_that("datastep retains class attributes.", {
+test_that("ds16: datastep retains class attributes.", {
   
   
   s1 <-  1:3
@@ -383,7 +383,7 @@ test_that("datastep retains class attributes.", {
 
 })
 
-test_that("datastep works on single column data frame.", {
+test_that("ds17: datastep works on single column data frame.", {
   
   df <- data.frame(a = 1:10, stringsAsFactors = FALSE)
   
@@ -407,7 +407,7 @@ test_that("datastep works on single column data frame.", {
 })
 
 
-test_that("datastep works on single column tibble.", {
+test_that("ds18: datastep works on single column tibble.", {
   
   df <- tibble(a = 1:10)
   
@@ -431,7 +431,7 @@ test_that("datastep works on single column tibble.", {
 })
 
 
-test_that("datastep() attributes on data are maintained on base dataframe.", {
+test_that("ds19: datastep() attributes on data are maintained on base dataframe.", {
   
   
   dat <- mtcars
@@ -451,7 +451,7 @@ test_that("datastep() attributes on data are maintained on base dataframe.", {
   
   
 
-test_that("datastep works on tibble.", {
+test_that("ds20: datastep works on tibble.", {
   
 
     
@@ -481,7 +481,7 @@ test_that("datastep works on tibble.", {
 
 
 
-test_that("datastep works on data.table", {
+test_that("ds21: datastep works on data.table", {
   
   
   
@@ -511,7 +511,7 @@ test_that("datastep works on data.table", {
 
 
 
-test_that("datastep() works on a dataframe with a factor.", {
+test_that("ds22: datastep() works on a dataframe with a factor.", {
   
   
   dat <- iris
@@ -528,7 +528,7 @@ test_that("datastep() works on a dataframe with a factor.", {
   
 })
 
-test_that("assign_attributes() works as expected.", {
+test_that("ds23: assign_attributes() works as expected.", {
   
   
   dat <- mtcars
@@ -542,7 +542,7 @@ test_that("assign_attributes() works as expected.", {
   expect_equal(attr(dat2$cyl, "label"), "goodbye")
 })
   
-test_that("label parameter on datastep works as expected.", {
+test_that("ds24: label parameter on datastep works as expected.", {
   
   
   dat <- mtcars
@@ -559,7 +559,7 @@ test_that("label parameter on datastep works as expected.", {
 })
 
 
-test_that("format parameter on datastep works as expected.", {
+test_that("ds25: format parameter on datastep works as expected.", {
   
   
   dat <- mtcars
@@ -573,7 +573,7 @@ test_that("format parameter on datastep works as expected.", {
   expect_equal(attr(dat2$cyl, "format"), "%1.2f")
 })
 
-test_that("Attributes on datastep input is retained inside datastep.", {
+test_that("ds26: Attributes on datastep input is retained inside datastep.", {
   
   library(common)
   
@@ -599,7 +599,7 @@ test_that("Attributes on datastep input is retained inside datastep.", {
   
 })
 
-test_that("date variables are retained as dates.", {
+test_that("ds27: date variables are retained as dates.", {
   
   
   ind <- mtcars
@@ -635,7 +635,7 @@ test_that("date variables are retained as dates.", {
 })
 
 
-test_that("where clause works.", {
+test_that("ds28: where clause works.", {
   
   df <- datastep(mtcars,
                  where = expression(cyl == 8),
@@ -662,7 +662,7 @@ test_that("where clause works.", {
 })
 
 
-test_that("attributes are retained with keep statement.", {
+test_that("ds29: attributes are retained with keep statement.", {
   
   
   ind <- mtcars
@@ -695,7 +695,7 @@ test_that("attributes are retained with keep statement.", {
   
 })
 
-test_that("datastep() keep parameter with one variable works.", {
+test_that("ds30: datastep() keep parameter with one variable works.", {
   
   libname(dat, base_path, "csv")
   
@@ -722,7 +722,7 @@ test_that("datastep() keep parameter with one variable works.", {
 # })
 
 
-test_that("Single value NSE works on datastep().", {
+test_that("ds31: Single value NSE works on datastep().", {
   
   
   d1 <- datastep(mtcars, 
@@ -749,7 +749,7 @@ test_that("Single value NSE works on datastep().", {
   
 })
 
-test_that("Delete function works on datastep().", {
+test_that("ds32: Delete function works on datastep().", {
   
   
   d1 <- datastep(mtcars, 
@@ -778,5 +778,125 @@ test_that("Delete function works on datastep().", {
   expect_equal(nrow(d2), 0)
   expect_equal(ncol(d2), 11)
   
+})
+
+
+test_that("ds33: Output function works as expected.", {
+  
+  
+  d1 <- datastep(mtcars, 
+                 {
+                   
+                   if (cyl == 4)
+                     output()
+                   
+                 })
+  
+  d1
+  
+  expect_equal(nrow(d1), 11)
+  expect_equal(ncol(d1), 11)
+  
+})
+
+test_that("ds34: has_output() function works.", {
+  
+  str1 <- "if (cyl == 4) output()"
+  
+  res1 <- has_output(str1)
+  
+  res1
+  
+  expect_equal(res1, TRUE)
+  
+  
+  str2 <- "if (cyl == 4) delete()"
+  
+  
+  res2 <- has_output(str2)
+  
+  res2
+  
+  expect_equal(res2, FALSE)
+  
+})
+
+
+test_that("ds35: Output function can output multiple rows per obs.", {
+  
+  
+  d1 <- datastep(mtcars, 
+                 {
+                   
+                   fork <- "hello"
+                   bork <- "sammy"
+                   
+                   if (cyl == 4) {
+                     seq <- 1
+                     output()
+                     seq <- 2
+                     output()
+                     
+                   }
+                   
+                   # Never executed
+                   andalso <- "here"
+                   
+                 })
+  
+  d1
+  
+  expect_equal(nrow(d1), 22)
+  expect_equal(ncol(d1), 14)
+  
+})
+
+
+
+test_that("ds35: delete and output can be used together.", {
+  
+  
+  d1 <- datastep(mtcars, 
+                 {
+                   
+                   
+                   if (cyl == 4) {
+                     delete()
+                     
+                   }
+                   
+                   output()
+                   
+                 })
+  
+  d1
+  
+  expect_equal(nrow(d1), 21)
+  expect_equal(ncol(d1), 11)
+  
+})
+
+
+test_that("ds36: output works with empty dataset.", {
+  
+  d1 <- datastep(data.frame(), {
+    
+    bork <- 1
+    fork <- "one"
+    output()
+    
+    bork <- 2
+    fork <- "two"
+    output()
+    
+  })
+  
+  d1
+  
+  expect_equal(nrow(d1), 2)
+  expect_equal(ncol(d1), 2)
+  expect_equal(names(d1), c("bork", "fork"))
+  expect_equal(d1[[1, 1]], 1)
+  expect_equal(d1[[2, 2]], "two")
 })
 
