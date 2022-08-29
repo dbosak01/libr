@@ -36,7 +36,7 @@ it will be created by the \code{libname} function.}
 engine will be used to import and export data.  The engine name 
 corresponds to the standard file extension of the data file type. The
 default engine is 'rds'.
-Valid values are 'rds', 'Rdata', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
+Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
 'dbf', and 'csv'.}
 
 \item{read_only}{Whether the library should be created as read-only.
@@ -103,7 +103,7 @@ The \code{libname} function provides several data engines to read
 data of different types.  For example, there is an engine for Excel 
 files, and another engine for SAS® datasets.  The engines are identified
 by the extension of the file type they handle.  The available engines are 
-'rds', 'RData', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 Once an engine has been assigned to a library, all other read/write 
 operations will be performed by that engine.  
 
@@ -126,8 +126,9 @@ Here is a complete list of available engines and some commentary about each:
 \item{\strong{rds}: For R data sets.  This engine is the default.  Because
 detailed data type and attribute information can be stored inside the rds
 file, the rds engine is the most reliable and easiest to use.}
-\item{\strong{Rdata}: Another R data storage format.  Like the 'rds' engine,
-this storage type retains column attributes and data types.}
+\item{\strong{Rdata} and \strong{rda}: Older R data storage formats.  
+Like the 'rds' engine,
+these storage types retain column attributes and data types.}
 \item{\strong{csv}: For comma separated value files.  This engine assumes
 that the first row has column names, and that strings containing commas are 
 quoted.  Blank values and the string 'NA' will be interpreted as NA.

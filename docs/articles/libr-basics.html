@@ -143,13 +143,13 @@ associate it with. If the directory has existing data files, those data
 files will be automatically loaded into the library. Once in the
 library, the data can be accessed using list syntax.</p>
 <p>You may create a data library for several different types of files:
-‘rds’, ‘Rdata’, ‘csv’, ‘xlsx’, ‘xls’, ‘sas7bdat’, ‘xpt’, and ‘dbf’. The
-type of library is defined using the <code>engine</code> parameter on
-the <code><a href="../reference/libname.html">libname()</a></code> function. The default data engine is ‘rds’.
-The data engines will attempt to identify the correct data type for each
-column of data. You may also control the data type of the columns using
-the <code>import_specs</code> parameter and the <code><a href="../reference/specs.html">specs()</a></code> and
-<code><a href="../reference/import_spec.html">import_spec()</a></code> functions.</p>
+‘rds’, ‘Rdata’, ‘rda’, ‘csv’, ‘xlsx’, ‘xls’, ‘sas7bdat’, ‘xpt’, and
+‘dbf’. The type of library is defined using the <code>engine</code>
+parameter on the <code><a href="../reference/libname.html">libname()</a></code> function. The default data
+engine is ‘rds’. The data engines will attempt to identify the correct
+data type for each column of data. You may also control the data type of
+the columns using the <code>import_specs</code> parameter and the
+<code><a href="../reference/specs.html">specs()</a></code> and <code><a href="../reference/import_spec.html">import_spec()</a></code> functions.</p>
 <p>If you prefer to access the data via the workspace, call the
 <code><a href="../reference/lib_load.html">lib_load()</a></code> function on the library. This function will load
 the library data into the parent frame, where it can be accessed using a

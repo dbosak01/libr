@@ -209,7 +209,7 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       attr(x, "checksum") <- md5sum(file_path)
     }
     
-  } else if (tolower(ext) == "rdata") {
+  } else if (tolower(ext) %in% c("rdata", "rda")) {
     
     if (!cs_comp | force) {
       if (file.exists(file_path))

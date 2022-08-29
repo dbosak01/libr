@@ -35,7 +35,7 @@ e$env <- parent.frame()
 #' data of different types.  For example, there is an engine for Excel 
 #' files, and another engine for SAS® datasets.  The engines are identified
 #' by the extension of the file type they handle.  The available engines are 
-#' 'rds', 'RData', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+#' 'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
 #' Once an engine has been assigned to a library, all other read/write 
 #' operations will be performed by that engine.  
 #' 
@@ -57,8 +57,9 @@ e$env <- parent.frame()
 #' \item{\strong{rds}: For R data sets.  This engine is the default.  Because
 #' detailed data type and attribute information can be stored inside the rds
 #' file, the rds engine is the most reliable and easiest to use.}
-#' \item{\strong{Rdata}: Another R data storage format.  Like the 'rds' engine,
-#' this storage type retains column attributes and data types.}
+#' \item{\strong{Rdata} and \strong{rda}: Older R data storage formats.  
+#' Like the 'rds' engine,
+#' these storage types retain column attributes and data types.}
 #' \item{\strong{csv}: For comma separated value files.  This engine assumes
 #' that the first row has column names, and that strings containing commas are 
 #' quoted.  Blank values and the string 'NA' will be interpreted as NA.
@@ -143,7 +144,7 @@ e$env <- parent.frame()
 #' engine will be used to import and export data.  The engine name 
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
-#' Valid values are 'rds', 'Rdata', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
+#' Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
 #' 'dbf', and 'csv'. 
 #' @param read_only Whether the library should be created as read-only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
@@ -246,7 +247,8 @@ libname <- function(name, directory_path, engine = "rds",
   if (length(engine) > 1)
     stop("engine parameter does not accept more than one value.")
   
-  if (!tolower(engine) %in% c("rds", "rdata", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+  if (!tolower(engine) %in% c("rds", "rdata", "rda", "csv", "sas7bdat", "xlsx", 
+                              "xls", "xpt", "dbf"))
     stop(paste0("Invalid engine parameter value: ", engine))
   
   if (!is.null(import_specs)) {
@@ -350,7 +352,7 @@ libname <- function(name, directory_path, engine = "rds",
         if (!is.null(import_specs))
           dat <- exec_spec(dat, import_specs, nm)
         
-      } else if (tolower(ext) == "rdata") {
+      } else if (tolower(ext) %in% c("rdata", "rda")) {
         
         # Create new environment
         erdata <- new.env()
@@ -1430,7 +1432,7 @@ lib_copy <- function(x, nm, directory_path, standard_eval = FALSE) {
 #' @param directory_path The path to export the library to.
 #' @param engine The name of the engine to use for the exported data.
 #' The engine name corresponds to the standard file extension 
-#' of the data file type. Valid values are 'rds', 'Rdata', 'sas7bdat', 
+#' of the data file type. Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 
 #' 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
 #' @param filter A filter string to limit which datasets are exported. 
 #' The filter parameter accepts wildcards.
@@ -1473,7 +1475,8 @@ lib_export <- function(x, nm, directory_path, engine,
   if (length(engine) > 1)
     stop("engine parameter does not accept more than one value.")
   
-  if (!tolower(engine) %in% c("rds", "rdata", "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+  if (!tolower(engine) %in% c("rds", "rdata", "rda", 
+                              "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
     stop(paste0("Invalid engine parameter value: ", engine))
   
   if (all(class(x) == "character")) {

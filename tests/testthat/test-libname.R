@@ -4,7 +4,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
 base_path <- "./data"
 
-test_that("libname() function works as expected with csv.", {
+test_that("lib1: libname() function works as expected with csv.", {
 
   libname(dat, base_path, engine = "csv")
 
@@ -17,7 +17,7 @@ test_that("libname() function works as expected with csv.", {
 })
 
 
-test_that("libname() and quiet parameter works as expected with csv.", {
+test_that("lib2: libname() and quiet parameter works as expected with csv.", {
 
   libname(dat, base_path, engine = "csv", quiet = TRUE)
 
@@ -31,7 +31,7 @@ test_that("libname() and quiet parameter works as expected with csv.", {
 
 
 
-test_that("libname() function works as expected with rds", {
+test_that("lib3: libname() function works as expected with rds", {
 
   libname(dat, base_path, engine = "rds")
 
@@ -44,7 +44,7 @@ test_that("libname() function works as expected with rds", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
-test_that("libname() function works as expected with rdata", {
+test_that("lib4: libname() function works as expected with rdata", {
   
   
   libname(dat, base_path, engine = "Rdata")
@@ -58,7 +58,7 @@ test_that("libname() function works as expected with rdata", {
 })
 
 
-test_that("libname() function works as expected with xls", {
+test_that("lib5: libname() function works as expected with xls", {
 
   libname(dat, base_path, engine = "xls")
 
@@ -71,7 +71,7 @@ test_that("libname() function works as expected with xls", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
-test_that("libname() function works as expected with xlsx", {
+test_that("lib6: libname() function works as expected with xlsx", {
 
   libname(dat, base_path, engine = "xlsx")
 
@@ -83,7 +83,7 @@ test_that("libname() function works as expected with xlsx", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
-test_that("libname() function works as expected with sas7bdat", {
+test_that("lib7: libname() function works as expected with sas7bdat", {
 
   libname(dat, base_path, engine = "sas7bdat")
 
@@ -95,7 +95,7 @@ test_that("libname() function works as expected with sas7bdat", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
-test_that("libname() function works as expected with dbf", {
+test_that("lib8: libname() function works as expected with dbf", {
 
   tmp <- tempdir()
   libname(dat, tmp, "dbf")
@@ -113,7 +113,7 @@ test_that("libname() function works as expected with dbf", {
   lib_delete(dat2)
 })
 
-test_that("libname() function works as expected with xpt", {
+test_that("lib9: libname() function works as expected with xpt", {
 
   tmp <- tempdir()
   libname(dat, tmp, "xpt")
@@ -132,7 +132,7 @@ test_that("libname() function works as expected with xpt", {
 })
 
 
-test_that("libname() parameter checks work as expected.", {
+test_that("lib10: libname() parameter checks work as expected.", {
 
   expect_error(libname(sam, engine = NULL))
   expect_error(libname(sam, engine = c("sas7bdat", "rds")))
@@ -145,7 +145,7 @@ test_that("libname() parameter checks work as expected.", {
 
 
 
-test_that("libname() function works as expected with new directory", {
+test_that("lib11: libname() function works as expected with new directory", {
 
   fp <- file.path(tempdir(), "fork")
 
@@ -159,7 +159,7 @@ test_that("libname() function works as expected with new directory", {
 })
 
 
-test_that("libname() function works as expected within a function.", {
+test_that("lib12: libname() function works as expected within a function.", {
 
   libname(dat, tempdir())
 
@@ -175,7 +175,7 @@ test_that("libname() function works as expected within a function.", {
 
 })
 
-test_that("libname() function works as expected within multiple functions.", {
+test_that("lib13: libname() function works as expected within multiple functions.", {
 
   libname(dat, base_path, "csv")
 
@@ -217,7 +217,7 @@ test_that("libname() function works as expected within multiple functions.", {
   expect_equal(res2, c("iris", "beaver1"))
 })
 
-test_that("libname() function works as expected with nested functions.", {
+test_that("lib14: libname() function works as expected with nested functions.", {
 
   libname(dat, base_path, "csv")
 
@@ -257,7 +257,7 @@ test_that("libname() function works as expected with nested functions.", {
   expect_equal(res[["func2"]], c("iris", "beaver1"))
 })
 
-test_that("libname() function works as expected with filter", {
+test_that("lib15: libname() function works as expected with filter", {
 
   libname(dat, file.path( base_path, "SDTM"),
           engine = "sas7bdat", filter = c("ae", "dm", "lb", "vs"))
@@ -281,7 +281,7 @@ test_that("libname() function works as expected with filter", {
   expect_equal(all(d %in% c("da", "dm", "ds", "ds_ihor", "ex", "qs")), TRUE)
 })
 
-test_that("libname()  works as expected with basic operations.", {
+test_that("lib16: libname()  works as expected with basic operations.", {
 
 
   libname(spork, file.path( base_path, "SDTM"),
@@ -305,7 +305,7 @@ test_that("libname()  works as expected with basic operations.", {
 })
 
 
-test_that("libname() standard_eval parameter works as expected with basic operations.", {
+test_that("lib17: libname() standard_eval parameter works as expected with basic operations.", {
 
   myvar <- "fork"
 
@@ -330,7 +330,7 @@ test_that("libname() standard_eval parameter works as expected with basic operat
 })
 
 
-test_that("libname() standard_eval parameter works as expected with all operations.", {
+test_that("lib18: libname() standard_eval parameter works as expected with all operations.", {
 
   myvar1 <- "bork1"
   myvar2 <- "bork2"
@@ -407,7 +407,7 @@ test_that("libname() standard_eval parameter works as expected with all operatio
 })
 
 
-test_that("library parameter checks work as expected.", {
+test_that("lib19: library parameter checks work as expected.", {
   fork <- "bork"
   f <- "fork"
 
@@ -427,7 +427,7 @@ test_that("library parameter checks work as expected.", {
 
 })
 
-test_that("lib_export() function works as expected.", {
+test_that("lib20: lib_export() function works as expected.", {
   
   libname(dat, base_path, engine = "csv")
   
@@ -443,7 +443,7 @@ test_that("lib_export() function works as expected.", {
   
 })
 
-test_that("lib_export() function works as expected with filter.", {
+test_that("lib21: lib_export() function works as expected with filter.", {
   
   libname(dat, base_path, engine = "csv")
   
@@ -459,7 +459,7 @@ test_that("lib_export() function works as expected with filter.", {
   
 })
 
-test_that("lib_export() function works as expected with standard_eval.", {
+test_that("lib22: lib_export() function works as expected with standard_eval.", {
   
   libname(dat, base_path, engine = "csv")
   
@@ -472,6 +472,76 @@ test_that("lib_export() function works as expected with standard_eval.", {
   # Clean up
   lib_delete(dat3)
   
+  
+})
+
+test_that("lib23: libname works with rda files", {
+  
+  libname(dat, base_path, engine = "rda")
+  
+  lib_load(dat)
+  
+  expect_equal(length(dat), 2)
+  
+  
+  res1 <- lib_info(dat)
+  
+  expect_equal(res1[[1, "Extension"]], "rda")
+  
+  pth2 <- paste0(base_path, "2")
+  
+  libname(dat2, pth2, engine = "rda")  
+  
+  lib_add(dat2, mtcars)
+  
+  
+  res2 <- lib_info(dat2)
+  
+  expect_equal(res2[[1, "Extension"]], "rda")
+  
+  
+  lib_copy(dat, dat3, lib_path(dat2))
+  
+  res3 <- lib_info(dat3)
+  
+  expect_equal(nrow(res3), 2)
+  
+  
+  
+  lib_remove(dat3, name = "demo_studya")
+  
+  res4 <- lib_info(dat3)
+  
+  
+  expect_equal(nrow(res4), 1)
+  
+  
+
+  lib_delete(dat2)  
+  lib_delete(dat3)
+  
+  
+
+  
+  
+  
+})
+
+
+test_that("lib24: lib_export() creates new library.", {
+  
+  libname(dat, base_path, "xpt")
+  
+  pth2 <- paste0(base_path, "2")
+  
+  lib_export(dat, dat2, pth2, "rda")
+  
+  res <- lib_info(dat2)
+  
+  expect_equal(nrow(res), 2)  
+  expect_equal(res[[1, 2]], "rda")
+  
+  lib_delete(dat2)
   
 })
 

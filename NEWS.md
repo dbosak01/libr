@@ -5,6 +5,8 @@
 as a vector.
 * Cleared rownames on datastep exit.
 * Updated logo.
+* Added "MaxChar" column to dictionary.
+* Added "rda" engine to libname.
 
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has

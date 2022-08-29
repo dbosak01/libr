@@ -6,7 +6,7 @@ base_path <- "./data"
 
 dev <- FALSE
 
-test_that("getDictionary() function works as expected.", {
+test_that("dict1: getDictionary() function works as expected.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
@@ -20,13 +20,13 @@ test_that("getDictionary() function works as expected.", {
   expect_equal(nrow(res), 13)
   expect_equal(as.character(res[1, "Label"]), "Car Name")
   expect_equal(as.character(res[1, "Description"]), "Derived from rownames")
-  expect_equal(res[13, "Width"], 4)
+  expect_equal(res[13, "MaxChar"], 4)
   
 })
 
 
 
-test_that("dictionary() function works as expected with df.", {
+test_that("dict2: dictionary() function works as expected with df.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
@@ -43,7 +43,7 @@ test_that("dictionary() function works as expected with df.", {
 
 
 
-test_that("dictionary() function works as expected with tibble.", {
+test_that("dict3: dictionary() function works as expected with tibble.", {
   
   library(tibble)
   
@@ -62,7 +62,7 @@ test_that("dictionary() function works as expected with tibble.", {
 })
 
 
-test_that("dictionary() function works as expected with lib.", {
+test_that("dict4: dictionary() function works as expected with lib.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   
@@ -88,7 +88,7 @@ test_that("dictionary() function works as expected with lib.", {
 
 
 
-test_that("dictionary() function works as expected with df and standard_eval.", {
+test_that("dict5: dictionary() function works as expected with df and standard_eval.", {
   
   
   options("libr.standard_eval" = TRUE)
@@ -109,7 +109,7 @@ test_that("dictionary() function works as expected with df and standard_eval.", 
 })
 
 
-test_that("dictionary() function works as expected with lib.", {
+test_that("dict6: dictionary() function works as expected with lib.", {
   
   options("libr.standard_eval" = TRUE)
   
@@ -139,7 +139,7 @@ test_that("dictionary() function works as expected with lib.", {
 })
 
 
-test_that("dictionary() parameter checks work as expected.", {
+test_that("dict7: dictionary() parameter checks work as expected.", {
   
   f <- "fork"
   
@@ -148,7 +148,7 @@ test_that("dictionary() parameter checks work as expected.", {
   
 })
 
-test_that("dictionary() widths work as expected when width attribute set.", {
+test_that("dict8: dictionary() widths work as expected when width attribute set.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork",
                     stringsAsFactors = FALSE)
@@ -166,7 +166,7 @@ test_that("dictionary() widths work as expected when width attribute set.", {
   
 })
 
-test_that("dictionary() widths work as expected when width attribute not set.", {
+test_that("dict9: dictionary() widths work as expected when width attribute not set.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, fork = "fork", 
                     stringsAsFactors = FALSE)
@@ -179,12 +179,14 @@ test_that("dictionary() widths work as expected when width attribute not set.", 
   
   res
   
-  expect_equal(res$Width[1], 19)  
-  expect_equal(res$Width[13], 4) 
+  expect_equal(is.na(res$Width[1]), TRUE)  
+  expect_equal(is.na(res$Width[13]), TRUE) 
+  expect_equal(res$MaxChar[1], 19)  
+  expect_equal(res$MaxChar[13], 4) 
   
 })
 
-test_that("dictionary() function works as expected with user-defined format.", {
+test_that("dict10: dictionary() function works as expected with user-defined format.", {
   
   if (dev) {
     
@@ -211,7 +213,7 @@ test_that("dictionary() function works as expected with user-defined format.", {
   
 })
 
-test_that("dictionary() function works with standard libname.", {
+test_that("dict11: dictionary() function works with standard libname.", {
   
   
   if (dev) {
@@ -221,7 +223,7 @@ test_that("dictionary() function works with standard libname.", {
     d <- dictionary(tst)
     
     
-
+    d
   
   } 
   
@@ -229,7 +231,7 @@ test_that("dictionary() function works with standard libname.", {
   
 })
 
-test_that("dictionary() function has no errors if data frame has no rows.", {
+test_that("dict12: dictionary() function has no errors if data frame has no rows.", {
   
   crs <- data.frame(name = rownames(mtcars), mtcars, stringsAsFactors = FALSE)
   

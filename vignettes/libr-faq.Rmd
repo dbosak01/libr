@@ -81,7 +81,7 @@ support?
 
 
 **A:** The package supports the following data formats: csv, sas7bdat, 
-rds, Rdata, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
+rds, Rdata, rda, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
 and a short discussion of some details on each format.
 
 [top](#top) 

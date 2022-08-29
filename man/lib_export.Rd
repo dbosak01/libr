@@ -18,7 +18,7 @@ to TRUE.}
 
 \item{engine}{The name of the engine to use for the exported data.
 The engine name corresponds to the standard file extension 
-of the data file type. Valid values are 'rds', 'Rdata', 'sas7bdat', 
+of the data file type. Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 
 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'.}
 
 \item{filter}{A filter string to limit which datasets are exported. 

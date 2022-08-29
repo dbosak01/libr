@@ -64,6 +64,9 @@ Width: The value of the width attribute if any have been
 Justify: The justification or alignment attribute value.
 Rows: The number of data rows.
 NAs: The number of NA values in this column.
+MaxChar: The maximum character length of the
+   values in this column.  The MaxChar may be different from the user-defined 
+   'width' setting.
 
 " />
 <meta property="og:image" content="https://libr.r-sassy.org/logo.png" />
@@ -192,6 +195,9 @@ information about the data.  The tibble will contain the following columns:</p><
 <li><p><strong>Justify:</strong> The justification or alignment attribute value.</p></li>
 <li><p><strong>Rows:</strong> The number of data rows.</p></li>
 <li><p><strong>NAs:</strong> The number of NA values in this column.</p></li>
+<li><p><strong>MaxChar:</strong> The maximum character length of the
+   values in this column.  The MaxChar may be different from the user-defined 
+   'width' setting.</p></li>
 </ul>
 
     </div>
@@ -228,17 +234,17 @@ see the <strong>fmtr</strong> package.</p></div>
 <span><span class='co'># Examine the dictionary for the library</span></span>
 <span><span class='fu'>dictionary</span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
 <span><span class='co'># A tibble: 9 x 10</span></span>
-<span><span class='co'>#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs</span></span>
-<span><span class='co'>#   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;lgl&gt;   &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class='co'># 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0</span></span>
-<span><span class='co'># 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0</span></span>
-<span><span class='co'># 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0</span></span>
-<span><span class='co'># 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0</span></span>
-<span><span class='co'># 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0</span></span>
-<span><span class='co'># 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0</span></span>
-<span><span class='co'># 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0</span></span>
-<span><span class='co'># 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0</span></span>
-<span><span class='co'># 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0</span></span>
+<span><span class='co'>#   Name    Column       Class   Label Description Format Width Justify  Rows   NAs MaxChar</span></span>
+<span><span class='co'>#   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;       &lt;lgl&gt;  &lt;lgl&gt; &lt;lgl&gt;   &lt;int&gt; &lt;int&gt;   &lt;int&gt;</span></span>
+<span><span class='co'># 1 beaver1 day          numeric NA    NA          NA     NA    NA        114     0       3</span></span>
+<span><span class='co'># 2 beaver1 time         numeric NA    NA          NA     NA    NA        114     0       4</span></span>
+<span><span class='co'># 3 beaver1 temp         numeric NA    NA          NA     NA    NA        114     0       5</span></span>
+<span><span class='co'># 4 beaver1 activ        numeric NA    NA          NA     NA    NA        114     0       1</span></span>
+<span><span class='co'># 5 iris    Sepal.Length numeric NA    NA          NA     NA    NA        150     0       3</span></span>
+<span><span class='co'># 6 iris    Sepal.Width  numeric NA    NA          NA     NA    NA        150     0       3</span></span>
+<span><span class='co'># 7 iris    Petal.Length numeric NA    NA          NA     NA    NA        150     0       3</span></span>
+<span><span class='co'># 8 iris    Petal.Width  numeric NA    NA          NA     NA    NA        150     0       3</span></span>
+<span><span class='co'># 9 iris    Species      factor  NA    NA          NA     NA    NA        150     0      10</span></span>
 <span></span>
 <span><span class='co'># Clean up</span></span>
 <span><span class='fu'><a href='lib_delete.html'>lib_delete</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span></pre>
