@@ -1229,11 +1229,11 @@ test_that("ds43: keep and drop checks work.", {
 test_that("ds44: Make sure cols not dropped.", {
 
   dat1 <- read.table(header = TRUE, text = '
-      NAME ID
-      SUE A01
-      TOM A02
-      KAY A05
-      JIM A10
+      NAME ID SEX
+      SUE A01   O
+      TOM A02   O
+      KAY A05   O
+      JIM A10   O
     ')
   
   dat2 <- read.table(header = TRUE, text = '
@@ -1252,10 +1252,123 @@ test_that("ds44: Make sure cols not dropped.", {
   res1 <- datastep(dat1, merge = dat2, merge_by = "ID", {})
   
   
+  res1
+  
   expect_equal(nrow(res1), 5)
-  expect_equal(ncol(res1), 4)
+  expect_equal(ncol(res1), 5)
 
 })
 
+test_that("ds45: fix_names works as expected.", {
+  
+  v1 <- c("A", "B", "C", "D")
+  v2 <- c("A", "E", "B", "F")
+  ky <- "A"
+  sfx <- c(".1", ".2")
+  
+  res <- fix_names(v1, v2, ky, sfx)
+  
+  res  
+  
+  expect_equal(res, c("A", "B.1", "C", "D", "E", "B.2", "F"))
+  
+})
 
+test_that("ds46: column append with no merge_by works equal rows.", {
+  
+  dat1 <- read.table(header = TRUE, text = '
+      NAME ID SEX
+      SUE A01   O
+      TOM A02   O
+      KAY A05   O
+      JIM A10   O
+    ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+      ID AGE SEX
+      A01 58 F
+      A02 20 M
+      A05 47 F
+      A10 11 M
+    ')
+  
+  dat1
+  dat2
+  
+  
+  res1 <- datastep(dat1, merge = dat2, {})
+  
+  
+  res1
+  
+  expect_equal(nrow(res1), 4)
+  expect_equal(ncol(res1), 6)
+  expect_equal(names(res1), c("NAME", "ID.1", "SEX.1", "ID.2", "AGE", "SEX.2"))
+  
+})
+
+test_that("ds47: column append with no merge_by works unequal rows.", {
+  
+  dat1 <- read.table(header = TRUE, text = '
+      NAME ID SEX
+      SUE A01   O
+      TOM A02   O
+      KAY A05   O
+      JIM A10   O
+    ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+      ID AGE SEX
+      A01 58 F
+      A02 20 M
+      A05 47 F
+    ')
+  
+  dat1
+  dat2
+  
+  
+  res1 <- datastep(dat1, merge = dat2, {})
+  
+  
+  res1
+  
+  expect_equal(nrow(res1), 4)
+  expect_equal(ncol(res1), 6)
+  expect_equal(names(res1), c("NAME", "ID.1", "SEX.1", "ID.2", "AGE", "SEX.2"))
+  
+})
+
+test_that("ds48: fill_missing() works as expected.", {
+  
+  dat2 <- read.table(header = TRUE, text = '
+      ID AGE SEX
+      A01 58 F
+      A02 20 M
+      A05 47 F
+    ')
+  
+  res1 <- fill_missing(dat2, 4)
+  
+  res1  
+  
+  expect_equal(nrow(res1), 4)
+  
+  res2 <- fill_missing(dat2, 10)
+  
+  res2  
+  
+  expect_equal(nrow(res2), 10)
+  
+  res3 <- fill_missing(dat2, 2)
+  
+  res3  
+  
+  expect_equal(nrow(res3), 3)
+  
+})
+
+# Test column append with no merge_by
+# Test merge with unequal number of rows
+# Add merge_fill parameter
 

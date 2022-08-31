@@ -1062,9 +1062,14 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     
     tmp <- dtalst[[i]]
     
-    nnms <- names(tmp)
-    fnms <- c(fnms, nnms[!nnms %in% fnms])
+    # Create suffixes (if needed)
+    sfx <- c("." %p% i, "." %p% (i + 1))
     
+    # Construct name list from original dfs
+    fnms <- fix_names(fnms, names(tmp), mrgby, sfx)
+
+    
+    # Add in variables
     if (!is.null(mrgin)) {
       if (!is.na(mrgin[i + 1])) {
        
@@ -1072,27 +1077,49 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
       }
     }
     
+    # Bail if merge column are not in source df
     if (!all(xnms %in% names(ret))) {
       stop("Merge column name '", xnms[!xnms %in% names(ret)],
            "' not found in left dataset.")
 
     }
     
-    if (is.null(ynms)) {
+    # If there is no merge_by, just append to the end
+    # Otherwise, perform the join.
+    if (is.null(mrgby)) {
       
-      ret <- merge(ret, tmp, by = xnms,
-                   all = TRUE,
-                   sort = FALSE) 
+      # Deal with mismatched number of rows
+      if (nrow(ret) > nrow(tmp))
+        ret <- cbind(ret, fill_missing(tmp, nrow(ret)))
+      else if (nrow(tmp) > nrow(ret))
+        ret <- cbind(fill_missing(ret, nrow(tmp)), tmp)
+      else 
+        ret <- cbind(ret, tmp)
+      
+      # Assign corrected names
+      names(ret) <- fnms
+      
     } else {
+    
       
-      if (!all(ynms %in% names(tmp))) {
-        stop("Merge column name '", ynms[!ynms %in% names(tmp)], 
-             "' not found in right dataset.")
+      if (is.null(ynms)) {
+        # When merge by column names are the same
+        ret <- merge(ret, tmp, by = xnms, suffix = sfx,
+                     all = TRUE,
+                     sort = FALSE) 
+      } else {
+        
+        if (!all(ynms %in% names(tmp))) {
+          stop("Merge column name '", ynms[!ynms %in% names(tmp)], 
+               "' not found in right dataset.")
+        }
+  
+        # When merge column names are different
+        ret <- merge(ret, tmp, by.x = xnms, by.y = ynms, suffix = sfx,
+                     all = TRUE,
+                     sort = FALSE) 
+        
       }
-
-      ret <- merge(ret, tmp, by.x = xnms, by.y = ynms, 
-                   all = TRUE,
-                   sort = FALSE) 
       
     }
     
@@ -1106,11 +1133,65 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     }
   }
   
-  fnlnms <- fnms[fnms %in% names(ret)]
   if (!is.null(mrgin))
-    ret <- ret[ , c(fnlnms, mrgin)]
+    ret <- ret[ , c(fnms, mrgin)]
   else
-    ret <- ret[ , fnlnms]
+    ret <- ret[ , fnms]
+  
+  
+  return(ret)
+  
+}
+
+
+fix_names <- function(nms1, nms2, keys, sfxs) {
+  
+  if (is.null(keys))
+    keys <- ""
+  
+  ret <- c()
+  for (i in seq_along(nms1)) {
+    if (nms1[i] %in% keys) 
+      ret[i] <- nms1[i]
+    else if (nms1[i] %in% nms2)
+      ret[i] <- paste0(nms1[i], sfxs[1])
+    else 
+      ret[i] <- nms1[i]
+  }
+  
+  for (i in seq_along(nms2)) {
+    
+    if (!nms2[i] %in% keys) {
+        
+      if (nms2[i] %in% nms1)
+        ret[length(ret) + 1] <- paste0(nms2[i], sfxs[2])
+      else 
+        ret[length(ret) + 1] <- nms2[i]
+    }
+  }
+  
+  return(ret)
+}
+
+
+fill_missing <- function(ds, num) {
+  
+  if (num > nrow(ds)) {
+    nas <- rep(NA, num - nrow(ds))
+    nw <- list()
+    
+    for (nm in names(ds)) {
+      
+      nw[[nm]] <- nas
+    }
+    
+    dfn <- as.data.frame(nw, stringsAsFactors = FALSE)
+    
+    ret <- rbind(ds, nw)
+  
+  } else {
+    ret <- ds 
+  }
   
   
   return(ret)
