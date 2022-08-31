@@ -1213,3 +1213,49 @@ test_that("ds42: datastep with set works.", {
   
 })
   
+
+test_that("ds43: keep and drop checks work.", {
+  
+  res1 <- datastep(mtcars, keep = c("mpg", "cyl", "fork"), {})
+  
+  expect_equal(ncol(res1), 2)
+  
+  res2 <- datastep(mtcars, drop = c("mpg", "cyl", "fork"), {})
+  
+  expect_equal(ncol(res2), 9)
+  
+})
+
+test_that("ds44: Make sure cols not dropped.", {
+
+  dat1 <- read.table(header = TRUE, text = '
+      NAME ID
+      SUE A01
+      TOM A02
+      KAY A05
+      JIM A10
+    ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+      ID AGE SEX
+      A01 58 F
+      A02 20 M
+      A05 47 F
+      A10 11 M
+      A11 23 F
+    ')
+  
+  dat1
+  dat2
+  
+  
+  res1 <- datastep(dat1, merge = dat2, merge_by = "ID", {})
+  
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 4)
+
+})
+
+
+

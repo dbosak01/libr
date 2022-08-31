@@ -677,11 +677,30 @@ datastep <- function(data, steps, keep = NULL,
   ret["..delete"] <- NULL
   
   # Perform drop operation
-  if (!is.null(drop))
+  if (!is.null(drop)) {
+    
+    if (!all(drop %in% names(ret))) {
+      
+      message("Drop parameter '" %p%  drop[!drop %in% names(ret)] %p% 
+                "' not found on output dataset.")
+      
+      drop <-  drop[drop %in% names(ret)] 
+    }
+    
     ret <- ret[ , !names(ret) %in% drop, drop = FALSE]
+    
+  }
   
   # Perform keep operation
   if (!is.null(keep)) {
+    if (!all(keep %in% names(ret))) {
+      
+      message("Keep parameter '" %p%  keep[!keep %in% names(ret)] %p% 
+              "' not found on output dataset.")
+      
+      keep <-  keep[keep %in% names(ret)] 
+    }
+    
     ret <- ret[ , keep, drop = FALSE]
   }
   
