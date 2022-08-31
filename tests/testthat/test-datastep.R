@@ -1170,6 +1170,30 @@ test_that("ds42: datastep with merge works.", {
   expect_equal(nrow(res3), 1)
   expect_equal(ncol(res3), 6)
   
+
+  
+  dat4 <- read.table(header = TRUE, text = '
+    NO AGE SEX
+    A01 58 F
+    A02 20 M
+    A05 47 F
+    A10 11 M
+    A11 23 F
+  ')
+  
+  dat1
+  dat4
+  
+  res4 <- datastep(dat1, merge = dat4, merge_by = c("ID" = "NO"), {})
+  
+  res4
+  
+  expect_equal(nrow(res4), 5)
+  expect_equal(ncol(res4), 4)
+  
+  
+  expect_error( datastep(dat1, merge = dat4, merge_by = c("IDS" = "NO"), {}))
+  expect_error( datastep(dat1, merge = dat4, merge_by = c("ID" = "NUM"), {}))
   
 })
 

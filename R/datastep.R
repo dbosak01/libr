@@ -1019,9 +1019,17 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
   
   xnms <- names(mrgby)
   ynms <- mrgby 
+  names(ynms) <- NULL
   if (is.null(xnms)) {
     xnms <- ynms
     ynms <- NULL 
+  } else {
+    
+    if (length(ynms) != length(xnms)) {
+      xnms <- ynms
+      ynms <- NULL
+      
+    }
   }
   
   if (!is.null(mrgin)) {
@@ -1045,11 +1053,24 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
       }
     }
     
+    if (!all(xnms %in% names(ret))) {
+      stop("Merge column name '", xnms[!xnms %in% names(ret)],
+           "' not found in left dataset.")
+
+    }
+    
     if (is.null(ynms)) {
+      
       ret <- merge(ret, tmp, by.x = xnms,
                    all = TRUE,
                    sort = FALSE) 
     } else {
+      
+      if (!all(ynms %in% names(tmp))) {
+        stop("Merge column name '", ynms[!ynms %in% names(tmp)], 
+             "' not found in right dataset.")
+      }
+
       ret <- merge(ret, tmp, by.x = xnms, by.y = ynms, 
                    all = TRUE,
                    sort = FALSE) 
@@ -1066,10 +1087,11 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     }
   }
   
+  fnlnms <- fnms[fnms %in% names(ret)]
   if (!is.null(mrgin))
-    ret <- ret[ , c(fnms, mrgin)]
+    ret <- ret[ , c(fnlnms, mrgin)]
   else
-    ret <- ret[ , fnms]
+    ret <- ret[ , fnlnms]
   
   
   return(ret)
