@@ -1061,7 +1061,7 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     
     if (is.null(ynms)) {
       
-      ret <- merge(ret, tmp, by.x = xnms,
+      ret <- merge(ret, tmp, by = xnms,
                    all = TRUE,
                    sort = FALSE) 
     } else {
