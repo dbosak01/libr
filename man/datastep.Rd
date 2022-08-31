@@ -18,15 +18,19 @@ datastep(
   sort_check = TRUE,
   format = NULL,
   label = NULL,
-  where = NULL
+  where = NULL,
+  set = NULL,
+  merge = NULL,
+  merge_by = NULL,
+  merge_in = NULL
 )
 }
 \arguments{
 \item{data}{The data to step through.}
 
 \item{steps}{The operations to perform on the data.  This parameter is 
-typically specified as a set of R statements contained within 
-curly braces.}
+specified as a set of R statements contained within 
+curly braces. If no steps are desired, pass empty curly braces.}
 
 \item{keep}{A vector of quoted variable names to keep in the output
 data set. By default, all variables are kept.}
@@ -97,6 +101,30 @@ frame.  Formats will be assigned both before and after the datastep.}
 \item{where}{An expression to filter the output dataset.  The where
 clause will be applied prior to any drop, keep, or rename statement.
 Use the \code{expression} function to assign the where clause.}
+
+\item{set}{A dataset or list of datasets to append to the input 
+data frame.  The set operation will occur at the beginning of the datastep,
+prior to the execution of any steps.}
+
+\item{merge}{A dataset or list of datasets to merge with the input
+data.  The merge operation will occur at the beginning of the datastep,
+prior to the execution of any steps.  When the \code{merge} operation is 
+requested, the \code{by} parameter will be used to indicate which variable(s)
+to merge by.}
+
+\item{merge_by}{If the \code{merge} parameter is set, the \code{merge_by} 
+parameter will be used to identify the variable(s) to merge by. If merge 
+variables are the same on both datasets, the names may be passed as a simple 
+quoted vector. If the variable names are different, pass the variables 
+to merge on as a named vector.  For example, \code{c(ITEMID = ITEMCODE)}
+would specify that the join should occur on the "ITEMID" from the 
+dataset specified in the \code{data} parameter, and the "ITEMCODE"
+variable from the dataset specified on the \code{merge} parameter.}
+
+\item{merge_in}{A vector of column names to be used to hold the merge flags.
+The column names should correspond to the datasets being merged. The
+merge flags will contains 0 or 1 values to indicate whether the record
+came from the corresponding table.}
 }
 \value{
 The processed data frame, tibble, or data table.

@@ -15,7 +15,9 @@ For multiple values, use `v()` function.
 * Added `output()` function to datastep.
 * Improved datastep output column ordering. New variables were coming out
 in the opposite order they were added.  Now they are better.
-* Added documentation.
+* Added "set" paramter to datastep.
+* Added "merge", "merge_by", and "merge_in" parameter to `datastep()`.
+* Added/fixed documentation.
 
 # libr 1.2.5
 * BREAKING CHANGE: Removed the `%eq%` operator from this package, as it has

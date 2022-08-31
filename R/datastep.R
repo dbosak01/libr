@@ -149,8 +149,8 @@ e$output <- list()
 #' \code{datastep} can become unacceptable with a large number of rows.
 #' @param data The data to step through.
 #' @param steps The operations to perform on the data.  This parameter is 
-#' typically specified as a set of R statements contained within 
-#' curly braces.
+#' specified as a set of R statements contained within 
+#' curly braces. If no steps are desired, pass empty curly braces.
 #' @param keep A vector of quoted variable names to keep in the output
 #' data set. By default, all variables are kept.
 #' @param drop A vector of quoted variable names to drop from the output
@@ -209,6 +209,26 @@ e$output <- list()
 #' @param where An expression to filter the output dataset.  The where
 #' clause will be applied prior to any drop, keep, or rename statement.
 #' Use the \code{expression} function to assign the where clause.
+#' @param set A dataset or list of datasets to append to the input 
+#' data frame.  The set operation will occur at the beginning of the datastep,
+#' prior to the execution of any steps.
+#' @param merge A dataset or list of datasets to merge with the input
+#' data.  The merge operation will occur at the beginning of the datastep,
+#' prior to the execution of any steps.  When the \code{merge} operation is 
+#' requested, the \code{by} parameter will be used to indicate which variable(s)
+#' to merge by.  
+#' @param merge_by If the \code{merge} parameter is set, the \code{merge_by} 
+#' parameter will be used to identify the variable(s) to merge by. If merge 
+#' variables are the same on both datasets, the names may be passed as a simple 
+#' quoted vector. If the variable names are different, pass the variables 
+#' to merge on as a named vector.  For example, \code{c(ITEMID = ITEMCODE)}
+#' would specify that the join should occur on the "ITEMID" from the 
+#' dataset specified in the \code{data} parameter, and the "ITEMCODE"
+#' variable from the dataset specified on the \code{merge} parameter.
+#' @param merge_in A vector of column names to be used to hold the merge flags.  
+#' The column names should correspond to the datasets being merged. The
+#' merge flags will contains 0 or 1 values to indicate whether the record
+#' came from the corresponding table.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @seealso \code{\link{libname}} function to create a data library, and
@@ -412,7 +432,11 @@ datastep <- function(data, steps, keep = NULL,
                      sort_check = TRUE,
                      format = NULL,
                      label = NULL,
-                     where = NULL) {
+                     where = NULL, 
+                     set = NULL,
+                     merge = NULL,
+                     merge_by = NULL,
+                     merge_in = NULL) {
   
   if (!"data.frame" %in% class(data))
     stop("input data must be inherited from data.frame")
@@ -462,6 +486,16 @@ datastep <- function(data, steps, keep = NULL,
   # Give warning if there are no rows and no output()
   if (hout == FALSE & nrow(data) == 0) {
     warning("Input dataset has no rows.") 
+  }
+  
+  # Deal with set parameter
+  if (!is.null(set)) {
+    data <- perform_set(data, set)
+  }
+  
+  # Deal with merge parameter
+  if (!is.null(merge)) {
+    data <- perform_merge(data, merge, merge_by, merge_in) 
   }
   
   # Clear output list
@@ -929,4 +963,115 @@ has_output <- function(codestr) {
   
   return(ret)
 
+}
+
+
+perform_set <- function(dta, stdta) {
+  
+  # Put in list
+  if ("data.frame" %in% class(stdta))
+    dtalst <- list(stdta)
+  else
+    dtalst <- stdta
+  
+  # Collect Names
+  fnms <- names(dta)
+  
+  # Assign counter to ensure stacking
+  dta[["..ds"]] <- 0
+  
+  ret <- dta
+  
+  # Stack datasets
+  for (i in seq_len(length(dtalst))){
+    
+    tmp <- dtalst[[i]]
+    nnms <- names(tmp)
+    fnms <- c(fnms, nnms[!nnms %in% fnms])
+    tmp[["..ds"]] <- i
+    ret <- merge(ret, tmp, all = TRUE, sort = FALSE) 
+    
+  }
+  
+  # Clean up counter
+  ret[["..ds"]] <- NULL
+  
+  # Rename so first dataset drives naming
+  ret <- ret[ , fnms]
+  
+  return(ret)
+  
+}
+
+
+perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
+  
+  # Put in list
+  if ("data.frame" %in% class(mrgdta))
+    dtalst <- list(mrgdta)
+  else
+    dtalst <- mrgdta
+  
+  ret <- dta
+  
+  # Capture names for sorting
+  fnms <- names(dta)
+  
+  xnms <- names(mrgby)
+  ynms <- mrgby 
+  if (is.null(xnms)) {
+    xnms <- ynms
+    ynms <- NULL 
+  }
+  
+  if (!is.null(mrgin)) {
+    
+    ret[[mrgin[1]]] <- 1
+
+  }
+  
+  # Merge datasets
+  for (i in seq_len(length(dtalst))){
+    
+    tmp <- dtalst[[i]]
+    
+    nnms <- names(tmp)
+    fnms <- c(fnms, nnms[!nnms %in% fnms])
+    
+    if (!is.null(mrgin)) {
+      if (!is.na(mrgin[i + 1])) {
+       
+        tmp[[mrgin[i + 1]]] <- 1 
+      }
+    }
+    
+    if (is.null(ynms)) {
+      ret <- merge(ret, tmp, by.x = xnms,
+                   all = TRUE,
+                   sort = FALSE) 
+    } else {
+      ret <- merge(ret, tmp, by.x = xnms, by.y = ynms, 
+                   all = TRUE,
+                   sort = FALSE) 
+      
+    }
+    
+  }
+  
+  # Fill zero for non-matches
+  if (!is.null(mrgin)) {
+    for (nm in mrgin) { 
+    
+      ret[[nm]] <- ifelse(is.na(ret[[nm]]), 0, ret[[nm]]) 
+    }
+  }
+  
+  if (!is.null(mrgin))
+    ret <- ret[ , c(fnms, mrgin)]
+  else
+    ret <- ret[ , fnms]
+  
+  
+  return(ret)
+  
 }

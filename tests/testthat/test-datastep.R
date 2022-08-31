@@ -973,29 +973,219 @@ test_that("ds39: no row warning works.", {
   
 })
 
+# Works interactively but not during test_that run
+# Not sure what is going on.  Datastep can't find dslst.
 # test_that("ds40: output works in loop", {
-#   
-#   
+# 
+# 
 #   dslst <- list("mtcars" = mtcars, "beaver1" = beaver1, "iris" = iris)
-#   
-#   # Create metadata 
+# 
+#   # Create metadata
 #   res3 <- datastep(data.frame(), {
-#     
-#     
+# 
+# 
 #     for (name in names(dslst)) {
 #       rows <- nrow(dslst[[name]])
-#       cols <- ncol(dslst[[name]])             
+#       cols <- ncol(dslst[[name]])
 #       output()
 #     }
-#     
-#     
+# 
+# 
 #   })
-#   
-#   
+# 
+# 
 #   res3
-#   
+# 
 #   expect_equal(nrow(res3), 3)
 #   expect_equal(ncol(res3), 3)
-#   
+# 
 # })
 
+test_that("ds41: perform_set function works.", {
+  
+  dat1 <- mtcars[1:10, 1:10]
+  dat2 <- mtcars[11:20, 2:11]
+  
+  res1 <- perform_set(dat1, dat2)
+  
+  
+  res1
+  
+  expect_equal(nrow(res1), 20)
+  expect_equal(ncol(res1), 11)
+
+  dat1$char <- "top"
+  dat2$char <- "middle"
+  dat3 <- dat2
+  dat3$char <- "bottom"
+  
+  res2 <- perform_set(dat1, list(dat2, dat3))
+  
+  
+  res2
+  
+  expect_equal(nrow(res2), 30)
+  expect_equal(ncol(res2), 12)
+  
+  dat1$char <- as.factor(dat1$char)
+  dat2$char <- as.factor(dat2$char)
+  dat3$char <- as.factor(dat3$char)
+  
+  res3 <- perform_set(dat1, list(dat2, dat3))
+  
+  
+  res3
+  
+  expect_equal(nrow(res3), 30)
+  expect_equal(ncol(res3), 12)
+  expect_equal(levels(res3$char), c("top", "middle", "bottom"))
+
+  
+})
+
+
+test_that("ds41: perform_merge function works.", {
+  
+  dat1 <- read.table(header = TRUE, text = '
+    ID NAME
+    A01 SUE
+    A02 TOM
+    A05 KAY
+    A10 JIM
+  ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+    ID AGE SEX
+    A01 58 F
+    A02 20 M
+    A05 47 F
+    A10 11 M
+    A11 23 F
+  ')
+  
+  dat1
+  dat2
+  
+  res1 <- perform_merge(dat1, dat2, "ID", NULL)
+  
+  res1
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 4)
+  
+  
+  res2 <- perform_merge(dat1, dat2, "ID", c("INA", "INB"))
+  
+  res2
+  
+  expect_equal(nrow(res2), 5)
+  expect_equal(ncol(res2), 6)
+  
+  dat3 <- read.table(header = TRUE, text = '
+    ID STATUS
+    A02 ACTIVE
+  ')
+  
+  res3 <- perform_merge(dat1, list(dat2, dat3), "ID", c("INA", "INB", "INC"))
+  
+  res3
+  
+  expect_equal(nrow(res3), 5)
+  expect_equal(ncol(res3), 8)
+  
+  dat4 <- read.table(header = TRUE, text = '
+    ID WEIGHT
+    A05 23
+  ')
+  
+  res4 <- perform_merge(dat1, list(dat2, dat3, dat4), 
+                        c("ID"), 
+                        c("INA", "INB", "INC", "IND"))
+  
+  res4
+  
+  expect_equal(nrow(res4), 5)
+  expect_equal(ncol(res4), 10)
+  
+  res5 <- perform_merge(dat1, list(dat2, dat3, dat4), 
+                        c("ID"), 
+                        c("INA", "INB", "INC"))
+  
+  res5
+  
+  expect_equal(nrow(res5), 5)
+  expect_equal(ncol(res5), 9)
+  
+  
+
+})
+
+test_that("ds42: datastep with merge works.", {
+  
+  dat1 <- read.table(header = TRUE, text = '
+    ID NAME
+    A01 SUE
+    A02 TOM
+    A05 KAY
+    A10 JIM
+  ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+    ID AGE SEX
+    A01 58 F
+    A02 20 M
+    A05 47 F
+    A10 11 M
+    A11 23 F
+  ')
+  
+  dat1
+  dat2
+  
+  res1 <- datastep(dat1, merge = dat2, merge_by = "ID", {})
+  
+  res1
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 4)
+  
+  
+  res2 <- datastep(dat1, merge = dat2, merge_by = "ID", 
+                   merge_in = c("INA", "INB"),
+                   where = expression(INA == 1), {})
+  
+  res2
+  
+  expect_equal(nrow(res2), 4)
+  expect_equal(ncol(res2), 6)
+  
+  
+  
+  res3 <- datastep(dat1, merge = dat2, merge_by = "ID", 
+                   merge_in = c("INA", "INB"),
+                   where = expression(INA == 0 & INB == 1), {})
+  
+  res3
+  
+  expect_equal(nrow(res3), 1)
+  expect_equal(ncol(res3), 6)
+  
+  
+})
+
+test_that("ds42: datastep with set works.", {
+  
+  dat1 <- mtcars[1:10, 1:10]
+  dat2 <- mtcars[11:20, 2:11]
+  
+  res1 <- datastep(dat1, set = dat2, {})
+  
+  
+  res1
+  
+  expect_equal(nrow(res1), 20)
+  expect_equal(ncol(res1), 11)
+  
+  
+})
+  

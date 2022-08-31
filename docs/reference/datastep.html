@@ -186,7 +186,11 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
 <span>  sort_check <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
 <span>  format <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span>  label <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span>  where <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span>  where <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  set <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  merge <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  merge_by <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  merge_in <span class='op'>=</span> <span class='cn'>NULL</span></span>
 <span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -199,8 +203,8 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
     <tr>
       <th>steps</th>
       <td><p>The operations to perform on the data.  This parameter is 
-typically specified as a set of R statements contained within 
-curly braces.</p></td>
+specified as a set of R statements contained within 
+curly braces. If no steps are desired, pass empty curly braces.</p></td>
     </tr>
     <tr>
       <th>keep</th>
@@ -295,6 +299,38 @@ frame.  Formats will be assigned both before and after the datastep.</p></td>
       <td><p>An expression to filter the output dataset.  The where
 clause will be applied prior to any drop, keep, or rename statement.
 Use the <code>expression</code> function to assign the where clause.</p></td>
+    </tr>
+    <tr>
+      <th>set</th>
+      <td><p>A dataset or list of datasets to append to the input 
+data frame.  The set operation will occur at the beginning of the datastep,
+prior to the execution of any steps.</p></td>
+    </tr>
+    <tr>
+      <th>merge</th>
+      <td><p>A dataset or list of datasets to merge with the input
+data.  The merge operation will occur at the beginning of the datastep,
+prior to the execution of any steps.  When the <code>merge</code> operation is 
+requested, the <code>by</code> parameter will be used to indicate which variable(s)
+to merge by.</p></td>
+    </tr>
+    <tr>
+      <th>merge_by</th>
+      <td><p>If the <code>merge</code> parameter is set, the <code>merge_by</code> 
+parameter will be used to identify the variable(s) to merge by. If merge 
+variables are the same on both datasets, the names may be passed as a simple 
+quoted vector. If the variable names are different, pass the variables 
+to merge on as a named vector.  For example, <code>c(ITEMID = ITEMCODE)</code>
+would specify that the join should occur on the "ITEMID" from the 
+dataset specified in the <code>data</code> parameter, and the "ITEMCODE"
+variable from the dataset specified on the <code>merge</code> parameter.</p></td>
+    </tr>
+    <tr>
+      <th>merge_in</th>
+      <td><p>A vector of column names to be used to hold the merge flags.
+The column names should correspond to the datasets being merged. The
+merge flags will contains 0 or 1 values to indicate whether the record
+came from the corresponding table.</p></td>
     </tr>
     </table>
 
