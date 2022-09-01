@@ -1044,7 +1044,7 @@ test_that("ds41: perform_set function works.", {
 })
 
 
-test_that("ds41: perform_merge function works.", {
+test_that("ds42: perform_merge function works.", {
   
   dat1 <- read.table(header = TRUE, text = '
     ID NAME
@@ -1120,7 +1120,7 @@ test_that("ds41: perform_merge function works.", {
 
 })
 
-test_that("ds42: datastep with merge works.", {
+test_that("ds43: datastep with merge works.", {
   
   dat1 <- read.table(header = TRUE, text = '
     ID NAME
@@ -1197,7 +1197,7 @@ test_that("ds42: datastep with merge works.", {
   
 })
 
-test_that("ds42: datastep with set works.", {
+test_that("ds44: datastep with set works.", {
   
   dat1 <- mtcars[1:10, 1:10]
   dat2 <- mtcars[11:20, 2:11]
@@ -1214,7 +1214,7 @@ test_that("ds42: datastep with set works.", {
 })
   
 
-test_that("ds43: keep and drop checks work.", {
+test_that("ds45: keep and drop checks work.", {
   
   res1 <- datastep(mtcars, keep = c("mpg", "cyl", "fork"), {})
   
@@ -1259,7 +1259,7 @@ test_that("ds44: Make sure cols not dropped.", {
 
 })
 
-test_that("ds45: fix_names works as expected.", {
+test_that("ds46: fix_names works as expected.", {
   
   v1 <- c("A", "B", "C", "D")
   v2 <- c("A", "E", "B", "F")
@@ -1274,7 +1274,7 @@ test_that("ds45: fix_names works as expected.", {
   
 })
 
-test_that("ds46: column append with no merge_by works equal rows.", {
+test_that("ds47: column append with no merge_by works equal rows.", {
   
   dat1 <- read.table(header = TRUE, text = '
       NAME ID SEX
@@ -1307,7 +1307,7 @@ test_that("ds46: column append with no merge_by works equal rows.", {
   
 })
 
-test_that("ds47: column append with no merge_by works unequal rows.", {
+test_that("ds48: column append with no merge_by works unequal rows.", {
   
   dat1 <- read.table(header = TRUE, text = '
       NAME ID SEX
@@ -1339,7 +1339,7 @@ test_that("ds47: column append with no merge_by works unequal rows.", {
   
 })
 
-test_that("ds48: fill_missing() works as expected.", {
+test_that("ds49: fill_missing() works as expected.", {
   
   dat2 <- read.table(header = TRUE, text = '
       ID AGE SEX
@@ -1368,7 +1368,122 @@ test_that("ds48: fill_missing() works as expected.", {
   
 })
 
-# Test column append with no merge_by
-# Test merge with unequal number of rows
-# Add merge_fill parameter
+
+test_that("ds50: copy_df_attributes works as expected.", {
+  
+  library(tibble)
+  
+  dat1 <- as_tibble(mtcars[1:10, c("mpg", "cyl", "disp")])
+  labels(dat1) <- list(mpg = "Miles per gallon",
+                       cyl = "Cylinders",
+                       disp = "Displacement")
+  
+  dat2 <- mtcars[11:25, c("mpg", "cyl", "disp")]
+  
+  res1 <- copy_df_attributes(dat1, dat2)
+  
+  res1
+  
+  expect_equal(rownames(res1)[1], "Merc 280C")
+  expect_equal("tbl_df" %in% class(res1), TRUE)
+  
+})
+
+test_that("ds51: Set keeps dataset attributes.", {
+  
+  library(tibble)
+  
+  dat1 <- as_tibble(mtcars[1:10, c("mpg", "cyl", "disp")])
+  labels(dat1) <- list(mpg = "Miles per gallon",
+                       cyl = "Cylinders",
+                       disp = "Displacement")
+  
+  dat2 <- as_tibble(mtcars[11:20, c("mpg", "cyl", "disp")])
+
+  
+  res1 <- datastep(dat1, set = dat2, {})
+  
+  res1
+  
+  expect_equal("tbl_df" %in% class(res1), TRUE)
+  expect_equal(rownames(res1)[1], "1")
+  
+  lbls <- labels(res1)
+
+  expect_equal(lbls[[1]], "Miles per gallon")
+  expect_equal(lbls[[2]], "Cylinders")
+  expect_equal(lbls[[3]], "Displacement")
+  
+})
+
+test_that("ds52: Merge append keeps dataset attributes.", {
+  
+  library(tibble)
+  
+  dat1 <- as_tibble(mtcars[1:10, c("mpg", "cyl", "disp")])
+  labels(dat1) <- list(mpg = "Miles per gallon",
+                       cyl = "Cylinders",
+                       disp = "Displacement")
+  
+  dat2 <- as_tibble(mtcars[11:20, c("hp", "drat", "wt")])
+  labels(dat2) <- list(hp = "Horsepower",
+                       wt = "Weight")
+  
+  res1 <- datastep(dat1, merge = dat2, {})
+  
+  res1
+  
+  expect_equal("tbl_df" %in% class(res1), TRUE)
+  expect_equal(rownames(res1)[1], "1")
+  
+  lbls <- labels(res1)
+  
+  lbls
+  
+  expect_equal(lbls[[1]], "Miles per gallon")
+  expect_equal(lbls[[2]], "Cylinders")
+  expect_equal(lbls[[3]], "Displacement")
+  
+})
+
+
+test_that("ds53: Merge by keeps dataset attributes.", {
+  
+  library(tibble)
+  
+  dat1 <- as_tibble(mtcars[1:10, c("mpg", "cyl", "disp")])
+  labels(dat1) <- list(mpg = "Miles per gallon",
+                       cyl = "Cylinders",
+                       disp = "Displacement")
+  
+  dat2 <- tibble(cyl = c(4, 6, 8), 
+                 lbl = c("4 Cylinders", 
+                         "6 Cylinders",
+                         "8 Cylinders"),
+                 disp = rep(1, 2, 3))
+  
+  labels(dat2) <- list(cyl = "Cylinders",
+                       lbl = "Label",
+                       disp = "Displacement 2")
+  
+  res1 <- datastep(dat1, merge = dat2, merge_by = cyl,{})
+  
+  res1
+  
+  expect_equal("tbl_df" %in% class(res1), TRUE)
+  expect_equal(rownames(res1)[1], "1")
+  
+  lbls <- labels(res1)
+  
+  lbls
+  
+  expect_equal(lbls[[1]], "Miles per gallon")
+  expect_equal(lbls[[2]], "Cylinders")
+  expect_equal(lbls[[3]], "Displacement")
+  expect_equal(lbls[[4]], "Label")
+  expect_equal(lbls[[5]], "Displacement 2")
+  
+})
+
+
 

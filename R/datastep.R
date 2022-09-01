@@ -473,6 +473,10 @@ datastep <- function(data, steps, keep = NULL,
   keep <- tryCatch({if (typeof(keep) %in% c("character", "NULL")) keep else okeep},
                  error = function(cond) {okeep})
   
+  omby <- deparse(substitute(merge_by, env = environment()))
+  merge_by <- tryCatch({if (typeof(merge_by) %in% c("character", "NULL")) merge_by else omby},
+                   error = function(cond) {omby})
+  
   
   # Capture number of starting columns
   startcols <- ncol(data)
@@ -487,6 +491,9 @@ datastep <- function(data, steps, keep = NULL,
   if (hout == FALSE & nrow(data) == 0) {
     warning("Input dataset has no rows.") 
   }
+  
+  # Save off incoming dataset class
+  dataclass <- class(data)
   
   # Deal with set parameter
   if (!is.null(set)) {
@@ -925,8 +932,59 @@ output <- function() {
 # Utilities ---------------------------------------------------------------
 
 
+assign_attribute_list <- function(df, lst) {
+  
+  ret <- df
+  
+  anms <- names(lst)
+  
+  for (nm in names(ret)) {
+     
+    if (nm %in% anms) {
+      
+      attributes(ret[[nm]]) <- lst[[nm]] 
+    }
+  }
+   
+  return(ret)
+}
+
+# Collects column attributes into a list,
+# preserving any attributes already in the list.
+collect_attributes <- function(alst, df, idcols, sfx) {
+ 
+  if (is.null(alst))
+    ret <- list()
+  else 
+    ret <- alst
+  
+  anms <- names(ret)
+  
+  for (nm in names(df)) {
+    
+    if (!nm %in% anms) {
+      
+     ret[[nm]] <- attributes(df[[nm]]) 
+    } else if (!nm %in% idcols) {
+      
+      # If name already exists, add suffixes
+      nnm <- paste0(nm, sfx[1])
+      tnm <- paste0(nm, sfx[2])
+      ret[[nnm]] <- ret[[nm]]
+      ret[[tnm]] <- attributes(df[[nm]]) 
+      ret[[nm]] <- NULL
+    }
+    
+  }
+  
+  return(ret)
+  
+}
 
 
+# Copy column attributes from one df to another.
+# Used during datastep operations to restore attributes
+# lost when using Base R functions. 
 #' @noRd
 copy_attributes <- function(df1, df2) {
   
@@ -950,7 +1008,52 @@ copy_attributes <- function(df1, df2) {
   return(ret)
 }
 
+copy_attributes_sp <- function(df1, df2) {
+  
+  ret <- df2
+  
+  for (nm in names(df2)) {
+    
+    col <- df1[[nm]]
+    if (!is.null(col)) {
+      for (at in names(attributes(col))) {
+        
+        if (!at %in% c("levels")) { 
+  
+          attr(ret[[nm]], at) <- attr(col, at)
+        }
+  
+      }
+    }
+    
+  }
+  
+  return(ret)
+}
 
+
+# Copies attributes on data frame from one df to another
+# Skips rownames and names, which can cause trouble.
+copy_df_attributes <- function(src, trgt) {
+  
+  atts <- attributes(src)
+  
+  ret <- trgt
+  
+  for (anm in names(atts)) {
+    
+    if (!anm %in% c("names", "row.names")) { 
+      attr(ret, anm) <- atts[[anm]] 
+    }
+  }
+  
+  return(ret)
+}
+
+# General function to assign column attributes to 
+# a data frame.  Can assign basically any attributes
+# like labels or formats or whatever.  Used to apply
+# attributes assigned on the function call.
 assign_attributes <- function(df, alst, attr) {
   
   nmsdf <- names(df)
@@ -970,6 +1073,8 @@ assign_attributes <- function(df, alst, attr) {
   
 }
 
+# Test to see whether the code has an output statement.
+# Will change how the datastep is conducted.
 has_output <- function(codestr) {
  
   
@@ -984,7 +1089,8 @@ has_output <- function(codestr) {
 
 }
 
-
+# Perform the set operation.  Works on main
+# dataset plus one or more datasets.
 perform_set <- function(dta, stdta) {
   
   # Put in list
@@ -1014,15 +1120,19 @@ perform_set <- function(dta, stdta) {
   
   # Clean up counter
   ret[["..ds"]] <- NULL
+  dta[["..ds"]] <- NULL
   
   # Rename so first dataset drives naming
   ret <- ret[ , fnms]
+  
+  ret <- copy_attributes_sp(dta, ret)
+  ret <- copy_df_attributes(dta, ret)
   
   return(ret)
   
 }
 
-
+# Perform merge operation.  Works on one or more datasets.
 perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
   
   # Put in list
@@ -1057,6 +1167,9 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
 
   }
   
+  # Initialize attribute list with left df
+  alst <- collect_attributes(NULL, ret, mrgby, c())
+  
   # Merge datasets
   for (i in seq_len(length(dtalst))){
     
@@ -1067,7 +1180,9 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     
     # Construct name list from original dfs
     fnms <- fix_names(fnms, names(tmp), mrgby, sfx)
-
+    
+    # Collect attributes from right df
+    alst <- collect_attributes(alst, tmp, mrgby, sfx)
     
     # Add in variables
     if (!is.null(mrgin)) {
@@ -1077,7 +1192,7 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
       }
     }
     
-    # Bail if merge column are not in source df
+    # Bail if merge columns are not in source df
     if (!all(xnms %in% names(ret))) {
       stop("Merge column name '", xnms[!xnms %in% names(ret)],
            "' not found in left dataset.")
@@ -1138,12 +1253,16 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
   else
     ret <- ret[ , fnms]
   
+  ret <- assign_attribute_list(ret, alst)
+  ret <- copy_df_attributes(dta, ret)
   
   return(ret)
   
 }
 
-
+# A function to perform naming for merged datasets.
+# This will keep the preferred column order and append
+# indexes for repeated column names.
 fix_names <- function(nms1, nms2, keys, sfxs) {
   
   if (is.null(keys))
@@ -1173,7 +1292,10 @@ fix_names <- function(nms1, nms2, keys, sfxs) {
   return(ret)
 }
 
-
+# Fill in missing rows on a dataset. Takes
+# a dataset and a number of rows for the desired row count.
+# This is used when cbinding to make sure the datasets
+# are the same number of rows.
 fill_missing <- function(ds, num) {
   
   if (num > nrow(ds)) {
