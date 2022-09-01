@@ -5,6 +5,8 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 base_path <- "./data"
 
 
+options("logr.output" = FALSE)
+
 test_that("ds1: datastep() function works as expected with mtcars.", {
 
 

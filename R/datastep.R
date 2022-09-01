@@ -776,6 +776,11 @@ datastep <- function(data, steps, keep = NULL,
     log_logr(paste0("datastep: columns started with ", startcols, 
                     " and ended with ", endcols))
   
+  if (log_output()) {
+    log_logr(ret)
+    print(ret)
+  }
+  
   return(ret)
 }
 
