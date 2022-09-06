@@ -1488,4 +1488,39 @@ test_that("ds53: Merge by keeps dataset attributes.", {
 })
 
 
+test_that("ds43: datastep join works.", {
+  
+  dat1 <- read.table(header = TRUE, text = '
+    ID NAME
+    A01 SUE
+    A02 TOM
+  ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+    ID AGE SEX CODE
+    A01 58 F    A01
+    A02 20 M    A02
+    A01 47 F    A01
+    A02 11 M    A02
+    A01 23 F    A01
+  ')
+  
+  dat1
+  dat2
+  
+  res1 <- datastep(dat1, merge = dat2, merge_by = "ID", {})
+  
+  res1
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 5)
+  
+  res2 <- datastep(dat1, merge = dat2, merge_by = c(ID = "CODE"), {})
+  
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 5)
+  
+})
+
 

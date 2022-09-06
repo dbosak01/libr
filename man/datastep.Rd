@@ -22,7 +22,8 @@ datastep(
   set = NULL,
   merge = NULL,
   merge_by = NULL,
-  merge_in = NULL
+  merge_in = NULL,
+  log = TRUE
 )
 }
 \arguments{
@@ -125,6 +126,9 @@ variable from the dataset specified on the \code{merge} parameter.}
 The column names should correspond to the datasets being merged. The
 merge flags will contains 0 or 1 values to indicate whether the record
 came from the corresponding table.}
+
+\item{log}{Whether or not to log the datastep.  Default is TRUE.  This 
+parameter is used internally.}
 }
 \value{
 The processed data frame, tibble, or data table.

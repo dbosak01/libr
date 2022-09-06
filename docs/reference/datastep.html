@@ -190,7 +190,8 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
 <span>  set <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span>  merge <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span>  merge_by <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span>  merge_in <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span>  merge_in <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span>  log <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -331,6 +332,11 @@ variable from the dataset specified on the <code>merge</code> parameter.</p></td
 The column names should correspond to the datasets being merged. The
 merge flags will contains 0 or 1 values to indicate whether the record
 came from the corresponding table.</p></td>
+    </tr>
+    <tr>
+      <th>log</th>
+      <td><p>Whether or not to log the datastep.  Default is TRUE.  This 
+parameter is used internally.</p></td>
     </tr>
     </table>
 

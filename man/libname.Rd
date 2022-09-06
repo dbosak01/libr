@@ -14,7 +14,8 @@ libname(
   import_specs = NULL,
   filter = NULL,
   standard_eval = FALSE,
-  quiet = FALSE
+  quiet = FALSE,
+  log = TRUE
 )
 }
 \arguments{
@@ -70,6 +71,9 @@ the library name with a variable.  Default is FALSE.}
 
 \item{quiet}{When TRUE, minimizes output to the console when loading 
 files.  Default is FALSE.}
+
+\item{log}{Whether to log the libname operation.  Default is TRUE. This
+parameter is used internally.}
 }
 \value{
 The library object, with all data files loaded into the library

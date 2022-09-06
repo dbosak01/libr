@@ -229,6 +229,8 @@ e$output <- list()
 #' The column names should correspond to the datasets being merged. The
 #' merge flags will contains 0 or 1 values to indicate whether the record
 #' came from the corresponding table.
+#' @param log Whether or not to log the datastep.  Default is TRUE.  This 
+#' parameter is used internally.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @seealso \code{\link{libname}} function to create a data library, and
@@ -436,7 +438,8 @@ datastep <- function(data, steps, keep = NULL,
                      set = NULL,
                      merge = NULL,
                      merge_by = NULL,
-                     merge_in = NULL) {
+                     merge_in = NULL, 
+                     log = TRUE) {
   
   if (!"data.frame" %in% class(data))
     stop("input data must be inherited from data.frame")
@@ -776,7 +779,7 @@ datastep <- function(data, steps, keep = NULL,
     log_logr(paste0("datastep: columns started with ", startcols, 
                     " and ended with ", endcols))
   
-  if (log_output()) {
+  if (log_output() & log) {
     log_logr(ret)
     print(ret)
   }
@@ -1253,10 +1256,17 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     }
   }
   
-  if (!is.null(mrgin))
-    ret <- ret[ , c(fnms, mrgin)]
-  else
-    ret <- ret[ , fnms]
+  ret <- tryCatch({ 
+    if (!is.null(mrgin))
+      ret <- ret[ , c(fnms, mrgin)]
+    else
+      ret <- ret[ , fnms]
+    
+    ret
+  }, error = function(cond) {
+    
+    ret 
+  })
   
   ret <- assign_attribute_list(ret, alst)
   ret <- copy_df_attributes(dta, ret)
@@ -1264,6 +1274,7 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
   return(ret)
   
 }
+
 
 # A function to perform naming for merged datasets.
 # This will keep the preferred column order and append

@@ -172,6 +172,8 @@ e$env <- parent.frame()
 #' the library name with a variable.  Default is FALSE.
 #' @param quiet When TRUE, minimizes output to the console when loading 
 #' files.  Default is FALSE.
+#' @param log Whether to log the libname operation.  Default is TRUE. This
+#' parameter is used internally.
 #' @return The library object, with all data files loaded into the library
 #' list.  Items in the list will be named according the the file name,
 #' minus the file extension.
@@ -240,7 +242,7 @@ e$env <- parent.frame()
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
                     import_specs = NULL, filter = NULL, standard_eval = FALSE,
-                    quiet = FALSE) {
+                    quiet = FALSE, log = TRUE) {
   if (is.null(engine))
     stop("engine parameter cannot be null")
   
@@ -506,7 +508,9 @@ libname <- function(name, directory_path, engine = "rds",
   
   assign(name_c, l, envir = e$env)
   
-  log_logr(l)
+  if (log) {
+    log_logr(l)
+  }
   
   return(l)
   

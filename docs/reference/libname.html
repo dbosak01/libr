@@ -185,7 +185,8 @@ copy the library, and write any changed data to the file system.</p>
 <span>  import_specs <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span>  filter <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span>  standard_eval <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
-<span>  quiet <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span>  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>  log <span class='op'>=</span> <span class='cn'>TRUE</span></span>
 <span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -261,6 +262,11 @@ the library name with a variable.  Default is FALSE.</p></td>
       <th>quiet</th>
       <td><p>When TRUE, minimizes output to the console when loading 
 files.  Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>log</th>
+      <td><p>Whether to log the libname operation.  Default is TRUE. This
+parameter is used internally.</p></td>
     </tr>
     </table>
 
