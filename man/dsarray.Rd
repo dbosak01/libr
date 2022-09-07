@@ -81,7 +81,9 @@ dat
 Other datastep: 
 \code{\link{[.dsarray}()},
 \code{\link{datastep}()},
+\code{\link{delete}()},
 \code{\link{dsattr}()},
-\code{\link{length.dsarray}()}
+\code{\link{length.dsarray}()},
+\code{\link{output}()}
 }
 \concept{datastep}

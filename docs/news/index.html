@@ -169,22 +169,23 @@ their attributes.</li>
 <li>Fix bug on datastep that was causing a single variable dataframe to
 be returned as a vector.</li>
 <li>Cleared rownames on datastep exit.</li>
-<li>Updated logo.</li>
 <li>Added “MaxChar” column to dictionary to hold the maximum number of
 characters for a data value in the column. This is different from
 “width” which is the user-defined, proscribed width. MaxChar is the
 actual width with no padding.</li>
 <li>Added “rda” engine to libname.</li>
 <li>Allowed single value NSE on drop, keep, and by parameter of
-<code><a href="../reference/datastep.html">datastep()</a></code>. For multiple values, use <code><a href="https://rdrr.io/pkg/common/man/v.html">v()</a></code>
+<code><a href="../reference/datastep.html">datastep()</a></code>. For multiple values, use the <code>v()</code>
 function.</li>
 <li>Added <code><a href="../reference/output.html">output()</a></code> function to datastep.</li>
 <li>Improved datastep output column ordering. New variables were coming
 out in the opposite order they were added. Now they are better.</li>
-<li>Added “set” paramter to datastep.</li>
+<li>Added “set” parameter to datastep.</li>
 <li>Added “merge”, “merge_by”, and “merge_in” parameter to
 <code><a href="../reference/datastep.html">datastep()</a></code>.</li>
+<li>Fixed bug on <code><a href="../reference/datastep.html">datastep()</a></code> rename.</li>
 <li>Added/fixed documentation.</li>
+<li>Updated logo.</li>
 </ul>
 </div>
     <div id="libr-125" class="section level1">

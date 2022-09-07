@@ -28,7 +28,9 @@ length(carr)
 Other datastep: 
 \code{\link{[.dsarray}()},
 \code{\link{datastep}()},
+\code{\link{delete}()},
 \code{\link{dsarray}()},
-\code{\link{dsattr}()}
+\code{\link{dsattr}()},
+\code{\link{output}()}
 }
 \concept{datastep}

@@ -609,6 +609,154 @@ values.</p>
 <span><span class="co"># 1  mtcars   32   11</span></span>
 <span><span class="co"># 2    iris  150    5</span></span>
 <span><span class="co"># 3 beaver1  114    4</span></span></code></pre></div>
+</div>
+<div id="set-and-merge-operations" class="section level3">
+<h3 class="hasAnchor">
+<a href="#set-and-merge-operations" class="anchor"></a>Set and Merge Operations</h3>
+<p>When working with data, joining datasets is an essential activity.
+While there are many different functions in R to perform joins, the
+<code><a href="../reference/datastep.html">datastep()</a></code> “set” and “merge” parameters offer unusual
+flexibility.</p>
+<p>The “set” parameter stacks two or more datasets. The “merge”
+parameter joins two or more datasets. Together, these two parameters
+allow you to perform the most common types of data combinations.</p>
+<p>To illustrate, first let’s create up some sample datasets. The
+datasets we will create include one “region” dataset, and two “stores”
+datasets. Note that the columns on the stores datasets are not
+identical.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create sample data</span></span>
+<span><span class="va">region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span>header <span class="op">=</span> <span class="cn">TRUE</span>, text <span class="op">=</span> <span class="st">'</span></span>
+<span><span class="st">  REGION   NAME</span></span>
+<span><span class="st">  R01      East</span></span>
+<span><span class="st">  R02      West</span></span>
+<span><span class="st">  R03      North</span></span>
+<span><span class="st">  R04      South</span></span>
+<span><span class="st">'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># First stores dataset</span></span>
+<span><span class="va">stores1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span>header <span class="op">=</span> <span class="cn">TRUE</span>, text <span class="op">=</span> <span class="st">'</span></span>
+<span><span class="st">  ID  NAME             SIZE REGION FRANCHISE</span></span>
+<span><span class="st">  A01 "Eastern Lumber"    L    R01        T</span></span>
+<span><span class="st">  A02 "Tri-City Hardwood" M    R02        F</span></span>
+<span><span class="st">  A05 "Reliable Hardware" S    R01        T</span></span>
+<span><span class="st">'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extra column on this one</span></span>
+<span><span class="va">stores2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span>header <span class="op">=</span> <span class="cn">TRUE</span>, text <span class="op">=</span> <span class="st">'</span></span>
+<span><span class="st">  ID  NAME             SIZE REGION</span></span>
+<span><span class="st">  A03 "AAA Mills"         S    R05</span></span>
+<span><span class="st">  A04 "Home and Yard"     L    R03</span></span>
+<span><span class="st">'</span><span class="op">)</span></span></code></pre></div>
+<p>Despite not having the same columns, the two stores datasets can be
+set using the <code><a href="../reference/datastep.html">datastep()</a></code> function. The function will fill
+in the missing values automatically. Like so:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Set operation</span></span>
+<span><span class="va">allstores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">stores1</span>, set <span class="op">=</span> <span class="va">stores2</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extra values filled with NA</span></span>
+<span><span class="va">allstores</span></span>
+<span><span class="co">#    ID              NAME SIZE REGION FRANCHISE</span></span>
+<span><span class="co"># 1 A01    Eastern Lumber    L    R01      TRUE</span></span>
+<span><span class="co"># 2 A02 Tri-City Hardwood    M    R02     FALSE</span></span>
+<span><span class="co"># 3 A05 Reliable Hardware    S    R01      TRUE</span></span>
+<span><span class="co"># 4 A03         AAA Mills    S    R05        NA</span></span>
+<span><span class="co"># 5 A04     Home and Yard    L    R03        NA</span></span></code></pre></div>
+<p>Let’s pretend we noticed the missing data, and decide to fill it in.
+We can do that by merging the missing FRANCHISE values to the second
+stores dataset. First let’s create the missing data:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create small dataset of missing FRANCHISE values</span></span>
+<span><span class="va">franchises</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>FRANCHISE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">F</span>, <span class="cn">F</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
+<span><span class="va">franchises</span></span>
+<span><span class="co">#   FRANCHISE</span></span>
+<span><span class="co"># 1     FALSE</span></span>
+<span><span class="co"># 2     FALSE</span></span></code></pre></div>
+<p>Next we can merge in the missing data on “stores2”, and set the two
+store datasets again:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Merge in missing FRANCHISE column</span></span>
+<span><span class="va">stores2mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">stores2</span>, merge <span class="op">=</span> <span class="va">franchises</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">stores2mod</span></span>
+<span><span class="co">#    ID          NAME SIZE REGION FRANCHISE</span></span>
+<span><span class="co"># 1 A03     AAA Mills    S    R05     FALSE</span></span>
+<span><span class="co"># 2 A04 Home and Yard    L    R03     FALSE</span></span>
+<span></span>
+<span><span class="co"># Set again</span></span>
+<span><span class="va">allstores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">stores1</span>, set <span class="op">=</span> <span class="va">stores2mod</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Now everything is aligned</span></span>
+<span><span class="va">allstores</span></span>
+<span><span class="co">#    ID              NAME SIZE REGION FRANCHISE</span></span>
+<span><span class="co"># 1 A01    Eastern Lumber    L    R01      TRUE</span></span>
+<span><span class="co"># 2 A02 Tri-City Hardwood    M    R02     FALSE</span></span>
+<span><span class="co"># 3 A05 Reliable Hardware    S    R01      TRUE</span></span>
+<span><span class="co"># 4 A03         AAA Mills    S    R05     FALSE</span></span>
+<span><span class="co"># 5 A04     Home and Yard    L    R03     FALSE</span></span></code></pre></div>
+<p>Observe that we did not have to specify a join condition on the
+merge. When no “merge_by” is indicated, the datastep will simply append
+the new columns to the right - without complaining. This behavior is
+very convenient.</p>
+<p>Now let’s do another join, but this time we will specify a join
+condition. We will join in the store regions by the region ID. We will
+also set up merge flags so we can see which rows were in which input
+dataset.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Merge operation - Outer Join</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">allstores</span>, merge <span class="op">=</span> <span class="va">region</span>,</span>
+<span>                merge_by <span class="op">=</span> <span class="st">"REGION"</span>,</span>
+<span>                merge_in <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"inA"</span>, <span class="st">"inB"</span><span class="op">)</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View results</span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#     ID            NAME.1 SIZE REGION FRANCHISE NAME.2 inA inB</span></span>
+<span><span class="co"># 1  A01    Eastern Lumber    L    R01      TRUE   East   1   1</span></span>
+<span><span class="co"># 2  A05 Reliable Hardware    S    R01      TRUE   East   1   1</span></span>
+<span><span class="co"># 3  A02 Tri-City Hardwood    M    R02     FALSE   West   1   1</span></span>
+<span><span class="co"># 4  A04     Home and Yard    L    R03     FALSE  North   1   1</span></span>
+<span><span class="co"># 5  A03         AAA Mills    S    R05     FALSE   &lt;NA&gt;   1   0</span></span>
+<span><span class="co"># 6 &lt;NA&gt;              &lt;NA&gt; &lt;NA&gt;    R04        NA  South   0   1</span></span></code></pre></div>
+<p>Notice three things:</p>
+<ol style="list-style-type: decimal">
+<li>The “Name” field appeared in both datasets, and was therefore
+appended with suffixes to distinguish them.</li>
+<li>The region value “R05” is in the stores dataset, but not in the
+region dataset. It appears this value was coded incorrectly.</li>
+<li>Region “R04” had no stores.</li>
+</ol>
+<p>Let’s try one last time to fix the above issues. We can fix the
+column names with the “rename” parameter, and exclude rows with a
+“where” expression. Also, we can recode “R05” to “R04” inside the
+datastep. Finally, we’ll drop the merge flags to clean up the
+columns.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Merge operation - Left join and clean up</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">allstores</span>, merge <span class="op">=</span> <span class="va">region</span>,</span>
+<span>                merge_by <span class="op">=</span> <span class="st">"REGION"</span>,</span>
+<span>                merge_in <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"inA"</span>, <span class="st">"inB"</span><span class="op">)</span>, </span>
+<span>                rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>NAME.1 <span class="op">=</span> <span class="st">"STORE_NAME"</span>, NAME.2 <span class="op">=</span> <span class="st">"REGION_NAME"</span><span class="op">)</span>,</span>
+<span>                where <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">inA</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"inA"</span>, <span class="st">"inB"</span><span class="op">)</span>,</span>
+<span>                <span class="op">{</span></span>
+<span>                  <span class="kw">if</span> <span class="op">(</span><span class="va">REGION</span> <span class="op">==</span> <span class="st">"R05"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                    <span class="va">REGION</span> <span class="op">&lt;-</span> <span class="st">"R04"</span></span>
+<span>                    <span class="va">NAME.2</span> <span class="op">&lt;-</span> <span class="st">"South"</span></span>
+<span>                    </span>
+<span>                  <span class="op">}</span></span>
+<span>                  </span>
+<span>                <span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co"># View results </span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#    ID        STORE_NAME SIZE REGION FRANCHISE REGION_NAME</span></span>
+<span><span class="co"># 1 A01    Eastern Lumber    L    R01      TRUE        East</span></span>
+<span><span class="co"># 2 A05 Reliable Hardware    S    R01      TRUE        East</span></span>
+<span><span class="co"># 3 A02 Tri-City Hardwood    M    R02     FALSE        West</span></span>
+<span><span class="co"># 4 A04     Home and Yard    L    R03     FALSE       North</span></span>
+<span><span class="co"># 5 A03         AAA Mills    S    R04     FALSE       South</span></span></code></pre></div>
 <p>Next: <a href="libr-disclaimer.html">Disclaimer</a></p>
 </div>
   </div>

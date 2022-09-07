@@ -105,7 +105,9 @@ Use the \code{expression} function to assign the where clause.}
 
 \item{set}{A dataset or list of datasets to append to the input 
 data frame.  The set operation will occur at the beginning of the datastep,
-prior to the execution of any steps.}
+prior to the execution of any steps.  The columns in the set datasets
+do not have to match.  Where there are no matching columns, the missing
+values will be filled with NA.}
 
 \item{merge}{A dataset or list of datasets to merge with the input
 data.  The merge operation will occur at the beginning of the datastep,
@@ -117,15 +119,17 @@ to merge by.}
 parameter will be used to identify the variable(s) to merge by. If merge 
 variables are the same on both datasets, the names may be passed as a simple 
 quoted vector. If the variable names are different, pass the variables 
-to merge on as a named vector.  For example, \code{c(ITEMID = ITEMCODE)}
+to merge on as a named vector.  For example, \code{c("ITEMID" = "ITEMCODE")}
 would specify that the join should occur on the "ITEMID" from the 
 dataset specified in the \code{data} parameter, and the "ITEMCODE"
 variable from the dataset specified on the \code{merge} parameter.}
 
 \item{merge_in}{A vector of column names to be used to hold the merge flags.
-The column names should correspond to the datasets being merged. The
-merge flags will contains 0 or 1 values to indicate whether the record
-came from the corresponding table.}
+The number of names should correspond to the number of 
+datasets being merged. The
+merge flags will be populated with 0 or 1 values to indicate whether the record
+came from the corresponding table. Use the \code{where} parameter, 
+\code{delete} function, or \code{output} function to filter desired results.}
 
 \item{log}{Whether or not to log the datastep.  Default is TRUE.  This 
 parameter is used internally.}
@@ -226,6 +230,30 @@ value of the prior step/row.  This functionality allows you to increment
 values or perform cumulative operations.
 
 \code{calculate} and \code{retain} are both input parameters.
+}
+
+\section{Set and Merge Operations}{
+
+The \code{datastep} function allows you to join one or more input datasets 
+into a single output dataset.  There are two operations in this regards:
+"set" and "merge".  A set operation stacks the datasets vertically, one
+on top of another. The merge operation joins the datasets horizontally,
+left and right.  
+
+The \code{datastep} set and merge operations are unusually flexible compared
+to other join functions in R. The set operation does not require the same 
+number of columns in each dataset.  Likewise, the merge operation does
+not require the same number of rows.  In both cases, where there is no
+corresponding column or row, the function will fill in with NA values.
+
+The merge operation can perform both inner and outer joins.  By default, 
+the merge performs a full outer join.  If you wish to limit the operation
+to an inner join, use the "merge_in" parameter to set up variables with 
+which you can filter the desired rows.  The "merge_in" variables will
+be populated with 1 or 0 values, which indicate whether or not the 
+dataset contained that row.  Once these variables are populated, you
+can easily limit the results using a \code{where} expression, or the 
+\code{delete} or \code{output} functions from inside the datastep.
 }
 
 \section{Data Step Arrays}{
@@ -478,6 +506,67 @@ dictionary(df)
 # 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0
 # 8 df    Best   character Best Quarter NA          NA         2 NA          3     0
 
+# Example #7: Set and Merge Operations
+
+# Create sample data
+grp1 <- read.table(header = TRUE, text = '
+  GROUP  NAME
+  G01  Group1
+  G02  Group2
+')
+
+grp2 <- read.table(header = TRUE, text = '
+  GROUP  NAME
+  G03  Group3
+  G04  Group4
+')
+  
+dat <- read.table(header = TRUE, text = '
+  ID AGE SEX GROUP
+  A01 58 F    G01
+  A02 20 M    G02
+  A03 47 F    G05
+  A04 11 M    G03
+  A05 23 F    G01
+')
+
+# Set operation
+grps <- datastep(grp1, set = grp2, {})
+grps
+#   GROUP   NAME
+# 1   G01 Group1
+# 2   G02 Group2
+# 3   G03 Group3
+# 4   G04 Group4
+
+# Merge operation - Outer Join
+res <- datastep(dat, merge = grps, 
+                merge_by = "GROUP", 
+                merge_in = c("inA", "inB"), {})
+                
+# View results
+res
+#     ID AGE  SEX GROUP   NAME inA inB
+# 1  A01  58    F   G01 Group1   1   1
+# 2  A05  23    F   G01 Group1   1   1
+# 3  A02  20    M   G02 Group2   1   1
+# 4  A04  11    M   G03 Group3   1   1
+# 5  A03  47    F   G05   <NA>   1   0
+# 6 <NA>  NA <NA>   G04 Group4   0   1
+
+# Merge operation - Inner Join
+res <- datastep(dat, merge = grps, 
+                merge_by = "GROUP", 
+                merge_in = c("inA", "inB"), 
+                where = expression(inA & inB), {})
+                
+# View results
+res
+#     ID AGE  SEX GROUP   NAME inA inB
+# 1  A01  58    F   G01 Group1   1   1
+# 2  A05  23    F   G01 Group1   1   1
+# 3  A02  20    M   G02 Group2   1   1
+# 4  A04  11    M   G03 Group3   1   1
 }
 \seealso{
 \code{\link{libname}} function to create a data library, and
@@ -485,8 +574,10 @@ the \code{\link{dictionary}} function to create a data dictionary.
 
 Other datastep: 
 \code{\link{[.dsarray}()},
+\code{\link{delete}()},
 \code{\link{dsarray}()},
 \code{\link{dsattr}()},
-\code{\link{length.dsarray}()}
+\code{\link{length.dsarray}()},
+\code{\link{output}()}
 }
 \concept{datastep}

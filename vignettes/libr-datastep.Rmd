@@ -485,7 +485,159 @@ res3
 # 3 beaver1  114    4
 
 ```
+### Set and Merge Operations
 
+When working with data, joining datasets is an essential activity.  While there
+are many different functions in R to perform joins, the `datastep()` 
+"set" and "merge" parameters offer unusual flexibility.
+
+The "set" parameter stacks two or more datasets.  The "merge" parameter joins
+two or more datasets. Together, these two parameters allow you to perform
+the most common types of data combinations.
+
+To illustrate, first let's create up some sample datasets. The datasets we 
+will create include one "region" dataset, and two "stores" datasets.  Note
+that the columns on the stores datasets are not identical.
+
+```{r eval=FALSE, echo=TRUE}
+# Create sample data
+region <- read.table(header = TRUE, text = '
+  REGION   NAME
+  R01      East
+  R02      West
+  R03      North
+  R04      South
+')
+
+# First stores dataset
+stores1 <- read.table(header = TRUE, text = '
+  ID  NAME             SIZE REGION FRANCHISE
+  A01 "Eastern Lumber"    L    R01        T
+  A02 "Tri-City Hardwood" M    R02        F
+  A05 "Reliable Hardware" S    R01        T
+')
+
+# Extra column on this one
+stores2 <- read.table(header = TRUE, text = '
+  ID  NAME             SIZE REGION
+  A03 "AAA Mills"         S    R05
+  A04 "Home and Yard"     L    R03
+')
+```
+Despite not having the same columns, the two stores datasets can be set
+using the `datastep()` function.  The function will fill in the missing values
+automatically.  Like so:
+
+```{r eval=FALSE, echo=TRUE}
+# Set operation
+allstores <- datastep(stores1, set = stores2, {})
+
+# Extra values filled with NA
+allstores
+#    ID              NAME SIZE REGION FRANCHISE
+# 1 A01    Eastern Lumber    L    R01      TRUE
+# 2 A02 Tri-City Hardwood    M    R02     FALSE
+# 3 A05 Reliable Hardware    S    R01      TRUE
+# 4 A03         AAA Mills    S    R05        NA
+# 5 A04     Home and Yard    L    R03        NA
+```
+Let's pretend we noticed the missing data, and decide to fill it in.  We
+can do that by merging the missing FRANCHISE values to the second stores
+dataset. First let's create the missing data:
+```{r eval=FALSE, echo=TRUE}
+# Create small dataset of missing FRANCHISE values
+franchises <- data.frame(FRANCHISE = c(F, F), stringsAsFactors = FALSE) 
+franchises
+#   FRANCHISE
+# 1     FALSE
+# 2     FALSE
+```
+Next we can merge in the missing data on "stores2", and set the two store
+datasets again:
+```{r eval=FALSE, echo=TRUE}
+# Merge in missing FRANCHISE column
+stores2mod <- datastep(stores2, merge = franchises, {})
+stores2mod
+#    ID          NAME SIZE REGION FRANCHISE
+# 1 A03     AAA Mills    S    R05     FALSE
+# 2 A04 Home and Yard    L    R03     FALSE
+
+# Set again
+allstores <- datastep(stores1, set = stores2mod, {})
+
+# Now everything is aligned
+allstores
+#    ID              NAME SIZE REGION FRANCHISE
+# 1 A01    Eastern Lumber    L    R01      TRUE
+# 2 A02 Tri-City Hardwood    M    R02     FALSE
+# 3 A05 Reliable Hardware    S    R01      TRUE
+# 4 A03         AAA Mills    S    R05     FALSE
+# 5 A04     Home and Yard    L    R03     FALSE
+
+```
+Observe that we did not have to specify a join condition on the merge.  When
+no "merge_by" is indicated, the datastep will simply append the new 
+columns to the right - without complaining. This behavior is very convenient.  
+
+Now let's do another join, but this time we will specify a join condition.
+We will join in the store regions by the region ID.  We will also set up
+merge flags so we can see which rows were in which input dataset.
+```{r eval=FALSE, echo=TRUE}
+
+# Merge operation - Outer Join
+res <- datastep(allstores, merge = region,
+                merge_by = "REGION",
+                merge_in = c("inA", "inB"), {})
+
+# View results
+res
+#     ID            NAME.1 SIZE REGION FRANCHISE NAME.2 inA inB
+# 1  A01    Eastern Lumber    L    R01      TRUE   East   1   1
+# 2  A05 Reliable Hardware    S    R01      TRUE   East   1   1
+# 3  A02 Tri-City Hardwood    M    R02     FALSE   West   1   1
+# 4  A04     Home and Yard    L    R03     FALSE  North   1   1
+# 5  A03         AAA Mills    S    R05     FALSE   <NA>   1   0
+# 6 <NA>              <NA> <NA>    R04        NA  South   0   1
+```
+Notice three things: 
+
+1. The "Name" field appeared in both datasets, and
+was therefore appended with suffixes to distinguish them.
+2. The region value "R05" is in the stores dataset, but not in the 
+region dataset. It appears this value was coded incorrectly.
+3. Region "R04" had no stores.
+
+Let's try one last time to fix the above issues.  We can fix the column names
+with the "rename" parameter, and exclude rows with a "where" expression.  Also,
+we can recode "R05" to "R04" inside the datastep.  Finally, we'll drop
+the merge flags to clean up the columns.
+```{r eval=FALSE, echo=TRUE}
+
+# Merge operation - Left join and clean up
+res <- datastep(allstores, merge = region,
+                merge_by = "REGION",
+                merge_in = c("inA", "inB"), 
+                rename = c(NAME.1 = "STORE_NAME", NAME.2 = "REGION_NAME"),
+                where = expression(inA == TRUE),
+                drop = c("inA", "inB"),
+                {
+                  if (REGION == "R05") {
+                    REGION <- "R04"
+                    NAME.2 <- "South"
+                    
+                  }
+                  
+                })
+#'
+# View results 
+res
+#    ID        STORE_NAME SIZE REGION FRANCHISE REGION_NAME
+# 1 A01    Eastern Lumber    L    R01      TRUE        East
+# 2 A05 Reliable Hardware    S    R01      TRUE        East
+# 3 A02 Tri-City Hardwood    M    R02     FALSE        West
+# 4 A04     Home and Yard    L    R03     FALSE       North
+# 5 A03         AAA Mills    S    R04     FALSE       South
+```
 
 Next: [Disclaimer](libr-disclaimer.html)
 

@@ -305,7 +305,9 @@ Use the <code>expression</code> function to assign the where clause.</p></td>
       <th>set</th>
       <td><p>A dataset or list of datasets to append to the input 
 data frame.  The set operation will occur at the beginning of the datastep,
-prior to the execution of any steps.</p></td>
+prior to the execution of any steps.  The columns in the set datasets
+do not have to match.  Where there are no matching columns, the missing
+values will be filled with NA.</p></td>
     </tr>
     <tr>
       <th>merge</th>
@@ -321,7 +323,7 @@ to merge by.</p></td>
 parameter will be used to identify the variable(s) to merge by. If merge 
 variables are the same on both datasets, the names may be passed as a simple 
 quoted vector. If the variable names are different, pass the variables 
-to merge on as a named vector.  For example, <code>c(ITEMID = ITEMCODE)</code>
+to merge on as a named vector.  For example, <code>c("ITEMID" = "ITEMCODE")</code>
 would specify that the join should occur on the "ITEMID" from the 
 dataset specified in the <code>data</code> parameter, and the "ITEMCODE"
 variable from the dataset specified on the <code>merge</code> parameter.</p></td>
@@ -329,9 +331,11 @@ variable from the dataset specified on the <code>merge</code> parameter.</p></td
     <tr>
       <th>merge_in</th>
       <td><p>A vector of column names to be used to hold the merge flags.
-The column names should correspond to the datasets being merged. The
-merge flags will contains 0 or 1 values to indicate whether the record
-came from the corresponding table.</p></td>
+The number of names should correspond to the number of 
+datasets being merged. The
+merge flags will be populated with 0 or 1 values to indicate whether the record
+came from the corresponding table. Use the <code>where</code> parameter, 
+<code>delete</code> function, or <code>output</code> function to filter desired results.</p></td>
     </tr>
     <tr>
       <th>log</th>
@@ -421,6 +425,28 @@ initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment 
 values or perform cumulative operations.</p>
 <p><code>calculate</code> and <code>retain</code> are both input parameters.</p>
+    <h2 class="hasAnchor" id="set-and-merge-operations"><a class="anchor" href="#set-and-merge-operations"></a>Set and Merge Operations</h2>
+
+    
+
+<p>The <code>datastep</code> function allows you to join one or more input datasets 
+into a single output dataset.  There are two operations in this regards:
+"set" and "merge".  A set operation stacks the datasets vertically, one
+on top of another. The merge operation joins the datasets horizontally,
+left and right.</p>
+<p>The <code>datastep</code> set and merge operations are unusually flexible compared
+to other join functions in R. The set operation does not require the same 
+number of columns in each dataset.  Likewise, the merge operation does
+not require the same number of rows.  In both cases, where there is no
+corresponding column or row, the function will fill in with NA values.</p>
+<p>The merge operation can perform both inner and outer joins.  By default, 
+the merge performs a full outer join.  If you wish to limit the operation
+to an inner join, use the "merge_in" parameter to set up variables with 
+which you can filter the desired rows.  The "merge_in" variables will
+be populated with 1 or 0 values, which indicate whether or not the 
+dataset contained that row.  Once these variables are populated, you
+can easily limit the results using a <code>where</code> expression, or the 
+<code>delete</code> or <code>output</code> functions from inside the datastep.</p>
     <h2 class="hasAnchor" id="data-step-arrays"><a class="anchor" href="#data-step-arrays"></a>Data Step Arrays</h2>
 
     
@@ -482,9 +508,11 @@ built-in restriction on the number of rows, performance of the
 the <code><a href='dictionary.html'>dictionary</a></code> function to create a data dictionary.</p>
 <p>Other datastep: 
 <code><a href='[.dsarray.html'>[.dsarray</a>()</code>,
+<code><a href='delete.html'>delete</a>()</code>,
 <code><a href='dsarray.html'>dsarray</a>()</code>,
 <code><a href='dsattr.html'>dsattr</a>()</code>,
-<code><a href='length.dsarray.html'>length.dsarray</a>()</code></p></div>
+<code><a href='length.dsarray.html'>length.dsarray</a>()</code>,
+<code><a href='output.html'>output</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span><span class='co'># Example #1: Simple Data Step</span></span>
@@ -674,7 +702,68 @@ the <code><a href='dictionary.html'>dictionary</a></code> function to create a d
 <span><span class='co'># 6 df    Tot    integer   Year Total   NA          NA        NA NA          3     0</span></span>
 <span><span class='co'># 7 df    Avg    numeric   Year Average NA          NA        NA NA          3     0</span></span>
 <span><span class='co'># 8 df    Best   character Best Quarter NA          NA         2 NA          3     0</span></span>
-<span></span></pre>
+<span></span>
+<span><span class='co'># Example #7: Set and Merge Operations</span></span>
+<span></span>
+<span><span class='co'># Create sample data</span></span>
+<span><span class='va'>grp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'</span></span>
+<span><span class='st'>  GROUP  NAME</span></span>
+<span><span class='st'>  G01  Group1</span></span>
+<span><span class='st'>  G02  Group2</span></span>
+<span><span class='st'>'</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>grp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'</span></span>
+<span><span class='st'>  GROUP  NAME</span></span>
+<span><span class='st'>  G03  Group3</span></span>
+<span><span class='st'>  G04  Group4</span></span>
+<span><span class='st'>'</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span><span class='op'>(</span>header <span class='op'>=</span> <span class='cn'>TRUE</span>, text <span class='op'>=</span> <span class='st'>'</span></span>
+<span><span class='st'>  ID AGE SEX GROUP</span></span>
+<span><span class='st'>  A01 58 F    G01</span></span>
+<span><span class='st'>  A02 20 M    G02</span></span>
+<span><span class='st'>  A03 47 F    G05</span></span>
+<span><span class='st'>  A04 11 M    G03</span></span>
+<span><span class='st'>  A05 23 F    G01</span></span>
+<span><span class='st'>'</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Set operation</span></span>
+<span><span class='va'>grps</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>grp1</span>, set <span class='op'>=</span> <span class='va'>grp2</span>, <span class='op'>{</span><span class='op'>}</span><span class='op'>)</span></span>
+<span><span class='va'>grps</span></span>
+<span><span class='co'>#   GROUP   NAME</span></span>
+<span><span class='co'># 1   G01 Group1</span></span>
+<span><span class='co'># 2   G02 Group2</span></span>
+<span><span class='co'># 3   G03 Group3</span></span>
+<span><span class='co'># 4   G04 Group4</span></span>
+<span></span>
+<span><span class='co'># Merge operation - Outer Join</span></span>
+<span><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>, merge <span class='op'>=</span> <span class='va'>grps</span>, </span>
+<span>                merge_by <span class='op'>=</span> <span class='st'>"GROUP"</span>, </span>
+<span>                merge_in <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inA"</span>, <span class='st'>"inB"</span><span class='op'>)</span>, <span class='op'>{</span><span class='op'>}</span><span class='op'>)</span></span>
+<span>                </span>
+<span><span class='co'># View results</span></span>
+<span><span class='va'>res</span></span>
+<span><span class='co'>#     ID AGE  SEX GROUP   NAME inA inB</span></span>
+<span><span class='co'># 1  A01  58    F   G01 Group1   1   1</span></span>
+<span><span class='co'># 2  A05  23    F   G01 Group1   1   1</span></span>
+<span><span class='co'># 3  A02  20    M   G02 Group2   1   1</span></span>
+<span><span class='co'># 4  A04  11    M   G03 Group3   1   1</span></span>
+<span><span class='co'># 5  A03  47    F   G05   &lt;NA&gt;   1   0</span></span>
+<span><span class='co'># 6 &lt;NA&gt;  NA &lt;NA&gt;   G04 Group4   0   1</span></span>
+<span></span>
+<span><span class='co'># Merge operation - Inner Join</span></span>
+<span><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>datastep</span><span class='op'>(</span><span class='va'>dat</span>, merge <span class='op'>=</span> <span class='va'>grps</span>, </span>
+<span>                merge_by <span class='op'>=</span> <span class='st'>"GROUP"</span>, </span>
+<span>                merge_in <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inA"</span>, <span class='st'>"inB"</span><span class='op'>)</span>, </span>
+<span>                where <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>inA</span> <span class='op'>&amp;</span> <span class='va'>inB</span><span class='op'>)</span>, <span class='op'>{</span><span class='op'>}</span><span class='op'>)</span></span>
+<span>                </span>
+<span><span class='co'># View results</span></span>
+<span><span class='va'>res</span></span>
+<span><span class='co'>#     ID AGE  SEX GROUP   NAME inA inB</span></span>
+<span><span class='co'># 1  A01  58    F   G01 Group1   1   1</span></span>
+<span><span class='co'># 2  A05  23    F   G01 Group1   1   1</span></span>
+<span><span class='co'># 3  A02  20    M   G02 Group2   1   1</span></span>
+<span><span class='co'># 4  A04  11    M   G03 Group3   1   1</span></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

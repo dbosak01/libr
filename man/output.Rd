@@ -96,5 +96,12 @@ df
 # 2    2  Two
 }
 \seealso{
-The \code{\link{datastep}} function.
+Other datastep: 
+\code{\link{[.dsarray}()},
+\code{\link{datastep}()},
+\code{\link{delete}()},
+\code{\link{dsarray}()},
+\code{\link{dsattr}()},
+\code{\link{length.dsarray}()}
 }
+\concept{datastep}

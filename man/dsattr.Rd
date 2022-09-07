@@ -110,7 +110,9 @@ package for more information on formatting and rendering data frames.
 Other datastep: 
 \code{\link{[.dsarray}()},
 \code{\link{datastep}()},
+\code{\link{delete}()},
 \code{\link{dsarray}()},
-\code{\link{length.dsarray}()}
+\code{\link{length.dsarray}()},
+\code{\link{output}()}
 }
 \concept{datastep}
