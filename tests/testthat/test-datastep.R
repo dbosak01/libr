@@ -1619,7 +1619,8 @@ test_that("ds44: Merge works with factors.", {
                   merge_in = c("inA", "inB"), {})
                 
                 
-  expect_equal(1, 1)              
+  expect_equal(nrow(res), 6)
+  expect_equal(ncol(res), 7)
   
 })
 

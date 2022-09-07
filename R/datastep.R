@@ -1038,7 +1038,21 @@ assign_attribute_list <- function(df, lst) {
      
     if (nm %in% anms) {
       
-      attributes(ret[[nm]]) <- lst[[nm]] 
+      att <- lst[[nm]] 
+      for (at in names(att)) {
+        
+        # Don't break factors
+        if ("factor" %in% class(ret[[nm]]) & at == "levels") {
+          
+          if (length(att[[at]]) ==  length(attr(ret[[nm]], at)))
+            attr(ret[[nm]], at) <- att[[at]]
+          
+        } else {
+          
+          attr(ret[[nm]], at) <- att[[at]]
+        }
+      
+      }
     }
   }
    
