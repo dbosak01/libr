@@ -1583,3 +1583,43 @@ test_that("ds43: Merge dataset names are not 'fixed' when using tibbles.", {
 })
 
 
+test_that("ds44: Merge works with factors.", {
+  
+
+  # Create sample data
+  grp1 <- read.table(header = TRUE, text = '
+    GROUP  NAME
+    G01  Group1
+    G02  Group2
+  ', stringsAsFactors = TRUE)
+  
+  grp2 <- read.table(header = TRUE, text = '
+    GROUP  NAME
+    G03  Group3
+    G04  Group4
+  ', stringsAsFactors = TRUE)
+    
+  dat <- read.table(header = TRUE, text = '
+    ID AGE SEX GROUP
+    A01 58 F    G01
+    A02 20 M    G02
+    A03 47 F    G05
+    A04 11 M    G03
+    A05 23 F    G01
+  ', stringsAsFactors = TRUE)
+  
+  # Set operation
+  grps <- datastep(grp1, set = grp2, {})
+  grps
+  
+  
+  # Merge operation - Outer Join
+  res <- datastep(dat, merge = grps, 
+                  merge_by = "GROUP", 
+                  merge_in = c("inA", "inB"), {})
+                
+                
+  expect_equal(1, 1)              
+  
+})
+

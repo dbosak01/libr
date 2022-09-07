@@ -507,7 +507,7 @@ region <- read.table(header = TRUE, text = '
   R02      West
   R03      North
   R04      South
-')
+', stringsAsFactors = FALSE)
 
 # First stores dataset
 stores1 <- read.table(header = TRUE, text = '
@@ -515,14 +515,14 @@ stores1 <- read.table(header = TRUE, text = '
   A01 "Eastern Lumber"    L    R01        T
   A02 "Tri-City Hardwood" M    R02        F
   A05 "Reliable Hardware" S    R01        T
-')
+', stringsAsFactors = FALSE)
 
 # Extra column on this one
 stores2 <- read.table(header = TRUE, text = '
   ID  NAME             SIZE REGION
   A03 "AAA Mills"         S    R05
   A04 "Home and Yard"     L    R03
-')
+', stringsAsFactors = FALSE)
 ```
 Despite not having the same columns, the two stores datasets can be set
 using the `datastep()` function.  The function will fill in the missing values

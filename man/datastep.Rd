@@ -513,13 +513,13 @@ grp1 <- read.table(header = TRUE, text = '
   GROUP  NAME
   G01  Group1
   G02  Group2
-')
+', stringsAsFactors = FALSE)
 
 grp2 <- read.table(header = TRUE, text = '
   GROUP  NAME
   G03  Group3
   G04  Group4
-')
+', stringsAsFactors = FALSE)
   
 dat <- read.table(header = TRUE, text = '
   ID AGE SEX GROUP
@@ -528,7 +528,7 @@ dat <- read.table(header = TRUE, text = '
   A03 47 F    G05
   A04 11 M    G03
   A05 23 F    G01
-')
+', stringsAsFactors = FALSE)
 
 # Set operation
 grps <- datastep(grp1, set = grp2, {})
