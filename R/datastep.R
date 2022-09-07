@@ -746,7 +746,7 @@ datastep <- function(data, steps, keep = NULL,
   # Perform rename operation
   if (!is.null(rename)) {
     nms <- names(ret)
-    names(ret) <- ifelse(nms %in% names(rename), rename, nms)
+    names(ret) <- ifelse(nms %in% names(rename), rename[nms], nms)
   }
   
   # Where After

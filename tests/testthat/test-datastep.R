@@ -1518,9 +1518,31 @@ test_that("ds43: datastep join works.", {
   res2 <- datastep(dat1, merge = dat2, merge_by = c(ID = "CODE"), {})
   
   
-  expect_equal(nrow(res1), 5)
-  expect_equal(ncol(res1), 5)
+  expect_equal(nrow(res2), 5)
+  expect_equal(ncol(res2), 5)
   
 })
 
+test_that("ds44: datastep multiple renames works.", {
+  
+  
+  dat2 <- read.table(header = TRUE, text = '
+    ID AGE SEX CODE
+    A01 58 F    A01
+    A02 20 M    A02
+    A01 47 F    A01
+    A02 11 M    A02
+    A01 23 F    A01
+  ')
 
+  dat2
+  
+  res2 <- datastep(dat2,  
+                   rename = c(AGE = "TITLE", SEX = "FORK"),{})
+  
+  res2
+  expect_equal(nrow(res2), 5)
+  expect_equal(ncol(res2), 4)
+  expect_equal(names(res2), c("ID", "TITLE", "FORK", "CODE"))
+  
+})
