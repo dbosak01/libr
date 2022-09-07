@@ -602,7 +602,8 @@ datastep <- function(data, steps, keep = NULL,
   # Strip any crazy classes, as they can mess up datastep functions
   data_classes <- class(data)
   if (any(!class(data) %in% c("data.frame", "list"))) {
-    data <- as.data.frame(unclass(data), stringsAsFactors = FALSE) 
+    data <- as.data.frame(unclass(data), stringsAsFactors = FALSE, 
+                          check.names = FALSE) 
   }
   
   # Add automatic variables
@@ -717,7 +718,7 @@ datastep <- function(data, steps, keep = NULL,
   
   # Convert back to tibble if original was a tibble
   if ("tbl_df" %in% orig_class & !"tbl_df" %in% class(ret)) {
-    ret <- as_tibble(ret)
+    ret <- as_tibble(ret, .name_repair = "minimal")
   }
   
   # Put back grouping attributes if original data was grouped
@@ -728,7 +729,7 @@ datastep <- function(data, steps, keep = NULL,
     
   }
   
-  # Convert back to tibble if original was a tibble
+  # Convert back to data.table if original was a data.table
   if ("data.table" %in% orig_class & !"data.table" %in% class(ret)) {
     ret <- data.table::as.data.table(ret)
   }
@@ -1101,6 +1102,13 @@ has_output <- function(codestr) {
 # dataset plus one or more datasets.
 perform_set <- function(dta, stdta) {
   
+  # Save off class
+  dtacls <- class(dta)
+  
+  # Work with pure data frames.
+  # Tibbles will mess with names.
+  dta <- as.data.frame(dta)
+  
   # Put in list
   if ("data.frame" %in% class(stdta))
     dtalst <- list(stdta)
@@ -1118,7 +1126,7 @@ perform_set <- function(dta, stdta) {
   # Stack datasets
   for (i in seq_len(length(dtalst))){
     
-    tmp <- dtalst[[i]]
+    tmp <- as.data.frame(dtalst[[i]])
     nnms <- names(tmp)
     fnms <- c(fnms, nnms[!nnms %in% fnms])
     tmp[["..ds"]] <- i
@@ -1131,10 +1139,15 @@ perform_set <- function(dta, stdta) {
   dta[["..ds"]] <- NULL
   
   # Rename so first dataset drives naming
-  ret <- ret[ , fnms]
+  # Can easily break if name has been changed.
+  ret <- tryCatch({ret[ , fnms]}, error = function(cond){ret})
   
+  # Restore attributes
   ret <- copy_attributes_sp(dta, ret)
   ret <- copy_df_attributes(dta, ret)
+  
+  # Restore original class
+  class(ret) <- dtacls
   
   return(ret)
   
@@ -1142,6 +1155,13 @@ perform_set <- function(dta, stdta) {
 
 # Perform merge operation.  Works on one or more datasets.
 perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
+  
+  # Save off class
+  dtacls <- class(dta)
+  
+  # Work with pure data frames.
+  # Tibbles will mess with names.
+  dta <- as.data.frame(dta)
   
   # Put in list
   if ("data.frame" %in% class(mrgdta))
@@ -1181,7 +1201,7 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
   # Merge datasets
   for (i in seq_len(length(dtalst))){
     
-    tmp <- dtalst[[i]]
+    tmp <- as.data.frame(dtalst[[i]])
     
     # Create suffixes (if needed)
     sfx <- c("." %p% i, "." %p% (i + 1))
@@ -1256,6 +1276,9 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     }
   }
   
+  # Reorder columns in a sensible way, if possible.
+  # This breaks easily is names are missing/changed, 
+  # so wrap in tryCatch.
   ret <- tryCatch({ 
     if (!is.null(mrgin))
       ret <- ret[ , c(fnms, mrgin)]
@@ -1268,8 +1291,12 @@ perform_merge <- function(dta, mrgdta, mrgby, mrgin) {
     ret 
   })
   
+  # Restore attributes
   ret <- assign_attribute_list(ret, alst)
   ret <- copy_df_attributes(dta, ret)
+  
+  # Restore original class
+  class(ret) <- dtacls 
   
   return(ret)
   

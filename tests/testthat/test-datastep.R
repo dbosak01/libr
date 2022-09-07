@@ -1546,3 +1546,40 @@ test_that("ds44: datastep multiple renames works.", {
   expect_equal(names(res2), c("ID", "TITLE", "FORK", "CODE"))
   
 })
+
+
+test_that("ds43: Merge dataset names are not 'fixed' when using tibbles.", {
+  
+  library(tibble)
+  
+  dat1 <- read.table(header = TRUE, text = '
+    ID2 NAME
+    A01 SUE
+    A02 TOM
+  ')
+  
+  dat2 <- read.table(header = TRUE, text = '
+    ID "AGE 1" "SEX 2" "CODE 4"
+    A01 58 F    A01
+    A02 20 M    A02
+    A01 47 F    A01
+    A02 11 M    A02
+    A01 23 F    A01
+  ', check.names = FALSE)
+  
+  dat1 <- as_tibble(dat1)
+  dat2 <- as_tibble(dat2)
+  
+  
+  res1 <- datastep(dat2, merge = dat1, merge_by = c("ID" = "ID2"), {}, 
+                   log = FALSE)
+  
+  res1
+  
+  expect_equal(nrow(res1), 5)
+  expect_equal(ncol(res1), 5)
+  expect_equal(names(res1), c("ID", "AGE 1", "SEX 2", "CODE 4", "NAME"))
+  
+})
+
+
