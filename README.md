@@ -87,4 +87,4 @@ The **libr** package is part of the **sassy** meta-package.
 The **sassy** meta-package includes several packages that help make R
 easier for everyone, especially people with a background in SAS® software. 
 You can read more about the **sassy** package
-[here](https://www.r-sassy.org).
+[here](https://r-sassy.org/).
