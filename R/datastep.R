@@ -102,7 +102,7 @@ e$output <- list()
 #' 
 #' @section Set and Merge Operations:
 #' The \code{datastep} function allows you to join one or more input datasets 
-#' into a single output dataset.  There are two operations in this regards:
+#' into a single output dataset.  There are two operations in this regard:
 #' "set" and "merge".  A set operation stacks the datasets vertically, one
 #' on top of another. The merge operation joins the datasets horizontally,
 #' left and right.  
