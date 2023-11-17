@@ -229,7 +229,7 @@ for additional examples and complete documentation.
 
 ### Why is the datastep so slow? {#performance}
 
-**Q:** I like the `datastep()` function very much.  But it seems quite slow.  
+**Q:** I like the `datastep()` function very much.  But it seems quite slow.
 Is there anything I can do to speed it up? 
 
 **A:** Yes. Performance of the `datastep()` is directly related to the size
@@ -247,7 +247,7 @@ perform your intended operation.
 
 ### Can I do "set" and "merge" operations with the datastep? {#merge}
 
-**Q:** In SAS®, I used the datastep frequently to combine two or more datasets.  
+**Q:** In SAS®, I used the datastep frequently to combine two or more datasets.
 Does the **libr** datastep support "set" and "merge"? 
 
 **A:** Yes. The `datastep()` function supports both "set" and "merge" operations.
