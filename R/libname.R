@@ -89,7 +89,7 @@ e$env <- parent.frame()
 #' need to define import specifications for SAS® datasets.  The sas7bdat engine
 #' interprets empty strings, single blanks, and a single dot (".") as missing
 #' values. While the import of SAS® datasets is fairly reliable, sas7bdat files 
-#' exported with the sas7bdat engine sometimes cannot be read by SAS® software.
+#' cannot be written or exported with the sas7bdat engine.
 #' In these cases, it is recommended to export to another file format, such
 #' as csv or dbf, and then import into SAS®.}
 #' \item{\strong{xpt}: The SAS® transport file engine.  Transport format is 
@@ -174,6 +174,10 @@ e$env <- parent.frame()
 #' files.  Default is FALSE.
 #' @param log Whether to log the libname operation.  Default is TRUE. This
 #' parameter is used internally.
+#' @param where An expression used to subset all datasets in the library.  
+#' The where clause will be executed when the library is created.  Use the 
+#' Base R \code{\link{expression}} function to define the subset.  If a where clause
+#' is supplied, the library will be opened read-only.  
 #' @return The library object, with all data files loaded into the library
 #' list.  Items in the list will be named according the the file name,
 #' minus the file extension.
@@ -242,7 +246,7 @@ e$env <- parent.frame()
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
                     import_specs = NULL, filter = NULL, standard_eval = FALSE,
-                    quiet = FALSE, log = TRUE) {
+                    quiet = FALSE, log = TRUE, where = NULL) {
   if (is.null(engine))
     stop("engine parameter cannot be null")
   
@@ -283,6 +287,8 @@ libname <- function(name, directory_path, engine = "rds",
   attr(l, "loaded") <- FALSE
   attr(l, "engine") <- engine
   attr(l, "import_specs") <- import_specs  
+  if (!is.null(where))
+    attr(l, "where") <- paste(as.character(where), collapse = "")
   
 
   # Get the file list according to the engine type
@@ -493,6 +499,11 @@ libname <- function(name, directory_path, engine = "rds",
         if (nm %in% names(l))
           warning(paste("The name", nm, "already exists in the library.",
                         "Data will be replaced."))
+        
+        if (!is.null(where)) {
+          dat <- tryCatch({subset(dat, eval(where))},
+                          error = function(cond){dat})
+        }
         
         # Set attributes on data frame
         attr(dat, "name") <- nm
@@ -780,6 +791,8 @@ lib_add <- function(x, ..., name = NULL) {
     else 
       typ <- "rds"
     
+    if (tolower(typ) == "sas7bdat")
+      message("Writing to 'sas7bdat' not supported.")
     
     i <- 1
     for (nm in nms) {
@@ -907,6 +920,8 @@ lib_replace <- function(x, ...,  name = NULL) {
     else 
       typ <- "rds"
     
+    if (tolower(typ) == "sas7bdat")
+      message("Writing to 'sas7bdat' not supported.")
     
     i <- 1
     for (nm in nms) {
@@ -1064,6 +1079,8 @@ lib_remove <- function(x, name) {
 #' behavior, use the \code{force} option to force \code{lib_write} to write
 #' every data file to disk.
 #' 
+#' Note that writing sas7bdat files to disk is not supported.
+#' 
 #' @param x The data library to write. 
 #' @param force Force writing each data file to disk, even if it has not 
 #' changed.
@@ -1136,6 +1153,11 @@ lib_write <- function(x, force = FALSE) {
       x <- lib_sync(x, lbnm)
     }
       
+    if (!is.null(attr(x, "engine"))) {
+      if (attr(x, "engine") == "sas7bdat")
+        message("Writing to 'sas7bdat' not supported.")
+    }
+    
     # Get data names
     nms <- names(x)
     
@@ -1377,6 +1399,11 @@ lib_copy <- function(x, nm, directory_path, standard_eval = FALSE) {
   attr(cpy, "name") <- newlib
   attr(cpy, "path") <- directory_path
   attr(cpy, "loaded") <- FALSE
+  
+  if (!is.null(attr(x, "engine"))) {
+    if (attr(x, "engine") == "sas7bdat")
+      message("Writing to 'sas7bdat' not supported.")
+  }
 
   # Get list of dataset names
   nms <- names(cpy)
@@ -1478,6 +1505,9 @@ lib_export <- function(x, nm, directory_path, engine,
   
   if (length(engine) > 1)
     stop("engine parameter does not accept more than one value.")
+  
+  if (tolower(engine) == "sas7bdat")
+    message("Export to 'sas7bdat' not supported.")
   
   if (!tolower(engine) %in% c("rds", "rdata", "rda", 
                               "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))

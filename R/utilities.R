@@ -66,6 +66,11 @@ print.lib <- function(x, ..., verbose = FALSE) {
     cat(at)
     cat(paste0("- path: ", attr(x, "path"), "\n"))
     
+    if (!is.null(attr(x, "where"))) {
+      
+       cat(paste0("- where: ",  attr(x, "where"), "\n"))
+    }
+    
     if (length(x) > 0)
       cat("- items:\n")
     
@@ -220,12 +225,12 @@ writeData <- function(x, ext, file_path, force = FALSE) {
 
   } else if (ext == "sas7bdat") {
     
-    if (!cs_comp | force) {
-      if (file.exists(file_path))
-        file.remove(file_path)
-      write_sas(x, file_path)
-      attr(x, "checksum") <- md5sum(file_path)
-    }
+    # if (!cs_comp | force) {
+    #   if (file.exists(file_path))
+    #     file.remove(file_path)
+    #   write_sas(x, file_path)
+    #   attr(x, "checksum") <- md5sum(file_path)
+    # }
     
   } else if (ext == "dbf") {
     

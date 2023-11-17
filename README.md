@@ -4,13 +4,13 @@
 [![libr lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://cran.r-project.org/package=libr)
 [![libr downloads](https://cranlogs.r-pkg.org/badges/libr)](https://cran.r-project.org/package=libr)
 [![libr total downloads](https://cranlogs.r-pkg.org/badges/grand-total/libr)](https://cran.r-project.org/package=libr)
-[![R-CMD-check](https://github.com/dbosak01/libr/workflows/R-CMD-check/badge.svg)](https://github.com/dbosak01/libr/actions)
+[![R-CMD-check](https://github.com/dbosak01/libr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dbosak01/libr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/dbosak01/libr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dbosak01/libr?branch=master)
 
 <!-- badges: end -->
   
 # Introduction to **libr** 
-<img src="./man/images/libr_new.png" align="left" height="138" style="margin-right: 20px"/>
+<img src="./man/images/libr_new.png" align="left" height="138" style="margin-right:20px;height:138px"/>
 
 R is a very flexible and powerful language.  But there are some inconveniences
 when working with data:

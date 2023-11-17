@@ -337,7 +337,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
 
   libname(myvar1, file.path( base_path, "SDTM"),
-          engine = "sas7bdat", filter = c("ae", "dm", "lb", "vs"),
+          engine = "csv", filter = c("ae", "dm", "lb", "vs"),
           standard_eval = TRUE)
 
 
@@ -349,11 +349,11 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_load(myvar1)
 
-  expect_equal("bork1.ae" %in% ls(), TRUE)
+  expect_equal("bork1.AE" %in% ls(), TRUE)
 
   lib_unload(myvar1)
 
-  expect_equal("bork1.ae" %in% ls(), FALSE)
+  expect_equal("bork1.AE" %in% ls(), FALSE)
 
   lib_copy(myvar1, myvar2, paste0(base_path, "2"), standard_eval = TRUE)
 
@@ -363,7 +363,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_load(myvar2)
 
-  expect_equal("bork2.ae" %in% ls(), TRUE)
+  expect_equal("bork2.AE" %in% ls(), TRUE)
 
 
   bork2.mtcars <- mtcars
@@ -385,7 +385,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_unload(myvar2)
 
-  expect_equal("bork2.ae" %in% ls(), FALSE)
+  expect_equal("bork2.AE" %in% ls(), FALSE)
 
 
   lib_add(myvar2, mtcars)
@@ -530,7 +530,7 @@ test_that("lib23: libname works with rda files", {
 
 test_that("lib24: lib_export() creates new library.", {
   
-  libname(dat, base_path, "xpt")
+  libname(dat, base_path, "xpt", filter = "AD*")
   
   pth2 <- paste0(base_path, "2")
   
@@ -544,4 +544,34 @@ test_that("lib24: lib_export() creates new library.", {
   lib_delete(dat2)
   
 })
+
+
+test_that("lib25: libname() function works as expected with rds", {
+  
+  libname(dat, base_path, engine = "rds", where = expression(sex == 'F'))
+  
+  # dat$demo_studya
+  # dat$demo_studyb
+  
+  expect_equal(class(dat)[[1]], "lib")
+  expect_equal(length(dat), 2)
+  expect_equal(nrow(dat[[1]]), 3)
+  expect_equal(ncol(dat[[1]]), 9)
+  expect_equal(nrow(dat[[2]]), 1)
+  expect_equal(ncol(dat[[2]]), 9)
+})
+
+
+
+# 
+# test_that("lib24: lib_export() creates new library.", {
+#   
+#   v1 <- c(P1 = 10, P2 = 20, P3 = 30)
+#   
+#   saveRDS(v1, "C:/packages/libr/tests/testthat/data/vect.rds")
+#   
+#   libname(testme, base_path, "rds")
+#   
+# 
+# })
 

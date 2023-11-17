@@ -26,14 +26,22 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     # Clear out any names on input 
     #names(res) <- NULL
     
-    df["first."] <- byfirst(res)
-    df["last."] <- bylast(res)
+    df[["first."]] <- byfirst(res)
+    df[["last."]] <- bylast(res)
+    
+    # Add first and last for each by variable
+    for (nm in groups) {
+      
+      df[[paste0("first.", nm)]] <- byfirst(df[[nm]])
+      df[[paste0("last.", nm)]] <- bylast(df[[nm]])
+      
+    }
   
   } else {
     
     if (nrow(df) > 0) {
-      df["first."] <- c(TRUE, rep(FALSE, times = nrow(df) - 1))
-      df["last."] <- c(rep(FALSE, times = nrow(df) - 1), TRUE)
+      df[["first."]] <- c(TRUE, rep(FALSE, times = nrow(df) - 1))
+      df[["last."]] <- c(rep(FALSE, times = nrow(df) - 1), TRUE)
     }
     
   }
@@ -69,3 +77,23 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
   
 }
 
+
+remove_autos <- function(data, groups) {
+  
+  ret <- data
+  
+  ret[["first."]] <- NULL
+  ret[["last."]] <- NULL
+  ret[["..delete"]] <- NULL 
+  
+  if (!is.null(groups)) {
+    for (nm in groups) {
+      
+      ret[[paste0("first.", nm)]] <- NULL
+      ret[[paste0("last.", nm)]] <- NULL
+      
+    }
+  }
+  
+  return(ret)
+}

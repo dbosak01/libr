@@ -49,7 +49,9 @@ retain their original names.}
 \item{by}{A vector of quoted variable names to use for by-group processing.
 This parameter will activate the \code{first.} and \code{last.} automatic
 variables, that indicate the first or last rows in a group.  These 
-automatic variables are useful for conditional processing on groups.}
+automatic variables are useful for conditional processing on groups.
+The function will also create first and last automatic variables for each
+variable specified in the by group.}
 
 \item{calculate}{Steps to set up calculated variables.
 Calculated variables are commonly generated with summary functions such as
@@ -112,8 +114,9 @@ values will be filled with NA.}
 \item{merge}{A dataset or list of datasets to merge with the input
 data.  The merge operation will occur at the beginning of the datastep,
 prior to the execution of any steps.  When the \code{merge} operation is 
-requested, the \code{by} parameter will be used to indicate which variable(s)
-to merge by.}
+requested, the \code{merge_by} parameter will be used to indicate which variable(s)
+to merge by. If no \code{merge_by} is specified, the merge dataset columns will 
+simply be appended to the right of the input dataset.}
 
 \item{merge_by}{If the \code{merge} parameter is set, the \code{merge_by} 
 parameter will be used to identify the variable(s) to merge by. If merge 
@@ -174,6 +177,13 @@ be accessed at any point within the data step:
 Automatic variables will be dropped from the data frame at the end
 of the data step.  If you wish to keep the automatic variable values,
 assign the automatic variable to a new variable and keep that variable.
+
+If there are multiple by group variables, the \code{first.} and \code{last.} 
+automatic variables indicates a either/or combination of all by variables.  
+In addition,
+\code{first.X} and \code{last.X} automatic variables will be created for 
+each variable, where "X" represents the name of the specified variable.
+As always, these names are case-sensitive.
 }
 
 \section{Column Attributes}{

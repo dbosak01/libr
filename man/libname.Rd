@@ -15,7 +15,8 @@ libname(
   filter = NULL,
   standard_eval = FALSE,
   quiet = FALSE,
-  log = TRUE
+  log = TRUE,
+  where = NULL
 )
 }
 \arguments{
@@ -74,6 +75,11 @@ files.  Default is FALSE.}
 
 \item{log}{Whether to log the libname operation.  Default is TRUE. This
 parameter is used internally.}
+
+\item{where}{An expression used to subset all datasets in the library.
+The where clause will be executed when the library is created.  Use the 
+Base R \code{\link{expression}} function to define the subset.  If a where clause
+is supplied, the library will be opened read-only.}
 }
 \value{
 The library object, with all data files loaded into the library
@@ -162,7 +168,7 @@ type information than either csv or Excel.  In most cases, you will not
 need to define import specifications for SAS® datasets.  The sas7bdat engine
 interprets empty strings, single blanks, and a single dot (".") as missing
 values. While the import of SAS® datasets is fairly reliable, sas7bdat files 
-exported with the sas7bdat engine sometimes cannot be read by SAS® software.
+cannot be written or exported with the sas7bdat engine.
 In these cases, it is recommended to export to another file format, such
 as csv or dbf, and then import into SAS®.}
 \item{\strong{xpt}: The SAS® transport file engine.  Transport format is 

@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://libr.r-sassy.org/404.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-basics.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-datastep.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-disclaimer.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-example1.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-example2.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-faq.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr-management.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/articles/libr.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://libr.r-sassy.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/datastep.html</loc>
@@ -20,6 +56,9 @@
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/import_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://libr.r-sassy.org/reference/index.html</loc>
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/is.lib.html</loc>
@@ -92,29 +131,5 @@
   </url>
   <url>
     <loc>https://libr.r-sassy.org/reference/write.specs.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-basics.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-datastep.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-disclaimer.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-example1.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-example2.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-faq.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr-management.html</loc>
-  </url>
-  <url>
-    <loc>https://libr.r-sassy.org/articles/libr.html</loc>
   </url>
 </urlset>

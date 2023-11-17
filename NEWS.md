@@ -1,3 +1,11 @@
+# libr 1.2.9
+* Fixed bug on `datastep()` when there are spaces in the column names 
+and output() function is used.
+* Some improvements to `datastep()` performance.
+* Send message on writing "sas7bdat" that functionality is not available.
+* Added where clause parameter to `libname()`.
+* Added automatic variables "first.X" and "last.X" for each by variable.
+
 # libr 1.2.8
 * Fixed bug on datastep that sometimes was causing variables to lose their attributes.
 * Added "where" parameter to datastep.

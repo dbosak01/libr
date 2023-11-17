@@ -1624,3 +1624,80 @@ test_that("ds44: Merge works with factors.", {
   
 })
 
+
+test_that("ds45: Output function works as expected when the names have spaces.", {
+  
+  
+  dat <- mtcars[ , c("mpg", "cyl")]
+  
+  rownames(dat) <- NULL
+  names(dat) <- c("miles per gallon", "cylinders")
+  
+  
+  d1 <- datastep(dat, 
+                 {
+                   
+                   if (cylinders == 4) {
+                     output()
+                     #fork <- 1
+                   }
+                   
+                 })
+  
+  d1
+  
+  expect_equal(nrow(d1), 11)
+  expect_equal(ncol(d1), 2)
+  
+})
+
+test_that("ds46: Skip loop when there is no code.", {
+  
+  
+  dat <- mtcars[ , c("mpg", "cyl")]
+  
+  
+  
+  d1 <- datastep(dat, where = expression(cyl == 4), 
+                 {})
+  
+  d1
+  
+  expect_equal(nrow(d1), 11)
+  expect_equal(ncol(d1), 2)
+  
+})
+
+
+test_that("ds47: Multiple group bys works as expected.", {
+  
+  libname(dat, base_path, "rds")
+  
+  lib_load(dat)
+  
+  
+  dt <- sort(dat.demo_studya, by = c("treatment", "sex"))
+  
+  d1 <- datastep(dt, by = c("treatment", "sex"), {
+    
+    f1 <- first.
+    l1 <- last.
+    
+    f2 <- first.treatment
+    l2 <- last.treatment
+    
+    f3 <- first.sex
+    l3 <- last.sex
+    
+  }, sort_check = TRUE)
+  
+  d1
+  
+  expect_equal(sum(d1$f1), 4)
+  expect_equal(sum(d1$l1), 4)
+  expect_equal(sum(d1$f2), 2)
+  expect_equal(sum(d1$l2), 2)
+  expect_equal(sum(d1$f2), 2)
+  expect_equal(sum(d1$l2), 2)
+  
+})

@@ -29,6 +29,8 @@ data in memory to the data on disk.  If there are differences in the data,
 the function will overwrite the version on disk.  To override the default
 behavior, use the \code{force} option to force \code{lib_write} to write
 every data file to disk.
+
+Note that writing sas7bdat files to disk is not supported.
 }
 \examples{
 # Create temp directory

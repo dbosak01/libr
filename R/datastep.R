@@ -41,6 +41,13 @@ e$output <- list()
 #' of the data step.  If you wish to keep the automatic variable values,
 #' assign the automatic variable to a new variable and keep that variable.
 #' 
+#' If there are multiple by group variables, the \code{first.} and \code{last.} 
+#' automatic variables indicates a either/or combination of all by variables.  
+#' In addition,
+#' \code{first.X} and \code{last.X} automatic variables will be created for 
+#' each variable, where "X" represents the name of the specified variable.
+#' As always, these names are case-sensitive.
+#' 
 #' @section Column Attributes:
 #' To set attributes for a column on your data, use the \code{attrib}
 #' parameter.  Example attributes include 'label', 'description', 
@@ -187,6 +194,8 @@ e$output <- list()
 #' This parameter will activate the \code{first.} and \code{last.} automatic
 #' variables, that indicate the first or last rows in a group.  These 
 #' automatic variables are useful for conditional processing on groups.
+#' The function will also create first and last automatic variables for each
+#' variable specified in the by group.
 #' @param calculate Steps to set up calculated variables.  
 #' Calculated variables are commonly generated with summary functions such as
 #' \code{mean}, \code{median}, \code{min}, \code{max}, etc.  It is more 
@@ -239,8 +248,9 @@ e$output <- list()
 #' @param merge A dataset or list of datasets to merge with the input
 #' data.  The merge operation will occur at the beginning of the datastep,
 #' prior to the execution of any steps.  When the \code{merge} operation is 
-#' requested, the \code{by} parameter will be used to indicate which variable(s)
-#' to merge by.  
+#' requested, the \code{merge_by} parameter will be used to indicate which variable(s)
+#' to merge by. If no \code{merge_by} is specified, the merge dataset columns will 
+#' simply be appended to the right of the input dataset.
 #' @param merge_by If the \code{merge} parameter is set, the \code{merge_by} 
 #' parameter will be used to identify the variable(s) to merge by. If merge 
 #' variables are the same on both datasets, the names may be passed as a simple 
@@ -701,55 +711,66 @@ datastep <- function(data, steps, keep = NULL,
     rowcount <- nrow(data)
   }
   
-  # Step through row by row
-  for (n. in seq_len(rowcount)) {
+  # If there is no code to step through
+  if (length(as.character(code)) == 1) {
     
-    # Subset by row
-    rw <- data[n., , drop = FALSE]
-    
-    # Put back any attributes dropped during row subset
-    rw <- copy_attributes(data_attributes, rw)
-    
-    
-    
-    # Deal with retained variables
-    if (!is.null(retain)) {
-      if (length(ret) == 0) {
-        for (nm in names(retain)) {
-          
-          # Populate with initial value
-          rw[[nm]] <- retain[[nm]]
-          
-        }
-        
-      } else {
-        for (nm in names(retain)) {
-          
-          # Populate with value from previous row   
-          #data[n., nm] <- ret[n. - 1, nm]  way backup
-          
-          rw[[nm]] <- ret[[n. - 1]][[nm]] # current
-          
-          
-        }
-      }
-    }
-    
-    
-    # Evaluate the code for the row
-    ret[[n.]]  <-  within(rw, eval(code), keepAttrs = TRUE)
-    
-
-  }
-  
-  # Bind all rows
-  if (hout) {
-    ret <- bind_rows(e$output, .id = "column_label")
+    # Just set original dataset
+    ret <- data
     
   } else {
-    ret <- bind_rows(ret, .id = "column_label")
+    
+    # Step through row by row
+    for (n. in seq_len(rowcount)) {
+      
+      # Subset by row
+      rw <- data[n., , drop = FALSE]
+      
+      # Put back any attributes dropped during row subset
+      rw <- copy_attributes(data_attributes, rw)
+      
+      
+      
+      # Deal with retained variables
+      if (!is.null(retain)) {
+        if (length(ret) == 0) {
+          for (nm in names(retain)) {
+            
+            # Populate with initial value
+            rw[[nm]] <- retain[[nm]]
+            
+          }
+          
+        } else {
+          for (nm in names(retain)) {
+            
+            # Populate with value from previous row   
+            #data[n., nm] <- ret[n. - 1, nm]  way backup
+            
+            rw[[nm]] <- ret[[n. - 1]][[nm]] # current
+            
+            
+          }
+        }
+      }
+      
+      
+      # Evaluate the code for the row
+      ret[[n.]]  <-  within(rw, eval(code), keepAttrs = TRUE)
+      
+  
+    }
+    
+    # Bind all rows
+    if (hout) {
+      ret <- bind_rows(e$output, .id = "column_label")
+      
+    } else {
+      ret <- bind_rows(ret, .id = "column_label")
+    }
+    ret["column_label"] <- NULL
+  
   }
-  ret["column_label"] <- NULL
+  
   
   
   # Delete
@@ -770,9 +791,7 @@ datastep <- function(data, steps, keep = NULL,
   ret <- ret[ ,c(orgnms, rtnms[!rtnms %in% orgnms])]
   
   # Remove automatic variables
-  ret["first."] <- NULL
-  ret["last."] <- NULL
-  ret["..delete"] <- NULL
+  ret <- remove_autos(ret, by)
   
   # Perform drop operation
   if (!is.null(drop)) {
@@ -1020,7 +1039,11 @@ output <- function() {
   nlst[["..delete"]] <- pf$..delete
   
   # Convert to data frame and append to output list
-  e$output[[length(e$output) + 1]] <- as.data.frame(nlst)
+  e$output[[length(e$output) + 1]] <- as.data.frame(nlst, 
+                                                    stringsAsFactors = FALSE, 
+                                                    make.names = FALSE,
+                                                    optional = FALSE,
+                                                    check.names = FALSE)
 
   
 }

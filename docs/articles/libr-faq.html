@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,19 +40,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.9</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"></ul>
 <ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/libr.html">Get started</a>
 </li>
@@ -79,6 +75,9 @@
     <li>
       <a href="../articles/libr-example2.html">Complete Example 2</a>
     </li>
+    <li>
+      <a href="../articles/libr-faq.html">Frequently Asked Questions</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -91,7 +90,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/dbosak01/libr/">
+  <a href="https://github.com/dbosak01/libr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -106,13 +105,13 @@
 
       
 
-      </header><script src="libr-faq_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Frequently Asked Questions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/master/vignettes/libr-faq.Rmd"><code>vignettes/libr-faq.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/HEAD/vignettes/libr-faq.Rmd" class="external-link"><code>vignettes/libr-faq.Rmd</code></a></small>
       <div class="hidden name"><code>libr-faq.Rmd</code></div>
 
     </div>
@@ -122,9 +121,9 @@
 <p>Below are some frequently asked questions about the
 <strong>libr</strong> package. Click on the links below to navigate to
 the full question and answer content.</p>
-<div id="top" class="section level2">
-<h2 class="hasAnchor">
-<a href="#top" class="anchor"></a>Index</h2>
+<div class="section level2">
+<h2 id="top">Index<a class="anchor" aria-label="anchor" href="#top"></a>
+</h2>
 <ul>
 <li><a href="#libname">How do I create a libname in R?</a></li>
 <li><a href="#formats">Which data formats does the libname function
@@ -137,14 +136,17 @@ datasets?</a></li>
 format?</a></li>
 <li><a href="#copy">How do I copy a library?</a></li>
 <li><a href="#datastep">Can I really do a datastep in R?</a></li>
+<li><a href="#performance">Why is the datastep so slow?</a></li>
+<li><a href="#merge">Can I do “set” and “merge” operations with the
+datastep?</a></li>
 </ul>
 </div>
-<div id="content" class="section level2">
-<h2 class="hasAnchor">
-<a href="#content" class="anchor"></a>Content</h2>
-<div id="libname" class="section level3">
-<h3 class="hasAnchor">
-<a href="#libname" class="anchor"></a>How do I create a libname in R?</h3>
+<div class="section level2">
+<h2 id="content">Content<a class="anchor" aria-label="anchor" href="#content"></a>
+</h2>
+<div class="section level3">
+<h3 id="libname">How do I create a libname in R?<a class="anchor" aria-label="anchor" href="#libname"></a>
+</h3>
 <p><strong>Q:</strong> I have a directory full of datasets. I need to
 use several of them in my analysis. In SAS®, I would create a libname so
 I could access all of them. Is there a way to do something similar in
@@ -160,38 +162,28 @@ If there are any CSV files in the directory, they will be all loaded
 into the library. To work directly with the datasets, you can then
 do:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">mylib</span><span class="op">)</span></span></code></pre></div>
-<p>This statement will load the datasets into your workspace, where you
-can begin using them. For instance, you could get summary statistics for
-a variable like this:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mylib.dat1</span><span class="op">$</span><span class="va">var1</span><span class="op">)</span></span></code></pre></div>
-<p>If you made any changes to the data, and want to keep those changes,
-remember to save them with:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lib_write.html">lib_write</a></span><span class="op">(</span><span class="va">mylib</span><span class="op">)</span></span></code></pre></div>
-<p>When you are done, unload the datasets with:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lib_unload.html">lib_unload</a></span><span class="op">(</span><span class="va">mylib</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mylib</span><span class="op">$</span><span class="va">mydataset</span></span></code></pre></div>
+<p>To access your datasets.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="formats" class="section level3">
-<h3 class="hasAnchor">
-<a href="#formats" class="anchor"></a>Which data formats does the libname function support?</h3>
+<div class="section level3">
+<h3 id="formats">Which data formats does the libname function support?<a class="anchor" aria-label="anchor" href="#formats"></a>
+</h3>
 <p><strong>Q:</strong> I can see from the examples that the
 <strong>libr</strong> package supports CSV and SAS dataset file formats.
 What other data formats does the package support?</p>
 <p><strong>A:</strong> The package supports the following data formats:
 csv, sas7bdat, rds, Rdata, rda, xls, xlsx, xpt, and dbf. The
 <code><a href="../reference/libname.html">libname()</a></code> help page has a full list, and a short discussion
-of some details on each format.</p>
+of some details on each format. Note that the sas7bdat file format is
+read-only at this time.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="filter" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filter" class="anchor"></a>Is there a way to filter the datasets in my libname?</h3>
+<div class="section level3">
+<h3 id="filter">Is there a way to filter the datasets in my libname?<a class="anchor" aria-label="anchor" href="#filter"></a>
+</h3>
 <p><strong>Q:</strong> I have a directory with over 100 datasets. I want
 to use the <code><a href="../reference/libname.html">libname()</a></code> function, but worry about loading all
 those datasets into memory. Is there a way I can filter the libname, to
@@ -200,19 +192,19 @@ get only some of the datasets?</p>
 <code><a href="../reference/libname.html">libname()</a></code> function allows you to pass a wildcard filter
 string. For example, the following call will load only those datasets
 that start with ‘a’:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">mylib</span>, <span class="st">"c:/mypath/mydata"</span>, <span class="st">"csv"</span>, filter <span class="op">=</span> <span class="st">"a*"</span><span class="op">)</span></span></code></pre></div>
 <p>If you have a more complicated filter criteria, you can also pass a
 vector of filter strings. The below example will load only those
 datasets that start with ‘a’ or ‘b’.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">mylib</span>, <span class="st">"c:/mypath/mydata"</span>, <span class="st">"csv"</span>, filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a*"</span>, <span class="st">"b*"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">mylib</span>, <span class="st">"c:/mypath/mydata"</span>, <span class="st">"csv"</span>, filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a*"</span>, <span class="st">"b*"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="dictionary" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dictionary" class="anchor"></a>How do I view the variables in my datasets?</h3>
+<div class="section level3">
+<h3 id="dictionary">How do I view the variables in my datasets?<a class="anchor" aria-label="anchor" href="#dictionary"></a>
+</h3>
 <p><strong>Q:</strong> I’m doing some analysis with my data, and can’t
 remember all the variable names. Is there an easy way to view or print
 out the variables in my datasets?</p>
@@ -222,7 +214,7 @@ variables in your dataset, and some interesting attributes for each
 variable. The <code><a href="../reference/dictionary.html">dictionary()</a></code> function works on a single data
 frame, or an entire library. You can save this dictionary as metadata,
 print it, or even create a report from it. Here is an example:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create libname</span></span>
 <span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">mylib</span>, <span class="st">"c:/mypath/mydata"</span>, <span class="st">"csv"</span><span class="op">)</span></span>
 <span></span>
@@ -234,9 +226,9 @@ print it, or even create a report from it. Here is an example:</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="export" class="section level3">
-<h3 class="hasAnchor">
-<a href="#export" class="anchor"></a>How do I export data to another file format?</h3>
+<div class="section level3">
+<h3 id="export">How do I export data to another file format?<a class="anchor" aria-label="anchor" href="#export"></a>
+</h3>
 <p><strong>Q:</strong> Let’s say I have some data in one format
 (sas7bdat), and want to export this data to another format (csv or
 Excel). How can I do that with the <strong>libr</strong> package?</p>
@@ -244,7 +236,7 @@ Excel). How can I do that with the <strong>libr</strong> package?</p>
 designed for this purpose. You can take an existing library and export
 the entire thing to another library with a different file format. Like
 this:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">libA</span>, <span class="st">"c:/mypath/mydata1"</span>, <span class="st">"sas7bdat"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/lib_export.html">lib_export</a></span><span class="op">(</span><span class="va">libA</span>, <span class="va">libB</span>, <span class="st">"c:/mypath/mydata2"</span>, <span class="st">"csv"</span><span class="op">)</span></span></code></pre></div>
@@ -256,14 +248,14 @@ desired.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="copy" class="section level3">
-<h3 class="hasAnchor">
-<a href="#copy" class="anchor"></a>How do I copy a library?</h3>
+<div class="section level3">
+<h3 id="copy">How do I copy a library?<a class="anchor" aria-label="anchor" href="#copy"></a>
+</h3>
 <p><strong>Q:</strong> I have a directory full of datasets. I want to
 back up the entire thing to another directory. How can I do that?</p>
 <p><strong>A:</strong> You can use the <code><a href="../reference/lib_copy.html">lib_copy()</a></code> function,
 like this:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create libname</span></span>
 <span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">lib1</span>, <span class="st">"c:/mypath/mydata1"</span>, <span class="st">"csv"</span><span class="op">)</span></span>
 <span></span>
@@ -274,9 +266,9 @@ the new location, and can use this libname like any other.</p>
 <p><a href="#top">top</a></p>
 <hr>
 </div>
-<div id="datastep" class="section level3">
-<h3 class="hasAnchor">
-<a href="#datastep" class="anchor"></a>Can I really do a datastep in R?</h3>
+<div class="section level3">
+<h3 id="datastep">Can I really do a datastep in R?<a class="anchor" aria-label="anchor" href="#datastep"></a>
+</h3>
 <p><strong>Q:</strong> When I first started learning R I searched all
 over for a way to do a datastep. I was shocked to learn there was
 nothing similar. Does the <strong>libr</strong> package really allow me
@@ -288,20 +280,17 @@ loop through the data row by row, examine, and compare variable values
 for each row. It has basic data shaping, grouping, retain, assigning of
 attributes, and a datastep array. Here is a simple example showing
 categorization of an age variable into age groups:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define data library</span></span>
 <span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">dat</span>, <span class="st">"./data"</span>, <span class="st">"csv"</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="co"># Loads data into workspace</span></span>
-<span><span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># Prepare data</span></span>
-<span><span class="va">dm_mod</span> <span class="op">&lt;-</span> <span class="va">dat.DM</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">SEX</span>, <span class="va">AGE</span>, <span class="va">ARM</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">ARM</span> <span class="op">!=</span> <span class="st">"SCREEN FAILURE"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">dm_mod</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">DM</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">SEX</span>, <span class="va">AGE</span>, <span class="va">ARM</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARM</span> <span class="op">!=</span> <span class="st">"SCREEN FAILURE"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    </span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">18</span> <span class="op">&amp;</span> <span class="va">AGE</span> <span class="op">&lt;=</span> <span class="fl">24</span><span class="op">)</span></span>
@@ -313,9 +302,7 @@ categorization of an age variable into age groups:</p>
 <span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">65</span><span class="op">)</span></span>
 <span>      <span class="va">AGECAT</span> <span class="op">&lt;-</span> <span class="st">"&gt;= 65"</span></span>
 <span>    </span>
-<span>  <span class="op">}</span><span class="op">)</span> </span>
-<span>  </span>
-<span><span class="fu"><a href="../reference/lib_unload.html">lib_unload</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">}</span><span class="op">)</span> </span></code></pre></div>
 <p>The datastep example above is part of a <strong>dplyr</strong>
 pipeline, but it can also function independently. Notice that, just like
 a SAS® datastep, you don’t have to declare new variables. You can just
@@ -323,6 +310,75 @@ assign the new variable a value, and the datastep function will create
 it automatically.</p>
 <p>You can check out the <code><a href="../reference/datastep.html">datastep()</a></code> help page, or the <a href="https://libr.r-sassy.org/articles/libr-datastep.html">datastep
 vignette</a> for additional examples and complete documentation.</p>
+<p><a href="#top">top</a></p>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="performance">Why is the datastep so slow?<a class="anchor" aria-label="anchor" href="#performance"></a>
+</h3>
+<p><strong>Q:</strong> I like the <code><a href="../reference/datastep.html">datastep()</a></code> function very
+much. But it seems quite slow.<br>
+Is there anything I can do to speed it up?</p>
+<p><strong>A:</strong> Yes. Performance of the <code><a href="../reference/datastep.html">datastep()</a></code>
+is directly related to the size of the input data. The best thing you
+can do to increase performance is to reduce the input data to only those
+rows and columns that you need. The Base R <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code>
+function and <strong>Tidyverse</strong> <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> and
+<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> functions are useful for this purpose. Or you can
+use the Base R subset brackets ([]) if you are familiar with that
+syntax. If the datastep performance is still not satisfactory, it is
+recommended that you explore other R functions to perform your intended
+operation.</p>
+<p><a href="#top">top</a></p>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="merge">Can I do “set” and “merge” operations with the datastep?<a class="anchor" aria-label="anchor" href="#merge"></a>
+</h3>
+<p><strong>Q:</strong> In SAS®, I used the datastep frequently to
+combine two or more datasets.<br>
+Does the <strong>libr</strong> datastep support “set” and “merge”?</p>
+<p><strong>A:</strong> Yes. The <code><a href="../reference/datastep.html">datastep()</a></code> function
+supports both “set” and “merge” operations. The “set” parameter accepts
+a list of one or more datasets to stack together, and the “merge”
+parameters are used in almost the same way as SAS®. Here is an
+example:</p>
+<pre><code><span><span class="co"># Subset iris dataset</span></span>
+<span><span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'mpg'</span>, <span class="st">'cyl'</span>, <span class="st">'disp'</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
+<span><span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'mpg'</span>, <span class="st">'cyl'</span>, <span class="st">'disp'</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
+<span><span class="va">dat3</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'hp'</span>, <span class="st">'drat'</span>, <span class="st">'wt'</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Stack datasets using set operation</span></span>
+<span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">dat1</span>, set <span class="op">=</span> <span class="va">dat2</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#     mpg cyl  disp</span></span>
+<span><span class="co"># 1  22.8   4 108.0</span></span>
+<span><span class="co"># 2  24.4   4 146.7</span></span>
+<span><span class="co"># 3  22.8   4 140.8</span></span>
+<span><span class="co"># 4  32.4   4  78.7</span></span>
+<span><span class="co"># 5  30.4   4  75.7</span></span>
+<span><span class="co"># 6  21.0   6 160.0</span></span>
+<span><span class="co"># 7  21.0   6 160.0</span></span>
+<span><span class="co"># 8  21.4   6 258.0</span></span>
+<span><span class="co"># 9  18.1   6 225.0</span></span>
+<span><span class="co"># 10 19.2   6 167.6</span></span>
+<span></span>
+<span><span class="co"># Merge row by row</span></span>
+<span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">res1</span>, merge <span class="op">=</span> <span class="va">dat3</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#     mpg cyl  disp  hp drat    wt</span></span>
+<span><span class="co"># 1  22.8   4 108.0 110 3.90 2.620</span></span>
+<span><span class="co"># 2  24.4   4 146.7 110 3.90 2.875</span></span>
+<span><span class="co"># 3  22.8   4 140.8  93 3.85 2.320</span></span>
+<span><span class="co"># 4  32.4   4  78.7 110 3.08 3.215</span></span>
+<span><span class="co"># 5  30.4   4  75.7 175 3.15 3.440</span></span>
+<span><span class="co"># 6  21.0   6 160.0 105 2.76 3.460</span></span>
+<span><span class="co"># 7  21.0   6 160.0 245 3.21 3.570</span></span>
+<span><span class="co"># 8  21.4   6 258.0  62 3.69 3.190</span></span>
+<span><span class="co"># 9  18.1   6 225.0  95 3.92 3.150</span></span>
+<span><span class="co"># 10 19.2   6 167.6 123 3.92 3.440</span></span></code></pre>
+<p>The above merge shows how you can append columns even without a key
+column. If you want to merge by a key, use the “merge_by” and “merge_in”
+parameters. See the <code><a href="../reference/datastep.html">datastep()</a></code> documentation for more
+information and examples.</p>
 <p><a href="#top">top</a></p>
 <hr>
 <!-- ### Question 2? {#q2} --><!-- **Q:** Question here. --><!-- **A:** Answer here. --><!-- [top](#top) --><!-- ****** --><!-- ### Question 1? {#q1} --><!-- **Q:** Question here. --><!-- **A:** Answer here. --><!-- [top](#top)  --><!-- ****** -->
@@ -341,11 +397,13 @@ vignette</a> for additional examples and complete documentation.</p>
 
 
       <footer><div class="copyright">
-  <p>Developed by David Bosak.</p>
+  <p></p>
+<p>Developed by David Bosak.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -353,6 +411,8 @@ vignette</a> for additional examples and complete documentation.</p>
 
   
 
+
+  
 
   </body>
 </html>

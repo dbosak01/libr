@@ -37,5 +37,7 @@
 #' indiscriminately.
 #' @import common
 #' @docType package
+#' @aliases libr-package
+#' @keywords internal
 #' @name libr
 NULL

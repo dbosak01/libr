@@ -29,6 +29,8 @@ on the links below to navigate to the full question and answer content.
 * [How do I export data to another file format?](#export)
 * [How do I copy a library?](#copy)
 * [Can I really do a datastep in R?](#datastep)
+* [Why is the datastep so slow?](#performance)
+* [Can I do "set" and "merge" operations with the datastep?](#merge)
 
 
 ## Content
@@ -50,24 +52,9 @@ specified on the second parameter.  The libname will use the CSV engine.
 If there are any CSV files in the directory, they will be all loaded 
 into the library.  To work directly with the datasets, you can then do:
 ```{r eval=FALSE, echo=TRUE}
-lib_load(mylib)
+mylib$mydataset
 ```
-This statement will load the datasets into your workspace, where you can begin
-using them.  For instance, you could get summary statistics for a variable like
-this:
-```{r eval=FALSE, echo=TRUE}
-summary(mylib.dat1$var1)
-```
-
-If you made any changes to the data, and want to keep those changes, remember
-to save them with:
-```{r eval=FALSE, echo=TRUE}
-lib_write(mylib)
-```
-When you are done, unload the datasets with:
-```{r eval=FALSE, echo=TRUE}
-lib_unload(mylib)
-```
+To access your datasets. 
 
 [top](#top) 
 
@@ -82,7 +69,8 @@ support?
 
 **A:** The package supports the following data formats: csv, sas7bdat, 
 rds, Rdata, rda, xls, xlsx, xpt, and dbf.  The `libname()` help page has a full list,
-and a short discussion of some details on each format.
+and a short discussion of some details on each format.  Note that the sas7bdat
+file format is read-only at this time.
 
 [top](#top) 
 
@@ -207,11 +195,8 @@ library(libr)
 # Define data library
 libname(dat, "./data", "csv") 
 
-# Loads data into workspace
-lib_load(dat)
-
 # Prepare data
-dm_mod <- dat.DM %>% 
+dm_mod <- dat$DM %>% 
   select(USUBJID, SEX, AGE, ARM) %>% 
   filter(ARM != "SCREEN FAILURE") %>% 
   datastep({
@@ -226,8 +211,7 @@ dm_mod <- dat.DM %>%
       AGECAT <- ">= 65"
     
   }) 
-  
-lib_unload(dat)
+
 ```
 The datastep example above is part of a **dplyr** pipeline,
 but it can also function independently.
@@ -243,6 +227,74 @@ for additional examples and complete documentation.
 
 ******
 
+### Why is the datastep so slow? {#performance}
+
+**Q:** I like the `datastep()` function very much.  But it seems quite slow.  
+Is there anything I can do to speed it up? 
+
+**A:** Yes. Performance of the `datastep()` is directly related to the size
+of the input data.  The best thing you can do to increase performance
+is to reduce the input data to only those rows and columns that you need.
+The Base R `subset()` function and **Tidyverse** `select()` and `filter()`
+functions are useful for this purpose.  Or you can use the Base R subset brackets ([])
+if you are familiar with that syntax.  If the datastep performance is still
+not satisfactory, it is recommended that you explore other R functions to 
+perform your intended operation.
+
+[top](#top) 
+
+******
+
+### Can I do "set" and "merge" operations with the datastep? {#merge}
+
+**Q:** In SAS®, I used the datastep frequently to combine two or more datasets.  
+Does the **libr** datastep support "set" and "merge"? 
+
+**A:** Yes. The `datastep()` function supports both "set" and "merge" operations.
+The "set" parameter accepts a list of one or more datasets to stack together,
+and the "merge" parameters are used in almost the same way as SAS®.
+Here is an example:
+```
+# Subset iris dataset
+dat1 <- subset(mtcars, cyl == 4, c('mpg', 'cyl', 'disp'))[1:5, ]
+dat2 <- subset(mtcars, cyl == 6, c('mpg', 'cyl', 'disp'))[1:5, ]
+dat3 <- mtcars[1:10, c('hp', 'drat', 'wt')]
+
+# Stack datasets using set operation
+res1 <- datastep(dat1, set = dat2, {})
+#     mpg cyl  disp
+# 1  22.8   4 108.0
+# 2  24.4   4 146.7
+# 3  22.8   4 140.8
+# 4  32.4   4  78.7
+# 5  30.4   4  75.7
+# 6  21.0   6 160.0
+# 7  21.0   6 160.0
+# 8  21.4   6 258.0
+# 9  18.1   6 225.0
+# 10 19.2   6 167.6
+
+# Merge row by row
+res2 <- datastep(res1, merge = dat3, {})
+#     mpg cyl  disp  hp drat    wt
+# 1  22.8   4 108.0 110 3.90 2.620
+# 2  24.4   4 146.7 110 3.90 2.875
+# 3  22.8   4 140.8  93 3.85 2.320
+# 4  32.4   4  78.7 110 3.08 3.215
+# 5  30.4   4  75.7 175 3.15 3.440
+# 6  21.0   6 160.0 105 2.76 3.460
+# 7  21.0   6 160.0 245 3.21 3.570
+# 8  21.4   6 258.0  62 3.69 3.190
+# 9  18.1   6 225.0  95 3.92 3.150
+# 10 19.2   6 167.6 123 3.92 3.440
+```
+The above merge shows how you can append columns even without a key column.
+If you want to merge by a key, use the "merge_by" and "merge_in" parameters.
+See the `datastep()` documentation for more information and examples.
+
+[top](#top) 
+
+******
 
 <!-- ### Question 2? {#q2} -->
 

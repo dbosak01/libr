@@ -3,6 +3,7 @@
 \docType{package}
 \name{libr}
 \alias{libr}
+\alias{libr-package}
 \title{Libnames, Data Dictionaries and Data Steps}
 \description{
 The \strong{libr} package brings the concepts of data libraries, data 
@@ -40,3 +41,4 @@ requires very careful control over which data is or is not loaded into memory.
 The \strong{libr} package, on the other hand, tends to load all data into memory 
 indiscriminately.
 }
+\keyword{internal}

@@ -119,23 +119,71 @@ cols(
 
 The column specification shows how the data was imported.  Since 'csv'
 files do not contain well-defined data type information on each of the columns,
-the `libname` function has to guess at the data types.  The column
+the `libname()` function has to guess at the data types.  The column
 specification shows you what the guesses were.  This is useful information.
-You should review these column specifications to see if the `libname` function
+You should review these column specifications to see if the `libname()` function
 guessed correctly.  If it did not guess correctly, you can control 
 the import data types by sending a `specs()` collection of `import_spec()`
 objects to the `import_specs` parameter on the `libname()` function.  See
 the `specs()` documentation for an example and additional details.
 
-#### The `lib_load()` Function
+#### Accessing Data
 Observe that there is difference between the SAS® `libname` statement and the 
 **libr** `libname()` function.  The difference is that after the 
 SAS® `libname` statement is called, the data is immediately available to
 your code using two-level (\<library\>.\<dataset\>) syntax.  
 
 With the **libr** function, on the other hand, the data is immediately 
-available using list syntax on the library variable name.  To get the 
-two-level syntax, you first have to call the `lib_load()` function.
+available using list syntax on the library variable name. That means you can 
+get to your data using the dollar sign ($), like this:
+```{r eval=FALSE, echo=TRUE} 
+# View a dataset
+sdtm$DM
+# # A tibble: 87 × 24
+#    STUDYID DOMAIN USUBJID SUBJID RFSTDTC    RFENDTC RFXSTDTC RFXENDTC RFICDTC    RFPENDTC
+#    <chr>   <chr>  <chr>   <chr>  <date>     <date>  <lgl>    <lgl>    <date>     <date>  
+#  1 ABC     DM     ABC-01… 049    2006-11-07 NA      NA       NA       2006-10-25 NA      
+#  2 ABC     DM     ABC-01… 050    2006-11-02 NA      NA       NA       2006-10-25 NA      
+#  3 ABC     DM     ABC-01… 051    2006-11-02 NA      NA       NA       2006-10-25 NA      
+#  4 ABC     DM     ABC-01… 052    2006-11-06 NA      NA       NA       2006-10-31 NA      
+#  5 ABC     DM     ABC-01… 053    2006-11-08 NA      NA       NA       2006-11-01 NA      
+#  6 ABC     DM     ABC-01… 054    2006-11-16 NA      NA       NA       2006-11-07 NA      
+#  7 ABC     DM     ABC-01… 055    2006-12-06 NA      NA       NA       2006-10-31 NA      
+#  8 ABC     DM     ABC-01… 056    2006-11-28 NA      NA       NA       2006-11-21 NA      
+#  9 ABC     DM     ABC-01… 113    2006-12-05 NA      NA       NA       2006-11-28 NA      
+# 10 ABC     DM     ABC-01… 114    2006-12-14 NA      NA       NA       2006-12-01 NA      
+# #  77 more rows
+# #  14 more variables: DTHDTC <lgl>, DTHFL <lgl>, SITEID <chr>, BRTHDTC <date>, AGE <dbl>,
+# #   AGEU <chr>, SEX <chr>, RACE <chr>, ETHNIC <chr>, ARMCD <chr>, ARM <chr>, ACTARMCD <lgl>,
+# #   ACTARM <lgl>, COUNTRY <lgl>
+# #  Use `print(n = ...)` to see more rows
+
+```
+Using this syntax, your dataset can be passed into any R function.  For example, 
+here we can subset the dataset for a particular subject:
+```
+# Subset the data
+dat <- subset(sdtm$DM, SUBJID == '050')
+
+# View results
+dat
+# # A tibble: 1 × 24
+#   STUDYID DOMAIN USUBJID  SUBJID RFSTDTC    RFENDTC RFXSTDTC RFXENDTC RFICDTC    RFPENDTC
+#   <chr>   <chr>  <chr>    <chr>  <date>     <date>  <lgl>    <lgl>    <date>     <date>  
+# 1 ABC     DM     ABC-01-… 050    2006-11-02 NA      NA       NA       2006-10-25 NA      
+# #   14 more variables: DTHDTC <lgl>, DTHFL <lgl>, SITEID <chr>, BRTHDTC <date>, AGE <dbl>,
+# #   AGEU <chr>, SEX <chr>, RACE <chr>, ETHNIC <chr>, ARMCD <chr>, ARM <chr>, ACTARMCD <lgl>,
+# #   ACTARM <lgl>, COUNTRY <lgl>
+
+```
+The dollar sign syntax show above is recommended for the most memory-efficient 
+programming.  If you are writing production code to be run in batch, use 
+the dollar sign syntax.
+
+#### The `lib_load()` Function
+For convenience, the package also provides a way to get two-level dot syntax,
+similar to SAS®.
+To get the dot syntax, you first have to call the `lib_load()` function.
 ```{r eval=FALSE, echo=TRUE} 
 
 lib_load(sdtm)
@@ -157,7 +205,7 @@ lib_load(sdtm)
 
 Notice on the console printout that the library is now "loaded".  That means
 the data has been loaded into the workspace, and is available using
-two-level syntax. If you are working in **RStudio**, the environment 
+two-level dot syntax. If you are working in **RStudio**, the environment 
 pane will now show all the datasets available in the library.
 
 <img src="../man/images/lib_load.png"/>

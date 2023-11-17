@@ -10,6 +10,7 @@ articles:
   - libr-disclaimer
   - libr-example1
   - libr-example2
+  - libr-faq
 
 reference:
 - title: Library Functions
@@ -59,6 +60,7 @@ navbar:
   type: inverse
   structure:
     right: [home, intro, articles, reference, faq, news, github]
+    left: []
   components:
     faq:
       text: FAQ

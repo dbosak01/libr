@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,19 +40,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.9</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"></ul>
 <ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/libr.html">Get started</a>
 </li>
@@ -79,6 +75,9 @@
     <li>
       <a href="../articles/libr-example2.html">Complete Example 2</a>
     </li>
+    <li>
+      <a href="../articles/libr-faq.html">Frequently Asked Questions</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -91,7 +90,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/dbosak01/libr/">
+  <a href="https://github.com/dbosak01/libr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -106,13 +105,13 @@
 
       
 
-      </header><script src="libr-management_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Library Management</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/master/vignettes/libr-management.Rmd"><code>vignettes/libr-management.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dbosak01/libr/blob/HEAD/vignettes/libr-management.Rmd" class="external-link"><code>vignettes/libr-management.Rmd</code></a></small>
       <div class="hidden name"><code>libr-management.Rmd</code></div>
 
     </div>
@@ -128,17 +127,17 @@ then proceeds to copy it to another library and perform some
 manipulation of the data in the libraries. The example ends by looking
 at some of the metadata available for libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create temp directory</span></span>
-<span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create libraries</span></span>
 <span><span class="fu"><a href="../reference/libname.html">libname</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">tmp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add data to library and adjust names</span></span>
 <span><span class="fu"><a href="../reference/lib_add.html">lib_add</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">state.name</span>, <span class="va">state.area</span>, <span class="va">state.region</span>, <span class="va">state.abb</span>,</span>
-<span>        name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
+<span>        name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># # library 's1': 4 items</span></span>
 <span><span class="co"># - attributes: rds not loaded</span></span>
 <span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
@@ -150,7 +149,7 @@ at some of the metadata available for libraries:</p>
 <span><span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:00:28</span></span>
 <span></span>
 <span><span class="co"># Copy library to backup location</span></span>
-<span><span class="fu"><a href="../reference/lib_copy.html">lib_copy</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"orig"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/lib_copy.html">lib_copy</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"orig"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># # library 's2': 4 items</span></span>
 <span><span class="co"># - attributes: rds not loaded</span></span>
 <span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L/orig</span></span>
@@ -162,7 +161,7 @@ at some of the metadata available for libraries:</p>
 <span><span class="co"># 4    abb       rds   50    1 4.1 Kb 2020-11-29 17:01:17</span></span>
 <span></span>
 <span><span class="co"># Remove data from library 1</span></span>
-<span><span class="fu"><a href="../reference/lib_remove.html">lib_remove</a></span><span class="op">(</span><span class="va">s1</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/lib_remove.html">lib_remove</a></span><span class="op">(</span><span class="va">s1</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"area"</span>, <span class="st">"region"</span>, <span class="st">"abb"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># # library 's1': 0 items</span></span>
 <span><span class="co"># - attributes: rds not loaded</span></span>
 <span><span class="co"># - path: C:\Users\User\AppData\Local\Temp\RtmpqAMV6L</span></span>
@@ -171,14 +170,14 @@ at some of the metadata available for libraries:</p>
 <span><span class="co"># Load library 1 into memory</span></span>
 <span><span class="fu"><a href="../reference/lib_load.html">lib_load</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">s1.combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">s2.name</span>, abb <span class="op">=</span> <span class="va">s2.abb</span>, </span>
+<span><span class="va">s1.combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">s2.name</span>, abb <span class="op">=</span> <span class="va">s2.abb</span>, </span>
 <span>                          area <span class="op">=</span> <span class="va">s2.area</span>, region <span class="op">=</span> <span class="va">s2.region</span>, </span>
 <span>                          stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">s1.east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"Northeast"</span><span class="op">)</span></span>
-<span><span class="va">s1.west</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"West"</span><span class="op">)</span></span>
-<span><span class="va">s1.north</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"North Central"</span><span class="op">)</span></span>
-<span><span class="va">s1.south</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"South"</span><span class="op">)</span></span>
+<span><span class="va">s1.east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"Northeast"</span><span class="op">)</span></span>
+<span><span class="va">s1.west</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"West"</span><span class="op">)</span></span>
+<span><span class="va">s1.north</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"North Central"</span><span class="op">)</span></span>
+<span><span class="va">s1.south</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">s1.combined</span>, <span class="va">region</span> <span class="op">==</span> <span class="st">"South"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Sync workspace with library list</span></span>
 <span><span class="fu"><a href="../reference/lib_sync.html">lib_sync</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
@@ -267,11 +266,13 @@ at some of the metadata available for libraries:</p>
 
 
       <footer><div class="copyright">
-  <p>Developed by David Bosak.</p>
+  <p></p>
+<p>Developed by David Bosak.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -279,6 +280,8 @@ at some of the metadata available for libraries:</p>
 
   
 
+
+  
 
   </body>
 </html>
