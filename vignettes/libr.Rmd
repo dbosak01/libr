@@ -176,7 +176,7 @@ dat
 # #   ACTARM <lgl>, COUNTRY <lgl>
 
 ```
-The dollar sign syntax show above is recommended for the most memory-efficient 
+The dollar sign syntax shown above is recommended for the most memory-efficient 
 programming.  If you are writing production code to be run in batch, use 
 the dollar sign syntax.
 

@@ -710,6 +710,7 @@ Here is an example showing how to reduce the size of the **iris** sample
 dataframe using Base R `subset()` before sending it to a datastep.
 
 #### Example 10: Increasing Performance
+
 ```
 # Subset the input dataset first for only needed rows and columns
 dat <- subset(iris, Species == 'versicolor', c('Petal.Length', 'Petal.Width')) |> 
