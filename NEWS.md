@@ -1,3 +1,8 @@
+# libr 1.3.0
+* Fixed bug on sas7bdat where class on date columns was being stripped.
+* Fixed bug on `datastep()` where expression that was removing input dataset
+attributes (like labels).
+
 # libr 1.2.9
 * Fixed bug on `datastep()` when there are spaces in the column names 
 and output() function is used.

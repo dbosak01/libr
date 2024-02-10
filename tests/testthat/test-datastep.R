@@ -1701,3 +1701,37 @@ test_that("ds47: Multiple group bys works as expected.", {
   expect_equal(sum(d1$l2), 2)
   
 })
+
+
+test_that("ds48: labels retained with where clause.", {
+  
+  
+  dat <- mtcars
+  
+  labels(dat) <- list(mpg = "Miles", cyl = "Cylinders")
+  
+  df <- datastep(dat,
+                 where = expression(cyl == 8),
+                 {
+                   
+                   if (mpg >= 20)
+                     mpgcat <- "High"
+                   else
+                     mpgcat <- "Low"
+                   
+                   recdt <- as.Date("1974-06-10")
+                   
+                   if (cyl == 8)
+                     is8cyl <- TRUE
+                   else
+                     is8cyl <- FALSE
+                   
+                 })
+  
+  df
+  
+  lbls <- labels(df)
+  
+  expect_equal(length(lbls), 2)
+  
+})

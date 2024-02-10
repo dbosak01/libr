@@ -562,6 +562,34 @@ test_that("lib25: libname() function works as expected with rds", {
 })
 
 
+test_that("lib26: sas7bdat dates are retained", {
+  
+  libname(dat, base_path, engine = "sas7bdat")
+  
+  cls <- class(dat$demo_studyb$dob)
+  expect_equal("Date" %in% cls, TRUE)
+  
+})
+
+
+test_that("lib26: labels on data are retained after where clause", {
+  
+  libname(dat, base_path, engine = "sas7bdat")
+  
+  lbl1 <- labels(dat$demo_studya)
+  expect_equal(length(lbl1) > 0, TRUE)
+  
+  libname(dat2, base_path, engine = "sas7bdat", 
+          where = expression(sex == 'F'))
+  
+  lbl2 <- labels(dat2$demo_studya)
+  expect_equal(length(lbl2) > 0, TRUE)
+
+  
+})
+
+
+
 
 # 
 # test_that("lib24: lib_export() creates new library.", {

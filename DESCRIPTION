@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Libraries, Data Dictionaries, and a Data Step for R
-Version: 1.2.9
+Version: 1.3.0
 Author: David J. Bosak
 Maintainer: David Bosak <dbosak01@gmail.com>
 Description: Contains a set of functions to create data libraries,
@@ -16,7 +16,7 @@ Encoding: UTF-8
 URL: https://libr.r-sassy.org
 BugReports: https://github.com/dbosak01/libr/issues
 Depends: R (>= 3.6.0),
-    common
+    common (>= 1.1.0)
 Suggests: 
     testthat,
     knitr,

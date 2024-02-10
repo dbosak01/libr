@@ -860,6 +860,9 @@ datastep <- function(data, steps, keep = NULL,
   if (!is.null(where)) {
     ret <- tryCatch({subset(ret, eval(where))},
                     error = function(cond){ret})
+    
+    # Restore attributes from original data 
+    ret <- copy_attributes(data_attributes, ret)
   }
   
   # Labels
