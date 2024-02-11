@@ -41,4 +41,12 @@ requires very careful control over which data is or is not loaded into memory.
 The \strong{libr} package, on the other hand, tends to load all data into memory 
 indiscriminately.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://libr.r-sassy.org}
+  \item Report bugs at \url{https://github.com/dbosak01/libr/issues}
+}
+
+}
 \keyword{internal}

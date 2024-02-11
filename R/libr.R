@@ -36,8 +36,7 @@
 #' The \strong{libr} package, on the other hand, tends to load all data into memory 
 #' indiscriminately.
 #' @import common
-#' @docType package
 #' @aliases libr-package
 #' @keywords internal
 #' @name libr
-NULL
+"_PACKAGE"
