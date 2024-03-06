@@ -13,7 +13,7 @@ Description: Contains a set of functions to create data libraries,
     will perform row-by-row data processing.
 License: CC0
 Encoding: UTF-8
-URL: https://libr.r-sassy.org
+URL: https://libr.r-sassy.org, https://github.com/dbosak01/libr
 BugReports: https://github.com/dbosak01/libr/issues
 Depends: R (>= 3.6.0),
     common (>= 1.1.0)

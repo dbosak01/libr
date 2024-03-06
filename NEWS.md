@@ -1,3 +1,8 @@
+# libr 1.3.1
+
+# Fixed bug on `datastep()` when running in `source.all()`.
+# Performance improvements on datastep when there is no retained values.
+
 # libr 1.3.0
 * Fixed bug on sas7bdat where class on date columns was being stripped.
 * Fixed bug on `datastep()` where expression that was removing input dataset
