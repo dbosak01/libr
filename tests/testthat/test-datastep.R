@@ -11,7 +11,7 @@ dev <- FALSE
 
 test_that("ds1: datastep() function works as expected with mtcars.", {
 
-
+  
   d1 <- datastep(mtcars, {
 
     if (mpg >= 20)

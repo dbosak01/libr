@@ -45,6 +45,7 @@ indiscriminately.
 Useful links:
 \itemize{
   \item \url{https://libr.r-sassy.org}
+  \item \url{https://github.com/dbosak01/libr}
   \item Report bugs at \url{https://github.com/dbosak01/libr/issues}
 }
 

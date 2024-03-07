@@ -719,10 +719,6 @@ datastep <- function(data, steps, keep = NULL,
     
   } else {
     
-    efrm <- max(sys.parents())  
-    if (efrm == 0)
-      efrm <- 1
-    
     # Sometimes the local environment cannot access the parent frame.
     # If this happens, transfer any variables from the parent frame 
     # to the local frame.
@@ -736,7 +732,7 @@ datastep <- function(data, steps, keep = NULL,
         lf[[pnm]] <- pf[[pnm]]
       }
     }
-    
+
     # Step through row by row
     for (n. in seq_len(rowcount)) {
       
@@ -789,7 +785,8 @@ datastep <- function(data, steps, keep = NULL,
       ret <- bind_rows(ret, .id = "column_label")
     }
     ret["column_label"] <- NULL
-  
+    
+
   }
   
   
