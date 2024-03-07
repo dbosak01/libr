@@ -1470,7 +1470,9 @@ test_that("ds53: Merge by keeps dataset attributes.", {
                        lbl = "Label",
                        disp = "Displacement 2")
 
-  res1 <- datastep(dat1, merge = dat2, merge_by = cyl,{})
+  res1 <- datastep(dat1, merge = dat2, merge_by = cyl,{
+          sammy <- mpg * 2
+    })
 
   res1
 
@@ -1738,7 +1740,7 @@ test_that("ds48: labels retained with where clause.", {
 
 })
 
-test_that("ds49: datastep() function works as expected with mtcars.", {
+test_that("ds49: works as expected with local variable.", {
   
   
   library(fmtr)
@@ -1763,7 +1765,7 @@ test_that("ds49: datastep() function works as expected with mtcars.", {
 })
 
 
-test_that("ds50: datastep() function works as expected with mtcars.", {
+test_that("ds50: works as expected with source.all().", {
 
   
   if (dev) {
