@@ -135,7 +135,7 @@ is.loaded.lib <- function(name) {
 #' @noRd
 getExtension <- function(file){ 
   ex <- strsplit(basename(file), split="\\.")[[1]]
-  return(ex[-1])
+  return(ex[length(ex)])
 } 
 
 #' @description Get the name of a file without extension

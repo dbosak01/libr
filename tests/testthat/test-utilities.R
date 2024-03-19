@@ -93,6 +93,18 @@ test_that("copy_attributes function works as expected.", {
 })
 
 
+test_that("getExtension() works with two dots", {
+  
+  flnm <- "table_hemo.1.csv"
+  
+  res <- getExtension(flnm)
+  
+  expect_equal(length(res), 1)
+  expect_equal(res, "csv")
+  
+  
+})
+
 # 
 # test_that("libname() var_name parameter works as expected.", {
 #   

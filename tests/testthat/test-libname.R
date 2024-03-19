@@ -29,7 +29,7 @@ test_that("lib2: libname() and quiet parameter works as expected with csv.", {
   expect_equal(ncol(dat[[2]]), 9)
 })
 
-
+libname(dat, "C:/packages/Testing/incyte/Vicky", engine = "csv")
 
 test_that("lib3: libname() function works as expected with rds", {
 

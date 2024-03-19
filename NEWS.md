@@ -1,3 +1,6 @@
+# libr 1.3.2
+* Fixed bug on `libname()` when there are file names with multiple dots.
+
 # libr 1.3.1
 * Fixed bug on `datastep()` when running in `source.all()`.
 
