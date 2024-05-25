@@ -343,7 +343,7 @@ libname <- function(name, directory_path, engine = "rds",
             
             if (nrow(pb) > 0) {
               pbmsg <- paste0("There were problems encountered reading in the '", 
-                              nm, "' data file. Run 'problems(", name_c, "$", 
+                              nm, "' data file. Run 'readr::problems(", name_c, "$", 
                               nm, ") to get ",
                               "a table of these problems.")
               
