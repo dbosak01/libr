@@ -80,6 +80,61 @@ LogicalVector bylast(CharacterVector dat) {
 }
 
 
+// [[Rcpp::export]]
+RawVector getsigs(RawVector dat) {
+  
+  int n = dat.length();
+  int spos;
+  int npos;
+  
+  spos = dat[0];
+  
+  for(int i = 1; i < n; i++) {
+    
+    npos = dat[i];
+
+    spos = spos ^ npos;
+
+  }
+  
+  RawVector ret(1);
+   
+  ret[0] = spos;
+  
+  return ret;
+}
+
+// getBitSignature <- function(x) {
+//   
+//   spos <- x[1]
+//   for (i in seq(2, length(x))) {
+//     
+//     spos <- xor(spos, x[i]) 
+//   }
+//   
+//   return(spos)
+// }
+
+// captureSignatures <- function(dat) {
+//   
+//   ret <- list()
+//   
+//   att <- attributes(dat)
+//   for (nm in names(att)) {
+//     if (!nm %in% c("class", "name"))
+//       attr(dat, nm) <- NULL
+//   }
+//   
+//   idat <- serialize(dat, connection = NULL)
+//     
+//     ret$Length <- length(idat)
+//     ret$Hex <- getBitSignature(idat)
+//     
+//     return(ret)
+// }
+
+
+
 
 // You can include R code blocks in C++ files processed with sourceCpp
 // (useful for testing and development). The R code will be automatically 

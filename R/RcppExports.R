@@ -13,3 +13,7 @@ bylast <- function(dat) {
     .Call('_libr_bylast', PACKAGE = 'libr', dat)
 }
 
+getsigs <- function(dat) {
+    .Call('_libr_getsigs', PACKAGE = 'libr', dat)
+}
+

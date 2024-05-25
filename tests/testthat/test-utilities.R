@@ -105,7 +105,26 @@ test_that("utils05: getExtension() works with two dots", {
   
 })
 
-test_that("utils06: captureSignatures() works as expected.", {
+
+test_that("utils06: getsignatures() works as expected.", {
+  
+  s1 <- serialize(iris, NULL)
+  
+  
+  s1[1]
+
+  
+  m1 <- getBitSignature(s1)  
+  m2 <- getsigs(s1)
+  
+  m1
+  m2
+  
+  expect_equal(m1 == m2, TRUE)
+  
+})
+
+test_that("utils07: captureSignatures() works as expected.", {
   
   
   m1 <- mtcars
@@ -125,6 +144,7 @@ test_that("utils06: captureSignatures() works as expected.", {
   expect_equal(s1$Hex == s3$Hex, TRUE)
   
 })
+
 
 # 
 # test_that("libname() var_name parameter works as expected.", {

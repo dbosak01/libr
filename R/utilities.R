@@ -568,7 +568,7 @@ captureSignatures <- function(dat) {
   idat <- serialize(dat, connection = NULL)
   
   ret$Length <- length(idat)
-  ret$Hex <- getBitSignature(idat)
+  ret$Hex <- getsigs(idat)
 
   return(ret)
 }

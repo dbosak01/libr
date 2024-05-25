@@ -43,11 +43,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getsigs
+RawVector getsigs(RawVector dat);
+RcppExport SEXP _libr_getsigs(SEXP datSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RawVector >::type dat(datSEXP);
+    rcpp_result_gen = Rcpp::wrap(getsigs(dat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_libr_bychanges", (DL_FUNC) &_libr_bychanges, 1},
     {"_libr_byfirst", (DL_FUNC) &_libr_byfirst, 1},
     {"_libr_bylast", (DL_FUNC) &_libr_bylast, 1},
+    {"_libr_getsigs", (DL_FUNC) &_libr_getsigs, 1},
     {NULL, NULL, 0}
 };
 
