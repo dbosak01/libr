@@ -196,6 +196,27 @@ writeData <- function(x, ext, file_path, force = FALSE) {
   # Compare checksums
   cs_comp <- cs1 == cs2
   
+  sig <- captureSignatures(x)
+  
+  # If passes, compare df to file
+  if (!force && cs_comp == TRUE) {
+    
+    al <- attr(x, "length")
+    ah <- attr(x, "hex")
+    
+    if (!is.null(al)) {
+      if (sig$Length != al)
+        cs_comp <- FALSE
+    }
+    
+    if (!is.null(ah)) {
+      
+      if (sig$Hex != ah)
+        cs_comp <- FALSE
+    }
+  }
+
+  
   if (ext == "csv") {
   
     if (!cs_comp | force) {
@@ -203,6 +224,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       write_csv(x, file_path, na = "")
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
     
   } else if (ext == "rds") {
@@ -212,6 +235,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       write_rds(x, file_path)
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
     
   } else if (tolower(ext) %in% c("rdata", "rda")) {
@@ -221,6 +246,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       save(x, file = file_path)
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
 
   } else if (ext == "sas7bdat") {
@@ -239,6 +266,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       foreign::write.dbf(as.data.frame(x, stringsAsFactors = FALSE), file_path)
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
     
   } else if (ext == "xpt") {
@@ -248,6 +277,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       write_xpt(x, file_path)
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
     
   } else if (ext == "xlsx") {
@@ -257,6 +288,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
         file.remove(file_path)
       openxlsx::write.xlsx(x, file_path)
       attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
 
   } else if (ext == "xls") {
@@ -272,6 +305,8 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       attr(x, "extension") <- "xlsx"
       attr(x, "path") <- fp
       attr(x, "checksum") <- md5sum(fp)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
     }
 
   }  
@@ -506,6 +541,37 @@ log_output <- function() {
   return(ret)
 }
 
+
+
+getBitSignature <- function(x) {
+  
+  spos <- x[1]
+  for (i in seq(2, length(x))) {
+    
+    spos <- xor(spos, x[i]) 
+  }
+  
+  return(spos)
+}
+
+
+captureSignatures <- function(dat) {
+  
+  ret <- list()
+  
+  att <- attributes(dat)
+  for (nm in names(att)) {
+    if (!nm %in% c("class", "name"))
+      attr(dat, nm) <- NULL
+  }
+  
+  idat <- serialize(dat, connection = NULL)
+  
+  ret$Length <- length(idat)
+  ret$Hex <- getBitSignature(idat)
+
+  return(ret)
+}
 
 
 # @noRd

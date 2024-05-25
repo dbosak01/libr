@@ -5,7 +5,7 @@ base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 base_path <- "./data"
 
 
-test_that("lib_load() and lib_unload() functions works as expected.", {
+test_that("libm01: lib_load() and lib_unload() functions works as expected.", {
 
 
   libname(dat, base_path, engine = "csv")
@@ -27,7 +27,7 @@ test_that("lib_load() and lib_unload() functions works as expected.", {
 })
 
 
-test_that("lib_size() works as expected.", {
+test_that("libm02: lib_size() works as expected.", {
 
 
   libname(dat, base_path, "csv")
@@ -38,7 +38,7 @@ test_that("lib_size() works as expected.", {
 
 })
 
-test_that("lib_info() works as expected.", {
+test_that("libm03: lib_info() works as expected.", {
 
 
   libname(dat, base_path, "csv")
@@ -53,7 +53,7 @@ test_that("lib_info() works as expected.", {
 
 
 
-test_that("lib_path() works as expected.", {
+test_that("libm04: lib_path() works as expected.", {
 
 
   libname(dat, base_path, "csv")
@@ -66,7 +66,7 @@ test_that("lib_path() works as expected.", {
 })
 
 
-test_that("lib_sync() function works as expected.", {
+test_that("libm05: lib_sync() function works as expected.", {
 
 
   libname(dat, base_path, engine = "csv")
@@ -104,7 +104,7 @@ test_that("lib_sync() function works as expected.", {
 
 
 
-test_that("lib_sync() function can add a new item from workspace.", {
+test_that("libm06: lib_sync() function can add a new item from workspace.", {
 
 
   libname(dat, base_path, engine = "csv")
@@ -120,7 +120,7 @@ test_that("lib_sync() function can add a new item from workspace.", {
 
 })
 
-test_that("lib_unload() function can add a new item from workspace.", {
+test_that("libm07: lib_unload() function can add a new item from workspace.", {
 
 
   libname(dat, base_path, engine = "csv")
@@ -137,7 +137,7 @@ test_that("lib_unload() function can add a new item from workspace.", {
 })
 
 
-test_that("lib_add() function works as expected unloaded.", {
+test_that("libm08: lib_add() function works as expected unloaded.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -157,7 +157,7 @@ test_that("lib_add() function works as expected unloaded.", {
 
 })
 
-test_that("lib_add() function works as expected loaded.", {
+test_that("libm09: lib_add() function works as expected loaded.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -182,7 +182,7 @@ test_that("lib_add() function works as expected loaded.", {
 })
 
 
-test_that("lib_remove() work as expected with multiple names.", {
+test_that("libm10: lib_remove() work as expected with multiple names.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -200,7 +200,7 @@ test_that("lib_remove() work as expected with multiple names.", {
 })
 
 
-test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
+test_that("libm11: lib_add(), lib_remove() functions work as expected unloaded.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -218,7 +218,7 @@ test_that("lib_add(), lib_remove() functions work as expected unloaded.", {
 })
 
 
-test_that("lib_add(), lib_remove() functions work as expected loaded.", {
+test_that("libm12: lib_add(), lib_remove() functions work as expected loaded.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -243,73 +243,8 @@ test_that("lib_add(), lib_remove() functions work as expected loaded.", {
 })
 
 
-#  This idea was killed a long time ago.  Now all libnames are of a single type.
-# test_that("lib_add() function can add a new items of different types.", {
-#
-#   alt_path <- tempdir()
-#   libname(dat, alt_path)
-#
-#   # RDS
-#   lib_add(dat, mtcars)
-#
-#   res <- file.exists(file.path(alt_path, "mtcars.rds"))
-#
-#   expect_equal(res, TRUE)
-#
-#   lib_remove(dat, "mtcars")
-#
-#   # CSV
-#
-#   lib_add(dat, mtcars, type = "csv")
-#
-#   res <- file.exists(file.path(alt_path, "mtcars.csv"))
-#
-#   expect_equal(res, TRUE)
-#
-#   lib_remove(dat, "mtcars")
-#
-#
-#
-#   # sas7bdat
-#
-#   lib_add(dat, mtcars, type = "sas7bdat")
-#
-#   res <- file.exists(file.path(alt_path, "mtcars.sas7bdat"))
-#
-#   expect_equal(res, TRUE)
-#
-#   lib_remove(dat, "mtcars")
-#
-#
-#
-#   # XLS
-#   lib_add(dat, mtcars, engine = "xls")
-#
-#   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
-#
-#   expect_equal(res, TRUE)
-#
-#   lib_remove(dat, "mtcars")
-#
-#
-#
-#   # xlsx
-#
-#   lib_add(dat, mtcars, engine = "xlsx")
-#
-#   res <- file.exists(file.path(alt_path, "mtcars.xlsx"))
-#
-#   expect_equal(res, TRUE)
-#
-#   lib_remove(dat, "mtcars")
-#
-#   # Clear out
-#
-#   lib_delete(dat)
-# })
 
-
-test_that("lib_write() function can add a new item and save as rds.", {
+test_that("libm13: lib_write() function can add a new item and save as rds.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path)
@@ -329,7 +264,7 @@ test_that("lib_write() function can add a new item and save as rds.", {
 })
 
 
-test_that("lib_add() function can add a new item and save as csv", {
+test_that("libm14: lib_add() function can add a new item and save as csv", {
 
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "csv")
@@ -345,7 +280,7 @@ test_that("lib_add() function can add a new item and save as csv", {
 })
 
 
-test_that("lib_add() function can add a new item and save as xslx", {
+test_that("libm15: lib_add() function can add a new item and save as xslx", {
 
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "xlsx")
@@ -361,7 +296,7 @@ test_that("lib_add() function can add a new item and save as xslx", {
 })
 
 
-test_that("lib_add() function can add a new item and save as rds", {
+test_that("libm16: lib_add() function can add a new item and save as rds", {
 
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "rds")
@@ -377,7 +312,7 @@ test_that("lib_add() function can add a new item and save as rds", {
 })
 
 
-test_that("lib_add() function can add a new item and save as sas7bdat", {
+test_that("libm17: lib_add() function can add a new item and save as sas7bdat", {
 
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "sas7bdat")
@@ -393,7 +328,7 @@ test_that("lib_add() function can add a new item and save as sas7bdat", {
 
 })
 
-test_that("lib_write() function can add a new item to sas7bdat libname from workspace.", {
+test_that("libm18: lib_write() function can add a new item to sas7bdat libname from workspace.", {
   
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "sas7bdat")
@@ -417,7 +352,7 @@ test_that("lib_write() function can add a new item to sas7bdat libname from work
 })
 
 
-test_that("lib_write() function can add a new item from workspace.", {
+test_that("libm19: lib_write() function can add a new item from workspace.", {
 
   alt_path <- tempdir()
   libname(dat, alt_path, engine = "csv")
@@ -440,7 +375,7 @@ test_that("lib_write() function can add a new item from workspace.", {
 })
 
 
-test_that("lib_copy() works as expected.", {
+test_that("libm20: lib_copy() works as expected.", {
 
   alt_path <- tempdir()
 
@@ -455,7 +390,7 @@ test_that("lib_copy() works as expected.", {
 
 })
 
-test_that("read-only flag works as expected.", {
+test_that("libm21: read-only flag works as expected.", {
 
 
   libname(dat, base_path, "csv", read_only = TRUE)
@@ -470,7 +405,7 @@ test_that("read-only flag works as expected.", {
 })
 
 
-test_that("lib_write non-changed csv data works as expected.", {
+test_that("libm22: lib_write non-changed csv data works as expected.", {
 
   alt_path <- tempdir()
 
@@ -501,7 +436,7 @@ test_that("lib_write non-changed csv data works as expected.", {
 
 })
 
-test_that("lib_write non-changed rds data works as expected.", {
+test_that("libm23: lib_write non-changed rds data works as expected.", {
 
   alt_path <- tempdir()
 
@@ -564,7 +499,7 @@ test_that("lib_write non-changed rds data works as expected.", {
 # 
 # })
 
-test_that("lib_write non-changed xlsx data works as expected.", {
+test_that("libm24: lib_write non-changed xlsx data works as expected.", {
 
   alt_path <- tempdir()
 
@@ -591,7 +526,7 @@ test_that("lib_write non-changed xlsx data works as expected.", {
 
 
 
-test_that("force option works as expected.", {
+test_that("libm25: force option works as expected.", {
 
   tmp <- tempdir()
 
@@ -615,7 +550,7 @@ test_that("force option works as expected.", {
 })
 
 
-test_that("xpt engine works as expected.", {
+test_that("libm26: xpt engine works as expected.", {
 
   tmp <- tempdir()
 
@@ -635,7 +570,7 @@ test_that("xpt engine works as expected.", {
 
 })
 
-test_that("Read existing xpt files.", {
+test_that("libm27: Read existing xpt files.", {
 
   tmp <- tempdir()
 
@@ -652,7 +587,7 @@ test_that("Read existing xpt files.", {
 
 
 
-test_that("dbf engine works as expected.", {
+test_that("libm28: dbf engine works as expected.", {
 
   tmp <- tempdir()
 
@@ -672,7 +607,7 @@ test_that("dbf engine works as expected.", {
 
 })
 
-test_that("dbf engine works as expected with tibble.", {
+test_that("libm29: dbf engine works as expected with tibble.", {
 
   tmp <- tempdir()
 
@@ -692,7 +627,7 @@ test_that("dbf engine works as expected with tibble.", {
 
 })
 
-test_that("lib_load() function works as expected with filter", {
+test_that("libm30: lib_load() function works as expected with filter", {
 
 
     libname(dat, file.path( base_path, "SDTM"),
@@ -729,3 +664,48 @@ test_that("lib_load() function works as expected with filter", {
     lib_unload(dat)
 
 })
+
+
+test_that("libm31: lib_write() changed csv data works as expected.", {
+
+
+  alt_path <- tempdir()
+
+  libname(dat, base_path, "csv")
+
+  lib_copy(dat, dat2, alt_path)
+
+
+  l1 <- lib_info(dat2)
+  
+  l1 
+  
+  expect_equal(nrow(l1), 2)
+  
+  d1 <- dat2$demo_studyb
+
+  d1$visit[1] <- 1
+
+  dat2$demo_studyb <- d1
+
+  dat2$demo_studyc <- mtcars
+  
+  Sys.sleep(2)
+
+  lib_write(dat2)
+
+  l2 <- lib_info(dat2)
+  
+  l2
+
+  expect_equal(nrow(l2), 3)
+  expect_equal(l1[[1, "LastModified"]] == l2[[1, "LastModified"]], TRUE)
+  expect_equal(l1[[2, "LastModified"]] == l2[[2, "LastModified"]], FALSE)
+
+  lib_delete(dat2)
+
+})
+
+
+
+

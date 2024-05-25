@@ -25,6 +25,10 @@ the time it is created with the \code{\link{libname}} function.
 When the \code{lib_load} function is called, the data frames/tibbles 
 will be loaded with <library>.<data set> syntax.  Loading the data frames
 into the environment makes them easy to access and use in your program.
+
+Note that the \code{lib_load} function is optional, and calling the function
+is not needed to access data in the \code{libname}.  You may also access
+data directly from the \code{libname} using the dollar sign ($) syntax.
 }
 \examples{
 # Create temp directory

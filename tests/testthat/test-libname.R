@@ -572,7 +572,7 @@ test_that("lib26: sas7bdat dates are retained", {
 })
 
 
-test_that("lib26: labels on data are retained after where clause", {
+test_that("lib27: labels on data are retained after where clause", {
   
   libname(dat, base_path, engine = "sas7bdat")
   

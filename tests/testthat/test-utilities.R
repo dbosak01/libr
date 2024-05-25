@@ -6,7 +6,7 @@ base_path <- "./data"
 
 DEV <- FALSE
 
-test_that("print() functions works as expected.", {
+test_that("utils01: print() functions works as expected.", {
   
   if (DEV) {
 
@@ -32,7 +32,7 @@ test_that("print() functions works as expected.", {
 })
 
 
-test_that("dofilter function works as expected for paths", {
+test_that("utils02: dofilter function works as expected for paths", {
   
   
   v1 <- c("/temp/fork.csv", "/temp/four.csv", "/temp/spork.csv")
@@ -56,7 +56,7 @@ test_that("dofilter function works as expected for paths", {
 })
 
 
-test_that("dofilter function works as expected for names", {
+test_that("utils03: dofilter function works as expected for names", {
   
   
   v2 <- c("fork", "four", "spork")
@@ -77,7 +77,7 @@ test_that("dofilter function works as expected for names", {
   
 })
 
-test_that("copy_attributes function works as expected.", {
+test_that("utils04: copy_attributes function works as expected.", {
   
   d1 <- mtcars
   d2 <- mtcars
@@ -93,7 +93,7 @@ test_that("copy_attributes function works as expected.", {
 })
 
 
-test_that("getExtension() works with two dots", {
+test_that("utils05: getExtension() works with two dots", {
   
   flnm <- "table_hemo.1.csv"
   
@@ -102,6 +102,27 @@ test_that("getExtension() works with two dots", {
   expect_equal(length(res), 1)
   expect_equal(res, "csv")
   
+  
+})
+
+test_that("utils06: captureSignatures() works as expected.", {
+  
+  
+  m1 <- mtcars
+  m2 <- mtcars
+  m3 <- mtcars
+  
+  m2[1, "carb"] <- 3
+  attr(m3, "fork") <- 1
+  
+  s1 <- captureSignatures(m1)
+  s2 <- captureSignatures(m2)
+  s3 <- captureSignatures(m3)
+  
+  expect_equal(s1$Length == s2$Length, TRUE)
+  expect_equal(s1$Hex == s2$Hex, FALSE)
+  expect_equal(s1$Length == s3$Length, TRUE)
+  expect_equal(s1$Hex == s3$Hex, TRUE)
   
 })
 

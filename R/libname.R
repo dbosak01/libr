@@ -510,7 +510,10 @@ libname <- function(name, directory_path, engine = "rds",
         attr(dat, "extension") <- ext
         attr(dat, "path") <- fp
         attr(dat, "checksum") <- md5sum(fp)
-
+        sig <- captureSignatures(dat)
+        attr(dat, "length") <- sig$Length
+        attr(dat, "hex") <- sig$Hex
+        
         l[[nm]] <- dat
       }
     }
@@ -529,9 +532,7 @@ libname <- function(name, directory_path, engine = "rds",
 
 
 
-
 # Manipulation Functions --------------------------------------------------
-
 
 #' @title Load a Library into the Workspace
 #' @description The \code{lib_load} function loads a data library into
@@ -540,6 +541,10 @@ libname <- function(name, directory_path, engine = "rds",
 #' When the \code{lib_load} function is called, the data frames/tibbles 
 #' will be loaded with <library>.<data set> syntax.  Loading the data frames
 #' into the environment makes them easy to access and use in your program.
+#' 
+#' Note that the \code{lib_load} function is optional, and calling the function
+#' is not needed to access data in the \code{libname}.  You may also access
+#' data directly from the \code{libname} using the dollar sign ($) syntax.
 #' @param x The data library to load.  
 #' @param filter One or more quoted strings to use as filters for the  
 #' data names to load into the workspace. For more than one filter string, 

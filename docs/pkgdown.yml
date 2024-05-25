@@ -1,4 +1,4 @@
-pandoc: 3.1.1
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -10,7 +10,7 @@ articles:
   libr-faq: libr-faq.html
   libr-management: libr-management.html
   libr: libr.html
-last_built: 2024-03-19T00:51Z
+last_built: 2024-05-24T23:57Z
 urls:
   reference: https://libr.r-sassy.org/reference
   article: https://libr.r-sassy.org/articles
