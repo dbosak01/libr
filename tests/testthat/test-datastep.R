@@ -1785,3 +1785,25 @@ test_that("ds50: works as expected with source.all().", {
 
 })
 
+
+test_that("ds51: delete() works with NA in data frame.", {
+  
+  
+  df1 <- data.frame(
+    var = c(NA,0),
+    bar = c(0, 1)
+  )
+  
+  
+  datastep(df1,
+           {
+             if (var %eq% 0) {
+               delete() 
+             }
+           }) -> df2
+  
+  
+  expect_equal(TRUE, TRUE)
+
+})
+

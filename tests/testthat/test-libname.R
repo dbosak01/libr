@@ -590,6 +590,18 @@ test_that("lib27: labels on data are retained after where clause", {
 
 
 
+test_that("lib28: empty dataset works as expected", {
+  
+  pth <- file.path(base_path, "empty")
+  
+  libname(testme, pth, "sas7bdat")
+  
+  
+  # No error
+  expect_equal(TRUE, TRUE)
+  
+})
+
 
 # 
 # test_that("lib24: lib_export() creates new library.", {

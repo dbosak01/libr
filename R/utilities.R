@@ -397,6 +397,7 @@ get_colspec_csv <- function(type_string) {
 #' @noRd
 exec_spec <- function(x, spcs, nm) {
 
+ # browser()
  ret <- x
  
  if (!is.null(spcs)) {  
@@ -468,7 +469,9 @@ exec_spec <- function(x, spcs, nm) {
         attr(ret[[nm]], atnm) <- attr(x[[nm]], atnm)
        } else {
          if (is.null(colspcs[[nm]])) {
-           attr(ret[[nm]], atnm) <- attr(x[[nm]], atnm)
+           if (nrow(x) > 0) {
+            attr(ret[[nm]], atnm) <- attr(x[[nm]], atnm)
+           }
          }
        }
       
