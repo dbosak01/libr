@@ -1,3 +1,6 @@
+# libr 1.3.4
+* Fixed issue where `libname()` was failing on empty dataset.
+
 # libr 1.3.3
 * Fixed issue where `lib_write()` was not detecting changes to datasets in libname.
 
