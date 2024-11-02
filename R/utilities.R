@@ -309,7 +309,17 @@ writeData <- function(x, ext, file_path, force = FALSE) {
       attr(x, "hex") <- sig$Hex
     }
 
-  }  
+  } else if (ext == "parquet") {
+    
+    if (!cs_comp | force) {
+      if (file.exists(file_path))
+        file.remove(file_path)
+      nanoparquet::write_parquet(x, file_path)
+      attr(x, "checksum") <- md5sum(file_path)
+      attr(x, "length") <- sig$Length
+      attr(x, "hex") <- sig$Hex
+    }
+  }
   
   
   return(x)

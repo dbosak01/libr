@@ -708,4 +708,22 @@ test_that("libm31: lib_write() changed csv data works as expected.", {
 
 
 
-
+test_that("libm32: parquet engine works as expected.", {
+  
+  tmp <- tempdir()
+  
+  libname(dat, tmp, "parquet")
+  
+  
+  lib_add(dat, mtcars)
+  
+  expect_equal(file.exists(file.path(tmp, "mtcars.parquet")), TRUE)
+  
+  libname(dat2, tmp, "parquet")
+  
+  expect_equal(nrow(dat2$mtcars),  32)
+  
+  lib_delete(dat)
+  lib_delete(dat2)
+  
+})

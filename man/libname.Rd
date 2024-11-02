@@ -39,7 +39,7 @@ engine will be used to import and export data.  The engine name
 corresponds to the standard file extension of the data file type. The
 default engine is 'rds'.
 Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
-'dbf', and 'csv'.}
+'dbf', 'csv', 'parquet'.}
 
 \item{read_only}{Whether the library should be created as read-only.
 Default is FALSE.  If TRUE, the user will be restricted from
@@ -113,7 +113,8 @@ The \code{libname} function provides several data engines to read
 data of different types.  For example, there is an engine for Excel 
 files, and another engine for SAS® datasets.  The engines are identified
 by the extension of the file type they handle.  The available engines are 
-'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', 'dbf', and 
+'parquet'.
 Once an engine has been assigned to a library, all other read/write 
 operations will be performed by that engine.  
 
@@ -170,7 +171,7 @@ interprets empty strings, single blanks, and a single dot (".") as missing
 values. While the import of SAS® datasets is fairly reliable, sas7bdat files 
 cannot be written or exported with the sas7bdat engine.
 In these cases, it is recommended to export to another file format, such
-as csv or dbf, and then import into SAS®.}
+as csv, dbf, or parquet, and then import into SAS®.}
 \item{\strong{xpt}: The SAS® transport file engine.  Transport format is 
 a platform independent file format.  Similar to SAS® datasets, it 
 provides data type information.  In most cases, you will not need to 
@@ -181,6 +182,10 @@ was added to the \strong{libr} package because many types of software can
 read and write in DBASE format reliably.  Therefore it is a useful 
 file format for interchange between software systems.  The DBASE file 
 format contains type information.}
+\item{\strong{parquet}: The parquet file format is an open source format
+supported by many languages and software.  The format is strongly typed, and 
+offers fast data storage and retrieval.  The \strong{libr} package can both
+read from and write to parquet files.}
 }
 }
 

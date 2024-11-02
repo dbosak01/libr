@@ -603,6 +603,32 @@ test_that("lib28: empty dataset works as expected", {
 })
 
 
+
+test_that("lib29: libname() function works as expected with parquet", {
+  
+  tmp <- tempdir()
+  
+  # tmp <- "C:/packages/libr/tests/testthat/data"
+  
+  libname(dat, tmp, "parquet")
+  
+  lib_add(dat, mtcars)
+  
+  libname(dat2, tmp, "parquet")
+  
+  
+  expect_equal(length(dat2), 1)
+  expect_equal(nrow(dat2[[1]]), 32)
+  expect_equal(ncol(dat2[[1]]), 11)
+  
+  lib_delete(dat)
+  lib_delete(dat2)
+})
+
+
+
+
+
 # 
 # test_that("lib24: lib_export() creates new library.", {
 #   

@@ -1,3 +1,6 @@
+# libr 1.3.5
+* Added 'parquet' file format to `libname()` function.
+
 # libr 1.3.4
 * Fixed issue where `libname()` was failing on empty dataset.
 

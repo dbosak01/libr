@@ -35,7 +35,8 @@ e$env <- parent.frame()
 #' data of different types.  For example, there is an engine for Excel 
 #' files, and another engine for SAS® datasets.  The engines are identified
 #' by the extension of the file type they handle.  The available engines are 
-#' 'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', and 'dbf'.
+#' 'rds', 'RData', 'rda', 'csv', 'xlsx', 'xls', 'sas7bdat', 'xpt', 'dbf', and 
+#' 'parquet'.
 #' Once an engine has been assigned to a library, all other read/write 
 #' operations will be performed by that engine.  
 #' 
@@ -91,7 +92,7 @@ e$env <- parent.frame()
 #' values. While the import of SAS® datasets is fairly reliable, sas7bdat files 
 #' cannot be written or exported with the sas7bdat engine.
 #' In these cases, it is recommended to export to another file format, such
-#' as csv or dbf, and then import into SAS®.}
+#' as csv, dbf, or parquet, and then import into SAS®.}
 #' \item{\strong{xpt}: The SAS® transport file engine.  Transport format is 
 #' a platform independent file format.  Similar to SAS® datasets, it 
 #' provides data type information.  In most cases, you will not need to 
@@ -102,6 +103,10 @@ e$env <- parent.frame()
 #' read and write in DBASE format reliably.  Therefore it is a useful 
 #' file format for interchange between software systems.  The DBASE file 
 #' format contains type information.}
+#' \item{\strong{parquet}: The parquet file format is an open source format
+#' supported by many languages and software.  The format is strongly typed, and 
+#' offers fast data storage and retrieval.  The \strong{libr} package can both
+#' read from and write to parquet files.}
 #' }
 #' 
 #' @section File Filters:
@@ -145,7 +150,7 @@ e$env <- parent.frame()
 #' corresponds to the standard file extension of the data file type. The
 #' default engine is 'rds'.
 #' Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 'xpt', 'xls', 'xlsx', 
-#' 'dbf', and 'csv'. 
+#' 'dbf', 'csv', 'parquet'. 
 #' @param read_only Whether the library should be created as read-only.
 #' Default is FALSE.  If TRUE, the user will be restricted from
 #' appending, removing, or writing any data from memory to the file system.
@@ -242,6 +247,7 @@ e$env <- parent.frame()
 #' @import readxl
 #' @import haven
 #' @import tibble
+#' @import nanoparquet
 #' @export
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
@@ -254,7 +260,7 @@ libname <- function(name, directory_path, engine = "rds",
     stop("engine parameter does not accept more than one value.")
   
   if (!tolower(engine) %in% c("rds", "rdata", "rda", "csv", "sas7bdat", "xlsx", 
-                              "xls", "xpt", "dbf"))
+                              "xls", "xpt", "dbf", "parquet"))
     stop(paste0("Invalid engine parameter value: ", engine))
   
   if (!is.null(import_specs)) {
@@ -492,33 +498,45 @@ libname <- function(name, directory_path, engine = "rds",
           }
           
         }
-      } 
+      } else if (tolower(ext) == "parquet") {
       
-      if (any(class(dat) == "data.frame")) {
-      
-        if (nm %in% names(l))
-          warning(paste("The name", nm, "already exists in the library.",
-                        "Data will be replaced."))
-        
-        if (!is.null(where)) {
-          dat <- tryCatch({subset(dat, eval(where))},
-                          error = function(cond){dat})
-        }
-        
-        # Set attributes on data frame
-        attr(dat, "name") <- nm
-        attr(dat, "extension") <- ext
-        attr(dat, "path") <- fp
-        attr(dat, "checksum") <- md5sum(fp)
-        sig <- captureSignatures(dat)
-        attr(dat, "length") <- sig$Length
-        attr(dat, "hex") <- sig$Hex
-        
-        l[[nm]] <- dat
-      }
-    }
+          dat <- nanoparquet::read_parquet(fp)
+          if (!is_tibble(dat))
+            dat <- as_tibble(dat)
+          
+          if (!is.null(import_specs))
+            dat <- exec_spec(dat, import_specs, nm)
+          
 
+      }
+
+  
+    if (any(class(dat) == "data.frame")) {
+      
+      if (nm %in% names(l))
+        warning(paste("The name", nm, "already exists in the library.",
+                      "Data will be replaced."))
+      
+      if (!is.null(where)) {
+        dat <- tryCatch({subset(dat, eval(where))},
+                        error = function(cond){dat})
+      }
+      
+      # Set attributes on data frame
+      attr(dat, "name") <- nm
+      attr(dat, "extension") <- ext
+      attr(dat, "path") <- fp
+      attr(dat, "checksum") <- md5sum(fp)
+      sig <- captureSignatures(dat)
+      attr(dat, "length") <- sig$Length
+      attr(dat, "hex") <- sig$Hex
+      
+      l[[nm]] <- dat
+    }
+      
   }
+}
+  
   
   assign(name_c, l, envir = e$env)
   
@@ -1469,7 +1487,7 @@ lib_copy <- function(x, nm, directory_path, standard_eval = FALSE) {
 #' @param engine The name of the engine to use for the exported data.
 #' The engine name corresponds to the standard file extension 
 #' of the data file type. Valid values are 'rds', 'Rdata', 'rda', 'sas7bdat', 
-#' 'xpt', 'xls', 'xlsx', 'dbf', and 'csv'. 
+#' 'xpt', 'xls', 'xlsx', 'dbf', 'csv', and 'parquet'. 
 #' @param filter A filter string to limit which datasets are exported. 
 #' The filter parameter accepts wildcards.
 #' @param standard_eval A TRUE or FALSE value which indicates whether to 
@@ -1515,7 +1533,8 @@ lib_export <- function(x, nm, directory_path, engine,
     message("Export to 'sas7bdat' not supported.")
   
   if (!tolower(engine) %in% c("rds", "rdata", "rda", 
-                              "csv", "sas7bdat", "xlsx", "xls", "xpt", "dbf"))
+                              "csv", "sas7bdat", "xlsx", "xls", "xpt", 
+                              "dbf", "parquet"))
     stop(paste0("Invalid engine parameter value: ", engine))
   
   if (all(class(x) == "character")) {
