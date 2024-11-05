@@ -607,7 +607,7 @@ res <- datastep(NULL,
  
 # View results
 res
-#   ID      Item
+#    ID     Item
 # 1  10   Pencil
 # 2  20 Scissors
 }

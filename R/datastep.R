@@ -549,7 +549,7 @@ e$output <- list()
 #'  
 #' # View results
 #' res
-#' #   ID      Item
+#' #    ID     Item
 #' # 1  10   Pencil
 #' # 2  20 Scissors
 #' @import dplyr
@@ -573,6 +573,8 @@ datastep <- function(data, steps, keep = NULL,
   if (!is.null(data)) {
     if (!"data.frame" %in% class(data))
       stop("input data must be inherited from data.frame")
+  } else {
+    data <- data.frame() 
   }
   
   
@@ -580,9 +582,7 @@ datastep <- function(data, steps, keep = NULL,
     if (!"list" %in% class(retain))
       stop("retain parameter value must be of class 'list'")
     
-  } else {
-    data <- data.frame() 
-  }
+  } 
   
   if (!is.null(attrib)) {
     if (!"list" %in% class(attrib))

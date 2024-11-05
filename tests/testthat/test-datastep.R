@@ -1863,7 +1863,7 @@ test_that("ds36: output works with NULL dataset.", {
   # else
   #   expect_equal(d1[[2, 2]], "two")
   
-  expect_error(datastep(NULL, {a <- 1 }))
+  expect_warning(datastep(NULL, {a <- 1 }))
   
 })
 
