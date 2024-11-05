@@ -100,6 +100,10 @@ e$output <- list()
 #' 
 #' \code{calculate} and \code{retain} are both input parameters.
 #' 
+#' The \code{subset} and \code{where} parameters can both be used to filter
+#' the datastep data.  The difference is that \code{subset} is an input
+#' parameter, and \code{where} is an output parameter.  
+#' 
 #' @section Set and Merge Operations:
 #' The \code{datastep} function allows you to join one or more input datasets 
 #' into a single output dataset.  There are two operations in this regard:
@@ -267,6 +271,11 @@ e$output <- list()
 #' \code{delete} function, or \code{output} function to filter desired results.
 #' @param log Whether or not to log the datastep.  Default is TRUE.  This 
 #' parameter is used internally.
+#' @param subset The \code{subset} parameter accepts an \code{expression} object
+#' that will be used to subset the data.  The \code{subset} expression will be 
+#' executed \strong{before} the datastep executes.  In this regard, the 
+#' \code{subset} parameter on the R datastep is similar to the \code{where} clause
+#' on the SAS datastep.
 #' @return The processed data frame, tibble, or data table.  
 #' @family datastep
 #' @seealso \code{\link{libname}} function to create a data library, and
@@ -536,7 +545,8 @@ datastep <- function(data, steps, keep = NULL,
                      merge = NULL,
                      merge_by = NULL,
                      merge_in = NULL, 
-                     log = TRUE) {
+                     log = TRUE, 
+                     subset = NULL) {
   
   if (!"data.frame" %in% class(data))
     stop("input data must be inherited from data.frame")
@@ -701,6 +711,24 @@ datastep <- function(data, steps, keep = NULL,
   if (any(!class(data) %in% c("data.frame", "list"))) {
     data <- as.data.frame(unclass(data), stringsAsFactors = FALSE, 
                           check.names = FALSE) 
+  }
+  
+  # Subset Before
+  if (!is.null(subset)) {
+    
+    data <- tryCatch({subset(data, eval(subset))},
+                     error = function(cond){ret})
+    
+    # Give warning if there are no rows and no output()
+    if (hout == FALSE & nrow(data) == 0) {
+      warning("After subset, input dataset has no rows.") 
+    }
+    
+    rowcount <- nrow(data)
+    
+    # Restore attributes from original data 
+    data <- copy_attributes(data_attributes, data)
+    
   }
   
   # Add automatic variables

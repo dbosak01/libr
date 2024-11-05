@@ -23,7 +23,8 @@ datastep(
   merge = NULL,
   merge_by = NULL,
   merge_in = NULL,
-  log = TRUE
+  log = TRUE,
+  subset = NULL
 )
 }
 \arguments{
@@ -136,6 +137,12 @@ came from the corresponding table. Use the \code{where} parameter,
 
 \item{log}{Whether or not to log the datastep.  Default is TRUE.  This 
 parameter is used internally.}
+
+\item{subset}{The \code{subset} parameter accepts an \code{expression} object
+that will be used to subset the data.  The \code{subset} expression will be 
+executed \strong{before} the datastep executes.  In this regard, the 
+\code{subset} parameter on the R datastep is similar to the \code{where} clause
+on the SAS datastep.}
 }
 \value{
 The processed data frame, tibble, or data table.
@@ -240,6 +247,10 @@ value of the prior step/row.  This functionality allows you to increment
 values or perform cumulative operations.
 
 \code{calculate} and \code{retain} are both input parameters.
+
+The \code{subset} and \code{where} parameters can both be used to filter
+the datastep data.  The difference is that \code{subset} is an input
+parameter, and \code{where} is an output parameter.
 }
 
 \section{Set and Merge Operations}{

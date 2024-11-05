@@ -114,7 +114,8 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
 <span>  merge <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  merge_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  merge_in <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -269,6 +270,14 @@ came from the corresponding table. Use the <code>where</code> parameter,
 <dd><p>Whether or not to log the datastep.  Default is TRUE.  This
 parameter is used internally.</p></dd>
 
+
+<dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
+<dd><p>The <code>subset</code> parameter accepts an <code>expression</code> object
+that will be used to subset the data.  The <code>subset</code> expression will be
+executed <strong>before</strong> the datastep executes.  In this regard, the
+<code>subset</code> parameter on the R datastep is similar to the <code>where</code> clause
+on the SAS datastep.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -360,6 +369,9 @@ initial value. For each subsequent step, the variable is seeded with the
 value of the prior step/row.  This functionality allows you to increment
 values or perform cumulative operations.</p>
 <p><code>calculate</code> and <code>retain</code> are both input parameters.</p>
+<p>The <code>subset</code> and <code>where</code> parameters can both be used to filter
+the datastep data.  The difference is that <code>subset</code> is an input
+parameter, and <code>where</code> is an output parameter.</p>
     </div>
     <div id="set-and-merge-operations">
     <h2>Set and Merge Operations</h2>

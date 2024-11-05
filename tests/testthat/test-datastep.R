@@ -1807,3 +1807,29 @@ test_that("ds51: delete() works with NA in data frame.", {
 
 })
 
+
+test_that("ds52: subset clause works.", {
+  
+  df <- datastep(mtcars,
+                 subset = expression(cyl == 8),
+                 {
+                   
+                   if (mpg >= 20)
+                     mpgcat <- "High"
+                   else
+                     mpgcat <- "Low"
+                   
+                   recdt <- as.Date("1974-06-10")
+                   
+                   if (cyl == 8)
+                     is8cyl <- TRUE
+                   else
+                     is8cyl <- FALSE
+                   
+                 })
+  
+  df
+  
+  expect_equal(mean(df$cyl), 8)
+  
+})
