@@ -124,7 +124,9 @@ by-group processing, and perform row-wise or column-wise calculations.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>The data to step through.</p></dd>
+<dd><p>The data to step through.  This parameter is required. Valid
+values are a data frame or a NULL. In the case of a NULL, you must include
+at least one <code><a href="output.html">output()</a></code> function in the steps.</p></dd>
 
 
 <dt id="arg-steps">steps<a class="anchor" aria-label="anchor" href="#arg-steps"></a></dt>
@@ -717,7 +719,27 @@ the <code><a href="dictionary.html">dictionary</a></code> function to create a d
 <span><span class="co"># 1  A01  58    F   G01 Group1   1   1</span></span>
 <span><span class="co"># 2  A05  23    F   G01 Group1   1   1</span></span>
 <span><span class="co"># 3  A02  20    M   G02 Group2   1   1</span></span>
-<span><span class="co"># 4  A04  11    M   G03 Group3   1   1</span></span></code></pre></div>
+<span><span class="co"># 4  A04  11    M   G03 Group3   1   1</span></span>
+<span></span>
+<span><span class="co"># Example #8: Data NULL</span></span>
+<span></span>
+<span><span class="co"># Create new dataset using output() functions.</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">datastep</span><span class="op">(</span><span class="cn">NULL</span>, </span>
+<span>                <span class="op">{</span></span>
+<span>                  <span class="va">ID</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span>                  <span class="va">Item</span> <span class="op">&lt;-</span> <span class="st">"Pencil"</span></span>
+<span>                  <span class="fu"><a href="output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>                  <span class="va">ID</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>                  <span class="va">Item</span> <span class="op">&lt;-</span> <span class="st">"Scissors"</span></span>
+<span>                  <span class="fu"><a href="output.html">output</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>                <span class="op">}</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="co"># View results</span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#   ID      Item</span></span>
+<span><span class="co"># 1  10   Pencil</span></span>
+<span><span class="co"># 2  20 Scissors</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

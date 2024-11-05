@@ -180,7 +180,9 @@ e$output <- list()
 #' other techniques for processing your data.  While there is no 
 #' built-in restriction on the number of rows, performance of the
 #' \code{datastep} can become unacceptable with a large number of rows.
-#' @param data The data to step through.
+#' @param data The data to step through.  This parameter is required. Valid
+#' values are a data frame or a NULL. In the case of a NULL, you must include
+#' at least one \code{output()} function in the steps.
 #' @param steps The operations to perform on the data.  This parameter is 
 #' specified as a set of R statements contained within 
 #' curly braces. If no steps are desired, pass empty curly braces.
@@ -530,6 +532,26 @@ e$output <- list()
 #' # 2  A05  23    F   G01 Group1   1   1
 #' # 3  A02  20    M   G02 Group2   1   1
 #' # 4  A04  11    M   G03 Group3   1   1
+#' 
+#' # Example #8: Data NULL
+#' 
+#' # Create new dataset using output() functions.
+#' res <- datastep(NULL, 
+#'                 {
+#'                   ID <- 10
+#'                   Item <- "Pencil"
+#'                   output()
+#' 
+#'                   ID <- 20
+#'                   Item <- "Scissors"
+#'                   output()
+#'                 })
+#'  
+#' # View results
+#' res
+#' #   ID      Item
+#' # 1  10   Pencil
+#' # 2  20 Scissors
 #' @import dplyr
 #' @export
 datastep <- function(data, steps, keep = NULL,
@@ -548,14 +570,18 @@ datastep <- function(data, steps, keep = NULL,
                      log = TRUE, 
                      subset = NULL) {
   
-  if (!"data.frame" %in% class(data))
-    stop("input data must be inherited from data.frame")
+  if (!is.null(data)) {
+    if (!"data.frame" %in% class(data))
+      stop("input data must be inherited from data.frame")
+  }
   
   
   if (!is.null(retain)) {
     if (!"list" %in% class(retain))
       stop("retain parameter value must be of class 'list'")
     
+  } else {
+    data <- data.frame() 
   }
   
   if (!is.null(attrib)) {
@@ -587,15 +613,14 @@ datastep <- function(data, steps, keep = NULL,
   merge_by <- tryCatch({if (typeof(merge_by) %in% c("character", "NULL")) merge_by else omby},
                    error = function(cond) {omby})
   
-  
-  # Capture number of starting columns
-  startcols <- ncol(data)
-  
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
   
   # Determine if there is an output function
   hout <- has_output(deparse(code))
+  
+  # Capture number of starting columns
+  startcols <- ncol(data)
   
   # Give warning if there are no rows and no output()
   if (hout == FALSE & nrow(data) == 0) {

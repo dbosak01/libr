@@ -28,7 +28,9 @@ datastep(
 )
 }
 \arguments{
-\item{data}{The data to step through.}
+\item{data}{The data to step through.  This parameter is required. Valid
+values are a data frame or a NULL. In the case of a NULL, you must include
+at least one \code{output()} function in the steps.}
 
 \item{steps}{The operations to perform on the data.  This parameter is 
 specified as a set of R statements contained within 
@@ -588,6 +590,26 @@ res
 # 2  A05  23    F   G01 Group1   1   1
 # 3  A02  20    M   G02 Group2   1   1
 # 4  A04  11    M   G03 Group3   1   1
+
+# Example #8: Data NULL
+
+# Create new dataset using output() functions.
+res <- datastep(NULL, 
+                {
+                  ID <- 10
+                  Item <- "Pencil"
+                  output()
+
+                  ID <- 20
+                  Item <- "Scissors"
+                  output()
+                })
+ 
+# View results
+res
+#   ID      Item
+# 1  10   Pencil
+# 2  20 Scissors
 }
 \seealso{
 \code{\link{libname}} function to create a data library, and
