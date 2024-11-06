@@ -1,4 +1,4 @@
-# libr 1.3.6
+# libr 1.3.7
 * Added 'parquet' file format to `libname()` function.
 * Added 'subset' parameter to `datastep()` function to filter the data on input.
 * Added DATA NULL capability to `datastep()` function.
