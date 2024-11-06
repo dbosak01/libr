@@ -50,4 +50,14 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: David Bosak \email{dbosak01@gmail.com}
+
+Other contributors:
+\itemize{
+  \item Brian Varney \email{brian.varney@experis.com} [contributor]
+  \item Archytas Clinical Solutions [copyright holder]
+}
+
+}
 \keyword{internal}
