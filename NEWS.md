@@ -1,3 +1,6 @@
+# libr 1.3.8
+* Moved 'nanoparquet' to suggested instead of imports.
+
 # libr 1.3.7
 * Added 'parquet' file format to `libname()` function.
 * Added 'subset' parameter to `datastep()` function to filter the data on input.

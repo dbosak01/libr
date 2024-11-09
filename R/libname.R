@@ -247,7 +247,6 @@ e$env <- parent.frame()
 #' @import readxl
 #' @import haven
 #' @import tibble
-#' @import nanoparquet
 #' @export
 libname <- function(name, directory_path, engine = "rds", 
                     read_only = FALSE, env = parent.frame(), 
