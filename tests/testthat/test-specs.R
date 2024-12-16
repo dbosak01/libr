@@ -2,7 +2,7 @@ context("Specs Tests")
 
 base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
 
-#base_path <- "./data"
+base_path <- "./data"
 
 
 test_that("import_spec() function works as expected.", {
