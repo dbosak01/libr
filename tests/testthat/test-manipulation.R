@@ -657,8 +657,8 @@ test_that("libm30: lib_load() function works as expected with filter", {
 
     d <- ls()
 
-    expect_equal(all(c("dat.da", "dat.dm", "dat.ds", "dat.ds_ihor",
-                       "dat.ex", "dat.qs") %in% d), TRUE)
+    expect_equal(all(c("dat.da", "dat.dm", "dat.ds",
+                       "dat.ex") %in% d), TRUE)
     expect_equal(any(c("dat.ae", "dat.lb", "dat.pe", "dat.ie") %in% d), FALSE)
 
     lib_unload(dat)

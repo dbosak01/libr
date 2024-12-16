@@ -1,3 +1,6 @@
+# libr 1.3.9
+* Removed some test data to reduce size of package.
+
 # libr 1.3.8
 * Moved 'nanoparquet' to suggested instead of imports.
 
