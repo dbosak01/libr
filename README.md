@@ -68,7 +68,14 @@ The **libr** package will then be ready to use! For examples and usage
 information, please visit the **libr** documentation site 
 [here](https://libr.r-sassy.org/articles/libr.html)
 
-    
+### Introductory Videos
+
+Here is a brief introduction to the concept of data libraries and how they 
+are implemented in the **libr** package:
+
+[![Introduction to data libraries](https://img.youtube.com/vi/uHo8J9LR1xo/0.jpg)](https://www.youtube.com/watch?v=uHo8J9LR1xo)
+
+
 ### Getting Help
 
 If you need help, the first place 

@@ -208,7 +208,7 @@ the data has been loaded into the workspace, and is available using
 two-level dot syntax. If you are working in **RStudio**, the environment 
 pane will now show all the datasets available in the library.
 
-<img src="../man/images/lib_load.png"/>
+<img src="../man/images/lib_load.png" alt="Loaded data"/>
 
 At this point, you can work with your data very much the same way
 as you would in SAS®.  You can pass these datasets into statistical functions, 

@@ -576,4 +576,4 @@ Log Elapsed Time: 0 00:00:06
 
 And here is the output:
 
-<img src="../man/images/example2.png"/>
+<img src="../man/images/example2.png" alt = "Example 2 output"/>
