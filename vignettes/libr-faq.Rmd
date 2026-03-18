@@ -196,9 +196,9 @@ library(libr)
 libname(dat, "./data", "csv") 
 
 # Prepare data
-dm_mod <- dat$DM %>% 
-  select(USUBJID, SEX, AGE, ARM) %>% 
-  filter(ARM != "SCREEN FAILURE") %>% 
+dm_mod <- dat$DM |> 
+  select(USUBJID, SEX, AGE, ARM) |> 
+  filter(ARM != "SCREEN FAILURE") |>  
   datastep({
     
     if (AGE >= 18 & AGE <= 24)

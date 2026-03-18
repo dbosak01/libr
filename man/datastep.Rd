@@ -360,17 +360,17 @@ df <- datastep(mtcars[1:10,],
 })
 
 df
-#                    mpg cyl  disp mpgcat      recdt
-# Mazda RX4         21.0   6 160.0   High 1974-06-10
-# Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10
-# Datsun 710        22.8   4 108.0   High 1974-06-10
-# Hornet 4 Drive    21.4   6 258.0   High 1974-06-10
-# Hornet Sportabout 18.7   8 360.0    Low 1974-06-10
-# Valiant           18.1   6 225.0    Low 1974-06-10
-# Duster 360        14.3   8 360.0    Low 1974-06-10
-# Merc 240D         24.4   4 146.7   High 1974-06-10
-# Merc 230          22.8   4 140.8   High 1974-06-10
-# Merc 280          19.2   6 167.6    Low 1974-06-10
+#     mpg cyl  disp mpgcat      recdt is8cyl
+# 1  21.0   6 160.0   High 1974-06-10  FALSE
+# 2  21.0   6 160.0   High 1974-06-10  FALSE
+# 3  22.8   4 108.0   High 1974-06-10  FALSE
+# 4  21.4   6 258.0   High 1974-06-10  FALSE
+# 5  18.7   8 360.0    Low 1974-06-10   TRUE
+# 6  18.1   6 225.0    Low 1974-06-10  FALSE
+# 7  14.3   8 360.0    Low 1974-06-10   TRUE
+# 8  24.4   4 146.7   High 1974-06-10  FALSE
+# 9  22.8   4 140.8   High 1974-06-10  FALSE
+# 10 19.2   6 167.6    Low 1974-06-10  FALSE
 
 # Example #2: By-group Processing
 df <- datastep(mtcars[1:10,], 
@@ -387,17 +387,17 @@ df <- datastep(mtcars[1:10,],
 })
 
 df
-#                    mpg cyl gear   grp
-# Mazda RX4         21.0   6    4 Start
-# Mazda RX4 Wag     21.0   6    4     -
-# Datsun 710        22.8   4    4   End
-# Hornet 4 Drive    21.4   6    3 Start
-# Hornet Sportabout 18.7   8    3     -
-# Valiant           18.1   6    3     -
-# Duster 360        14.3   8    3   End
-# Merc 240D         24.4   4    4 Start
-# Merc 230          22.8   4    4     -
-# Merc 280          19.2   6    4   End 
+# mpg cyl gear   grp
+# 1  21.0   6    4 Start
+# 2  21.0   6    4     -
+# 3  22.8   4    4   End
+# 4  21.4   6    3 Start
+# 5  18.7   8    3     -
+# 6  18.1   6    3     -
+# 7  14.3   8    3   End
+# 8  24.4   4    4 Start
+# 9  22.8   4    4     -
+# 10 19.2   6    4   End
 
 # Example #3: Calculate Block
 df <- datastep(mtcars, 
@@ -412,26 +412,25 @@ df <- datastep(mtcars,
 })
 
 df[1:10,]
-#                    mpg cyl mean_mpg mpgcat
-# Mazda RX4         21.0   6 20.09062   High
-# Mazda RX4 Wag     21.0   6 20.09062   High
-# Datsun 710        22.8   4 20.09062   High
-# Hornet 4 Drive    21.4   6 20.09062   High
-# Hornet Sportabout 18.7   8 20.09062    Low
-# Valiant           18.1   6 20.09062    Low
-# Duster 360        14.3   8 20.09062    Low
-# Merc 240D         24.4   4 20.09062   High
-# Merc 230          22.8   4 20.09062   High
-# Merc 280          19.2   6 20.09062    Low
+# mpg cyl mean_mpg mpgcat
+# 1  21.0   6 20.09062   High
+# 2  21.0   6 20.09062   High
+# 3  22.8   4 20.09062   High
+# 4  21.4   6 20.09062   High
+# 5  18.7   8 20.09062    Low
+# 6  18.1   6 20.09062    Low
+# 7  14.3   8 20.09062    Low
+# 8  24.4   4 20.09062   High
+# 9  22.8   4 20.09062   High
+# 10 19.2   6 20.09062    Low
 
 # Example #4: Data pipeline
 library(dplyr)
-library(magrittr)
 
 # Add datastep to dplyr pipeline
-df <- mtcars \%>\% 
-  select(mpg, cyl, gear) \%>\% 
-  mutate(mean_mpg = mean(mpg)) \%>\% 
+df <- mtcars |> 
+  select(mpg, cyl, gear) |> 
+  mutate(mean_mpg = mean(mpg)) |> 
   datastep({
     
     if (mpg >= mean_mpg)
@@ -439,7 +438,7 @@ df <- mtcars \%>\%
     else 
       mpgcat <- "Low"
     
-  }) \%>\% 
+  }) |> 
   filter(row_number() <= 10)
 
 df
@@ -468,17 +467,17 @@ df <- datastep(mtcars[1:10, ],
 })
 
 df
-#                    MPG Cylinders   Wgt Cumulative Wgt
-# Mazda RX4         21.0         6 2.620          2.620
-# Mazda RX4 Wag     21.0         6 2.875          5.495
-# Datsun 710        22.8         4 2.320          7.815
-# Hornet 4 Drive    21.4         6 3.215         11.030
-# Hornet Sportabout 18.7         8 3.440         14.470
-# Valiant           18.1         6 3.460         17.930
-# Duster 360        14.3         8 3.570         21.500
-# Merc 240D         24.4         4 3.190         24.690
-# Merc 230          22.8         4 3.150         27.840
-# Merc 280          19.2         6 3.440         31.280
+# MPG Cylinders   Wgt Cumulative Wgt
+# 1  21.0         6 2.620          2.620
+# 2  21.0         6 2.875          5.495
+# 3  22.8         4 2.320          7.815
+# 4  21.4         6 3.215         11.030
+# 5  18.7         8 3.440         14.470
+# 6  18.1         6 3.460         17.930
+# 7  14.3         8 3.570         21.500
+# 8  24.4         4 3.190         24.690
+# 9  22.8         4 3.150         27.840
+# 10 19.2         6 3.440         31.280
 
 # Example #6: Attributes and Arrays
 

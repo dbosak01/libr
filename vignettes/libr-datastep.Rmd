@@ -285,12 +285,11 @@ data frame from Example 5, but with a **dplyr** pipeline.
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 library(dplyr)
-library(magrittr)
 
 # Add datastep to dplyr pipeline
-df <- mtcars %>% 
-  select(mpg, cyl, gear) %>% 
-  mutate(mean_mpg = mean(mpg)) %>% 
+df <- mtcars |>  
+  select(mpg, cyl, gear) |> 
+  mutate(mean_mpg = mean(mpg)) |>  
   datastep({
 
     if (mpg >= mean_mpg)
@@ -298,7 +297,7 @@ df <- mtcars %>%
     else 
       mpgcat <- "Low"
 
-  }) %>% 
+  }) |> 
   filter(row_number() <= 10)
   
 df

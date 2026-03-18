@@ -59,9 +59,9 @@ pkg <- system.file("extdata", package = "libr")
 libname(sdtm, pkg, "csv", quiet = TRUE) 
 
 # Prepare data
-dm_mod <- sdtm$DM %>% 
-  select(USUBJID, SEX, AGE, ARM) %>% 
-  filter(ARM != "SCREEN FAILURE") %>% 
+dm_mod <- sdtm$DM |> 
+  select(USUBJID, SEX, AGE, ARM) |> 
+  filter(ARM != "SCREEN FAILURE") |>  
   datastep({
     
     if (AGE >= 18 & AGE <= 24)
@@ -73,12 +73,12 @@ dm_mod <- sdtm$DM %>%
     else if (AGE >= 65)
       AGECAT <- ">= 65"
     
-  }) %>% put()
+  }) |>  put()
 
 put("Get population counts")
-arm_pop <- count(dm_mod, ARM) %>% put()
-sex_pop <- count(dm_mod, SEX) %>% put()
-agecat_pop <- count(dm_mod, AGECAT) %>% put()
+arm_pop <- count(dm_mod, ARM) |>  put()
+sex_pop <- count(dm_mod, SEX) |>  put()
+agecat_pop <- count(dm_mod, AGECAT) |>  put()
 
 # Convert agecat to factor so rows will sort correctly
 agecat_pop$AGECAT <- factor(agecat_pop$AGECAT, levels = c("18 to 24", 
@@ -86,7 +86,7 @@ agecat_pop$AGECAT <- factor(agecat_pop$AGECAT, levels = c("18 to 24",
                                                           "45 to 64",
                                                           ">= 65"))
 # Sort agecat
-agecat_pop <- agecat_pop %>% arrange(AGECAT)
+agecat_pop <- agecat_pop |>  arrange(AGECAT)
 
 
 # Create Plots ------------------------------------------------------------
@@ -114,23 +114,23 @@ plt3 <- ggplot(data = agecat_pop, aes(x = AGECAT, y = n)) +
 sep("Create and print report")
 
 
-page1 <- create_plot(plt1, 4.5, 7) %>% 
+page1 <- create_plot(plt1, 4.5, 7) |> 
   titles("Figure 1.1", "Distribution of Subjects by Treatment Group")
 
-page2 <- create_plot(plt2, 4.5, 7) %>% 
+page2 <- create_plot(plt2, 4.5, 7) |>  
   titles("Figure 1.2", "Distribution of Subjects by Biological Sex")
 
-page3 <- create_plot(plt3, 4.5, 7) %>% 
+page3 <- create_plot(plt3, 4.5, 7) |>  
   titles("Figure 1.2", "Distribution of Subjects by Age Category")
 
 rpt <- create_report(file.path(tmp, "./output/example1.rtf"), output_type = "RTF", 
-                     font = "Arial") %>% 
-  set_margins(top = 1, bottom = 1) %>% 
-  page_header("Sponsor: Company", "Study: ABC") %>% 
-  add_content(page1) %>% 
-  add_content(page2) %>% 
-  add_content(page3) %>% 
-  footnotes("Program: DM_Figure.R") %>% 
+                     font = "Arial") |>  
+  set_margins(top = 1, bottom = 1) |>  
+  page_header("Sponsor: Company", "Study: ABC") |>  
+  add_content(page1) |>  
+  add_content(page2) |>  
+  add_content(page3) |>  
+  footnotes("Program: DM_Figure.R") |>  
   page_footer(paste0("Date Produced: ", fapply(Sys.time(), "%d%b%y %H:%M")), 
               right = "Page [pg] of [tpg]")
 

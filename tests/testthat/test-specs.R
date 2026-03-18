@@ -1,11 +1,11 @@
 context("Specs Tests")
 
-base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+base_path <-  file.path(getwd(), "tests\\testthat\\data")
 
 base_path <- "./data"
 
 
-test_that("import_spec() function works as expected.", {
+test_that("specs01: import_spec() function works as expected.", {
   
   is <- import_spec(col1 = "character", col2 = "integer",
                    na = c("NA", ""),
@@ -17,7 +17,7 @@ test_that("import_spec() function works as expected.", {
   
 })
 
-test_that("specs() function works as expected.", {
+test_that("specs02: specs() function works as expected.", {
   
   is1 <- import_spec(col1 = "character", col2 = "integer",
                      na = c("NA", "-"),
@@ -45,7 +45,7 @@ test_that("specs() function works as expected.", {
 })
 
 
-test_that("write_specs() and read_specs() functions works as expected.", {
+test_that("specs03: write_specs() and read_specs() functions works as expected.", {
   
   is1 <- import_spec(col1 = "character", col2 = "integer",
                      na = c("NA", "-"),
@@ -85,7 +85,7 @@ test_that("write_specs() and read_specs() functions works as expected.", {
   
 })
 
-test_that("get_colspec_xlsx() works as expected.", {
+test_that("specs04: get_colspec_xlsx() works as expected.", {
   
   expect_error(get_colspec_xlsx(c(one = "character", 
                        two = "integer", 
@@ -104,7 +104,7 @@ test_that("get_colspec_xlsx() works as expected.", {
   
 })
 
-test_that("get_colspec_csv() works as expected.", {
+test_that("specs05: get_colspec_csv() works as expected.", {
   
   res <- get_colspec_csv(c(one = "character", 
                        two = "integer", 
@@ -128,7 +128,7 @@ test_that("get_colspec_csv() works as expected.", {
 })
 
 
-test_that("libname works on PE data for csv.", {
+test_that("specs06: libname works on PE data for csv.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
                                 na = ""))
@@ -141,7 +141,7 @@ test_that("libname works on PE data for csv.", {
 
 })
 
-test_that("libname works on PE data for xlsx.", {
+test_that("specs07: libname works on PE data for xlsx.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
                                 na = "NA"))
@@ -155,7 +155,7 @@ test_that("libname works on PE data for xlsx.", {
   
 })
 
-test_that("libname works on PE data for xls.", {
+test_that("specs08: libname works on PE data for xls.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
                                 na = ""))
@@ -169,7 +169,7 @@ test_that("libname works on PE data for xls.", {
   
 })
 
-test_that("writing xls changes to xlsx.", {
+test_that("specs09: writing xls changes to xlsx.", {
   
   tmp <- tempdir()
   
@@ -185,7 +185,7 @@ test_that("writing xls changes to xlsx.", {
   
 })
 
-test_that("libname works on SDTM data for csv.", {
+test_that("specs10: libname works on SDTM data for csv.", {
   
   lst <- specs(PE = import_spec(PESTAT = "character",
                                 na = ""))
@@ -197,7 +197,7 @@ test_that("libname works on SDTM data for csv.", {
   
 })
 
-test_that("libname works on SDTM data for sas7bdat.", {
+test_that("specs11: libname works on SDTM data for sas7bdat.", {
   
   
 
@@ -209,7 +209,7 @@ test_that("libname works on SDTM data for sas7bdat.", {
 })
 
 
-test_that("import_specs works as expected with dates.", {
+test_that("specs12: import_specs works as expected with dates.", {
   
   library(readr)
 
@@ -224,7 +224,7 @@ test_that("import_specs works as expected with dates.", {
   rownames(df) <- NULL
 
   # Add some columns
-  df <- df[1:10, ] %>%
+  df <- df[1:10, ] |> 
     datastep({
 
       recdt <- "10JUN1974"
@@ -262,7 +262,7 @@ test_that("import_specs works as expected with dates.", {
 })
 
 
-test_that("no specs work on CRF data for sas7bdat.", {
+test_that("specs13: no specs work on CRF data for sas7bdat.", {
   
   
   libname(dat, file.path(base_path, "CRF"), "sas7bdat")
@@ -274,7 +274,7 @@ test_that("no specs work on CRF data for sas7bdat.", {
   
 })
 
-test_that("specs na and trim_ws work on CRF data for sas7bdat.", {
+test_that("specs14: specs na and trim_ws work on CRF data for sas7bdat.", {
   
   lst <- specs(na = c("", "."), trim_ws = TRUE)
                               
@@ -290,7 +290,7 @@ test_that("specs na and trim_ws work on CRF data for sas7bdat.", {
 })
 
 
-test_that("dm import_spec na and trim_ws work on CRF data for sas7bdat.", {
+test_that("specs15: dm import_spec na and trim_ws work on CRF data for sas7bdat.", {
   
   lst <- specs(dm = import_spec(na = c("", "."), trim_ws = TRUE))
   
@@ -306,7 +306,7 @@ test_that("dm import_spec na and trim_ws work on CRF data for sas7bdat.", {
 })
 
 
-test_that("dm and pe import_spec col_types work on CRF data for sas7bdat.", {
+test_that("specs16: dm and pe import_spec col_types work on CRF data for sas7bdat.", {
   
   lst <- specs(dm = import_spec(VISITREP = "character", na = c("", ".")),
                pe = import_spec(VISITREP = "character", na = c("", ".")))
@@ -324,7 +324,7 @@ test_that("dm and pe import_spec col_types work on CRF data for sas7bdat.", {
   
 })
 
-test_that("dm and pe multiple import_spec col_types work for sas7bdat.", {
+test_that("specs17: dm and pe multiple import_spec col_types work for sas7bdat.", {
   
   lst <- specs(na = c("", "."), trim_ws = TRUE,
                dm = import_spec(VISITREP = "character",
@@ -351,7 +351,7 @@ test_that("dm and pe multiple import_spec col_types work for sas7bdat.", {
   
 })
 
-test_that("lab import_spec with dates works for sas7bdat.", {
+test_that("specs18: lab import_spec with dates works for sas7bdat.", {
   
   
   libname(dat, base_path, "sas7bdat")
@@ -370,7 +370,7 @@ test_that("lab import_spec with dates works for sas7bdat.", {
 
 })
 
-test_that("print function works as expected.", {
+test_that("specs19: print function works as expected.", {
   
   is1 <- import_spec(col1 = "character", col2 = "integer",
                      na = c("NA", "-"),

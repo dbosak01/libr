@@ -1,12 +1,15 @@
 context("Libname Tests")
 
-base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+base_path <- file.path(getwd(), "\\tests\\testthat\\data")
 
 base_path <- "./data"
 
 test_that("lib1: libname() function works as expected with csv.", {
 
   libname(dat, base_path, engine = "csv")
+  
+  # Test printing
+  print(dat)
 
   expect_equal(class(dat)[[1]], "lib")
   expect_equal(length(dat), 2)
@@ -260,11 +263,11 @@ test_that("lib14: libname() function works as expected with nested functions.", 
 test_that("lib15: libname() function works as expected with filter", {
 
   libname(dat, file.path( base_path, "SDTM"),
-          engine = "sas7bdat", filter = c("ae", "dm", "lb", "vs"))
+          engine = "sas7bdat", filter = c("ae", "dm", "sv", "vs"))
 
   d <- lib_info(dat)[["Name"]]
 
-  expect_equal(as.character(d), c("ae", "dm", "lb", "vs"))
+  expect_equal(as.character(d), c("ae", "dm", "sv", "vs"))
 
   libname(dat, file.path( base_path, "SDTM"),
           engine = "sas7bdat", filter = c("*e"))
@@ -337,7 +340,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
 
   libname(myvar1, file.path( base_path, "SDTM"),
-          engine = "csv", filter = c("ae", "dm", "lb", "vs"),
+          engine = "csv", filter = c("ae", "dm", "sv", "vs"),
           standard_eval = TRUE)
 
 

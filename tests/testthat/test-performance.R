@@ -1,19 +1,19 @@
 context("Datastep Performance Tests")
 
-base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+base_path <-  file.path(getwd(), "tests\\testthat\\data")
 
 base_path <- "./data"
 
 DEV <- FALSE
 
 
-test_that("add_autos() function works as expected", {
+test_that("perf01: add_autos() function works as expected", {
   
   libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
 
   tm <- Sys.time()
   
-  dat3 <- add_autos(dat$lb, c("USUBJID", "LBCAT", "LBTESTCD"))
+  dat3 <- add_autos(dat$vs, c("USUBJID", "VSTESTCD", "VSORRES"))
   
   
   tmdiff <- Sys.time() - tm
@@ -24,7 +24,7 @@ test_that("add_autos() function works as expected", {
 
 })
 
-test_that("sort check works as expected", {
+test_that("perf02: sort check works as expected", {
 
   dat3 <- add_autos(mtcars, c("am"), sort_check = FALSE)
   
@@ -36,23 +36,23 @@ test_that("sort check works as expected", {
 
 
 # Baseline of 10 sec on condition
-test_that("datastep() performance is good", {
+test_that("perf03: datastep() performance is good", {
   
   if (DEV) {
     
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
-
+    
+    dt <- dat$lb
     
     tm <- Sys.time()
     
-    res <- datastep(dat$lb, 
+    res <- datastep(dt, 
                     {
                       if (is.na(LBBLFL))
                         blisna <- TRUE
                       else
                         blisna <- FALSE
-                      
-                      
+                    
                     })
     
     tmdiff <- Sys.time() - tm
@@ -66,10 +66,8 @@ test_that("datastep() performance is good", {
 })
 
 # Jumps to 14 seconds when retain added
-test_that("datastep() performance with retain is good", {
-  
-  
-  libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+test_that("perf04: datastep() performance with retain is good", {
+
   
   
   if (DEV) {
@@ -101,7 +99,7 @@ test_that("datastep() performance with retain is good", {
 })
 
 # Still less than < 11 seconds when group by added
-test_that("datastep() performance with by group is good", {
+test_that("perf05: datastep() performance with by group is good", {
   
   if (DEV) {
     
@@ -133,7 +131,7 @@ test_that("datastep() performance with by group is good", {
 })
 
 # Jumps to 14 seconds when retain and group by added
-test_that("datastep() performance with retain is good", {
+test_that("perf06: datastep() performance with retain is good", {
   
   if (DEV) {
     
@@ -167,7 +165,7 @@ test_that("datastep() performance with retain is good", {
 })
 
 
-test_that("datastep() with group_by performance is good", {
+test_that("perf07: datastep() with group_by performance is good", {
   
   if (DEV) {
     
@@ -179,13 +177,13 @@ test_that("datastep() with group_by performance is good", {
     
     tm <- Sys.time()
     
-    prep <- dat$DM %>% 
-      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) %>% 
-      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
+    prep <- dat$DM |> 
+      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) |> 
+      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) |> 
       filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"), 
-             !(VISIT == "SCREENING" & VSBLFL != "Y")) %>% 
-      arrange(USUBJID, VSTESTCD, VISITNUM) %>% 
-      group_by(USUBJID, VSTESTCD) %>%
+             !(VISIT == "SCREENING" & VSBLFL != "Y")) |> 
+      arrange(USUBJID, VSTESTCD, VISITNUM) |> 
+      group_by(USUBJID, VSTESTCD) |> 
       #datastep(by = c("USUBJID", "VSTESTCD"), retain = list(BSTRESN = 0), {
       datastep(retain = list(BSTRESN = 0), {
         
@@ -226,7 +224,7 @@ test_that("datastep() with group_by performance is good", {
 })
 
 
-test_that("100,000 row datastep on data.frame is good.", {
+test_that("perf08: 100,000 row datastep on data.frame is good.", {
   
   if (DEV) {
     
@@ -261,7 +259,7 @@ test_that("100,000 row datastep on data.frame is good.", {
 })
 
 
-test_that("100,000 row datastep on tibble is good.", {
+test_that("perf09: 100,000 row datastep on tibble is good.", {
   
   if (DEV) {
     
@@ -299,7 +297,7 @@ test_that("100,000 row datastep on tibble is good.", {
 
 
 
-test_that("100,000 row datastep on data.table is good.", {
+test_that("perf10: 100,000 row datastep on data.table is good.", {
   
   if (DEV) {
     
@@ -337,7 +335,7 @@ test_that("100,000 row datastep on data.table is good.", {
 })
 
 
-test_that("complex datastep() performance is good", {
+test_that("perf11: complex datastep() performance is good", {
   
   if (DEV) {
     
@@ -350,17 +348,17 @@ test_that("complex datastep() performance is good", {
     
     tm <- Sys.time()
     
-    prep <- dat$DM %>% 
-      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) %>% 
-      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>% 
+    prep <- dat$DM |> 
+      left_join(dat$VS, by = c("USUBJID" = "USUBJID")) |> 
+      select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) |> 
       filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"), 
-             !(VISIT == "SCREENING" & VSBLFL != "Y")) %>% 
-      arrange(USUBJID, VSTESTCD, VISITNUM) %>% 
-      group_by(USUBJID, VSTESTCD) %>%
+             !(VISIT == "SCREENING" & VSBLFL != "Y")) |> 
+      arrange(USUBJID, VSTESTCD, VISITNUM) |> 
+      group_by(USUBJID, VSTESTCD) |> 
       datastep(by = c("USUBJID", "VSTESTCD"), retain = list(BSTRESN = 0), {
         
         # Combine treatment groups
-        # And distingish baseline time points
+        # And distinguish baseline time points
         if (ARM == "ARM A") {
           
           if (VSBLFL %eq% "Y") {
@@ -388,10 +386,123 @@ test_that("complex datastep() performance is good", {
     tmdiff <- Sys.time() - tm 
     tmdiff
     
+    # 1.6 seconds
+    
     expect_equal(tmdiff < 3, TRUE)
     
   } else 
     expect_equal(TRUE, TRUE)
+  
+})
+
+test_that("perf12: Wide and long table performance is good.", {
+  
+  if (DEV) {
+  
+  library(fmtr)
+  
+    libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+    
+    rfmt <- value(condition(x == "ASIAN", "Asian"),
+                  condition(x == "BLACK OR AFRICAN AMERICAN", "Black or African American"),
+                  condition(x == "WHITE", "White"),
+                  condition(x == "UNKNOWN", "Unknown"))
+    
+    tm <- Sys.time()
+    dm <- datastep(dat$dm, merge = dat$lb,
+                   merge_by = c("STUDYID", "USUBJID"),
+                   merge_in = c("ina", "inb"),
+                   {
+                     if (ina) {
+                       HASADSL <- TRUE
+                     }
+                     
+                     if (inb) {
+                       HASLB <- TRUE
+                       
+                     }
+                     
+                     RACEC <- fapply(RACE, rfmt)
+                     
+                    # output()
+                     
+                   })
+    
+    print(Sys.time() - tm)
+    
+    # 14.14 seconds
+  
+  } else {
+    expect_equal(TRUE, TRUE) 
+  }
+  
+})
+
+test_that("perf13: Really long table performance is good.", {
+  
+  if (DEV) {
+    
+    libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+
+    
+    tm <- Sys.time()
+    dm <- datastep(dat$lb, set = list(dat$lb, dat$lb, dat$lb),
+                   {
+                     if (is.na(LBBLFL))
+                       subjstart <- TRUE
+                     else
+                       subjstart <- FALSE
+                     
+                     
+                     mynum <- n.
+                     
+                   })
+    
+    print(Sys.time() - tm)
+    
+    # 27.7 seconds
+    
+  } else {
+    expect_equal(TRUE, TRUE) 
+  }
+  
+})
+
+
+test_that("perf14: Really long table performance is good with retain.", {
+  
+  if (DEV) {
+    
+    libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
+    
+    
+    tm <- Sys.time()
+    dm <- datastep(dat$lb, set = list(dat$lb, dat$lb, dat$lb),
+                   retain = list(A = 0, B = "hork", C = 0),
+                   {
+                     if (!is.na(LBBLFL)) {
+                       output()
+                     }
+                    
+                     mynum <- n.
+                     
+                     A <- A + 1
+                     C <- C - 1
+                     # B <- paste(B, n.) 
+                     
+                   })
+    
+    print(Sys.time() - tm)
+    
+    # Without output
+    # 35.31 seconds, 74304 rows
+    
+    # With output
+    # 2.764391 mins
+    
+  } else {
+    expect_equal(TRUE, TRUE) 
+  }
   
 })
 

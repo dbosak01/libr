@@ -302,17 +302,17 @@ e$output <- list()
 #' })
 #' 
 #' df
-#' #                    mpg cyl  disp mpgcat      recdt
-#' # Mazda RX4         21.0   6 160.0   High 1974-06-10
-#' # Mazda RX4 Wag     21.0   6 160.0   High 1974-06-10
-#' # Datsun 710        22.8   4 108.0   High 1974-06-10
-#' # Hornet 4 Drive    21.4   6 258.0   High 1974-06-10
-#' # Hornet Sportabout 18.7   8 360.0    Low 1974-06-10
-#' # Valiant           18.1   6 225.0    Low 1974-06-10
-#' # Duster 360        14.3   8 360.0    Low 1974-06-10
-#' # Merc 240D         24.4   4 146.7   High 1974-06-10
-#' # Merc 230          22.8   4 140.8   High 1974-06-10
-#' # Merc 280          19.2   6 167.6    Low 1974-06-10
+#' #     mpg cyl  disp mpgcat      recdt is8cyl
+#' # 1  21.0   6 160.0   High 1974-06-10  FALSE
+#' # 2  21.0   6 160.0   High 1974-06-10  FALSE
+#' # 3  22.8   4 108.0   High 1974-06-10  FALSE
+#' # 4  21.4   6 258.0   High 1974-06-10  FALSE
+#' # 5  18.7   8 360.0    Low 1974-06-10   TRUE
+#' # 6  18.1   6 225.0    Low 1974-06-10  FALSE
+#' # 7  14.3   8 360.0    Low 1974-06-10   TRUE
+#' # 8  24.4   4 146.7   High 1974-06-10  FALSE
+#' # 9  22.8   4 140.8   High 1974-06-10  FALSE
+#' # 10 19.2   6 167.6    Low 1974-06-10  FALSE
 #'
 #' # Example #2: By-group Processing
 #' df <- datastep(mtcars[1:10,], 
@@ -329,17 +329,17 @@ e$output <- list()
 #' })
 #' 
 #' df
-#' #                    mpg cyl gear   grp
-#' # Mazda RX4         21.0   6    4 Start
-#' # Mazda RX4 Wag     21.0   6    4     -
-#' # Datsun 710        22.8   4    4   End
-#' # Hornet 4 Drive    21.4   6    3 Start
-#' # Hornet Sportabout 18.7   8    3     -
-#' # Valiant           18.1   6    3     -
-#' # Duster 360        14.3   8    3   End
-#' # Merc 240D         24.4   4    4 Start
-#' # Merc 230          22.8   4    4     -
-#' # Merc 280          19.2   6    4   End 
+#' # mpg cyl gear   grp
+#' # 1  21.0   6    4 Start
+#' # 2  21.0   6    4     -
+#' # 3  22.8   4    4   End
+#' # 4  21.4   6    3 Start
+#' # 5  18.7   8    3     -
+#' # 6  18.1   6    3     -
+#' # 7  14.3   8    3   End
+#' # 8  24.4   4    4 Start
+#' # 9  22.8   4    4     -
+#' # 10 19.2   6    4   End
 #' 
 #' # Example #3: Calculate Block
 #' df <- datastep(mtcars, 
@@ -354,26 +354,25 @@ e$output <- list()
 #' })
 #' 
 #' df[1:10,]
-#' #                    mpg cyl mean_mpg mpgcat
-#' # Mazda RX4         21.0   6 20.09062   High
-#' # Mazda RX4 Wag     21.0   6 20.09062   High
-#' # Datsun 710        22.8   4 20.09062   High
-#' # Hornet 4 Drive    21.4   6 20.09062   High
-#' # Hornet Sportabout 18.7   8 20.09062    Low
-#' # Valiant           18.1   6 20.09062    Low
-#' # Duster 360        14.3   8 20.09062    Low
-#' # Merc 240D         24.4   4 20.09062   High
-#' # Merc 230          22.8   4 20.09062   High
-#' # Merc 280          19.2   6 20.09062    Low
+#' # mpg cyl mean_mpg mpgcat
+#' # 1  21.0   6 20.09062   High
+#' # 2  21.0   6 20.09062   High
+#' # 3  22.8   4 20.09062   High
+#' # 4  21.4   6 20.09062   High
+#' # 5  18.7   8 20.09062    Low
+#' # 6  18.1   6 20.09062    Low
+#' # 7  14.3   8 20.09062    Low
+#' # 8  24.4   4 20.09062   High
+#' # 9  22.8   4 20.09062   High
+#' # 10 19.2   6 20.09062    Low
 #'
 #' # Example #4: Data pipeline
 #' library(dplyr)
-#' library(magrittr)
 #' 
 #' # Add datastep to dplyr pipeline
-#' df <- mtcars %>% 
-#'   select(mpg, cyl, gear) %>% 
-#'   mutate(mean_mpg = mean(mpg)) %>% 
+#' df <- mtcars |> 
+#'   select(mpg, cyl, gear) |> 
+#'   mutate(mean_mpg = mean(mpg)) |> 
 #'   datastep({
 #'     
 #'     if (mpg >= mean_mpg)
@@ -381,7 +380,7 @@ e$output <- list()
 #'     else 
 #'       mpgcat <- "Low"
 #'     
-#'   }) %>% 
+#'   }) |> 
 #'   filter(row_number() <= 10)
 #' 
 #' df
@@ -410,17 +409,17 @@ e$output <- list()
 #' })
 #' 
 #' df
-#' #                    MPG Cylinders   Wgt Cumulative Wgt
-#' # Mazda RX4         21.0         6 2.620          2.620
-#' # Mazda RX4 Wag     21.0         6 2.875          5.495
-#' # Datsun 710        22.8         4 2.320          7.815
-#' # Hornet 4 Drive    21.4         6 3.215         11.030
-#' # Hornet Sportabout 18.7         8 3.440         14.470
-#' # Valiant           18.1         6 3.460         17.930
-#' # Duster 360        14.3         8 3.570         21.500
-#' # Merc 240D         24.4         4 3.190         24.690
-#' # Merc 230          22.8         4 3.150         27.840
-#' # Merc 280          19.2         6 3.440         31.280
+#' # MPG Cylinders   Wgt Cumulative Wgt
+#' # 1  21.0         6 2.620          2.620
+#' # 2  21.0         6 2.875          5.495
+#' # 3  22.8         4 2.320          7.815
+#' # 4  21.4         6 3.215         11.030
+#' # 5  18.7         8 3.440         14.470
+#' # 6  18.1         6 3.460         17.930
+#' # 7  14.3         8 3.570         21.500
+#' # 8  24.4         4 3.190         24.690
+#' # 9  22.8         4 3.150         27.840
+#' # 10 19.2         6 3.440         31.280
 #' 
 #' # Example #6: Attributes and Arrays
 #' 
@@ -596,6 +595,8 @@ datastep <- function(data, steps, keep = NULL,
     
   }
   
+ # tmpt <- Sys.time()
+  
   # Deal with single value unquoted parameter values
   oby <- deparse(substitute(by, env = environment()))
   by <- tryCatch({if (typeof(by) %in% c("character", "NULL")) by else oby},
@@ -691,7 +692,6 @@ datastep <- function(data, steps, keep = NULL,
   ret <- list()
   firstval <- NULL
   firstvals <- list()
-  rowcount <- nrow(data)
   orig_class <- class(data)
   
   # Set by if data is a grouped tibble
@@ -749,20 +749,40 @@ datastep <- function(data, steps, keep = NULL,
       warning("After subset, input dataset has no rows.") 
     }
     
-    rowcount <- nrow(data)
-    
     # Restore attributes from original data 
     data <- copy_attributes(data_attributes, data)
     
   }
   
+  # Remove variables to increase performance on larger datasets.
+  # Can't do it if output() function is used.
+  orgnms <- names(data)
+  rmdat <- NULL
+  if (!hout & nrow(data) > 2500 & ncol(data) > 15) {  # & nrow(data) > 0
+    rmdat <- data.frame(n. = seq(1, nrow(data)))
+    acode <- paste(code, collapse = " ")
+    exclst <- c(keep, by)
+    if (!is.null(arrays)) {
+      for (idx in seq_len(length(arrays))) { 
+        exclst <- append(exclst, arrays[[idx]])
+      }
+    }
+    for (nm in names(data)) {
+      if (!grepl(nm, acode, fixed = TRUE)) {
+        if (!nm %in% exclst) {
+          rmdat[[nm]] <- data[[nm]] 
+          data[[nm]] <- NULL
+        }
+      }
+    }
+    rmdat[["n."]] <- NULL
+  }
+
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
   
-  # Increase rowcount if needed
-  if (nrow(data) > rowcount) {
-    rowcount <- nrow(data)
-  }
+  # print(paste0("Intro: ", Sys.time() - tmpt))
+  # tmpt <- Sys.time()
   
   # If there is no code to step through
   if (length(as.character(code)) == 1) {
@@ -785,50 +805,61 @@ datastep <- function(data, steps, keep = NULL,
         lf[[pnm]] <- pf[[pnm]]
       }
     }
-
-    # Step through row by row
-    for (n. in seq_len(rowcount)) {
+    
+    # Set up previous row variable
+    prrow <- NULL
+    
+    # Index variable
+    n. <- 1
+    
+    # Split rows into a list
+    rws <- split(data, seq(nrow(data)))
+    
+    # Function to process the datastep
+    process_dstep <- function(rw, retlst, attrs) { 
       
-      # Subset by row
-      rw <- data[n., , drop = FALSE]
+      # Restore attributes
+      rw <- copy_attributes(attrs, rw)
       
-      # Put back any attributes dropped during row subset
-      rw <- copy_attributes(data_attributes, rw)
-      
-      
-      
-      # Deal with retained variables
-      if (!is.null(retain)) {
-        if (length(ret) == 0) {
-          for (nm in names(retain)) {
-            
-            # Populate with initial value
-            rw[[nm]] <- retain[[nm]]
-            
-          }
-          
+      # Deal with retained values
+      if (length(retlst) > 0) {
+        
+        # Initialize retained values
+        if (n. == 1) {
+          prw <- retlst
         } else {
-          for (nm in names(retain)) {
-            
-            # Populate with value from previous row   
-            #data[n., nm] <- ret[n. - 1, nm]  way backup
-            
-            rw[[nm]] <- ret[[n. - 1]][[nm]] # current
-            
-            
-          }
+          prw <- prrow
+        }
+        
+        # Apply retained values
+        for (nm in names(retlst)) {
+          rw[[nm]] <- prw[[nm]]
         }
       }
       
+      # Execute code on single row
+      ret <- within(rw, eval(code, enclos = lf), 
+                    keepAttrs = TRUE)
       
-      # Evaluate the code for the row
-      # ret[[n.]]  <-  within(rw, eval(code), 
-      #                       keepAttrs = TRUE)
-
-      # Evaluate the code for the row
-      ret[[n.]] <- within(rw, eval(code, enclos = lf))
-
+      # Update previous row
+      prrow <<- ret
+      
+      # Update index
+      n. <<- n. + 1
+      
+      return(ret)
     }
+    
+    # Apply the datastep function
+    # Faster than a loop
+    ret <- mapply(rws, FUN = process_dstep, 
+                    MoreArgs = list(retlst = retain,
+                                    attrs = data_attributes), 
+                    SIMPLIFY = FALSE)
+    
+    
+    # print(paste0("DS Loop: ", Sys.time() - tmpt))
+    # tmpt <- Sys.time()
     
     # Bind all rows
     if (hout) {
@@ -839,10 +870,16 @@ datastep <- function(data, steps, keep = NULL,
     }
     ret["column_label"] <- NULL
     
-
   }
   
+  if (!is.null(rmdat)) {
+    for (nm in names(rmdat)) {
+      ret[[nm]] <- rmdat[[nm]]
+    }
+  }
   
+  # print(paste0("Bind rows: ", Sys.time() - tmpt))
+  # tmpt <- Sys.time()
   
   # Delete
   if ("..delete" %in% names(ret)) {
@@ -858,7 +895,6 @@ datastep <- function(data, steps, keep = NULL,
   
   # Improve column order
   rtnms <- rev(names(ret))
-  orgnms <- names(data)
   ret <- ret[ ,c(orgnms, rtnms[!rtnms %in% orgnms])]
   
   # Remove automatic variables
@@ -965,10 +1001,12 @@ datastep <- function(data, steps, keep = NULL,
     print(ret)
   }
   
+  # print(paste0("End: ", Sys.time() - tmpt))
+  
   return(ret)
 }
 
-
+# Version 1.3.9, before performance changes
 datastep_back <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
                      by = NULL, calculate = NULL,
@@ -977,138 +1015,138 @@ datastep_back <- function(data, steps, keep = NULL,
                      sort_check = TRUE,
                      format = NULL,
                      label = NULL,
-                     where = NULL, 
+                     where = NULL,
                      set = NULL,
                      merge = NULL,
                      merge_by = NULL,
-                     merge_in = NULL, 
-                     log = TRUE, 
+                     merge_in = NULL,
+                     log = TRUE,
                      subset = NULL) {
-  
+
   if (!is.null(data)) {
     if (!"data.frame" %in% class(data))
       stop("input data must be inherited from data.frame")
   } else {
-    data <- data.frame() 
+    data <- data.frame()
   }
-  
-  
+
+
   if (!is.null(retain)) {
     if (!"list" %in% class(retain))
       stop("retain parameter value must be of class 'list'")
-    
-  } 
-  
+
+  }
+
   if (!is.null(attrib)) {
     if (!"list" %in% class(attrib))
       stop("attrib parameter value must be of class 'list'")
-    
+
   }
-  
+
   if (!is.null(arrays)) {
     if (!"list" %in% class(arrays))
       stop("arrays parameter value must be of class 'list'")
-    
+
   }
-  
+
   # Deal with single value unquoted parameter values
   oby <- deparse(substitute(by, env = environment()))
   by <- tryCatch({if (typeof(by) %in% c("character", "NULL")) by else oby},
                  error = function(cond) {oby})
-  
+
   odrop <- deparse(substitute(drop, env = environment()))
   drop <- tryCatch({if (typeof(drop) %in% c("character", "NULL")) drop else odrop},
                    error = function(cond) {odrop})
-  
+
   okeep <- deparse(substitute(keep, env = environment()))
   keep <- tryCatch({if (typeof(keep) %in% c("character", "NULL")) keep else okeep},
                    error = function(cond) {okeep})
-  
+
   omby <- deparse(substitute(merge_by, env = environment()))
   merge_by <- tryCatch({if (typeof(merge_by) %in% c("character", "NULL")) merge_by else omby},
                        error = function(cond) {omby})
-  
+
   # Put code in a variable for safe-keeping
   code <- substitute(steps, env = environment())
-  
+
   # Determine if there is an output function
   hout <- has_output(deparse(code))
-  
+
   # Capture number of starting columns
   startcols <- ncol(data)
-  
+
   # Give warning if there are no rows and no output()
   if (hout == FALSE & nrow(data) == 0) {
-    warning("Input dataset has no rows.") 
+    warning("Input dataset has no rows.")
   }
-  
+
   # Save off incoming dataset class
   dataclass <- class(data)
-  
+
   # Deal with set parameter
   if (!is.null(set)) {
     data <- perform_set(data, set)
   }
-  
+
   # Deal with merge parameter
   if (!is.null(merge)) {
-    data <- perform_merge(data, merge, merge_by, merge_in) 
+    data <- perform_merge(data, merge, merge_by, merge_in)
   }
-  
+
   # Clear output list
   e$output <- list()
-  
-  # Put aggregate functions in a variable 
+
+  # Put aggregate functions in a variable
   agg <- substitute(calculate, env = environment())
-  
+
   # Execute aggregate functions
   if (paste0(deparse(agg), collapse = "") != "NULL") {
     data <- within(data, eval(agg), keepAttrs = TRUE)
   }
-  
+
   # Apply variable attributes
   if (!is.null(attrib)) {
-    for (nm in names(attrib)) { 
+    for (nm in names(attrib)) {
       if ("dsattr" %in% class(attrib[[nm]])) {
-        
+
         # If the attrib is a dsattr
         if (!nm %in% names(data)) {
           data[[nm]] <- attrib[[nm]][["default"]]
         }
         for (at in names(attrib[[nm]])) {
-          
+
           if (at != "class")
             attr(data[[nm]], at) <-  attrib[[nm]][[at]]
-          
+
         }
       } else {
-        
+
         # If the attrib is not a dsattr, use as default value
         if (!nm %in% names(data)) {
           data[[nm]] <- attrib[[nm]]
         }
-        
-        
+
+
       }
     }
   }
-  
+
   # Assign arrays to variables in this environment
   # Otherwise they won't be accessible from datastep code
   if (!is.null(arrays)) {
     for (nm in names(arrays)) {
-      
-      assign(nm, arrays[[nm]]) 
-      
+
+      assign(nm, arrays[[nm]])
+
     }
   }
-  
+
   ret <- list()
   firstval <- NULL
   firstvals <- list()
   rowcount <- nrow(data)
   orig_class <- class(data)
-  
+
   # Set by if data is a grouped tibble
   if (is.null(by) && "grouped_df" %in% class(data)) {
     if (!is.null(attr(data, "groups"))) {
@@ -1118,77 +1156,77 @@ datastep_back <- function(data, steps, keep = NULL,
         nms <- nms[nms != ".rows"]
         if (length(nms) > 0) {
           by <- nms
-          
+
         }
       }
     }
   }
-  
+
   # Save off any attributes
   data_attributes <- data[1, , drop = FALSE]
-  
+
   # Tibble subset will keep attributes, but data.frame will not
   if (!"tbl_df" %in% class(data)) {
     data_attributes <- copy_attributes(data, data_attributes)
-    
+
   }
   if (!is.null(format)) {
     data_attributes <- assign_attributes(data_attributes, format, "format")
   }
-  
+
   # For some reason the grouped tibble kills performance.
-  # Temporarily convert to a data frame.  
+  # Temporarily convert to a data frame.
   # Seriously like 20X performance increase.
   if (any("grouped_df" == class(data)))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
-  
+
   # data.table is not that bad, but data.frame is better.
   if (any("data.table" == class(data)))
     data <- as.data.frame(data, stringsAsFactors = FALSE)
-  
+
   # Strip any crazy classes, as they can mess up datastep functions
   data_classes <- class(data)
   if (any(!class(data) %in% c("data.frame", "list"))) {
-    data <- as.data.frame(unclass(data), stringsAsFactors = FALSE, 
-                          check.names = FALSE) 
+    data <- as.data.frame(unclass(data), stringsAsFactors = FALSE,
+                          check.names = FALSE)
   }
-  
+
   # Subset Before
   if (!is.null(subset)) {
-    
+
     data <- tryCatch({subset(data, eval(subset))},
                      error = function(cond){ret})
-    
+
     # Give warning if there are no rows and no output()
     if (hout == FALSE & nrow(data) == 0) {
-      warning("After subset, input dataset has no rows.") 
+      warning("After subset, input dataset has no rows.")
     }
-    
+
     rowcount <- nrow(data)
-    
-    # Restore attributes from original data 
+
+    # Restore attributes from original data
     data <- copy_attributes(data_attributes, data)
-    
+
   }
-  
+
   # Add automatic variables
   data <- add_autos(data, by, sort_check)
-  
+
   # Increase rowcount if needed
   if (nrow(data) > rowcount) {
     rowcount <- nrow(data)
   }
-  
+
   # If there is no code to step through
   if (length(as.character(code)) == 1) {
-    
+
     # Just set original dataset
     ret <- data
-    
+
   } else {
-    
+
     # Sometimes the local environment cannot access the parent frame.
-    # If this happens, transfer any variables from the parent frame 
+    # If this happens, transfer any variables from the parent frame
     # to the local frame.
     lf <- sys.frame(sys.nframe())
     pf <- parent.frame()
@@ -1200,188 +1238,189 @@ datastep_back <- function(data, steps, keep = NULL,
         lf[[pnm]] <- pf[[pnm]]
       }
     }
-    
+
     # Step through row by row
     for (n. in seq_len(rowcount)) {
-      
+
       # Subset by row
       rw <- data[n., , drop = FALSE]
-      
+
       # Put back any attributes dropped during row subset
       rw <- copy_attributes(data_attributes, rw)
-      
-      
-      
+
+
+
       # Deal with retained variables
       if (!is.null(retain)) {
         if (length(ret) == 0) {
           for (nm in names(retain)) {
-            
+
             # Populate with initial value
             rw[[nm]] <- retain[[nm]]
-            
+
           }
-          
+
         } else {
           for (nm in names(retain)) {
-            
-            # Populate with value from previous row   
+
+            # Populate with value from previous row
             #data[n., nm] <- ret[n. - 1, nm]  way backup
-            
+
             rw[[nm]] <- ret[[n. - 1]][[nm]] # current
-            
-            
+
+
           }
         }
       }
-      
-      
+
+
       # Evaluate the code for the row
-      # ret[[n.]]  <-  within(rw, eval(code), 
+      # ret[[n.]]  <-  within(rw, eval(code),
       #                       keepAttrs = TRUE)
-      
+
       # Evaluate the code for the row
-      ret[[n.]] <- within(rw, eval(code, enclos = lf))
-      
+      ret[[n.]] <- within(rw, eval(code, enclos = lf), keepAttrs = TRUE)
+
     }
-    
+
     # Bind all rows
     if (hout) {
       ret <- bind_rows(e$output, .id = "column_label")
-      
+
     } else {
       ret <- bind_rows(ret, .id = "column_label")
     }
     ret["column_label"] <- NULL
-    
-    
+
+
   }
-  
-  
-  
+
+
+
   # Delete
   if ("..delete" %in% names(ret)) {
     ret <- tryCatch({subset(ret, ret[["..delete"]] == FALSE)},
                     error = function(cond){ret})
   }
-  
+
   # Where Before
   if (!is.null(where)) {
     ret <- tryCatch({subset(ret, eval(where))},
                     error = function(cond){ret})
   }
-  
+
   # Improve column order
   rtnms <- rev(names(ret))
   orgnms <- names(data)
   ret <- ret[ ,c(orgnms, rtnms[!rtnms %in% orgnms])]
-  
+
   # Remove automatic variables
   ret <- remove_autos(ret, by)
-  
+
   # Perform drop operation
   if (!is.null(drop)) {
-    
+
     if (!all(drop %in% names(ret))) {
-      
-      message("Drop parameter '" %p%  drop[!drop %in% names(ret)] %p% 
+
+      message("Drop parameter '" %p%  drop[!drop %in% names(ret)] %p%
                 "' not found on output dataset.")
-      
-      drop <-  drop[drop %in% names(ret)] 
+
+      drop <-  drop[drop %in% names(ret)]
     }
-    
+
     ret <- ret[ , !names(ret) %in% drop, drop = FALSE]
-    
+
   }
-  
+
   # Perform keep operation
   if (!is.null(keep)) {
     if (!all(keep %in% names(ret))) {
-      
-      message("Keep parameter '" %p%  keep[!keep %in% names(ret)] %p% 
+
+      message("Keep parameter '" %p%  keep[!keep %in% names(ret)] %p%
                 "' not found on output dataset.")
-      
-      keep <-  keep[keep %in% names(ret)] 
+
+      keep <-  keep[keep %in% names(ret)]
     }
-    
+
     ret <- ret[ , keep, drop = FALSE]
   }
-  
-  
+
+
   # Convert back to tibble if original was a tibble
   if ("tbl_df" %in% orig_class & !"tbl_df" %in% class(ret)) {
     ret <- as_tibble(ret, .name_repair = "minimal")
   }
-  
+
   # Put back grouping attributes if original data was grouped
   if (!is.null(by) & "grouped_df" %in% orig_class) {
-    
+
     if (all(by %in% names(ret)))
-      ret <- group_by(ret, across({{by}})) 
-    
+      ret <- group_by(ret, across({{by}}))
+
   }
-  
+
   # Convert back to data.table if original was a data.table
   if ("data.table" %in% orig_class & !"data.table" %in% class(ret)) {
     ret <- data.table::as.data.table(ret)
   }
-  
+
   # Restore any stripped classes
   if (any(!data_classes %in% class(ret))) {
-    
+
     class(ret) <- data_classes
   }
-  
-  # Restore attributes from original data 
+
+  # Restore attributes from original data
   ret <- copy_attributes(data_attributes, ret)
-  
-  
+
+
   # Perform rename operation
   if (!is.null(rename)) {
     nms <- names(ret)
     names(ret) <- ifelse(nms %in% names(rename), rename[nms], nms)
   }
-  
+
   # Where After
   if (!is.null(where)) {
     ret <- tryCatch({subset(ret, eval(where))},
                     error = function(cond){ret})
-    
-    # Restore attributes from original data 
+
+    # Restore attributes from original data
     ret <- copy_attributes(data_attributes, ret)
   }
-  
+
   # Labels
   if (!is.null(label)) {
     ret <- assign_attributes(ret, label, "label")
   }
-  
+
   # Formatting
   if (!is.null(format)) {
     ret <- assign_attributes(ret, format, "format")
   }
-  
+
   # Clear out rownames
   rownames(ret) <- NULL
-  
+
   endcols <- ncol(ret)
   if (startcols > endcols)
-    log_logr(paste0("datastep: columns decreased from ", startcols, " to ", 
+    log_logr(paste0("datastep: columns decreased from ", startcols, " to ",
                     endcols))
   else if (startcols < endcols)
-    log_logr(paste0("datastep: columns increased from ", startcols, " to ", 
+    log_logr(paste0("datastep: columns increased from ", startcols, " to ",
                     endcols))
-  else 
-    log_logr(paste0("datastep: columns started with ", startcols, 
+  else
+    log_logr(paste0("datastep: columns started with ", startcols,
                     " and ended with ", endcols))
-  
+
   if (log_output() & log) {
     log_logr(ret)
     print(ret)
   }
-  
+
   return(ret)
 }
+
 
 
 

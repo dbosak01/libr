@@ -1,6 +1,6 @@
 context("Datastep Tests")
 
-base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+base_path <-  file.path(getwd(), "tests\\testthat\\data")
 
 base_path <- "./data"
 
@@ -184,7 +184,7 @@ test_that("ds8: datastep() auto-group-by works as expected.", {
     lib_load(dat)
 
 
-    d1 <- dat.demo_studya %>% group_by(treatment) %>%
+    d1 <- dat.demo_studya |>  group_by(treatment)  |> 
       datastep({
         p1 <- first.
         p2 <- last.
@@ -326,13 +326,13 @@ test_that("ds15: datastep() attributes on data are maintained.", {
 
   attributes(dat$dm$USUBJID)
 
-  prep <- dat$dm %>%
-    left_join(dat$vs, by = c("USUBJID" = "USUBJID")) %>%
-    select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) %>%
+  prep <- dat$dm |> 
+    left_join(dat$vs, by = c("USUBJID" = "USUBJID")) |> 
+    select(USUBJID, VSTESTCD, VISIT, VISITNUM, VSSTRESN, ARM, VSBLFL) |> 
     filter(VSTESTCD %in% c("PULSE", "RESP", "TEMP", "DIABP", "SYSBP"),
-           !(VISIT == "SCREENING" & VSBLFL != "Y")) %>%
-    arrange(USUBJID, VSTESTCD, VISITNUM) %>%
-    group_by(USUBJID, VSTESTCD) %>%
+           !(VISIT == "SCREENING" & VSBLFL != "Y")) |> 
+    arrange(USUBJID, VSTESTCD, VISITNUM) |> 
+    group_by(USUBJID, VSTESTCD) |> 
 
     datastep(retain = list(BSTRESN = 0), {
 
@@ -1492,7 +1492,7 @@ test_that("ds53: Merge by keeps dataset attributes.", {
 })
 
 
-test_that("ds43: datastep join works.", {
+test_that("ds53: datastep join works.", {
 
   dat1 <- read.table(header = TRUE, text = '
     ID NAME
@@ -1527,7 +1527,7 @@ test_that("ds43: datastep join works.", {
 
 })
 
-test_that("ds44: datastep multiple renames works.", {
+test_that("ds54: datastep multiple renames works.", {
 
 
   dat2 <- read.table(header = TRUE, text = '
@@ -1552,7 +1552,7 @@ test_that("ds44: datastep multiple renames works.", {
 })
 
 
-test_that("ds43: Merge dataset names are not 'fixed' when using tibbles.", {
+test_that("ds55: Merge dataset names are not 'fixed' when using tibbles.", {
 
   library(tibble)
 
@@ -1587,7 +1587,7 @@ test_that("ds43: Merge dataset names are not 'fixed' when using tibbles.", {
 })
 
 
-test_that("ds44: Merge works with factors.", {
+test_that("ds56: Merge works with factors.", {
 
 
   # Create sample data
@@ -1629,7 +1629,7 @@ test_that("ds44: Merge works with factors.", {
 })
 
 
-test_that("ds45: Output function works as expected when the names have spaces.", {
+test_that("ds57: Output function works as expected when the names have spaces.", {
 
 
   dat <- mtcars[ , c("mpg", "cyl")]
@@ -1655,7 +1655,7 @@ test_that("ds45: Output function works as expected when the names have spaces.",
 
 })
 
-test_that("ds46: Skip loop when there is no code.", {
+test_that("ds58: Skip loop when there is no code.", {
 
 
   dat <- mtcars[ , c("mpg", "cyl")]
@@ -1673,7 +1673,7 @@ test_that("ds46: Skip loop when there is no code.", {
 })
 
 
-test_that("ds47: Multiple group bys works as expected.", {
+test_that("ds59: Multiple group bys works as expected.", {
 
   libname(dat, base_path, "rds")
 
@@ -1707,7 +1707,7 @@ test_that("ds47: Multiple group bys works as expected.", {
 })
 
 
-test_that("ds48: labels retained with where clause.", {
+test_that("ds60: labels retained with where clause.", {
 
 
   dat <- mtcars
@@ -1740,7 +1740,7 @@ test_that("ds48: labels retained with where clause.", {
 
 })
 
-test_that("ds49: works as expected with local variable.", {
+test_that("ds61: works as expected with local variable.", {
   
   
   library(fmtr)
@@ -1765,7 +1765,7 @@ test_that("ds49: works as expected with local variable.", {
 })
 
 
-test_that("ds50: works as expected with source.all().", {
+test_that("ds62: works as expected with source.all().", {
 
   
   if (dev) {
@@ -1786,7 +1786,7 @@ test_that("ds50: works as expected with source.all().", {
 })
 
 
-test_that("ds51: delete() works with NA in data frame.", {
+test_that("ds63: delete() works with NA in data frame.", {
   
   
   df1 <- data.frame(
@@ -1808,7 +1808,7 @@ test_that("ds51: delete() works with NA in data frame.", {
 })
 
 
-test_that("ds52: subset clause works.", {
+test_that("ds64: subset clause works.", {
   
   df <- datastep(mtcars,
                  subset = expression(cyl == 8),
@@ -1835,7 +1835,7 @@ test_that("ds52: subset clause works.", {
 })
 
 
-test_that("ds36: output works with NULL dataset.", {
+test_that("ds65: output works with NULL dataset.", {
   
   d1 <- datastep(NULL, {
     

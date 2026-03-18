@@ -1,6 +1,6 @@
 context("Manipulation Tests")
 
-base_path <- "c:\\packages\\libr\\tests\\testthat\\data"
+base_path <-  file.path(getwd(), "tests\\testthat\\data")
 
 base_path <- "./data"
 

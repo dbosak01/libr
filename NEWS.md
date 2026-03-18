@@ -1,3 +1,7 @@
+# libr 1.4.0
+* Performance enhancements to `datastep()`.
+* Removed more test data.
+
 # libr 1.3.9
 * Removed some test data to reduce size of package.
 
