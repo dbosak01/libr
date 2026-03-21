@@ -1868,3 +1868,59 @@ test_that("ds65: output works with NULL dataset.", {
 })
 
 
+test_that("ds66: sum by group works as expected.", {
+  
+  
+  dat <- sort(mtcars, by = "cyl")
+  
+  d1 <- datastep(dat, by = "cyl",  retain = list(mpgsum = 0),
+                 keep = c("cyl", "mpgsum"),
+                 {
+                   
+                   if (first.) {
+                     mpgsum <- 0
+                   }
+                     mpgsum <- mpgsum + mpg
+                     
+                   if (last.) {
+                     output()
+                   }
+                   
+                 })
+  
+  d1
+  
+  expect_equal(nrow(d1), 3)
+  expect_equal(ncol(d1), 2)
+  
+})
+
+
+test_that("ds66: column reorder work as expected.", {
+  
+  
+  dat <- sort(mtcars, by = "cyl")
+  
+  d1 <- datastep(dat, by = "cyl",  retain = list(mpgsum = 0),
+                 {
+                   
+                   if (first.) {
+                     mpgsum <- 0
+                   }
+                   mpgsum <- mpgsum + mpg
+                   
+                   num <- n.
+                   
+                   myvar <- mpg / cyl 
+                   
+                   
+                 })
+  
+  d1
+  
+  newnames <- names(d1)[12:14]
+  
+  expect_equal(newnames, c("mpgsum", "num", "myvar"))
+  
+})
+

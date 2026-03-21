@@ -152,6 +152,9 @@ test_that("perf06: datastep() performance with retain is good", {
                       
                       rnum2 <- n.
                       
+                      if (subjstart == TRUE)
+                        output()
+                      
                     }, sort_check = TRUE)
     
     tmdiff <- Sys.time() - tm

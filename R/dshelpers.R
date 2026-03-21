@@ -50,8 +50,6 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
     df[["..delete"]] <- FALSE
   else {
     
-
-    
     if (ncol(df) == 0) {
       df <- data.frame("..delete" = FALSE, stringsAsFactors = FALSE)
     } else {
@@ -66,12 +64,8 @@ add_autos <- function(df, groups = NULL, sort_check = FALSE) {
       df <- as.data.frame(nlst, row.names = NULL, stringsAsFactors = FALSE)
       
     }
-    
-
-    
-    
   }
-  
+
   
   return(df)
   
