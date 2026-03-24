@@ -715,10 +715,17 @@ datastep <- function(data, steps, keep = NULL,
   # Tibble subset will keep attributes, but data.frame will not
   if (!"tbl_df" %in% class(data)) {
     data_attributes <- copy_attributes(data, data_attributes)
-    
   }
+  
   if (!is.null(format)) {
     data_attributes <- assign_attributes(data_attributes, format, "format")
+  }
+  
+  # Clear out any columns with no attributes
+  for (nm in names(data_attributes)) {
+    if (is.null(data_attributes[[nm]]))
+      data_attributes[[nm]] <- NULL
+    
   }
   
   # For some reason the grouped tibble kills performance.
@@ -1666,19 +1673,14 @@ copy_attributes <- function(df1, df2) {
   
   ret <- df2
   
-  for (nm in names(df2)) {
+  indf1 <- names(df2) %in% names(df1)
+  nms <- names(df2)[indf1]
+  
+  for (nm in nms) {
 
     att <- attributes(df1[[nm]])
     if (!is.null(att))
       attributes(ret[[nm]]) <- att
-    
-    # col <- df1[[nm]]
-    # for (at in names(attributes(col))) {
-    #   
-    #   attr(ret[[nm]], at) <- attr(col, at)
-    #   
-    # }
-    
   }
   
   return(ret)

@@ -93,6 +93,8 @@ test_that("perf04: datastep() performance with retain is good", {
     
     expect_equal(tmdiff < 14, TRUE)
     
+    # Currently 6.7 seconds 2026-03-23
+    
   } else
     expect_equal(TRUE, TRUE)
   
@@ -131,7 +133,7 @@ test_that("perf05: datastep() performance with by group is good", {
 })
 
 # Jumps to 14 seconds when retain and group by added
-test_that("perf06: datastep() performance with retain is good", {
+test_that("perf06: datastep() performance with output and retain is good", {
   
   if (DEV) {
     
@@ -231,7 +233,7 @@ test_that("perf08: 100,000 row datastep on data.frame is good.", {
   
   if (DEV) {
     
-    l <- 100000
+    l <- 1000000
     
     df <- data.frame(C1 = seq_len(l), C2 = runif(l), 
                      C3 = runif(l), C4 = runif(l), stringsAsFactors = FALSE)
@@ -255,6 +257,7 @@ test_that("perf08: 100,000 row datastep on data.frame is good.", {
     
     # 100,000 rows is 20 seconds
     # 1,000,000 rows is 3.6 minutes
+    # 1,000,000 rows 5.36 minutes
     
   } else
     expect_equal(TRUE, TRUE)
