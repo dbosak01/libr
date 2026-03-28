@@ -1924,3 +1924,47 @@ test_that("ds66: column reorder work as expected.", {
   
 })
 
+
+
+test_that("ds67: keep and drop wildcards work as expected.", {
+  
+  
+  dat <- mtcars
+  
+  d1 <- datastep(dat, keep = v(mpg, cyl, `d*`, myvar),
+                 {
+                   
+                   myvar <- mpg / cyl 
+                   
+                   
+                 })
+  
+  d1
+  
+  newnames <- names(d1)
+  
+  expect_equal(newnames, c("mpg", "cyl", "disp", "drat", "myvar"))
+  
+  
+  
+  d1 <- datastep(dat, drop = v(mpg, cyl, `d*`, myvar, `a?`),
+                 {
+                   
+                   myvar <- mpg / cyl 
+                   
+                   
+                 })
+  
+  d1
+  
+  newnames <- names(d1)
+  
+  expect_equal(any(newnames %in% c("mpg", "cyl", "disp", "drat", "myvar", "am")) , 
+               FALSE)
+  
+  
+  
+})
+
+
+

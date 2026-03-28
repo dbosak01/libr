@@ -243,6 +243,42 @@ on the value of the previous row.</p>
 </div>
 </div>
 <div class="section level3">
+<h3 id="wildcards">Wildcards<a class="anchor" aria-label="anchor" href="#wildcards"></a>
+</h3>
+<p>The keep and drop parameters accepts wildcards. The star character
+(“*“) will match multiple characters, while the question mark (”?“)
+matches a single character. Wildcard characters can be placed anywhere
+in the column name string.</p>
+<div class="section level4">
+<h4 id="example-4-keep-wildcard">Example 4: Keep Wildcard<a class="anchor" aria-label="anchor" href="#example-4-keep-wildcard"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Keep with wildcard</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, </span>
+<span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"cyl"</span>, <span class="st">"d*"</span>, <span class="st">"mpgcat"</span><span class="op">)</span>, <span class="op">{</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">mpg</span> <span class="op">&gt;=</span> <span class="fl">20</span><span class="op">)</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"High"</span></span>
+<span>    <span class="kw">else</span> </span>
+<span>      <span class="va">mpgcat</span> <span class="op">&lt;-</span> <span class="st">"Low"</span></span>
+<span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">df</span></span>
+<span><span class="co">#     mpg cyl  disp drat mpgcat</span></span>
+<span><span class="co"># 1  21.0   6 160.0 3.90   High</span></span>
+<span><span class="co"># 2  21.0   6 160.0 3.90   High</span></span>
+<span><span class="co"># 3  22.8   4 108.0 3.85   High</span></span>
+<span><span class="co"># 4  21.4   6 258.0 3.08   High</span></span>
+<span><span class="co"># 5  18.7   8 360.0 3.15    Low</span></span>
+<span><span class="co"># 6  18.1   6 225.0 2.76    Low</span></span>
+<span><span class="co"># 7  14.3   8 360.0 3.21    Low</span></span>
+<span><span class="co"># 8  24.4   4 146.7 3.69   High</span></span>
+<span><span class="co"># 9  22.8   4 140.8 3.92   High</span></span>
+<span><span class="co"># 10 19.2   6 167.6 3.92    Low</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
 <h3 id="by-group-processing">By Group Processing<a class="anchor" aria-label="anchor" href="#by-group-processing"></a>
 </h3>
 <p>The <code><a href="../reference/datastep.html">datastep()</a></code> function also has the capabilities of
@@ -255,9 +291,9 @@ your data must be sorted properly before sending it into the data step.
 To turn the sort check off, set the <code>sort_check</code> parameter to
 FALSE.</p>
 <div class="section level4">
-<h4 id="example-4-by-groups">Example 4: By Groups<a class="anchor" aria-label="anchor" href="#example-4-by-groups"></a>
+<h4 id="example-5-by-groups">Example 5: By Groups<a class="anchor" aria-label="anchor" href="#example-5-by-groups"></a>
 </h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Identify start and end of by-groups</span></span>
@@ -300,9 +336,9 @@ represent an “or” combination of values for all by-variables. In
 addition, automatic variables will be created for each variable in the
 by group, similar to SAS®. Observe:</p>
 <div class="section level4">
-<h4 id="example-5-multiple-by-groups">Example 5: Multiple By Groups<a class="anchor" aria-label="anchor" href="#example-5-multiple-by-groups"></a>
+<h4 id="example-6-multiple-by-groups">Example 6: Multiple By Groups<a class="anchor" aria-label="anchor" href="#example-6-multiple-by-groups"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create sample data</span></span>
@@ -361,9 +397,9 @@ function. The function will execute the <code>calculate</code> block
 first, add any assigned variables to the data frame, and then execute
 the data step. Below is an example of such a scenario:</p>
 <div class="section level4">
-<h4 id="example-6-calculate-block">Example 6: Calculate Block<a class="anchor" aria-label="anchor" href="#example-6-calculate-block"></a>
+<h4 id="example-7-calculate-block">Example 7: Calculate Block<a class="anchor" aria-label="anchor" href="#example-7-calculate-block"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Categorize mpg as above or below the mean</span></span>
@@ -405,9 +441,9 @@ necessary to use any <code>datastep</code> parameters. The following
 example recreates the above data frame from Example 5, but with a
 <strong>dplyr</strong> pipeline.</p>
 <div class="section level4">
-<h4 id="example-7-data-pipeline">Example 7: Data Pipeline<a class="anchor" aria-label="anchor" href="#example-7-data-pipeline"></a>
+<h4 id="example-8-data-pipeline">Example 8: Data Pipeline<a class="anchor" aria-label="anchor" href="#example-8-data-pipeline"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -452,9 +488,9 @@ understand what data the columns contain.</p>
 part of a data step. Attributes are assigned with a named list and the
 <code><a href="../reference/dsattr.html">dsattr()</a></code> object.</p>
 <div class="section level4">
-<h4 id="example-8-attributes">Example 8: Attributes<a class="anchor" aria-label="anchor" href="#example-8-attributes"></a>
+<h4 id="example-9-attributes">Example 9: Attributes<a class="anchor" aria-label="anchor" href="#example-9-attributes"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Assign label attributes to all columns</span></span>
@@ -497,7 +533,7 @@ with the <em>arrays</em> parameter, which accepts a named list of
 <p>To see the array in action, we’ll use the <em>AirPassengers</em>
 sample data. This data shows international airline passengers by month
 between 1949 and 1960. The data looks like this:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">AirPassengers</span></span>
 <span><span class="co">#      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</span></span>
 <span><span class="co"># 1949 112 118 132 129 121 135 148 148 136 119 104 118</span></span>
@@ -518,9 +554,9 @@ extract values. You can use the indexer to extract a single value or a
 subset of values. An empty indexer will return all the values in the
 array.</p>
 <div class="section level4">
-<h4 id="example-9-using-a-data-step-array">Example 9: Using a Data Step Array<a class="anchor" aria-label="anchor" href="#example-9-using-a-data-step-array"></a>
+<h4 id="example-10-using-a-data-step-array">Example 10: Using a Data Step Array<a class="anchor" aria-label="anchor" href="#example-10-using-a-data-step-array"></a>
 </h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://libr.r-sassy.org">libr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create AirPassengers Data Frame</span></span>
@@ -574,7 +610,7 @@ output.</p>
 filter expression to the datastep. The where clause will be executed at
 the end of datastep processing. Pass in the where clause using the
 <code><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression()</a></code> function. Like so:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare sample data</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">HairEyeColor</span><span class="op">)</span></span>
 <span></span>
@@ -591,7 +627,7 @@ the end of datastep processing. Pass in the where clause using the
 <code><a href="../reference/output.html">output()</a></code> functions to remove or duplicate rows from inside
 the datastep. These functions give you conditional control over which
 rows are output.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Delete rows with frequencies less than 25</span></span>
 <span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">dat</span>, <span class="op">{</span></span>
 <span>  </span>
@@ -635,7 +671,7 @@ rows are output.</p>
 datasets from scratch, just like in SAS®. To create a dataset from
 scratch, simply pass in an empty data frame and output the desired
 values.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create metadata </span></span>
 <span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">{</span></span>
 <span>  </span>
@@ -678,7 +714,7 @@ allow you to perform the most common types of data combinations.</p>
 datasets we will create include one “region” dataset, and two “stores”
 datasets. Note that the columns on the stores datasets are not
 identical.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create sample data</span></span>
 <span><span class="va">region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>header <span class="op">=</span> <span class="cn">TRUE</span>, text <span class="op">=</span> <span class="st">'</span></span>
 <span><span class="st">  REGION   NAME</span></span>
@@ -705,7 +741,7 @@ identical.</p>
 <p>Despite not having the same columns, the two stores datasets can be
 set using the <code><a href="../reference/datastep.html">datastep()</a></code> function. The function will fill
 in the missing values automatically. Like so:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set operation</span></span>
 <span><span class="va">allstores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">stores1</span>, set <span class="op">=</span> <span class="va">stores2</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
@@ -720,7 +756,7 @@ in the missing values automatically. Like so:</p>
 <p>Let’s pretend we noticed the missing data, and decide to fill it in.
 We can do that by merging the missing FRANCHISE values to the second
 stores dataset. First let’s create the missing data:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create small dataset of missing FRANCHISE values</span></span>
 <span><span class="va">franchises</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>FRANCHISE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">F</span>, <span class="cn">F</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="va">franchises</span></span>
@@ -729,7 +765,7 @@ stores dataset. First let’s create the missing data:</p>
 <span><span class="co"># 2     FALSE</span></span></code></pre></div>
 <p>Next we can merge in the missing data on “stores2”, and set the two
 store datasets again:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Merge in missing FRANCHISE column</span></span>
 <span><span class="va">stores2mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">stores2</span>, merge <span class="op">=</span> <span class="va">franchises</span>, <span class="op">{</span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">stores2mod</span></span>
@@ -756,7 +792,7 @@ very convenient.</p>
 condition. We will join in the store regions by the region ID. We will
 also set up merge flags so we can see which rows were in which input
 dataset.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Merge operation - Outer Join</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">allstores</span>, merge <span class="op">=</span> <span class="va">region</span>,</span>
@@ -785,7 +821,7 @@ column names with the “rename” parameter, and exclude rows with a
 “where” expression. Also, we can recode “R05” to “R04” inside the
 datastep. Finally, we’ll drop the merge flags to clean up the
 columns.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Merge operation - Left join and clean up</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="va">allstores</span>, merge <span class="op">=</span> <span class="va">region</span>,</span>
@@ -824,9 +860,9 @@ because it is always available. Here is an example showing how to reduce
 the size of the <strong>iris</strong> sample dataframe using Base R
 <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> before sending it to a datastep.</p>
 <div class="section level4">
-<h4 id="example-10-increasing-performance">Example 10: Increasing Performance<a class="anchor" aria-label="anchor" href="#example-10-increasing-performance"></a>
+<h4 id="example-11-increasing-performance">Example 11: Increasing Performance<a class="anchor" aria-label="anchor" href="#example-11-increasing-performance"></a>
 </h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset the input dataset first for only needed rows and columns</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">Species</span> <span class="op">==</span> <span class="st">'versicolor'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Petal.Length'</span>, <span class="st">'Petal.Width'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>       <span class="fu"><a href="../reference/datastep.html">datastep</a></span><span class="op">(</span><span class="op">{</span></span>

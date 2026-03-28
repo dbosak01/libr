@@ -98,6 +98,7 @@ df
 # 10 19.2   6 167.6    Low 1974-06-10
 
 ```
+
 ### The Retain Parameter
 
 The retain parameter allows you to define variables
@@ -134,6 +135,42 @@ df
 # 10 19.2         6 3.440         31.280
 
 ```
+
+### Wildcards
+
+The keep and drop parameters accepts wildcards. 
+The star character ("*") will match multiple characters, while the question 
+mark ("?") matches a single character.  Wildcard characters can be placed 
+anywhere in the column name string.
+
+#### Example 4: Keep Wildcard
+```{r eval=FALSE, echo=TRUE}
+# Keep with wildcard
+df <- datastep(mtcars[1:10,], 
+  keep = c("mpg", "cyl", "d*", "mpgcat"), {
+
+    if (mpg >= 20) 
+      mpgcat <- "High"
+    else 
+      mpgcat <- "Low"
+
+  })
+  
+df
+#     mpg cyl  disp drat mpgcat
+# 1  21.0   6 160.0 3.90   High
+# 2  21.0   6 160.0 3.90   High
+# 3  22.8   4 108.0 3.85   High
+# 4  21.4   6 258.0 3.08   High
+# 5  18.7   8 360.0 3.15    Low
+# 6  18.1   6 225.0 2.76    Low
+# 7  14.3   8 360.0 3.21    Low
+# 8  24.4   4 146.7 3.69   High
+# 9  22.8   4 140.8 3.92   High
+# 10 19.2   6 167.6 3.92    Low
+
+```
+
 ### By Group Processing
 The `datastep()` function also has the capabilities of performing by-group
 processing.  A by-group is accomplished using the `by` parameter, and passing
@@ -143,7 +180,7 @@ allow you to identify the boundaries between groups.  Note that, by default,
 your data must be sorted properly before sending it into the data step. To 
 turn the sort check off, set the `sort_check` parameter to FALSE.
 
-#### Example 4: By Groups
+#### Example 5: By Groups
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 
@@ -184,7 +221,7 @@ above will represent an "or" combination of values for all by-variables. In
 addition, automatic variables will be created for each variable in the by
 group, similar to SAS®. Observe:
 
-#### Example 5: Multiple By Groups
+#### Example 6: Multiple By Groups
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 
@@ -242,7 +279,7 @@ function. The function will execute the `calculate` block first, add any
 assigned variables to the data frame, and then execute the data step.  Below 
 is an example of such a scenario:
 
-#### Example 6: Calculate Block
+#### Example 7: Calculate Block
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 
@@ -281,7 +318,7 @@ function.  Therefore, within a **dplyr** pipeline, it is not necessary to
 use any `datastep` parameters.  The following example recreates the above 
 data frame from Example 5, but with a **dplyr** pipeline.
 
-#### Example 7: Data Pipeline
+#### Example 8: Data Pipeline
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 library(dplyr)
@@ -325,7 +362,7 @@ the `datastep()` function provides an _attrib_ parameter that allows you
 to supply such attributes as part of a data step.  Attributes are 
 assigned with a named list and the `dsattr()` object. 
 
-#### Example 8: Attributes
+#### Example 9: Attributes
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 
@@ -390,7 +427,7 @@ to extract values.  You can use the indexer to extract a single value or
 a subset of values.  An empty indexer will return all the values in the
 array.
 
-#### Example 9: Using a Data Step Array
+#### Example 10: Using a Data Step Array
 ```{r eval=FALSE, echo=TRUE}
 library(libr)
 
@@ -702,7 +739,7 @@ The Base R `subset()` function is convenient to use because it is always availab
 Here is an example showing how to reduce the size of the **iris** sample 
 dataframe using Base R `subset()` before sending it to a datastep.
 
-#### Example 10: Increasing Performance
+#### Example 11: Increasing Performance
 
 ```{r eval=FALSE, echo=TRUE}
 # Subset the input dataset first for only needed rows and columns

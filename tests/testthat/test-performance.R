@@ -40,6 +40,7 @@ test_that("perf03: datastep() performance is good", {
   
   if (DEV) {
     
+    profvis::profvis({
     libname(dat, file.path(base_path, "SDTM"), "sas7bdat")
     
     dt <- dat$lb
@@ -57,6 +58,8 @@ test_that("perf03: datastep() performance is good", {
     
     tmdiff <- Sys.time() - tm
     tmdiff
+    
+    })
     
     expect_equal(tmdiff < 10, TRUE)
     

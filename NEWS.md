@@ -1,5 +1,6 @@
 # libr 1.4.0
 * Performance enhancements to `datastep()`.
+* Allow wildcard on "keep" and "drop" parameters for `datastep()`.
 * Removed more test data.
 
 # libr 1.3.9

@@ -187,9 +187,11 @@ e$output <- list()
 #' specified as a set of R statements contained within 
 #' curly braces. If no steps are desired, pass empty curly braces.
 #' @param keep A vector of quoted variable names to keep in the output
-#' data set. By default, all variables are kept.
+#' data set. By default, all variables are kept. The parameter accepts 
+#' wildcards. 
 #' @param drop A vector of quoted variable names to drop from the output
-#' data set. By default, no variables are dropped.
+#' data set. By default, no variables are dropped. The parameter accepts 
+#' wildcards.
 #' @param rename A named vector of quoted variables to rename.  The current
 #' variable name should be on the left hand side of the name/value pair,
 #' and the new variable name should be on the right.  The rename operation
@@ -552,6 +554,7 @@ e$output <- list()
 #' # 1  10   Pencil
 #' # 2  20 Scissors
 #' @import dplyr
+#' @import common
 #' @export
 datastep <- function(data, steps, keep = NULL,
                      drop = NULL, rename = NULL,
@@ -924,6 +927,10 @@ datastep <- function(data, steps, keep = NULL,
   # Perform drop operation
   if (!is.null(drop)) {
     
+    if (any(grepl("*", drop, fixed = TRUE)) | any(grepl("?", drop, fixed = TRUE))) {
+      drop <- find.names(names(ret), drop, ignore.case = FALSE)      
+    }
+    
     if (!all(drop %in% names(ret))) {
       
       message("Drop parameter '" %p%  drop[!drop %in% names(ret)] %p% 
@@ -938,6 +945,11 @@ datastep <- function(data, steps, keep = NULL,
   
   # Perform keep operation
   if (!is.null(keep)) {
+    
+    if (any(grepl("*", keep, fixed = TRUE)) | any(grepl("?", keep, fixed = TRUE))) {
+      keep <- find.names(names(ret), keep, ignore.case = FALSE)      
+    }
+
     if (!all(keep %in% names(ret))) {
       
       message("Keep parameter '" %p%  keep[!keep %in% names(ret)] %p% 
