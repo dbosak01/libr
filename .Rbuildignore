@@ -9,3 +9,4 @@
 ^codecov\.yml$
 ^tests\\testthat\\data\\SDTM\\LB\.csv
 ^tests\\testthat\\data\\SDTM\\lb\.sas7bdat
+^man\\images\\archive$
