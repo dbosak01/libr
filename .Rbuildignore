@@ -7,6 +7,9 @@
 ^logo\.png$
 ^\.github$
 ^codecov\.yml$
-^tests\\testthat\\data\\SDTM\\LB\.csv
-^tests\\testthat\\data\\SDTM\\lb\.sas7bdat
-^man\\images\\archive$
+^tests/testthat/data/SDTM/LB\.csv$
+^inst/extdata/libr_data\.zip$
+^tests/testthat/data/SDTM/lb\.sas7bdat$
+^tests/testthat/data/SDTM/.*\.csv$
+^tests/testthat/data/PE$
+^man/images/archive$

@@ -340,7 +340,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
 
   libname(myvar1, file.path( base_path, "SDTM"),
-          engine = "csv", filter = c("ae", "dm", "sv", "vs"),
+          engine = "sas7bdat", filter = c("ae", "dm", "sv", "vs"),
           standard_eval = TRUE)
 
 
@@ -352,11 +352,11 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_load(myvar1)
 
-  expect_equal("bork1.AE" %in% ls(), TRUE)
+  expect_equal("bork1.ae" %in% ls(), TRUE)
 
   lib_unload(myvar1)
 
-  expect_equal("bork1.AE" %in% ls(), FALSE)
+  expect_equal("bork1.ae" %in% ls(), FALSE)
 
   lib_copy(myvar1, myvar2, paste0(base_path, "2"), standard_eval = TRUE)
 
@@ -366,7 +366,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_load(myvar2)
 
-  expect_equal("bork2.AE" %in% ls(), TRUE)
+  expect_equal("bork2.ae" %in% ls(), TRUE)
 
 
   bork2.mtcars <- mtcars
@@ -388,7 +388,7 @@ test_that("lib18: libname() standard_eval parameter works as expected with all o
 
   lib_unload(myvar2)
 
-  expect_equal("bork2.AE" %in% ls(), FALSE)
+  expect_equal("bork2.ae" %in% ls(), FALSE)
 
 
   lib_add(myvar2, mtcars)
