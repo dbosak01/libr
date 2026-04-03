@@ -1,4 +1,4 @@
-# libr 1.4.0
+# libr 1.4.1
 * Significant performance enhancements to `datastep()`. 83K rows now runs
 in 21.6 seconds instead of 6.7 minutes, which is a 94.6% improvement.
 * Allow wildcard on "keep" and "drop" parameters for `datastep()`.
