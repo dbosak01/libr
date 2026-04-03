@@ -715,8 +715,8 @@ res <- datastep(allstores, merge = region,
                   if (REGION == "R05") {
                     REGION <- "R04"
                     NAME.2 <- "South"
-                    
-                  }
+                  }  
+                  
                 })
 #'
 # View results 
