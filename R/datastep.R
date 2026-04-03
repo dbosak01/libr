@@ -187,11 +187,11 @@ e$output <- list()
 #' specified as a set of R statements contained within 
 #' curly braces. If no steps are desired, pass empty curly braces.
 #' @param keep A vector of quoted variable names to keep in the output
-#' data set. By default, all variables are kept. The parameter accepts 
-#' wildcards. 
+#' data set. By default, all variables are kept. The parameter accepts the
+#' wildcards "*" for multiple characters, and "?" for a single character. 
 #' @param drop A vector of quoted variable names to drop from the output
-#' data set. By default, no variables are dropped. The parameter accepts 
-#' wildcards.
+#' data set. By default, no variables are dropped. The parameter accepts the
+#' wildcards "*" for multiple characters, and "?" for a single character.
 #' @param rename A named vector of quoted variables to rename.  The current
 #' variable name should be on the left hand side of the name/value pair,
 #' and the new variable name should be on the right.  The rename operation
