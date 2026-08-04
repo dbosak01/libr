@@ -27,10 +27,10 @@ useful so that you can define import specifications once, and reuse them
 in multiple programs or across multiple teams.
 }
 \seealso{
-Other specs: 
-\code{\link{import_spec}()},
-\code{\link{print.specs}()},
-\code{\link{read.specs}()},
-\code{\link{specs}()}
+Other specs:
+\code{\link[=import_spec]{import_spec()}},
+\code{\link[=print.specs]{print.specs()}},
+\code{\link[=read.specs]{read.specs()}},
+\code{\link[=specs]{specs()}}
 }
 \concept{specs}

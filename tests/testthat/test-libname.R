@@ -630,6 +630,21 @@ test_that("lib29: libname() function works as expected with parquet", {
 
 
 
+test_that("lib30: sas7bdat empty variable have correct data type", {
+  
+
+  pth <- file.path(base_path, "types")
+  
+  libname(dat, pth, engine = "sas7bdat")
+  
+  dt <- dat$fork3
+  
+  expect_equal(class(dt$dummy1), "character")
+  expect_equal(class(dt$dummy2), "numeric")
+
+  
+})
+
 
 
 # 

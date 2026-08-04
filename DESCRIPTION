@@ -1,7 +1,7 @@
 Package: libr
 Type: Package
 Title: Libraries, Data Dictionaries, and a Data Step for R
-Version: 1.4.1
+Version: 1.4.2
 Maintainer: David Bosak <dbosak01@gmail.com>
 Authors@R: c( 
     person("David", "Bosak", email = "dbosak01@gmail.com", role = c("aut", "cre")),
@@ -42,7 +42,7 @@ Imports:
     tools,
     Rcpp,
     data.table
-RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
+Config/roxygen2/version: 8.0.0

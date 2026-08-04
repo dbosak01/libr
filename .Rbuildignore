@@ -13,3 +13,5 @@
 ^tests/testthat/data/SDTM/.*\.csv$
 ^tests/testthat/data/PE$
 ^man/images/archive$
+^\.positai$
+^\.claude$

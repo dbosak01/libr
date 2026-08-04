@@ -40,12 +40,12 @@ df
 # 11 21.4   4 121.0
 }
 \seealso{
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{datastep}()},
-\code{\link{dsarray}()},
-\code{\link{dsattr}()},
-\code{\link{length.dsarray}()},
-\code{\link{output}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=datastep]{datastep()}},
+\code{\link[=dsarray]{dsarray()}},
+\code{\link[=dsattr]{dsattr()}},
+\code{\link[=length.dsarray]{length.dsarray()}},
+\code{\link[=output]{output()}}
 }
 \concept{datastep}

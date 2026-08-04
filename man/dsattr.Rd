@@ -107,12 +107,12 @@ associated with a dataset.  Also see the \code{fdata}
 function in the \strong{fmtr}
 package for more information on formatting and rendering data frames.
 
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{datastep}()},
-\code{\link{delete}()},
-\code{\link{dsarray}()},
-\code{\link{length.dsarray}()},
-\code{\link{output}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=datastep]{datastep()}},
+\code{\link[=delete]{delete()}},
+\code{\link[=dsarray]{dsarray()}},
+\code{\link[=length.dsarray]{length.dsarray()}},
+\code{\link[=output]{output()}}
 }
 \concept{datastep}

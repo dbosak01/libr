@@ -21,10 +21,10 @@ The specification object, invisibly.
 A function to print the import specification collection.
 }
 \seealso{
-Other specs: 
-\code{\link{import_spec}()},
-\code{\link{read.specs}()},
-\code{\link{specs}()},
-\code{\link{write.specs}()}
+Other specs:
+\code{\link[=import_spec]{import_spec()}},
+\code{\link[=read.specs]{read.specs()}},
+\code{\link[=specs]{specs()}},
+\code{\link[=write.specs]{write.specs()}}
 }
 \concept{specs}

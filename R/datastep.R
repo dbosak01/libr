@@ -953,7 +953,7 @@ datastep <- function(data, steps, keep = NULL,
     if (!all(keep %in% names(ret))) {
       
       message("Keep parameter '" %p%  keep[!keep %in% names(ret)] %p% 
-              "' not found on output dataset.")
+              "' not found on output dataset.\n")
       
       keep <-  keep[keep %in% names(ret)] 
     }

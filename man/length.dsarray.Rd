@@ -25,12 +25,12 @@ length(carr)
 # 11
 }
 \seealso{
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{datastep}()},
-\code{\link{delete}()},
-\code{\link{dsarray}()},
-\code{\link{dsattr}()},
-\code{\link{output}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=datastep]{datastep()}},
+\code{\link[=delete]{delete()}},
+\code{\link[=dsarray]{dsarray()}},
+\code{\link[=dsattr]{dsattr()}},
+\code{\link[=output]{output()}}
 }
 \concept{datastep}

@@ -616,12 +616,12 @@ res
 \code{\link{libname}} function to create a data library, and
 the \code{\link{dictionary}} function to create a data dictionary.
 
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{delete}()},
-\code{\link{dsarray}()},
-\code{\link{dsattr}()},
-\code{\link{length.dsarray}()},
-\code{\link{output}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=delete]{delete()}},
+\code{\link[=dsarray]{dsarray()}},
+\code{\link[=dsattr]{dsattr()}},
+\code{\link[=length.dsarray]{length.dsarray()}},
+\code{\link[=output]{output()}}
 }
 \concept{datastep}

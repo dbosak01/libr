@@ -1,3 +1,8 @@
+# libr 1.4.2
+
+* Fixed bug on `libname()` function sas7bdat engine where empty variables
+were being imported as logical data type instead of character.
+
 # libr 1.4.1
 * Significant performance enhancements to `datastep()`. 83K rows now runs
 in 21.6 seconds instead of 6.7 minutes, which is a 94.6% improvement.

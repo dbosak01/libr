@@ -77,21 +77,21 @@ lib_write(dat)
 lib_delete(dat)
 }
 \seealso{
-Other lib: 
-\code{\link{is.lib}()},
-\code{\link{lib_add}()},
-\code{\link{lib_copy}()},
-\code{\link{lib_delete}()},
-\code{\link{lib_export}()},
-\code{\link{lib_info}()},
-\code{\link{lib_load}()},
-\code{\link{lib_path}()},
-\code{\link{lib_remove}()},
-\code{\link{lib_replace}()},
-\code{\link{lib_size}()},
-\code{\link{lib_sync}()},
-\code{\link{lib_unload}()},
-\code{\link{libname}()},
-\code{\link{print.lib}()}
+Other lib:
+\code{\link[=is.lib]{is.lib()}},
+\code{\link[=lib_add]{lib_add()}},
+\code{\link[=lib_copy]{lib_copy()}},
+\code{\link[=lib_delete]{lib_delete()}},
+\code{\link[=lib_export]{lib_export()}},
+\code{\link[=lib_info]{lib_info()}},
+\code{\link[=lib_load]{lib_load()}},
+\code{\link[=lib_path]{lib_path()}},
+\code{\link[=lib_remove]{lib_remove()}},
+\code{\link[=lib_replace]{lib_replace()}},
+\code{\link[=lib_size]{lib_size()}},
+\code{\link[=lib_sync]{lib_sync()}},
+\code{\link[=lib_unload]{lib_unload()}},
+\code{\link[=libname]{libname()}},
+\code{\link[=print.lib]{print.lib()}}
 }
 \concept{lib}

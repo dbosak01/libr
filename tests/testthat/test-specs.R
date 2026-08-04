@@ -291,8 +291,8 @@ test_that("specs13: no specs work on CRF data for sas7bdat.", {
   
   libname(dat, file.path(base_path, "CRF"), "sas7bdat")
   
-  expect_equal(class(dat$dm$VISITREP), "logical")
-  expect_equal(class(dat$pe$VISITREP), "logical")
+  expect_equal(class(dat$dm$VISITREP), "character")
+  expect_equal(class(dat$pe$VISITREP), "character")
   expect_equal(all(is.na(dat$dm$VISITREP)), TRUE)
   expect_equal(all(is.na(dat$pe$VISITREP)), TRUE)
   
@@ -308,8 +308,8 @@ test_that("specs14: specs na and trim_ws work on CRF data for sas7bdat.", {
   # dat$dm  
   # dat$pe
   
-  expect_equal(class(dat$dm$VISITREP), "logical")
-  expect_equal(class(dat$dm$VISITREP), "logical")
+  expect_equal(class(dat$dm$VISITREP), "character")
+  expect_equal(class(dat$dm$VISITREP), "character")
   
 })
 
@@ -324,7 +324,7 @@ test_that("specs15: dm import_spec na and trim_ws work on CRF data for sas7bdat.
    # dat$dm  
    # dat$pe
   
-  expect_equal(class(dat$dm$VISITREP), "logical")
+  expect_equal(class(dat$dm$VISITREP), "character")
   expect_equal(class(dat$pe$VISITREP), "character")
   
 })
@@ -342,9 +342,9 @@ test_that("specs16: dm and pe import_spec col_types work on CRF data for sas7bda
   # dat$pe
    
   expect_equal(class(dat$dm$VISITREP), "character")
-  expect_equal(class(dat$dm$PAGEREP), "logical")
+  expect_equal(class(dat$dm$PAGEREP), "character")
   expect_equal(class(dat$pe$VISITREP), "character")
-  expect_equal(class(dat$dm$PAGEREP), "logical")
+  expect_equal(class(dat$dm$PAGEREP), "character")
   
 })
 

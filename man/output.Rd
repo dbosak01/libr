@@ -96,12 +96,12 @@ df
 # 2    2  Two
 }
 \seealso{
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{datastep}()},
-\code{\link{delete}()},
-\code{\link{dsarray}()},
-\code{\link{dsattr}()},
-\code{\link{length.dsarray}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=datastep]{datastep()}},
+\code{\link[=delete]{delete()}},
+\code{\link[=dsarray]{dsarray()}},
+\code{\link[=dsattr]{dsattr()}},
+\code{\link[=length.dsarray]{length.dsarray()}}
 }
 \concept{datastep}

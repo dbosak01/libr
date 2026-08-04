@@ -26,10 +26,10 @@ as a directory name, the function will search for a file with a '.specs'
 extension and read it.
 }
 \seealso{
-Other specs: 
-\code{\link{import_spec}()},
-\code{\link{print.specs}()},
-\code{\link{specs}()},
-\code{\link{write.specs}()}
+Other specs:
+\code{\link[=import_spec]{import_spec()}},
+\code{\link[=print.specs]{print.specs()}},
+\code{\link[=specs]{specs()}},
+\code{\link[=write.specs]{write.specs()}}
 }
 \concept{specs}

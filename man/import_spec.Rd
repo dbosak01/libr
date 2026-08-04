@@ -47,10 +47,10 @@ for an example of using import specs.
 \code{\link{libname}} to create a data library, and 
 \code{\link{specs}} for an example using import specs.
 
-Other specs: 
-\code{\link{print.specs}()},
-\code{\link{read.specs}()},
-\code{\link{specs}()},
-\code{\link{write.specs}()}
+Other specs:
+\code{\link[=print.specs]{print.specs()}},
+\code{\link[=read.specs]{read.specs()}},
+\code{\link[=specs]{specs()}},
+\code{\link[=write.specs]{write.specs()}}
 }
 \concept{specs}

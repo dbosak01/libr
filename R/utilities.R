@@ -434,8 +434,23 @@ exec_spec <- function(x, spcs, nm) {
        ret[[nm]] <- trimws(ret[[nm]])
      
      # Apply na conversion on requested values
-     if (length(colspcs) == 0 | is.null(colspcs[[nm]]))
-       ret[[nm]] <- ifelse(ret[[nm]] %in% naval, NA, ret[[nm]])
+     if (length(colspcs) == 0 | is.null(colspcs[[nm]])) {
+       if ("character" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.character(NA), ret[[nm]])
+       } else if ("integer" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.integer(NA), ret[[nm]])
+       } else if ("numeric" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.numeric(NA), ret[[nm]]) 
+       } else if ("logical" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.logical(NA), ret[[nm]])
+       } else if ("POSIXct" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.POSIXct(NA), ret[[nm]])
+       } else if ("POSIXlt" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.POSIXlt(NA), ret[[nm]])
+       } else if ("date" %in% class(ret[[nm]])) {
+         ret[[nm]] <- ifelse(ret[[nm]] %in% naval, as.Date(NA), ret[[nm]]) 
+       }
+     }
      
      if (length(colspcs) > 0) {
        if (!is.null(colspcs[[nm]])) {

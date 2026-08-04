@@ -135,10 +135,10 @@ lib_delete(dat)
 \code{\link{import_spec}} for additional information on defining an 
 import spec.
 
-Other specs: 
-\code{\link{import_spec}()},
-\code{\link{print.specs}()},
-\code{\link{read.specs}()},
-\code{\link{write.specs}()}
+Other specs:
+\code{\link[=import_spec]{import_spec()}},
+\code{\link[=print.specs]{print.specs()}},
+\code{\link[=read.specs]{read.specs()}},
+\code{\link[=write.specs]{write.specs()}}
 }
 \concept{specs}

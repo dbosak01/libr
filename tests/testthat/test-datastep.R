@@ -300,6 +300,7 @@ test_that("ds14: Rename works as expected", {
     retain = list(cumwt = 0 ),
     rename = c(mpg = "MPG", cyl = "Cylinders", wt = "Wgt",
     cumwt = "Cumulative Wgt"),
+    #keep = c("MPG", "Cylinders", "Wgt", "Cumulative Wgt"),
   {
     cumwt <- cumwt + wt
   })

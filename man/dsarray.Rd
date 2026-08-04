@@ -78,12 +78,12 @@ dat
 \code{\link{libname}} to create a data library, and
 \code{\link{dictionary}} for generating a data dictionary
 
-Other datastep: 
-\code{\link{[.dsarray}()},
-\code{\link{datastep}()},
-\code{\link{delete}()},
-\code{\link{dsattr}()},
-\code{\link{length.dsarray}()},
-\code{\link{output}()}
+Other datastep:
+\code{\link[=[.dsarray]{[.dsarray()}},
+\code{\link[=datastep]{datastep()}},
+\code{\link[=delete]{delete()}},
+\code{\link[=dsattr]{dsattr()}},
+\code{\link[=length.dsarray]{length.dsarray()}},
+\code{\link[=output]{output()}}
 }
 \concept{datastep}
